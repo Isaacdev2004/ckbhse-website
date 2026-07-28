@@ -44,7 +44,8 @@ The website's dev server proxies `/api` to the API server, so run both and use a
 - `lib/api-spec/openapi.yaml` — **source of truth for API contracts.** Edit here, then run codegen.
 - `lib/db/src/schema/` — **source of truth for the DB schema**, one file per table. Currently empty.
 - `lib/api-client-react`, `lib/api-zod` — generated; do not hand-edit.
-- `docs/02-architecture-assessment.md` — architecture review against the BRS, including the recommended target structure and refactor sequence.
+- `docs/02-architecture-assessment.md` — architecture review against the BRS (Document 02), including the Phase 0 and Phase 1 outcomes.
+- `docs/DOCUMENT_03_ARCHITECTURE_REVIEW.md` — **read before starting any domain work.** Domain model, bounded contexts, entity analysis, the target module structure, and the ordered list of changes that must land before the first domain table.
 
 ## Using the design system
 
