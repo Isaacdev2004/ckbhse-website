@@ -5,13 +5,20 @@ An HSEQ consultancy platform for CKBHSE Limited (UK): a public marketing site to
 ## Run & Operate
 
 - `pnpm install` — install all workspace dependencies
+- `pnpm run verify` — **what CI runs**: format check, lint, typecheck, test
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
+- `pnpm run lint` / `pnpm run lint:fix` — ESLint across the workspace
+- `pnpm run format` / `pnpm run format:check` — Prettier
+- `pnpm run test` — all package test suites
 - `pnpm --filter @workspace/ckbhse-website run dev` — public website (defaults to port 5180)
 - `pnpm --filter @workspace/api-server run dev` — build + run the API server (defaults to port 5000)
 - `pnpm --filter @workspace/mockup-sandbox run dev` — component preview sandbox (defaults to port 5181)
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from `lib/api-spec/openapi.yaml`
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only; see Gotchas)
+- `pnpm --filter @workspace/db run generate` — generate a migration from schema changes (no database needed)
+- `pnpm --filter @workspace/db run migrate` — apply pending migrations
+- `pnpm --filter @workspace/db run check` — verify migration consistency
+- `pnpm --filter @workspace/db run push` — push schema without a migration (throwaway dev databases only)
 
 Env: copy `.env.example` to `.env`. Nothing is required for the website or API server locally — all values have defaults. `DATABASE_URL` becomes required as soon as anything imports `@workspace/db`.
 
@@ -20,6 +27,7 @@ The website's dev server proxies `/api` to the API server, so run both and use a
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- Quality gates: ESLint 10 (flat config), Prettier, Vitest + supertest, GitHub Actions
 - Website: Vite 7 + React 19 + wouter + Tailwind v4 + shadcn/ui + Framer Motion
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
@@ -53,10 +61,13 @@ Not built yet: client portal, LMS, staff portal, administration portal, and all 
 
 ## Gotchas
 
-- **`lib/db` has no migrations.** Only `push`/`push-force` exist, which mutate the database with no recorded history. Move to versioned `generate`/`migrate` before creating the first table — the BRS requires audit trails and rollback.
+- **Prefer `generate` + `migrate` over `push`.** `push` mutates a database with no recorded history, which cannot satisfy the BRS audit and rollback requirements. It is kept only for throwaway dev databases.
+- **No migrations exist yet** because `lib/db/src/schema/` is still empty, so `generate` and `check` are deliberately not yet part of CI. Add them once the first table lands.
 - **The contact form discards input.** `artifacts/ckbhse-website/src/pages/contact.tsx` shows a success message without sending anything. Do not ship to a live domain until it is wired up.
-- **CORS is wide open.** `app.use(cors())` in `artifacts/api-server/src/app.ts` allows all origins. Replace with an allowlist before any authenticated endpoint exists.
+- **CORS is an explicit allowlist.** Set `CORS_ORIGINS` (comma-separated) for any browser origin that is not same-origin. An unlisted origin gets a 403, which looks like a server bug if you forget.
 - **`index.html` still has placeholder SEO metadata** and every route shares one title and description.
+- **shadcn/ui primitives are treated as vendored code** in `eslint.config.mjs`: linted for genuine faults but exempt from React-idiom and stylistic rules, so `shadcn add` does not require re-patching. Do not "fix" lint in those files; fix it in our own code.
+- **The two copies of the 55 UI primitives have forked** and are different shadcn generations (the sandbox's `textarea` is newer). The website copy is canonical because the live pages were designed against it.
 - **Windows native binaries matter.** `pnpm-workspace.yaml` prunes platform binaries to keep Replit's store small, but win32-x64 is deliberately kept so local Windows development works. Do not re-add the win32-x64 exclusions.
 - **Line endings are normalised to LF** via `.gitattributes`. Without it, every file touched on Windows shows as fully rewritten.
 - **Vite ports are pinned with `strictPort`.** Defaults are 5180/5181 rather than Vite's 5173 to avoid colliding with other local Vite projects.

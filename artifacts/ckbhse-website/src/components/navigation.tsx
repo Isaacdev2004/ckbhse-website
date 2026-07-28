@@ -28,9 +28,14 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
+  // Close the mobile menu on navigation. Adjusting state during render rather
+  // than in an effect avoids the extra render pass, and covers browser
+  // back/forward as well as link clicks.
+  const [renderedLocation, setRenderedLocation] = useState(location);
+  if (renderedLocation !== location) {
+    setRenderedLocation(location);
     setMobileMenuOpen(false);
-  }, [location]);
+  }
 
   return (
     <motion.nav
@@ -38,13 +43,19 @@ export function Navigation() {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] as const }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-sm' : 'bg-transparent'
+        scrolled
+          ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-sm'
+          : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group" data-testid="link-home-logo">
+          <Link
+            href="/"
+            className="flex items-center gap-2 group"
+            data-testid="link-home-logo"
+          >
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
               <Shield className="w-6 h-6 text-primary-foreground" />
             </div>
@@ -52,7 +63,9 @@ export function Navigation() {
               <span className="font-display font-bold text-lg leading-none text-foreground">
                 CKBHSE
               </span>
-              <span className="text-xs text-muted-foreground font-medium">Limited</span>
+              <span className="text-xs text-muted-foreground font-medium">
+                Limited
+              </span>
             </div>
           </Link>
 
@@ -63,7 +76,9 @@ export function Navigation() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-medium transition-colors hover:text-primary relative py-2 ${
-                  location === link.href ? 'text-foreground' : 'text-muted-foreground'
+                  location === link.href
+                    ? 'text-foreground'
+                    : 'text-muted-foreground'
                 }`}
                 data-testid={`link-nav-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
               >
@@ -81,7 +96,10 @@ export function Navigation() {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Link href="/contact" data-testid="button-book-consultation-desktop">
+            <Link
+              href="/contact"
+              data-testid="button-book-consultation-desktop"
+            >
               <Button size="lg" className="font-semibold">
                 Book Consultation
               </Button>
@@ -95,7 +113,11 @@ export function Navigation() {
             aria-label="Toggle menu"
             data-testid="button-mobile-menu-toggle"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
@@ -125,7 +147,11 @@ export function Navigation() {
                   {link.label}
                 </Link>
               ))}
-              <Link href="/contact" className="block pt-2" data-testid="button-book-consultation-mobile">
+              <Link
+                href="/contact"
+                className="block pt-2"
+                data-testid="button-book-consultation-mobile"
+              >
                 <Button size="lg" className="w-full font-semibold">
                   Book Consultation
                 </Button>

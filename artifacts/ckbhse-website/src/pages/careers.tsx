@@ -1,30 +1,46 @@
 import { motion } from 'framer-motion';
-import { Users, Heart, TrendingUp, GraduationCap, MapPin, Clock, Briefcase, ArrowRight } from 'lucide-react';
+import {
+  Users,
+  Heart,
+  TrendingUp,
+  GraduationCap,
+  MapPin,
+  Briefcase,
+  ArrowRight,
+} from 'lucide-react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SectionReveal, StaggerContainer, staggerItem } from '@/components/section-reveal';
+import {
+  SectionReveal,
+  StaggerContainer,
+  staggerItem,
+} from '@/components/section-reveal';
 
 const benefits = [
   {
     icon: Heart,
     title: 'Health & Wellbeing',
-    description: 'Comprehensive health insurance, mental health support, and wellbeing programs.',
+    description:
+      'Comprehensive health insurance, mental health support, and wellbeing programs.',
   },
   {
     icon: TrendingUp,
     title: 'Career Development',
-    description: 'Professional development support, accreditation funding, and clear progression paths.',
+    description:
+      'Professional development support, accreditation funding, and clear progression paths.',
   },
   {
     icon: GraduationCap,
     title: 'Learning & Training',
-    description: 'Access to industry training, conference attendance, and continuous learning opportunities.',
+    description:
+      'Access to industry training, conference attendance, and continuous learning opportunities.',
   },
   {
     icon: Users,
     title: 'Collaborative Culture',
-    description: 'Work with expert colleagues in a supportive, professional environment.',
+    description:
+      'Work with expert colleagues in a supportive, professional environment.',
   },
 ];
 
@@ -35,7 +51,8 @@ const openPositions = [
     location: 'London / Hybrid',
     type: 'Full-time',
     salary: '£45,000 - £60,000',
-    description: 'Lead client consultancy projects across multiple sectors, conduct audits, deliver training, and support business development.',
+    description:
+      'Lead client consultancy projects across multiple sectors, conduct audits, deliver training, and support business development.',
     requirements: [
       'NEBOSH Diploma or equivalent',
       'Minimum 5 years HSEQ consultancy experience',
@@ -49,7 +66,8 @@ const openPositions = [
     location: 'Manchester / Hybrid',
     type: 'Full-time',
     salary: '£35,000 - £45,000',
-    description: 'Deliver consultancy services including risk assessments, audits, compliance advice, and training to clients across construction and manufacturing sectors.',
+    description:
+      'Deliver consultancy services including risk assessments, audits, compliance advice, and training to clients across construction and manufacturing sectors.',
     requirements: [
       'NEBOSH General Certificate minimum',
       '2-4 years HSEQ experience',
@@ -63,7 +81,8 @@ const openPositions = [
     location: 'Birmingham / Hybrid',
     type: 'Full-time',
     salary: '£32,000 - £42,000',
-    description: 'Deliver accredited health and safety training courses (IOSH, NEBOSH, and specialist programs) to corporate clients.',
+    description:
+      'Deliver accredited health and safety training courses (IOSH, NEBOSH, and specialist programs) to corporate clients.',
     requirements: [
       'NEBOSH qualification and relevant teaching certifications',
       'Proven training delivery experience',
@@ -77,7 +96,8 @@ const openPositions = [
     location: 'London',
     type: 'Full-time',
     salary: '£26,000 - £30,000',
-    description: 'Join our team as a graduate consultant and develop your HSEQ expertise through structured mentoring, client projects, and professional qualifications.',
+    description:
+      'Join our team as a graduate consultant and develop your HSEQ expertise through structured mentoring, client projects, and professional qualifications.',
     requirements: [
       'Degree in relevant field (Health & Safety, Environmental Science, Engineering)',
       'NEBOSH General Certificate desirable',
@@ -103,7 +123,8 @@ export default function Careers() {
               Join Our Team
             </h1>
             <p className="text-xl opacity-90 leading-relaxed">
-              Build a rewarding career in HSEQ consultancy. Work with industry experts, solve complex challenges, and make workplaces safer.
+              Build a rewarding career in HSEQ consultancy. Work with industry
+              experts, solve complex challenges, and make workplaces safer.
             </p>
           </motion.div>
         </div>
@@ -117,7 +138,8 @@ export default function Careers() {
               Why Work at CKBHSE?
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              We invest in our people and create an environment where expertise, collaboration, and professional growth thrive.
+              We invest in our people and create an environment where expertise,
+              collaboration, and professional growth thrive.
             </p>
           </div>
 
@@ -137,7 +159,9 @@ export default function Careers() {
                 <h3 className="font-display font-semibold text-lg text-foreground mb-2">
                   {benefit.title}
                 </h3>
-                <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                <p className="text-sm text-muted-foreground">
+                  {benefit.description}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -152,7 +176,8 @@ export default function Careers() {
               Open Positions
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Explore current opportunities to join our growing consultancy team.
+              Explore current opportunities to join our growing consultancy
+              team.
             </p>
           </div>
 
@@ -188,10 +213,15 @@ export default function Careers() {
                     </p>
 
                     <div>
-                      <h4 className="font-semibold text-sm text-foreground mb-2">Key Requirements:</h4>
+                      <h4 className="font-semibold text-sm text-foreground mb-2">
+                        Key Requirements:
+                      </h4>
                       <ul className="space-y-1">
                         {position.requirements.map((req, index) => (
-                          <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <li
+                            key={index}
+                            className="flex items-start gap-2 text-sm text-muted-foreground"
+                          >
                             <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
                             {req}
                           </li>
@@ -201,7 +231,10 @@ export default function Careers() {
                   </div>
 
                   <div className="lg:w-48">
-                    <Link href="/contact" data-testid={`button-apply-${position.id}`}>
+                    <Link
+                      href="/contact"
+                      data-testid={`button-apply-${position.id}`}
+                    >
                       <Button className="w-full group">
                         Apply Now
                         <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -223,10 +256,16 @@ export default function Careers() {
             Don't See the Right Role?
           </h2>
           <p className="text-xl opacity-90 mb-8 leading-relaxed">
-            We're always interested in hearing from talented HSEQ professionals. Submit a general application and we'll keep you in mind for future opportunities.
+            We're always interested in hearing from talented HSEQ professionals.
+            Submit a general application and we'll keep you in mind for future
+            opportunities.
           </p>
           <Link href="/contact" data-testid="button-general-application">
-            <Button size="lg" variant="secondary" className="font-semibold group">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="font-semibold group"
+            >
               Submit General Application
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>

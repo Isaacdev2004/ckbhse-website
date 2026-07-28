@@ -1,14 +1,18 @@
-import { defineConfig } from "drizzle-kit";
-import path from "path";
+import { defineConfig } from 'drizzle-kit';
+import path from 'path';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL, ensure the database is provisioned");
-}
+// `generate` and `check` work purely from the schema files, so a database is
+// deliberately not required here — CI must be able to verify that migrations
+// are in sync without provisioning Postgres. `migrate` and `push` will fail on
+// connect if DATABASE_URL is unset, which is the correct outcome.
+const url = process.env.DATABASE_URL ?? 'postgresql://database-url-not-set';
 
 export default defineConfig({
-  schema: path.join(__dirname, "./src/schema/index.ts"),
-  dialect: "postgresql",
-  dbCredentials: {
-    url: process.env.DATABASE_URL,
-  },
+  schema: path.join(__dirname, './src/schema/index.ts'),
+  out: path.join(__dirname, './migrations'),
+  dialect: 'postgresql',
+  dbCredentials: { url },
+  // Warn before running statements that would destroy data.
+  strict: true,
+  verbose: true,
 });
