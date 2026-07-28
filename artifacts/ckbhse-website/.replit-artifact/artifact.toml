@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "CKBHSE Enterprise Website"
+version = "1.0.0"
+id = "artifacts/ckbhse-website"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21468
+
+[services.development]
+run = "pnpm --filter @workspace/ckbhse-website run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ckbhse-website", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/ckbhse-website/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21468"
+BASE_PATH = "/"
