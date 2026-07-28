@@ -11,7 +11,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { Link } from 'wouter';
-import { Button } from '@/components/ui/button';
+import { Button } from '@workspace/ui/components/button';
 import {
   SectionReveal,
   StaggerContainer,

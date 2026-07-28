@@ -14,7 +14,7 @@ import {
   FileCheck,
   AlertTriangle,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@workspace/ui/components/button';
 import {
   SectionReveal,
   StaggerContainer,

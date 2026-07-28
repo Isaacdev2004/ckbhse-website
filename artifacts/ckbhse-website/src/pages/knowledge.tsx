@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { BookOpen, Clock, ArrowRight, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@workspace/ui/components/button';
+import { Input } from '@workspace/ui/components/input';
+import { Badge } from '@workspace/ui/components/badge';
 import { StaggerContainer, staggerItem } from '@/components/section-reveal';
 
 const articles = [

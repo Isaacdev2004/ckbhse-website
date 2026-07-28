@@ -37,13 +37,36 @@ The website's dev server proxies `/api` to the API server, so run both and use a
 
 ## Where things live
 
-- `artifacts/ckbhse-website` — the public marketing site. Routes are declared in `src/App.tsx`; brand design tokens live in `src/index.css`.
+- `artifacts/ckbhse-website` — the public marketing site. Routes are declared in `src/App.tsx`; the CKBHSE brand palette lives in `src/index.css`.
 - `artifacts/api-server` — Express app. `src/app.ts` wires middleware, `src/routes/` holds routers.
 - `artifacts/mockup-sandbox` — component preview harness; drop components in `src/components/mockups/` and open `/preview/<name>`.
+- `lib/ui` — **the shared design system**, and the only copy of the shadcn/ui primitives. `src/components/` holds the 55 primitives, `src/hooks/`, `src/utils.ts` (`cn`), and `src/styles/base.css` for the Tailwind theme mapping and interaction utilities.
 - `lib/api-spec/openapi.yaml` — **source of truth for API contracts.** Edit here, then run codegen.
 - `lib/db/src/schema/` — **source of truth for the DB schema**, one file per table. Currently empty.
 - `lib/api-client-react`, `lib/api-zod` — generated; do not hand-edit.
 - `docs/02-architecture-assessment.md` — architecture review against the BRS, including the recommended target structure and refactor sequence.
+
+## Using the design system
+
+Import primitives by subpath, never through a barrel, so unused components stay out of the bundle:
+
+```ts
+import { Button } from "@workspace/ui/components/button";
+import { cn } from "@workspace/ui/utils";
+import { useToast } from "@workspace/ui/hooks/use-toast";
+```
+
+A new app opts in with three lines of CSS, in this order, then declares its own palette:
+
+```css
+@import "tailwindcss";
+@import "@workspace/ui/styles/base.css";
+@source '../../../lib/ui/src'; /* Tailwind does not scan node_modules */
+```
+
+`base.css` owns the structural layer — the `@theme inline` mapping, the `elevate` interaction utilities, and the base resets. Each app owns only colour, font and radius values, declared as `--background`, `--primary`, `--app-font-sans` and friends on `:root` and `.dark`. That split is what lets the client portal, LMS and admin portal look different while sharing one component library.
+
+To add a primitive, run `shadcn add` from `lib/ui`, which is where the only `components.json` lives.
 
 ## Architecture decisions
 
@@ -52,6 +75,7 @@ The website's dev server proxies `/api` to the API server, so run both and use a
 - **Single-organisation tenancy.** A client user belongs to exactly one organisation. Organisation scoping is the boundary for the BRS data-isolation rule and must be enforced in the data-access layer, not in route handlers.
 - **In-house authentication.** Session cookies, Argon2id hashing, MFA for internal roles. Chosen over a managed provider for full control over the eleven-role model and audit requirements. Note `lib/api-client-react/src/custom-fetch.ts` still exposes `setAuthTokenGetter`, which presumes bearer tokens — revisit when auth lands.
 - **Permission-based authorization, never role string checks.** Roles map to permissions; guards resolve a permission plus a resource scope. Users may hold multiple roles.
+- **One design system in `lib/ui`, colours owned by each app.** The BRS calls for four more front ends; the primitives are shared and the palette is per-app, so a portal can be visually distinct without forking components.
 
 ## Product
 
@@ -67,7 +91,9 @@ Not built yet: client portal, LMS, staff portal, administration portal, and all 
 - **CORS is an explicit allowlist.** Set `CORS_ORIGINS` (comma-separated) for any browser origin that is not same-origin. An unlisted origin gets a 403, which looks like a server bug if you forget.
 - **`index.html` still has placeholder SEO metadata** and every route shares one title and description.
 - **shadcn/ui primitives are treated as vendored code** in `eslint.config.mjs`: linted for genuine faults but exempt from React-idiom and stylistic rules, so `shadcn add` does not require re-patching. Do not "fix" lint in those files; fix it in our own code.
-- **The two copies of the 55 UI primitives have forked** and are different shadcn generations (the sandbox's `textarea` is newer). The website copy is canonical because the live pages were designed against it.
+- **Never add a `components/ui/` directory to an app.** The primitives live only in `lib/ui`. The two apps previously each carried a copy and had already forked onto different shadcn generations; the app-level `components.json` files were deleted so that `shadcn add` cannot silently recreate the fork.
+- **`lib/ui` deliberately defines no colours.** It maps Tailwind's theme onto custom properties that each app must supply. Adding a token to `base.css` without adding it to _every_ app's palette produces `hsl()` with an empty argument, which fails silently — the element just renders unstyled.
+- **`'use client'` on 13 primitives is inert** in a Vite SPA and makes Rollup emit a "module level directives cause errors when bundled" warning during the website build. It is upstream shadcn code, left untouched so `shadcn add` stays clean.
 - **Windows native binaries matter.** `pnpm-workspace.yaml` prunes platform binaries to keep Replit's store small, but win32-x64 is deliberately kept so local Windows development works. Do not re-add the win32-x64 exclusions.
 - **Line endings are normalised to LF** via `.gitattributes`. Without it, every file touched on Windows shows as fully rewritten.
 - **Vite ports are pinned with `strictPort`.** Defaults are 5180/5181 rather than Vite's 5173 to avoid colliding with other local Vite projects.

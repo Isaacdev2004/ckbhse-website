@@ -5,7 +5,7 @@
 **Scope:** Review of the existing codebase against the Business Requirements Specification. No feature work performed.
 **Repository root:** `CKBHSE-Limited-Vision/` (note: nested one level below the opened workspace folder)
 
-> **Status:** Phase 0 of §7 is complete and the architectural decisions in §8 have been taken. See §9.
+> **Status:** Phases 0 and 1 of §7 are complete and the architectural decisions in §8 have been taken. See §9 and §10.
 
 ---
 
@@ -275,8 +275,53 @@ Completed:
 Outstanding:
 
 - **R7 requires an action outside the codebase.** The git repository and all source live at `Downloads/CKBHSE-Limited-Vision/CKBHSE-Limited-Vision/`, one level below the opened workspace folder. Moving ~40,000 installed files and pnpm's link farm is not worth the risk; instead the workspace should simply be reopened at the inner folder so that tooling, rules, and CI paths align with the repository root.
-- **R5 and R6 are Phase 1 work** and are not yet started.
-- No linting, tests, or CI exist yet (Phase 1 steps 6–8).
+
+---
+
+## 10. Phase 1 outcome
+
+All four items in §7 Phase 1 are complete.
+
+### 10.1 Quality gates (§7 step 6)
+
+- **ESLint 10 flat config** at `eslint.config.mjs`, with typed rules for our own code and a vendored-code carve-out for the shadcn primitives so `shadcn add` does not require re-patching. Replit's git-ignored `.local/skills/` templates are excluded — flat config does not read `.gitignore`, and they accounted for the bulk of the initial 287 findings. The workspace now reports **0 errors, 2 accepted warnings**.
+- **Prettier** with `.prettierrc.json` and `.prettierignore`, applied across the repository. This is why the Phase 1 commits are large: the formatting pass is separated into its own commit so the functional changes stay reviewable.
+- **Vitest + supertest** in `artifacts/api-server`, 9 tests covering the health and readiness probes, the error envelope, the CORS allowlist, and the security headers.
+- **GitHub Actions** at `.github/workflows/ci.yml`: format check, lint, typecheck, test, build, plus a drift check that regenerates the API client and fails if the result differs from what is committed.
+- **Playwright is deliberately deferred.** There are no authenticated flows or persisted forms to test yet, so browser tests would assert only that static marketing copy renders. It belongs with the first real user journey; the accessibility and Lighthouse budgets in §7 step 6 should land at the same time, since both need a running app.
+
+### 10.2 API hardening (§7 step 7)
+
+`helmet`, an explicit `CORS_ORIGINS` allowlist with credentials enabled, two rate limiters (a general one and a stricter one reserved for authentication endpoints), request body limits, and `compression`. All environment variables are parsed and validated through a Zod schema in `src/config/env.ts`, so misconfiguration fails at boot rather than at first request.
+
+Errors are now normalised: an `ApiError` class maps a fixed set of codes to statuses, and a single error middleware converts `ApiError`, `ZodError`, and body-parser failures into one envelope carrying `code`, `message`, `details`, and `requestId`. Internal details are suppressed in production. The envelope is published in the OpenAPI spec, so clients get it as a generated type rather than by convention.
+
+Liveness (`/healthz`) and readiness (`/readyz`) are separate, and `/readyz` returns 503 once shutdown begins so a load balancer drains the instance before it stops accepting connections.
+
+### 10.3 Versioned migrations (§7 step 8)
+
+`lib/db` gained `generate`, `migrate`, and `check`. `drizzle.config.ts` no longer requires `DATABASE_URL` to be set for `generate` and `check`, so CI can verify migration consistency without provisioning Postgres; `migrate` and `push` still fail on connect, which is correct. `push` is retained but documented as throwaway-database-only, since it mutates a database leaving no history and cannot satisfy the BRS audit and rollback rules.
+
+`generate` and `check` are **not yet wired into CI** because `lib/db/src/schema/` is still empty and there is nothing to diff. They should be added with the first table.
+
+### 10.4 Shared design system (§7 step 5)
+
+`lib/ui` is now the only copy of the 55 primitives, the `cn` helper, and the `use-mobile`/`use-toast` hooks, moved with `git mv` so history follows. Both apps consume it by subpath (`@workspace/ui/components/button`) rather than through a barrel, keeping tree-shaking intact.
+
+The interesting part was the CSS. The primitives depend on a Tailwind `@theme inline` mapping and a set of `elevate` interaction utilities, but they must not dictate colour, because the BRS calls for four more front ends. So `lib/ui/src/styles/base.css` owns the structural layer and each app declares its own palette against the same custom-property names. The website keeps the CKBHSE navy and cyan; the sandbox uses a neutral palette on purpose, since a primitive that only looks right against the brand colours is a primitive with hardcoded colours.
+
+**Verification.** The two copies had already forked onto different shadcn generations, so this carried real regression risk. Rather than review 55 files by eye, the pre-extraction commit was built in a parallel git worktree and the compiled CSS bundles compared: identical except that one `:root` rule is now emitted as two, with **every one of the custom-property declarations resolving to an identical value**. The JS bundle is byte-identical at 576.53 kB. Both dev servers were then confirmed to serve the shared modules, and Tailwind's `@source` directive was confirmed to scan the package by finding utilities in the output that exist only in `lib/ui`.
+
+Two findings worth recording:
+
+- **The sandbox's copy was entirely dead code.** Its `src/components/mockups/` directory is empty, so nothing ever imported the 55 primitives it carried. The "which copy is canonical" question had no cost attached to it after all.
+- **The app-level `components.json` files were deleted**, leaving one in `lib/ui`. Left in place, `shadcn add` run from an app would have silently recreated the duplication this step removed.
+
+### 10.5 State after Phase 1
+
+`pnpm run verify` is green: 0 lint errors, typecheck clean across all ten workspace projects, 9 tests passing, all builds succeeding.
+
+The gap analysis in §4 is otherwise unchanged — Phase 1 was foundations, not features. Authentication, the four portals, and the persistence layer remain unbuilt, and the two launch gates from Phase 0 still stand: the contact form still discards submissions, and every route still shares one `<title>` and the placeholder Replit meta description.
 
 ---
 
