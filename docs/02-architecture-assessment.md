@@ -5,6 +5,8 @@
 **Scope:** Review of the existing codebase against the Business Requirements Specification. No feature work performed.
 **Repository root:** `CKBHSE-Limited-Vision/` (note: nested one level below the opened workspace folder)
 
+> **Status:** Phase 0 of §7 is complete and the architectural decisions in §8 have been taken. See §9.
+
 ---
 
 ## 1. Executive verdict
@@ -128,7 +130,7 @@ Note also that the three legal pages are one-line "under construction" stubs, wh
 | --- | --- |
 | WCAG 2.2 AA | Partial by inheritance — Radix primitives are accessible, but there is no axe/Lighthouse gate, no skip-link, and animation does not respect `prefers-reduced-motion` |
 | SEO optimization | **At risk.** This is a client-rendered SPA with a single static `<title>` and description in `index.html` — still the Replit placeholder text ("built on Replit. Update this description…"). Every route shares identical metadata. There is no sitemap.xml, no canonical URLs, no structured data. This directly conflicts with Document 01's "organic search traffic" and "keyword rankings" KPIs |
-| Page load < 2s / Lighthouse ≥ 95 | Unverified. No route-level code splitting; all 11 pages and 55 primitives are in one bundle. Google Fonts loaded via blocking `<link>` |
+| Page load < 2s / Lighthouse ≥ 95 | **At risk, now measured.** A production build emits a single **576.51 kB** JS chunk (179.51 kB gzip) plus a 129.70 kB CSS file — all 11 pages and 55 primitives in one bundle, with no route-level code splitting. Google Fonts are loaded via a blocking `<link>` |
 | Enterprise-grade security | **Not met.** `app.use(cors())` in `artifacts/api-server/src/app.ts` allows every origin. No `helmet`, no rate limiting, no CSRF protection, no body size limits |
 | GDPR-compliant data handling | Not met — no consent mechanism, no cookie banner, legal pages are stubs |
 | Audit logging | Not met |
@@ -245,15 +247,44 @@ Only then should Document 03's full sitemap be implemented against a foundation 
 
 ---
 
-## 8. Decisions required from the Architect
+## 8. Decisions taken by the Architect
 
-These are not engineering preferences; each changes the shape of everything built afterwards, and each belongs to you.
+Recorded in `replit.md` under "Architecture decisions."
 
-1. **Framework (R2).** Migrate the public website to Next.js App Router as Document 01 specified, or keep the Vite SPA and add prerendering plus per-route metadata? Twelve routes exist today, so migration is cheap now and grows expensive with every route Document 03 adds. My recommendation is to migrate the public marketing surface to Next.js and keep the Express API for the portals, because the BRS's organic-traffic and Lighthouse commitments are materially easier to hold with server rendering.
-2. **ORM (R2).** Document 01 named Prisma; the scaffold uses Drizzle. Drizzle is already wired and works well with the existing Zod/Orval codegen chain, so my recommendation is to keep Drizzle and amend Document 01 rather than migrate.
-3. **Multi-tenancy model.** Are client users always attached to exactly one organisation, or can a consultant-side user span several? This determines the session and scoping model and is very costly to change later.
-4. **Hosting target.** Remain on Replit autoscale, or plan for a portable deployment (containers, managed Postgres, object storage, CDN)? The BRS's 99.9% uptime and automated-backup requirements point to the latter, and it affects how much Replit-specific configuration should be unwound in Phase 0.
-5. **Identity provider.** Build authentication in-house per §6.2, or adopt a managed provider? In-house gives full control over the eleven-role model and audit requirements; managed reduces security surface and delivery time.
+| # | Decision | Outcome |
+| --- | --- | --- |
+| 1 | Framework | **Keep the Vite SPA.** Meet the SEO requirement with prerendering plus per-route metadata rather than migrating to Next.js. Document 01 is amended. |
+| 2 | ORM | **Keep Drizzle.** Document 01's Prisma instruction is amended. |
+| 3 | Tenancy | **Single organisation per client user.** Organisation scoping is the data-isolation boundary. |
+| 4 | Identity | **Build authentication in-house** per §6.2, with MFA for internal roles. |
+| 5 | Hosting | Deferred. |
+
+Because decision 1 keeps a client-rendered SPA, the SEO obligations in BRS §9 now rest entirely on explicit engineering work rather than on framework defaults. Phase 2 step 10 is therefore load-bearing, not optional: per-route metadata, prerendered HTML for every public route, `sitemap.xml`, canonical URLs, and JSON-LD. This should be treated as a launch gate.
+
+---
+
+## 9. Phase 0 outcome
+
+Completed:
+
+1. **R1 resolved.** The website, hero assets, and Document 01 are committed (`6674f57`). The working tree is clean.
+2. **R3 resolved.** Dependencies install, and `pnpm run typecheck` and `pnpm run build` both pass across all nine workspace projects. This is the first verified baseline.
+3. **R4 resolved.** Local development now works on Windows without Replit's environment:
+   - `PORT` and `BASE_PATH` fall back to defaults instead of throwing, in both Vite configs and the API server.
+   - The API server's `dev` script no longer uses the bash-only `export` syntax, which could never have run on Windows. `NODE_ENV` was redundant there — `logger.ts` already defaults to pretty output.
+   - The API server loads `../../.env` via `--env-file-if-exists`, so a missing file is not fatal.
+   - The Vite dev server proxies `/api` to the API server, keeping the browser on one origin — which also means cookies will be first-party once auth lands.
+   - Default ports are 5180 (website), 5181 (sandbox) and 5000 (API), avoiding Vite's contended 5173 default under `strictPort`.
+   - **A latent blocker was found and fixed:** `pnpm-workspace.yaml` pruned *all* win32 native binaries ("replit uses linux-x64 only"), which would have made `rollup`, `esbuild`, `lightningcss`, and `@tailwindcss/oxide` unloadable on any Windows machine. The win32-x64 entries are now retained; the rest remain pruned.
+   - Verified end to end: `GET http://localhost:5180/api/healthz` returns `{"status":"ok"}` proxied to Express. This is the first time the two artifacts have communicated.
+4. **Line-ending normalisation added.** `.gitattributes` pins the repository to LF. Without it, every file touched on Windows appeared as a full rewrite. `.env` is now git-ignored and `.env.example` is the tracked template.
+5. **`replit.md` populated** with the run book, repo map, the five decisions, and the known gotchas.
+
+Outstanding:
+
+- **R7 requires an action outside the codebase.** The git repository and all source live at `Downloads/CKBHSE-Limited-Vision/CKBHSE-Limited-Vision/`, one level below the opened workspace folder. Moving ~40,000 installed files and pnpm's link farm is not worth the risk; instead the workspace should simply be reopened at the inner folder so that tooling, rules, and CI paths align with the repository root.
+- **R5 and R6 are Phase 1 work** and are not yet started.
+- No linting, tests, or CI exist yet (Phase 1 steps 6–8).
 
 ---
 
