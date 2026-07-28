@@ -46,6 +46,7 @@ The website's dev server proxies `/api` to the API server, so run both and use a
 - `lib/api-client-react`, `lib/api-zod` — generated; do not hand-edit.
 - `docs/02-architecture-assessment.md` — architecture review against the BRS (Document 02), including the Phase 0 and Phase 1 outcomes.
 - `docs/DOCUMENT_03_ARCHITECTURE_REVIEW.md` — **read before starting any domain work.** Domain model, bounded contexts, entity analysis, the target module structure, and the ordered list of changes that must land before the first domain table.
+- `docs/DOCUMENT_03_5_ENGINEERING_STANDARDS.md` — **the engineering handbook: how every future line of code must be written.** Naming, layering rules, API and database standards, error handling, testing, accessibility, git conventions, AI-assisted development rules, and the pre-merge checklist.
 
 ## Using the design system
 
