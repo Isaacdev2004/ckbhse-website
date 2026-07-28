@@ -1,15 +1,30 @@
 import { motion } from 'framer-motion';
-import { Building2, Factory, Truck, Droplet, Heart, GraduationCap, Store, Building, ArrowRight } from 'lucide-react';
+import {
+  Building2,
+  Factory,
+  Truck,
+  Droplet,
+  Heart,
+  GraduationCap,
+  Store,
+  Building,
+  ArrowRight,
+} from 'lucide-react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { SectionReveal, StaggerContainer, staggerItem } from '@/components/section-reveal';
+import {
+  SectionReveal,
+  StaggerContainer,
+  staggerItem,
+} from '@/components/section-reveal';
 
 const industries = [
   {
     id: 'construction',
     icon: Building2,
     name: 'Construction',
-    description: 'Comprehensive HSEQ support for construction sites, contractors, and project managers.',
+    description:
+      'Comprehensive HSEQ support for construction sites, contractors, and project managers.',
     challenges: [
       'CDM 2015 compliance',
       'Site safety management',
@@ -29,7 +44,8 @@ const industries = [
     id: 'manufacturing',
     icon: Factory,
     name: 'Manufacturing',
-    description: 'Safety systems, ISO compliance, and operational risk management for manufacturing facilities.',
+    description:
+      'Safety systems, ISO compliance, and operational risk management for manufacturing facilities.',
     challenges: [
       'Machinery safety and guarding',
       'ISO certification requirements',
@@ -49,7 +65,8 @@ const industries = [
     id: 'logistics',
     icon: Truck,
     name: 'Logistics & Transport',
-    description: 'Fleet safety, driver compliance, and warehouse operations support.',
+    description:
+      'Fleet safety, driver compliance, and warehouse operations support.',
     challenges: [
       'Driver hours and fatigue',
       'Loading and unloading risks',
@@ -69,7 +86,8 @@ const industries = [
     id: 'oil-gas',
     icon: Droplet,
     name: 'Oil & Gas',
-    description: 'High-risk work procedures, process safety, and regulatory compliance for energy sector operations.',
+    description:
+      'High-risk work procedures, process safety, and regulatory compliance for energy sector operations.',
     challenges: [
       'High-consequence hazards',
       'Complex permit-to-work systems',
@@ -89,7 +107,8 @@ const industries = [
     id: 'healthcare',
     icon: Heart,
     name: 'Healthcare',
-    description: 'Clinical and non-clinical safety, infection control, and compliance for healthcare providers.',
+    description:
+      'Clinical and non-clinical safety, infection control, and compliance for healthcare providers.',
     challenges: [
       'Infection prevention',
       'Patient and staff safety',
@@ -109,7 +128,8 @@ const industries = [
     id: 'education',
     icon: GraduationCap,
     name: 'Educational Institutions',
-    description: 'Health and safety management for schools, colleges, and universities.',
+    description:
+      'Health and safety management for schools, colleges, and universities.',
     challenges: [
       'Safeguarding and duty of care',
       'Science lab safety',
@@ -149,7 +169,8 @@ const industries = [
     id: 'enterprise',
     icon: Building,
     name: 'Large Enterprises',
-    description: 'Strategic HSEQ consulting, multi-site management, and enterprise-wide compliance programs.',
+    description:
+      'Strategic HSEQ consulting, multi-site management, and enterprise-wide compliance programs.',
     challenges: [
       'Multi-site coordination',
       'Complex regulatory landscape',
@@ -183,7 +204,8 @@ export default function Industries() {
               Industry-Specific Expertise
             </h1>
             <p className="text-xl opacity-90 leading-relaxed">
-              Tailored HSEQ solutions for the unique challenges, regulations, and risk profiles of your sector.
+              Tailored HSEQ solutions for the unique challenges, regulations,
+              and risk profiles of your sector.
             </p>
           </motion.div>
         </div>
@@ -211,7 +233,9 @@ export default function Industries() {
                         <h2 className="font-display font-bold text-3xl text-foreground mb-2">
                           {industry.name}
                         </h2>
-                        <p className="text-lg text-muted-foreground">{industry.description}</p>
+                        <p className="text-lg text-muted-foreground">
+                          {industry.description}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -223,7 +247,10 @@ export default function Industries() {
                     </h3>
                     <ul className="space-y-2">
                       {industry.challenges.map((challenge, index) => (
-                        <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <li
+                          key={index}
+                          className="text-sm text-muted-foreground flex items-start gap-2"
+                        >
                           <span className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 flex-shrink-0" />
                           {challenge}
                         </li>
@@ -242,7 +269,9 @@ export default function Industries() {
                           <div className="w-5 h-5 bg-primary/10 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
                             <div className="w-2 h-2 bg-primary rounded-full" />
                           </div>
-                          <span className="text-sm text-foreground">{solution}</span>
+                          <span className="text-sm text-foreground">
+                            {solution}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -250,7 +279,10 @@ export default function Industries() {
                 </div>
 
                 <div className="px-8 lg:px-10 pb-8">
-                  <Link href="/contact" data-testid={`button-discuss-${industry.id}`}>
+                  <Link
+                    href="/contact"
+                    data-testid={`button-discuss-${industry.id}`}
+                  >
                     <Button variant="outline" className="group">
                       Discuss {industry.name} Solutions
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -270,7 +302,8 @@ export default function Industries() {
             Don't See Your Industry?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-            We work across a wide range of sectors. Get in touch to discuss your specific industry requirements.
+            We work across a wide range of sectors. Get in touch to discuss your
+            specific industry requirements.
           </p>
           <Link href="/contact" data-testid="button-contact-us">
             <Button size="lg" className="font-semibold group">

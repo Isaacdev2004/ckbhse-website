@@ -5,7 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { SectionReveal } from '@/components/section-reveal';
 
 export default function Contact() {
@@ -32,7 +38,8 @@ export default function Contact() {
               Get in Touch
             </h1>
             <p className="text-xl opacity-90 leading-relaxed">
-              Book a free consultation, discuss your HSEQ needs, or enquire about our services. We're here to help.
+              Book a free consultation, discuss your HSEQ needs, or enquire
+              about our services. We're here to help.
             </p>
           </motion.div>
         </div>
@@ -55,8 +62,14 @@ export default function Contact() {
                       <Phone className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground mb-1">Phone</h3>
-                      <a href="tel:+442012345678" className="text-muted-foreground hover:text-primary transition-colors" data-testid="link-phone-contact">
+                      <h3 className="font-semibold text-foreground mb-1">
+                        Phone
+                      </h3>
+                      <a
+                        href="tel:+442012345678"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                        data-testid="link-phone-contact"
+                      >
                         +44 20 1234 5678
                       </a>
                     </div>
@@ -67,8 +80,14 @@ export default function Contact() {
                       <Mail className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                      <a href="mailto:info@ckbhse.co.uk" className="text-muted-foreground hover:text-primary transition-colors" data-testid="link-email-contact">
+                      <h3 className="font-semibold text-foreground mb-1">
+                        Email
+                      </h3>
+                      <a
+                        href="mailto:info@ckbhse.co.uk"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                        data-testid="link-email-contact"
+                      >
                         info@ckbhse.co.uk
                       </a>
                     </div>
@@ -79,11 +98,16 @@ export default function Contact() {
                       <MapPin className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground mb-1">Office</h3>
+                      <h3 className="font-semibold text-foreground mb-1">
+                        Office
+                      </h3>
                       <p className="text-muted-foreground">
-                        CKBHSE Limited<br />
-                        123 Business Park<br />
-                        London, EC1A 1BB<br />
+                        CKBHSE Limited
+                        <br />
+                        123 Business Park
+                        <br />
+                        London, EC1A 1BB
+                        <br />
                         United Kingdom
                       </p>
                     </div>
@@ -97,16 +121,24 @@ export default function Contact() {
                   </h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Monday - Friday</span>
-                      <span className="font-medium text-foreground">8:00 AM - 6:00 PM</span>
+                      <span className="text-muted-foreground">
+                        Monday - Friday
+                      </span>
+                      <span className="font-medium text-foreground">
+                        8:00 AM - 6:00 PM
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Saturday</span>
-                      <span className="font-medium text-foreground">9:00 AM - 1:00 PM</span>
+                      <span className="font-medium text-foreground">
+                        9:00 AM - 1:00 PM
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Sunday</span>
-                      <span className="font-medium text-foreground">Closed</span>
+                      <span className="font-medium text-foreground">
+                        Closed
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -121,7 +153,8 @@ export default function Contact() {
                     Book a Free Consultation
                   </h2>
                   <p className="text-muted-foreground mb-8">
-                    Fill in the form below and we'll get back to you within 24 hours.
+                    Fill in the form below and we'll get back to you within 24
+                    hours.
                   </p>
 
                   {submitted ? (
@@ -135,7 +168,8 @@ export default function Contact() {
                         Thank You!
                       </h3>
                       <p className="text-muted-foreground">
-                        We've received your enquiry and will be in touch within 24 hours.
+                        We've received your enquiry and will be in touch within
+                        24 hours.
                       </p>
                     </motion.div>
                   ) : (
@@ -198,19 +232,40 @@ export default function Contact() {
                       <div>
                         <Label htmlFor="service">Service Interest *</Label>
                         <Select required>
-                          <SelectTrigger className="mt-2" data-testid="select-service">
+                          <SelectTrigger
+                            className="mt-2"
+                            data-testid="select-service"
+                          >
                             <SelectValue placeholder="Select a service" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="health-safety-audits">Health & Safety Audits</SelectItem>
-                            <SelectItem value="risk-assessments">Risk Assessments & RAMS</SelectItem>
-                            <SelectItem value="iso-compliance">ISO Compliance</SelectItem>
-                            <SelectItem value="fire-safety">Fire Safety</SelectItem>
-                            <SelectItem value="environmental">Environmental Management</SelectItem>
-                            <SelectItem value="training">Training Courses</SelectItem>
-                            <SelectItem value="incident-investigation">Incident Investigation</SelectItem>
-                            <SelectItem value="retainer">Retainer Services</SelectItem>
-                            <SelectItem value="other">Other / General Enquiry</SelectItem>
+                            <SelectItem value="health-safety-audits">
+                              Health & Safety Audits
+                            </SelectItem>
+                            <SelectItem value="risk-assessments">
+                              Risk Assessments & RAMS
+                            </SelectItem>
+                            <SelectItem value="iso-compliance">
+                              ISO Compliance
+                            </SelectItem>
+                            <SelectItem value="fire-safety">
+                              Fire Safety
+                            </SelectItem>
+                            <SelectItem value="environmental">
+                              Environmental Management
+                            </SelectItem>
+                            <SelectItem value="training">
+                              Training Courses
+                            </SelectItem>
+                            <SelectItem value="incident-investigation">
+                              Incident Investigation
+                            </SelectItem>
+                            <SelectItem value="retainer">
+                              Retainer Services
+                            </SelectItem>
+                            <SelectItem value="other">
+                              Other / General Enquiry
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -227,13 +282,20 @@ export default function Contact() {
                         />
                       </div>
 
-                      <Button type="submit" size="lg" className="w-full font-semibold group" data-testid="button-submit-enquiry">
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full font-semibold group"
+                        data-testid="button-submit-enquiry"
+                      >
                         Send Enquiry
                         <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                       </Button>
 
                       <p className="text-xs text-muted-foreground text-center">
-                        By submitting this form, you agree to our Privacy Policy. We'll use your information to respond to your enquiry.
+                        By submitting this form, you agree to our Privacy
+                        Policy. We'll use your information to respond to your
+                        enquiry.
                       </p>
                     </form>
                   )}
@@ -251,8 +313,12 @@ export default function Contact() {
             <div className="aspect-video bg-muted flex items-center justify-center">
               <div className="text-center">
                 <MapPin className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <p className="text-lg font-semibold text-foreground mb-2">Office Location</p>
-                <p className="text-sm text-muted-foreground">123 Business Park, London, EC1A 1BB</p>
+                <p className="text-lg font-semibold text-foreground mb-2">
+                  Office Location
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  123 Business Park, London, EC1A 1BB
+                </p>
               </div>
             </div>
           </div>

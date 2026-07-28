@@ -1,5 +1,13 @@
 import { motion } from 'framer-motion';
-import { Building2, Factory, Heart, Droplet, CheckCircle2, ArrowRight, TrendingUp } from 'lucide-react';
+import {
+  Building2,
+  Factory,
+  Heart,
+  Droplet,
+  CheckCircle2,
+  ArrowRight,
+  TrendingUp,
+} from 'lucide-react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,8 +20,10 @@ const caseStudies = [
     icon: Building2,
     client: 'Major London Commercial Development',
     title: 'CDM Compliance for £120M Mixed-Use Development',
-    challenge: 'A 24-storey mixed-use development required comprehensive Principal Designer services to manage complex safety challenges across multiple contractors and high-risk construction phases.',
-    solution: 'CKBHSE Limited provided full Principal Designer services, including pre-construction information, construction phase plans, coordination of design risk assessments, and ongoing site safety management.',
+    challenge:
+      'A 24-storey mixed-use development required comprehensive Principal Designer services to manage complex safety challenges across multiple contractors and high-risk construction phases.',
+    solution:
+      'CKBHSE Limited provided full Principal Designer services, including pre-construction information, construction phase plans, coordination of design risk assessments, and ongoing site safety management.',
     outcomes: [
       'Zero major incidents across 18-month build',
       'Successful HSE inspection with no enforcement action',
@@ -32,8 +42,10 @@ const caseStudies = [
     icon: Factory,
     client: 'Automotive Parts Manufacturer',
     title: 'ISO 45001 Certification for Manufacturing Facility',
-    challenge: 'A Midlands-based automotive parts manufacturer needed ISO 45001 certification to meet supply chain requirements and improve safety performance following several serious incidents.',
-    solution: 'We conducted a comprehensive gap analysis, designed a tailored Occupational Health & Safety Management System, provided implementation support, and delivered staff training programs.',
+    challenge:
+      'A Midlands-based automotive parts manufacturer needed ISO 45001 certification to meet supply chain requirements and improve safety performance following several serious incidents.',
+    solution:
+      'We conducted a comprehensive gap analysis, designed a tailored Occupational Health & Safety Management System, provided implementation support, and delivered staff training programs.',
     outcomes: [
       'ISO 45001:2018 certification achieved',
       '68% reduction in lost-time injuries in first year',
@@ -52,8 +64,10 @@ const caseStudies = [
     icon: Heart,
     client: 'NHS Foundation Trust',
     title: 'Comprehensive COSHH Management for Multi-Site Trust',
-    challenge: 'An NHS Trust operating across five hospital sites required a unified approach to chemical safety management, COSHH compliance, and infection prevention protocols.',
-    solution: 'We delivered organisation-wide COSHH assessments, developed centralised control measures, implemented chemical inventory systems, and trained over 400 clinical and non-clinical staff.',
+    challenge:
+      'An NHS Trust operating across five hospital sites required a unified approach to chemical safety management, COSHH compliance, and infection prevention protocols.',
+    solution:
+      'We delivered organisation-wide COSHH assessments, developed centralised control measures, implemented chemical inventory systems, and trained over 400 clinical and non-clinical staff.',
     outcomes: [
       'Full COSHH compliance across all five sites',
       'Centralised chemical management system implemented',
@@ -72,8 +86,10 @@ const caseStudies = [
     icon: Droplet,
     client: 'North Sea Platform Operator',
     title: 'Process Safety Management for Offshore Installation',
-    challenge: 'An offshore oil platform required a comprehensive process safety management review following regulatory changes and aging infrastructure concerns.',
-    solution: 'CKBHSE consultants conducted Major Accident Hazard analysis, updated Permit-to-Work systems, delivered high-risk training, and implemented emergency response improvements.',
+    challenge:
+      'An offshore oil platform required a comprehensive process safety management review following regulatory changes and aging infrastructure concerns.',
+    solution:
+      'CKBHSE consultants conducted Major Accident Hazard analysis, updated Permit-to-Work systems, delivered high-risk training, and implemented emergency response improvements.',
     outcomes: [
       'Full compliance with Offshore Installations Regulations',
       'Updated Safety Case accepted by HSE',
@@ -104,7 +120,9 @@ export default function CaseStudies() {
               Case Studies
             </h1>
             <p className="text-xl opacity-90 leading-relaxed">
-              Real-world success stories demonstrating measurable safety improvements, compliance achievements, and operational excellence across industries.
+              Real-world success stories demonstrating measurable safety
+              improvements, compliance achievements, and operational excellence
+              across industries.
             </p>
           </motion.div>
         </div>
@@ -137,9 +155,16 @@ export default function CaseStudies() {
                     {/* Metrics */}
                     <div className="space-y-3">
                       {study.metrics.map((metric, index) => (
-                        <div key={index} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                          <span className="text-sm text-muted-foreground">{metric.label}</span>
-                          <span className="font-display font-bold text-primary">{metric.value}</span>
+                        <div
+                          key={index}
+                          className="flex items-center justify-between py-2 border-b border-border last:border-0"
+                        >
+                          <span className="text-sm text-muted-foreground">
+                            {metric.label}
+                          </span>
+                          <span className="font-display font-bold text-primary">
+                            {metric.value}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -153,7 +178,9 @@ export default function CaseStudies() {
                         <div className="w-2 h-2 bg-destructive rounded-full" />
                         Challenge
                       </h4>
-                      <p className="text-muted-foreground leading-relaxed">{study.challenge}</p>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {study.challenge}
+                      </p>
                     </div>
 
                     {/* Solution */}
@@ -162,7 +189,9 @@ export default function CaseStudies() {
                         <div className="w-2 h-2 bg-accent rounded-full" />
                         Solution
                       </h4>
-                      <p className="text-muted-foreground leading-relaxed">{study.solution}</p>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {study.solution}
+                      </p>
                     </div>
 
                     {/* Outcomes */}
@@ -175,7 +204,9 @@ export default function CaseStudies() {
                         {study.outcomes.map((outcome, index) => (
                           <div key={index} className="flex items-start gap-2">
                             <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                            <span className="text-sm text-foreground">{outcome}</span>
+                            <span className="text-sm text-foreground">
+                              {outcome}
+                            </span>
                           </div>
                         ))}
                       </div>
@@ -195,7 +226,8 @@ export default function CaseStudies() {
             Ready to Achieve Similar Results?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-            Let's discuss how CKBHSE Limited can help your organisation improve safety performance, achieve compliance, and create lasting value.
+            Let's discuss how CKBHSE Limited can help your organisation improve
+            safety performance, achieve compliance, and create lasting value.
           </p>
           <Link href="/contact" data-testid="button-discuss-project">
             <Button size="lg" className="font-semibold group">

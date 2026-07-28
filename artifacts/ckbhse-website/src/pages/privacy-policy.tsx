@@ -8,7 +8,8 @@ export default function PrivacyPolicy() {
           </h1>
           <div className="prose prose-lg max-w-none">
             <p className="text-muted-foreground">
-              This page is under construction. Please contact us directly for information about how we handle your data.
+              This page is under construction. Please contact us directly for
+              information about how we handle your data.
             </p>
           </div>
         </div>

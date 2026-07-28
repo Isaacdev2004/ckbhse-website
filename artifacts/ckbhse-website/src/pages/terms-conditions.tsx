@@ -8,7 +8,8 @@ export default function TermsConditions() {
           </h1>
           <div className="prose prose-lg max-w-none">
             <p className="text-muted-foreground">
-              This page is under construction. Please contact us directly for our terms of service.
+              This page is under construction. Please contact us directly for
+              our terms of service.
             </p>
           </div>
         </div>

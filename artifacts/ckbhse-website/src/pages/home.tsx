@@ -1,8 +1,25 @@
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Shield, Award, Users, Building2, Factory, Truck, Droplet, GraduationCap, FileCheck, AlertTriangle } from 'lucide-react';
+import {
+  ArrowRight,
+  CheckCircle2,
+  Shield,
+  Award,
+  Users,
+  Building2,
+  Factory,
+  Truck,
+  Droplet,
+  GraduationCap,
+  FileCheck,
+  AlertTriangle,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { SectionReveal, StaggerContainer, staggerItem } from '@/components/section-reveal';
+import {
+  SectionReveal,
+  StaggerContainer,
+  staggerItem,
+} from '@/components/section-reveal';
 import { StatCard } from '@/components/stat-card';
 import heroConstruction from '@/assets/hero-construction.jpg';
 import heroConsulting from '@/assets/hero-consulting.jpg';
@@ -11,30 +28,50 @@ const coreServices = [
   {
     icon: Shield,
     title: 'Health & Safety Audits',
-    description: 'Comprehensive workplace inspections and compliance assessments to identify risks and ensure regulatory adherence.',
+    description:
+      'Comprehensive workplace inspections and compliance assessments to identify risks and ensure regulatory adherence.',
   },
   {
     icon: FileCheck,
     title: 'Risk Assessments & RAMS',
-    description: 'Detailed risk analysis and method statements tailored to your operations and industry requirements.',
+    description:
+      'Detailed risk analysis and method statements tailored to your operations and industry requirements.',
   },
   {
     icon: Award,
     title: 'ISO Compliance',
-    description: 'Expert guidance for ISO 9001, 14001, and 45001 certification, implementation, and ongoing management.',
+    description:
+      'Expert guidance for ISO 9001, 14001, and 45001 certification, implementation, and ongoing management.',
   },
   {
     icon: AlertTriangle,
     title: 'Incident Investigation',
-    description: 'Professional analysis of workplace incidents with actionable recommendations to prevent recurrence.',
+    description:
+      'Professional analysis of workplace incidents with actionable recommendations to prevent recurrence.',
   },
 ];
 
 const industries = [
-  { icon: Building2, name: 'Construction', description: 'CDM compliance, site safety, RAMS' },
-  { icon: Factory, name: 'Manufacturing', description: 'Machinery safety, ISO systems' },
-  { icon: Truck, name: 'Logistics', description: 'Fleet safety, driver compliance' },
-  { icon: Droplet, name: 'Oil & Gas', description: 'High-risk procedures, PTW systems' },
+  {
+    icon: Building2,
+    name: 'Construction',
+    description: 'CDM compliance, site safety, RAMS',
+  },
+  {
+    icon: Factory,
+    name: 'Manufacturing',
+    description: 'Machinery safety, ISO systems',
+  },
+  {
+    icon: Truck,
+    name: 'Logistics',
+    description: 'Fleet safety, driver compliance',
+  },
+  {
+    icon: Droplet,
+    name: 'Oil & Gas',
+    description: 'High-risk procedures, PTW systems',
+  },
 ];
 
 const trustSignals = [
@@ -87,18 +124,31 @@ export default function Home() {
               </h1>
 
               <p className="text-xl text-secondary-foreground/80 mb-8 leading-relaxed max-w-2xl">
-                CKBHSE Limited delivers comprehensive Health, Safety, Environment & Quality consultancy services to organisations across the UK. From compliance audits to ISO certification, we're the partner you can trust.
+                CKBHSE Limited delivers comprehensive Health, Safety,
+                Environment & Quality consultancy services to organisations
+                across the UK. From compliance audits to ISO certification,
+                we're the partner you can trust.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/contact" data-testid="button-book-consultation-hero">
-                  <Button size="lg" className="text-base px-8 py-6 font-semibold group">
+                <Link
+                  href="/contact"
+                  data-testid="button-book-consultation-hero"
+                >
+                  <Button
+                    size="lg"
+                    className="text-base px-8 py-6 font-semibold group"
+                  >
                     Book Free Consultation
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
                 <Link href="/services" data-testid="link-explore-services">
-                  <Button size="lg" variant="outline" className="text-base px-8 py-6 font-semibold bg-secondary-foreground/5 border-secondary-foreground/20 hover:bg-secondary-foreground/10">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="text-base px-8 py-6 font-semibold bg-secondary-foreground/5 border-secondary-foreground/20 hover:bg-secondary-foreground/10"
+                  >
                     Explore Services
                   </Button>
                 </Link>
@@ -123,7 +173,11 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.4, 0, 0.2, 1] as const }}
+              transition={{
+                duration: 0.8,
+                delay: 0.3,
+                ease: [0.4, 0, 0.2, 1] as const,
+              }}
               className="hidden lg:block"
             >
               <div className="relative">
@@ -143,10 +197,30 @@ export default function Home() {
       <SectionReveal className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard icon={Users} value="500+" label="Clients Served" delay={0} />
-            <StatCard icon={Award} value="15+" label="Years Experience" delay={0.1} />
-            <StatCard icon={GraduationCap} value="2,000+" label="Professionals Trained" delay={0.2} />
-            <StatCard icon={Shield} value="98.7%" label="Compliance Success Rate" delay={0.3} />
+            <StatCard
+              icon={Users}
+              value="500+"
+              label="Clients Served"
+              delay={0}
+            />
+            <StatCard
+              icon={Award}
+              value="15+"
+              label="Years Experience"
+              delay={0.1}
+            />
+            <StatCard
+              icon={GraduationCap}
+              value="2,000+"
+              label="Professionals Trained"
+              delay={0.2}
+            />
+            <StatCard
+              icon={Shield}
+              value="98.7%"
+              label="Compliance Success Rate"
+              delay={0.3}
+            />
           </div>
         </div>
       </SectionReveal>
@@ -159,7 +233,9 @@ export default function Home() {
               Complete HSEQ Solutions
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              From compliance audits to ongoing safety management, we provide end-to-end consultancy services that keep your business safe and compliant.
+              From compliance audits to ongoing safety management, we provide
+              end-to-end consultancy services that keep your business safe and
+              compliant.
             </p>
           </div>
 
@@ -176,7 +252,9 @@ export default function Home() {
                 <h3 className="font-display font-semibold text-xl text-foreground mb-3">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">{service.description}</p>
+                <p className="text-muted-foreground leading-relaxed">
+                  {service.description}
+                </p>
               </motion.div>
             ))}
           </StaggerContainer>
@@ -200,7 +278,8 @@ export default function Home() {
               Industries We Serve
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Sector-specific expertise across high-risk and regulated industries.
+              Sector-specific expertise across high-risk and regulated
+              industries.
             </p>
           </div>
 
@@ -217,7 +296,9 @@ export default function Home() {
                 <h3 className="font-display font-semibold text-lg text-foreground mb-2">
                   {industry.name}
                 </h3>
-                <p className="text-sm text-muted-foreground">{industry.description}</p>
+                <p className="text-sm text-muted-foreground">
+                  {industry.description}
+                </p>
               </motion.div>
             ))}
           </StaggerContainer>
@@ -241,10 +322,15 @@ export default function Home() {
             Accredited Safety Training
           </h2>
           <p className="text-xl opacity-90 max-w-3xl mx-auto mb-8 leading-relaxed">
-            IOSH, NEBOSH, and specialist courses delivered by qualified professionals. Classroom and online options available.
+            IOSH, NEBOSH, and specialist courses delivered by qualified
+            professionals. Classroom and online options available.
           </p>
           <Link href="/training" data-testid="link-browse-courses">
-            <Button size="lg" variant="secondary" className="font-semibold group">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="font-semibold group"
+            >
               Browse Courses
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -259,10 +345,14 @@ export default function Home() {
             Ready to improve workplace safety?
           </h2>
           <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-            Book a free consultation with one of our HSEQ experts. We'll assess your needs and recommend tailored solutions.
+            Book a free consultation with one of our HSEQ experts. We'll assess
+            your needs and recommend tailored solutions.
           </p>
           <Link href="/contact" data-testid="button-get-started">
-            <Button size="lg" className="text-lg px-10 py-6 font-semibold group">
+            <Button
+              size="lg"
+              className="text-lg px-10 py-6 font-semibold group"
+            >
               Get Started Today
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>

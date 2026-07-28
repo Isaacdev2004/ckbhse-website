@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { LucideIcon } from 'lucide-react';
+import { type LucideIcon } from 'lucide-react';
 
 interface StatCardProps {
   icon: LucideIcon;
@@ -8,7 +8,12 @@ interface StatCardProps {
   delay?: number;
 }
 
-export function StatCard({ icon: Icon, value, label, delay = 0 }: StatCardProps) {
+export function StatCard({
+  icon: Icon,
+  value,
+  label,
+  delay = 0,
+}: StatCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -22,8 +27,12 @@ export function StatCard({ icon: Icon, value, label, delay = 0 }: StatCardProps)
           <Icon className="w-6 h-6 text-primary" />
         </div>
         <div>
-          <div className="font-display font-bold text-3xl text-foreground mb-1">{value}</div>
-          <div className="text-sm text-muted-foreground font-medium">{label}</div>
+          <div className="font-display font-bold text-3xl text-foreground mb-1">
+            {value}
+          </div>
+          <div className="text-sm text-muted-foreground font-medium">
+            {label}
+          </div>
         </div>
       </div>
     </motion.div>

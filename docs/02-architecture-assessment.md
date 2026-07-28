@@ -15,14 +15,14 @@ The repository is a **Replit-generated pnpm monorepo containing a well-built but
 
 Of the six ecosystems defined in BRS §4, one is partially delivered:
 
-| BRS ecosystem | State |
-| --- | --- |
-| Public Website | Partially built — 8 substantive pages, 3 legal stubs, no backend |
-| Client Portal | Not started |
-| Learning Management System | Not started |
-| Staff Portal | Not started |
-| Administration Portal | Not started |
-| Future Digital Products | Not started (correctly deferred) |
+| BRS ecosystem              | State                                                            |
+| -------------------------- | ---------------------------------------------------------------- |
+| Public Website             | Partially built — 8 substantive pages, 3 legal stubs, no backend |
+| Client Portal              | Not started                                                      |
+| Learning Management System | Not started                                                      |
+| Staff Portal               | Not started                                                      |
+| Administration Portal      | Not started                                                      |
+| Future Digital Products    | Not started (correctly deferred)                                 |
 
 The critical finding is not the missing volume — that is expected at this stage — but that **none of the foundational capabilities the BRS depends on exist yet**: there is no authentication, no authorization, no database schema, no persistence, no domain modules, and no API beyond a health check. Every requirement in BRS §7 (RBAC), §9 (non-functional), and §10 (business rules) is currently unaddressed at the architecture level.
 
@@ -80,13 +80,13 @@ The monorepo shape is sound and worth keeping. What is missing is any expression
 
 Assessment of the current structure against BRS §4:
 
-| Requirement | Current structure | Verdict |
-| --- | --- | --- |
-| Six independently evolving ecosystems | One SPA, one flat Express app | Inadequate |
-| Shared design system across portals | `ui/` primitives duplicated in two artifacts, no shared package | Will diverge |
-| Role-scoped access boundaries | No concept of a user | Absent |
-| Modular domain logic (consultancy, training, compliance, finance…) | No domain layer at all; no service layer between routes and DB | Absent |
-| Versioned schema evolution | `lib/db` exposes only `push` and `push-force` — no migration history | Inadequate for §10 |
+| Requirement                                                        | Current structure                                                    | Verdict            |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------- | ------------------ |
+| Six independently evolving ecosystems                              | One SPA, one flat Express app                                        | Inadequate         |
+| Shared design system across portals                                | `ui/` primitives duplicated in two artifacts, no shared package      | Will diverge       |
+| Role-scoped access boundaries                                      | No concept of a user                                                 | Absent             |
+| Modular domain logic (consultancy, training, compliance, finance…) | No domain layer at all; no service layer between routes and DB       | Absent             |
+| Versioned schema evolution                                         | `lib/db` exposes only `push` and `push-force` — no migration history | Inadequate for §10 |
 
 The `ui/` duplication is worth calling out specifically: 55 shadcn primitives exist twice, in `ckbhse-website` and `mockup-sandbox`, and will need to exist a third, fourth, and fifth time as portals are added. This must become `lib/ui` before the second portal is built.
 
@@ -96,22 +96,22 @@ The `ui/` duplication is worth calling out specifically: 55 shadcn primitives ex
 
 ### 4.1 Public website (BRS §8)
 
-| BRS requirement | Status |
-| --- | --- |
-| Responsive navigation | Done |
-| Service catalogue | Static content only, not a catalogue |
-| Industry solutions | Static content only |
-| Case studies | Static content only |
-| Blog | **Missing** — `/knowledge` exists but there is no article model, no post routes, no CMS |
-| Resources (downloadable compliance documents) | **Missing** |
-| Contact forms | UI only — submits nowhere |
-| Consultation booking | **Missing** — the CTA links to the contact form; there is no availability, scheduling, or reference number |
-| Careers | Static listings; no application submission (BRS requires applicants track status) |
-| Testimonials | **Missing** as a page |
-| FAQ | **Missing** |
-| Newsletter subscription | **Missing** |
-| Global search | **Missing** |
-| About | **Missing** — required by BRS §4, not present in routes or navigation |
+| BRS requirement                               | Status                                                                                                     |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Responsive navigation                         | Done                                                                                                       |
+| Service catalogue                             | Static content only, not a catalogue                                                                       |
+| Industry solutions                            | Static content only                                                                                        |
+| Case studies                                  | Static content only                                                                                        |
+| Blog                                          | **Missing** — `/knowledge` exists but there is no article model, no post routes, no CMS                    |
+| Resources (downloadable compliance documents) | **Missing**                                                                                                |
+| Contact forms                                 | UI only — submits nowhere                                                                                  |
+| Consultation booking                          | **Missing** — the CTA links to the contact form; there is no availability, scheduling, or reference number |
+| Careers                                       | Static listings; no application submission (BRS requires applicants track status)                          |
+| Testimonials                                  | **Missing** as a page                                                                                      |
+| FAQ                                           | **Missing**                                                                                                |
+| Newsletter subscription                       | **Missing**                                                                                                |
+| Global search                                 | **Missing**                                                                                                |
+| About                                         | **Missing** — required by BRS §4, not present in routes or navigation                                      |
 
 Note also that the three legal pages are one-line "under construction" stubs, which is a GDPR exposure the moment the site collects a single form submission.
 
@@ -126,18 +126,18 @@ Note also that the three legal pages are one-line "under construction" stubs, wh
 
 ### 4.3 Non-functional requirements (BRS §9)
 
-| Requirement | Assessment |
-| --- | --- |
-| WCAG 2.2 AA | Partial by inheritance — Radix primitives are accessible, but there is no axe/Lighthouse gate, no skip-link, and animation does not respect `prefers-reduced-motion` |
-| SEO optimization | **At risk.** This is a client-rendered SPA with a single static `<title>` and description in `index.html` — still the Replit placeholder text ("built on Replit. Update this description…"). Every route shares identical metadata. There is no sitemap.xml, no canonical URLs, no structured data. This directly conflicts with Document 01's "organic search traffic" and "keyword rankings" KPIs |
-| Page load < 2s / Lighthouse ≥ 95 | **At risk, now measured.** A production build emits a single **576.51 kB** JS chunk (179.51 kB gzip) plus a 129.70 kB CSS file — all 11 pages and 55 primitives in one bundle, with no route-level code splitting. Google Fonts are loaded via a blocking `<link>` |
-| Enterprise-grade security | **Not met.** `app.use(cors())` in `artifacts/api-server/src/app.ts` allows every origin. No `helmet`, no rate limiting, no CSRF protection, no body size limits |
-| GDPR-compliant data handling | Not met — no consent mechanism, no cookie banner, legal pages are stubs |
-| Audit logging | Not met |
-| Automated backups | Not addressed |
-| Horizontal scalability | Structurally fine (stateless Express, autoscale target), untested |
-| Modular architecture | Not met — see §3 |
-| High availability | Not addressed; no health/readiness distinction, no graceful shutdown |
+| Requirement                      | Assessment                                                                                                                                                                                                                                                                                                                                                                                          |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WCAG 2.2 AA                      | Partial by inheritance — Radix primitives are accessible, but there is no axe/Lighthouse gate, no skip-link, and animation does not respect `prefers-reduced-motion`                                                                                                                                                                                                                                |
+| SEO optimization                 | **At risk.** This is a client-rendered SPA with a single static `<title>` and description in `index.html` — still the Replit placeholder text ("built on Replit. Update this description…"). Every route shares identical metadata. There is no sitemap.xml, no canonical URLs, no structured data. This directly conflicts with Document 01's "organic search traffic" and "keyword rankings" KPIs |
+| Page load < 2s / Lighthouse ≥ 95 | **At risk, now measured.** A production build emits a single **576.51 kB** JS chunk (179.51 kB gzip) plus a 129.70 kB CSS file — all 11 pages and 55 primitives in one bundle, with no route-level code splitting. Google Fonts are loaded via a blocking `<link>`                                                                                                                                  |
+| Enterprise-grade security        | **Not met.** `app.use(cors())` in `artifacts/api-server/src/app.ts` allows every origin. No `helmet`, no rate limiting, no CSRF protection, no body size limits                                                                                                                                                                                                                                     |
+| GDPR-compliant data handling     | Not met — no consent mechanism, no cookie banner, legal pages are stubs                                                                                                                                                                                                                                                                                                                             |
+| Audit logging                    | Not met                                                                                                                                                                                                                                                                                                                                                                                             |
+| Automated backups                | Not addressed                                                                                                                                                                                                                                                                                                                                                                                       |
+| Horizontal scalability           | Structurally fine (stateless Express, autoscale target), untested                                                                                                                                                                                                                                                                                                                                   |
+| Modular architecture             | Not met — see §3                                                                                                                                                                                                                                                                                                                                                                                    |
+| High availability                | Not addressed; no health/readiness distinction, no graceful shutdown                                                                                                                                                                                                                                                                                                                                |
 
 No test framework, no linter (only Prettier), and no CI pipeline exist anywhere in the repository.
 
@@ -223,25 +223,17 @@ Split the SPA into separately routed surfaces sharing `lib/ui` and a shared auth
 Nothing here is feature work; all of it is foundation that Documents 03 onward depend on.
 
 **Phase 0 — stabilise (this week)**
+
 1. Commit `artifacts/ckbhse-website/` and `attached_assets/`; add a `.env.example` and local defaults so `pnpm dev` works on Windows without Replit variables.
 2. Install dependencies and get `pnpm typecheck` and `pnpm build` green. Establish the baseline.
 3. Resolve the nested-directory problem (R7).
 4. Decide R2 and R5 (see §8) and record both in `replit.md` under "Architecture decisions."
 
-**Phase 1 — foundations**
-5. Extract `lib/ui` from `ckbhse-website`; delete the duplicated primitives in `mockup-sandbox`.
-6. Add ESLint, Vitest, Playwright, and a CI workflow running typecheck, lint, test, and a Lighthouse/axe budget.
-7. Harden the API: `helmet`, an explicit CORS allowlist, rate limiting, request body limits, error normalisation, readiness vs liveness endpoints, graceful shutdown.
-8. Switch `lib/db` to versioned migrations.
+**Phase 1 — foundations** 5. Extract `lib/ui` from `ckbhse-website`; delete the duplicated primitives in `mockup-sandbox`. 6. Add ESLint, Vitest, Playwright, and a CI workflow running typecheck, lint, test, and a Lighthouse/axe budget. 7. Harden the API: `helmet`, an explicit CORS allowlist, rate limiting, request body limits, error normalisation, readiness vs liveness endpoints, graceful shutdown. 8. Switch `lib/db` to versioned migrations.
 
-**Phase 2 — identity and access**
-9. Implement `identity`, `auth`, `authz`, and `audit` per §6.2–6.3, including the seeded role/permission matrix from BRS §7 and MFA for internal roles.
-10. Add per-route metadata, `sitemap.xml`, `robots.txt` rules, canonical URLs, and JSON-LD.
+**Phase 2 — identity and access** 9. Implement `identity`, `auth`, `authz`, and `audit` per §6.2–6.3, including the seeded role/permission matrix from BRS §7 and MFA for internal roles. 10. Add per-route metadata, `sitemap.xml`, `robots.txt` rules, canonical URLs, and JSON-LD.
 
-**Phase 3 — make the public site real**
-11. Move page content out of hardcoded arrays into the `content` module with versioning and rollback (BRS §10).
-12. Wire the contact form and consultation booking to the `crm` module, with a unique reference number per enquiry (BRS §10), server-side validation via the shared Zod schemas, spam protection, and confirmation email.
-13. Build the missing public routes identified in §4.1 (About, Blog, Resources, FAQ, Testimonials, Booking) and replace the three legal stubs with reviewed content.
+**Phase 3 — make the public site real** 11. Move page content out of hardcoded arrays into the `content` module with versioning and rollback (BRS §10). 12. Wire the contact form and consultation booking to the `crm` module, with a unique reference number per enquiry (BRS §10), server-side validation via the shared Zod schemas, spam protection, and confirmation email. 13. Build the missing public routes identified in §4.1 (About, Blog, Resources, FAQ, Testimonials, Booking) and replace the three legal stubs with reviewed content.
 
 Only then should Document 03's full sitemap be implemented against a foundation that can carry it.
 
@@ -251,13 +243,13 @@ Only then should Document 03's full sitemap be implemented against a foundation 
 
 Recorded in `replit.md` under "Architecture decisions."
 
-| # | Decision | Outcome |
-| --- | --- | --- |
-| 1 | Framework | **Keep the Vite SPA.** Meet the SEO requirement with prerendering plus per-route metadata rather than migrating to Next.js. Document 01 is amended. |
-| 2 | ORM | **Keep Drizzle.** Document 01's Prisma instruction is amended. |
-| 3 | Tenancy | **Single organisation per client user.** Organisation scoping is the data-isolation boundary. |
-| 4 | Identity | **Build authentication in-house** per §6.2, with MFA for internal roles. |
-| 5 | Hosting | Deferred. |
+| #   | Decision  | Outcome                                                                                                                                             |
+| --- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Framework | **Keep the Vite SPA.** Meet the SEO requirement with prerendering plus per-route metadata rather than migrating to Next.js. Document 01 is amended. |
+| 2   | ORM       | **Keep Drizzle.** Document 01's Prisma instruction is amended.                                                                                      |
+| 3   | Tenancy   | **Single organisation per client user.** Organisation scoping is the data-isolation boundary.                                                       |
+| 4   | Identity  | **Build authentication in-house** per §6.2, with MFA for internal roles.                                                                            |
+| 5   | Hosting   | Deferred.                                                                                                                                           |
 
 Because decision 1 keeps a client-rendered SPA, the SEO obligations in BRS §9 now rest entirely on explicit engineering work rather than on framework defaults. Phase 2 step 10 is therefore load-bearing, not optional: per-route metadata, prerendered HTML for every public route, `sitemap.xml`, canonical URLs, and JSON-LD. This should be treated as a launch gate.
 
@@ -275,7 +267,7 @@ Completed:
    - The API server loads `../../.env` via `--env-file-if-exists`, so a missing file is not fatal.
    - The Vite dev server proxies `/api` to the API server, keeping the browser on one origin — which also means cookies will be first-party once auth lands.
    - Default ports are 5180 (website), 5181 (sandbox) and 5000 (API), avoiding Vite's contended 5173 default under `strictPort`.
-   - **A latent blocker was found and fixed:** `pnpm-workspace.yaml` pruned *all* win32 native binaries ("replit uses linux-x64 only"), which would have made `rollup`, `esbuild`, `lightningcss`, and `@tailwindcss/oxide` unloadable on any Windows machine. The win32-x64 entries are now retained; the rest remain pruned.
+   - **A latent blocker was found and fixed:** `pnpm-workspace.yaml` pruned _all_ win32 native binaries ("replit uses linux-x64 only"), which would have made `rollup`, `esbuild`, `lightningcss`, and `@tailwindcss/oxide` unloadable on any Windows machine. The win32-x64 entries are now retained; the rest remain pruned.
    - Verified end to end: `GET http://localhost:5180/api/healthz` returns `{"status":"ok"}` proxied to Express. This is the first time the two artifacts have communicated.
 4. **Line-ending normalisation added.** `.gitattributes` pins the repository to LF. Without it, every file touched on Windows appeared as a full rewrite. `.env` is now git-ignored and `.env.example` is the tracked template.
 5. **`replit.md` populated** with the run book, repo map, the five decisions, and the known gotchas.
@@ -288,4 +280,4 @@ Outstanding:
 
 ---
 
-*End of report.*
+_End of report._

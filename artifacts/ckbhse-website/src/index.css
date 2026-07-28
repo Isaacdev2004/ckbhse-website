@@ -121,7 +121,7 @@
 
   --input: 220 13% 91%;
   --ring: 189 94% 43%;
-  
+
   --chart-1: 189 94% 43%;
   --chart-2: 222 47% 11%;
   --chart-3: 217 91% 60%;
@@ -132,18 +132,30 @@
   --app-font-display: 'Outfit', system-ui, -apple-system, sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: 'JetBrains Mono', Menlo, monospace;
-  
+
   --radius: 0.5rem;
-  
+
   --shadow-2xs: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
-  --shadow-xs: 0px 1px 3px 0px rgba(16, 24, 40, 0.1), 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
-  --shadow-sm: 0px 2px 4px -2px rgba(16, 24, 40, 0.06), 0px 4px 8px -2px rgba(16, 24, 40, 0.1);
-  --shadow: 0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.06);
-  --shadow-md: 0px 4px 16px -4px rgba(16, 24, 40, 0.08), 0px 2px 6px -2px rgba(16, 24, 40, 0.03);
-  --shadow-lg: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
-  --shadow-xl: 0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03);
+  --shadow-xs:
+    0px 1px 3px 0px rgba(16, 24, 40, 0.1),
+    0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+  --shadow-sm:
+    0px 2px 4px -2px rgba(16, 24, 40, 0.06),
+    0px 4px 8px -2px rgba(16, 24, 40, 0.1);
+  --shadow:
+    0px 4px 8px -2px rgba(16, 24, 40, 0.1),
+    0px 2px 4px -2px rgba(16, 24, 40, 0.06);
+  --shadow-md:
+    0px 4px 16px -4px rgba(16, 24, 40, 0.08),
+    0px 2px 6px -2px rgba(16, 24, 40, 0.03);
+  --shadow-lg:
+    0px 12px 16px -4px rgba(16, 24, 40, 0.08),
+    0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+  --shadow-xl:
+    0px 20px 24px -4px rgba(16, 24, 40, 0.08),
+    0px 8px 8px -4px rgba(16, 24, 40, 0.03);
   --shadow-2xl: 0px 24px 48px -12px rgba(16, 24, 40, 0.18);
-  
+
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 
@@ -239,7 +251,7 @@
 
   --input: 217 33% 17%;
   --ring: 189 94% 43%;
-  
+
   --chart-1: 189 94% 43%;
   --chart-2: 217 91% 60%;
   --chart-3: 142 76% 36%;
@@ -247,12 +259,18 @@
   --chart-5: 210 40% 98%;
 
   --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
-  --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.4), 0px 1px 2px 0px rgba(0, 0, 0, 0.24);
-  --shadow-sm: 0px 2px 4px -2px rgba(0, 0, 0, 0.24), 0px 4px 8px -2px rgba(0, 0, 0, 0.4);
-  --shadow: 0px 4px 8px -2px rgba(0, 0, 0, 0.4), 0px 2px 4px -2px rgba(0, 0, 0, 0.24);
-  --shadow-md: 0px 4px 16px -4px rgba(0, 0, 0, 0.32), 0px 2px 6px -2px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0px 12px 16px -4px rgba(0, 0, 0, 0.32), 0px 4px 6px -2px rgba(0, 0, 0, 0.12);
-  --shadow-xl: 0px 20px 24px -4px rgba(0, 0, 0, 0.32), 0px 8px 8px -4px rgba(0, 0, 0, 0.12);
+  --shadow-xs:
+    0px 1px 3px 0px rgba(0, 0, 0, 0.4), 0px 1px 2px 0px rgba(0, 0, 0, 0.24);
+  --shadow-sm:
+    0px 2px 4px -2px rgba(0, 0, 0, 0.24), 0px 4px 8px -2px rgba(0, 0, 0, 0.4);
+  --shadow:
+    0px 4px 8px -2px rgba(0, 0, 0, 0.4), 0px 2px 4px -2px rgba(0, 0, 0, 0.24);
+  --shadow-md:
+    0px 4px 16px -4px rgba(0, 0, 0, 0.32), 0px 2px 6px -2px rgba(0, 0, 0, 0.12);
+  --shadow-lg:
+    0px 12px 16px -4px rgba(0, 0, 0, 0.32), 0px 4px 6px -2px rgba(0, 0, 0, 0.12);
+  --shadow-xl:
+    0px 20px 24px -4px rgba(0, 0, 0, 0.32), 0px 8px 8px -4px rgba(0, 0, 0, 0.12);
   --shadow-2xl: 0px 24px 48px -12px rgba(0, 0, 0, 0.56);
 }
 
@@ -265,7 +283,12 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--app-font-display);
   }
 }

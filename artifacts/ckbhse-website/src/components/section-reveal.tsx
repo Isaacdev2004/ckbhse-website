@@ -1,4 +1,4 @@
-import { useEffect, useRef, ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
 
 interface SectionRevealProps {
@@ -7,7 +7,11 @@ interface SectionRevealProps {
   delay?: number;
 }
 
-export function SectionReveal({ children, className = '', delay = 0 }: SectionRevealProps) {
+export function SectionReveal({
+  children,
+  className = '',
+  delay = 0,
+}: SectionRevealProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const controls = useAnimation();
@@ -48,7 +52,11 @@ interface StaggerContainerProps {
   staggerDelay?: number;
 }
 
-export function StaggerContainer({ children, className = '', staggerDelay = 0.1 }: StaggerContainerProps) {
+export function StaggerContainer({
+  children,
+  className = '',
+  staggerDelay = 0.1,
+}: StaggerContainerProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const controls = useAnimation();

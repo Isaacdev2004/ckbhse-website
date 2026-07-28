@@ -8,7 +8,8 @@ export default function CookiePolicy() {
           </h1>
           <div className="prose prose-lg max-w-none">
             <p className="text-muted-foreground">
-              This page is under construction. This site uses minimal cookies for essential functionality only.
+              This page is under construction. This site uses minimal cookies
+              for essential functionality only.
             </p>
           </div>
         </div>
