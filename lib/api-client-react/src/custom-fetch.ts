@@ -6,17 +6,25 @@ export type ErrorType<T = unknown> = ApiError<T>;
 
 export type BodyType<T> = T;
 
-export type AuthTokenGetter = () => Promise<string | null> | string | null;
-
 const NO_BODY_STATUS = new Set([204, 205, 304]);
 const DEFAULT_JSON_ACCEPT = 'application/json, application/problem+json';
+
+/**
+ * The platform authenticates with server-side sessions carried in `HttpOnly`
+ * cookies, and every application is served from the same origin as the API
+ * (Document 04 section 2.4). `same-origin` is already the `fetch` default, but
+ * it is stated explicitly so the decision is visible at the call site: a future
+ * move to a cross-origin deployment would need `include` here *and* a CORS
+ * allowlist entry, and silently inheriting the default is how that breaks
+ * without an error.
+ */
+const DEFAULT_CREDENTIALS: RequestCredentials = 'same-origin';
 
 // ---------------------------------------------------------------------------
 // Module-level configuration
 // ---------------------------------------------------------------------------
 
 let _baseUrl: string | null = null;
-let _authTokenGetter: AuthTokenGetter | null = null;
 
 /**
  * Set a base URL that is prepended to every relative request URL
@@ -27,21 +35,6 @@ let _authTokenGetter: AuthTokenGetter | null = null;
  */
 export function setBaseUrl(url: string | null): void {
   _baseUrl = url ? url.replace(/\/+$/, '') : null;
-}
-
-/**
- * Register a getter that supplies a bearer auth token.  Before every fetch
- * the getter is invoked; when it returns a non-null string, an
- * `Authorization: Bearer <token>` header is attached to the request.
- *
- * Useful for Expo bundles making token-gated API calls.
- * Pass `null` to clear the getter.
- *
- * NOTE: This function should never be used in web applications where session
- * token cookies are automatically associated with API calls by the browser.
- */
-export function setAuthTokenGetter(getter: AuthTokenGetter | null): void {
-  _authTokenGetter = getter;
 }
 
 function isRequest(input: RequestInfo | URL): input is Request {
@@ -96,7 +89,9 @@ function mergeHeaders(...sources: Array<HeadersInit | undefined>): Headers {
 
 function getMediaType(headers: Headers): string | null {
   const value = headers.get('content-type');
-  return value ? value.split(';', 1)[0].trim().toLowerCase() : null;
+  if (!value) return null;
+  const [mediaType] = value.split(';', 1);
+  return mediaType ? mediaType.trim().toLowerCase() : null;
 }
 
 function isJsonMediaType(mediaType: string | null): boolean {
@@ -177,7 +172,7 @@ function buildErrorMessage(response: Response, data: unknown): string {
 }
 
 export class ApiError<T = unknown> extends Error {
-  readonly name = 'ApiError';
+  override readonly name = 'ApiError';
   readonly status: number;
   readonly statusText: string;
   readonly data: T | null;
@@ -205,7 +200,7 @@ export class ApiError<T = unknown> extends Error {
 }
 
 export class ResponseParseError extends Error {
-  readonly name = 'ResponseParseError';
+  override readonly name = 'ResponseParseError';
   readonly status: number;
   readonly statusText: string;
   readonly headers: Headers;
@@ -213,7 +208,7 @@ export class ResponseParseError extends Error {
   readonly method: string;
   readonly url: string;
   readonly rawBody: string;
-  readonly cause: unknown;
+  override readonly cause: unknown;
 
   constructor(
     response: Response,
@@ -362,18 +357,14 @@ export async function customFetch<T = unknown>(
     headers.set('accept', DEFAULT_JSON_ACCEPT);
   }
 
-  // Attach bearer token when an auth getter is configured and no
-  // Authorization header has been explicitly provided.
-  if (_authTokenGetter && !headers.has('authorization')) {
-    const token = await _authTokenGetter();
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
-    }
-  }
-
   const requestInfo = { method, url: resolveUrl(input) };
 
-  const response = await fetch(input, { ...init, method, headers });
+  const response = await fetch(input, {
+    credentials: DEFAULT_CREDENTIALS,
+    ...init,
+    method,
+    headers,
+  });
 
   if (!response.ok) {
     const errorData = await parseErrorBody(response, method);
