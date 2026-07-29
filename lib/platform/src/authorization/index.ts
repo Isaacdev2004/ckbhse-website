@@ -51,13 +51,36 @@ export interface AuthorizationContext {
   /**
    * The tenant this request acts within. Present for every authenticated user
    * context; absent for anonymous and system contexts.
+   *
+   * Under single-organisation tenancy (Document 03) the organisation *is* the
+   * tenant. There is no separate `tenantId` field because a second identifier
+   * would invent a distinction the data model does not have — callers that want
+   * the name "tenant" should use {@link getTenantId}.
    */
   readonly organizationId?: OrganizationId;
   readonly sessionId?: SessionId;
   /** Display and audit only. Never the basis of an access decision. */
   readonly roles: readonly string[];
   readonly permissions: ReadonlySet<Permission>;
+  /**
+   * Request correlation. `metadata.requestId` is the value echoed in error
+   * responses and audit rows so a support ticket, a log line and an audit entry
+   * for the same interaction can be joined.
+   */
   readonly metadata: RequestMetadata;
+}
+
+/**
+ * The tenant identifier for this context.
+ *
+ * Alias for `organizationId`. Exists so call sites that think in "tenant"
+ * language — search scopes, storage key prefixes, feature-flag targeting — do
+ * not invent a parallel field that drifts from the organisation id.
+ */
+export function getTenantId(
+  context: AuthorizationContext,
+): OrganizationId | undefined {
+  return context.organizationId;
 }
 
 export interface CreateUserContextInput {

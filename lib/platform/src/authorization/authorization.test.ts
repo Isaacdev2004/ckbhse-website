@@ -11,6 +11,7 @@ import {
   createAnonymousContext,
   createSystemContext,
   createUserContext,
+  getTenantId,
   isAuthenticated,
   requirePermission,
   resolveTenantScope,
@@ -49,6 +50,12 @@ describe('createUserContext', () => {
   it('is frozen so a downstream layer cannot escalate itself', () => {
     const context = userContext();
     expect(Object.isFrozen(context)).toBe(true);
+  });
+
+  it('exposes the organisation as the tenant identifier', () => {
+    const context = userContext();
+    expect(getTenantId(context)).toBe(context.organizationId);
+    expect(getTenantId(createAnonymousContext(metadata))).toBeUndefined();
   });
 });
 
