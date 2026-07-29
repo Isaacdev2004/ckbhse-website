@@ -1,15 +1,18 @@
 import app from './app';
 import { logger } from './lib/logger';
-import { env } from './config/env';
+import { configSummary, serverConfig } from './config';
 import { beginShutdown } from './lib/lifecycle';
 
-const server = app.listen(env.PORT, (err) => {
+const server = app.listen(serverConfig.port, (err) => {
   if (err) {
     logger.error({ err }, 'Error listening on port');
     process.exit(1);
   }
 
-  logger.info({ port: env.PORT, nodeEnv: env.NODE_ENV }, 'Server listening');
+  // The redacted config summary is logged at startup so that a misconfigured
+  // deployment is diagnosable from the first log line rather than by reproducing
+  // the symptom.
+  logger.info(configSummary(), 'Server listening');
 });
 
 // Autoscale deployments replace instances routinely, so in-flight requests must
@@ -21,11 +24,11 @@ function shutdown(signal: string) {
 
   const timer = setTimeout(() => {
     logger.error(
-      { timeoutMs: env.SHUTDOWN_TIMEOUT_MS },
+      { timeoutMs: serverConfig.shutdownTimeoutMs },
       'Forcing exit, connections did not drain in time',
     );
     process.exit(1);
-  }, env.SHUTDOWN_TIMEOUT_MS);
+  }, serverConfig.shutdownTimeoutMs);
 
   timer.unref();
 

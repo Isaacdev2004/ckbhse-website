@@ -2,8 +2,10 @@ import cors, { type CorsOptions } from 'cors';
 import helmet from 'helmet';
 import rateLimit, { type RateLimitRequestHandler } from 'express-rate-limit';
 import type { RequestHandler } from 'express';
-import { env, isProduction, isTest } from '../config/env';
-import { ApiError } from '../lib/errors';
+import { AppError } from '@workspace/platform/errors';
+import { recordSecurityEvent } from '@workspace/platform/logging';
+import { corsConfig, isProduction, isTest, rateLimitConfig } from '../config';
+import { securityLogger } from '../lib/logger';
 
 export const securityHeaders: RequestHandler = helmet({
   // The API serves JSON only, so the restrictive default CSP is appropriate;
@@ -21,7 +23,7 @@ export const securityHeaders: RequestHandler = helmet({
   hsts: isProduction,
 });
 
-const allowlist = new Set(env.CORS_ORIGINS);
+const allowlist = new Set(corsConfig.allowedOrigins);
 
 export const corsPolicy: RequestHandler = cors({
   origin(origin, callback) {
@@ -37,7 +39,15 @@ export const corsPolicy: RequestHandler = cors({
       return;
     }
 
-    callback(ApiError.forbidden(`Origin not allowed: ${origin}`));
+    // Logged on the security channel: a spike of rejected origins is either a
+    // misconfigured deployment or someone probing, and both are worth seeing.
+    recordSecurityEvent(
+      securityLogger,
+      { event: 'cors.rejected', outcome: 'denied', origin },
+      'Rejected a disallowed origin',
+    );
+
+    callback(AppError.forbidden(`Origin not allowed: ${origin}`));
   },
   // Required for session cookies once authentication lands.
   credentials: true,
@@ -45,30 +55,55 @@ export const corsPolicy: RequestHandler = cors({
   maxAge: 86_400,
 } satisfies CorsOptions);
 
+function onRateLimited(scope: 'global' | 'credential'): RequestHandler {
+  return (req, _res, next) => {
+    recordSecurityEvent(
+      securityLogger,
+      {
+        event: 'rate_limit.exceeded',
+        outcome: 'denied',
+        scope,
+        requestId: req.requestId,
+        ...(req.ip !== undefined ? { ipAddress: req.ip } : {}),
+        path: req.path,
+      },
+      'Rate limit exceeded',
+    );
+
+    next(
+      AppError.rateLimited(
+        scope === 'credential'
+          ? 'Too many attempts, please retry later'
+          : 'Too many requests, please retry later',
+      ),
+    );
+  };
+}
+
 export const rateLimiter: RateLimitRequestHandler = rateLimit({
-  windowMs: env.RATE_LIMIT_WINDOW_MS,
-  limit: env.RATE_LIMIT_MAX,
+  windowMs: rateLimitConfig.windowMs,
+  limit: rateLimitConfig.max,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
   // Tests would otherwise share counters across cases.
   skip: () => isTest,
-  handler: (_req, _res, next) => {
-    next(new ApiError('rate_limited', 'Too many requests, please retry later'));
-  },
+  handler: onRateLimited('global'),
 });
 
 /**
  * Far stricter budget for credential endpoints (login, password reset, MFA).
  * Mount per-route as those routes are added.
+ *
+ * `skipSuccessfulRequests` means the budget is spent only on failures, so a
+ * legitimate user is never locked out by working normally, while credential
+ * stuffing exhausts it within a handful of attempts.
  */
 export const authRateLimiter: RateLimitRequestHandler = rateLimit({
-  windowMs: 15 * 60_000,
-  limit: 10,
+  windowMs: rateLimitConfig.authWindowMs,
+  limit: rateLimitConfig.authMax,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
   skipSuccessfulRequests: true,
   skip: () => isTest,
-  handler: (_req, _res, next) => {
-    next(new ApiError('rate_limited', 'Too many attempts, please retry later'));
-  },
+  handler: onRateLimited('credential'),
 });

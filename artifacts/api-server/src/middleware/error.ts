@@ -1,10 +1,25 @@
 import type { ErrorRequestHandler, RequestHandler } from 'express';
-import { ZodError, z } from 'zod/v4';
-import { ApiError, type ErrorCode } from '../lib/errors';
-import { isProduction } from '../config/env';
+import { ZodError } from 'zod/v4';
+import {
+  AppError,
+  serialiseError,
+  type FieldError,
+} from '@workspace/platform/errors';
+import { recordSecurityEvent } from '@workspace/platform/logging';
+import { isProduction } from '../config';
+import { securityLogger } from '../lib/logger';
+
+/**
+ * The single place an error becomes an HTTP response.
+ *
+ * Every failure path converges here so the envelope is identical across the API,
+ * which is what lets the client have one error handler rather than one per
+ * endpoint. The error taxonomy itself lives in `@workspace/platform/errors`; this
+ * file only translates.
+ */
 
 export const notFoundHandler: RequestHandler = (_req, _res, next) => {
-  next(ApiError.notFound());
+  next(AppError.notFound());
 };
 
 interface BodyParserError extends Error {
@@ -12,82 +27,92 @@ interface BodyParserError extends Error {
   status?: number;
 }
 
-function classify(err: unknown): {
-  code: ErrorCode;
-  message: string;
-  details?: unknown;
-  expected: boolean;
-} {
-  if (err instanceof ApiError) {
-    return {
-      code: err.code,
-      message: err.message,
-      ...(err.details !== undefined ? { details: err.details } : {}),
-      expected: true,
-    };
-  }
+/** Flatten a Zod error into the platform's field-error shape. */
+function toFieldErrors(error: ZodError): FieldError[] {
+  return error.issues.map((issue) => ({
+    path: issue.path.join('.'),
+    message: issue.message,
+  }));
+}
 
-  if (err instanceof ZodError) {
-    return {
-      code: 'unprocessable_entity',
-      message: 'Request validation failed',
-      details: z.treeifyError(err),
-      expected: true,
-    };
+/**
+ * Map anything thrown into an `AppError`.
+ *
+ * Unrecognised throws deliberately become `internal_error` with their message
+ * withheld, because an arbitrary exception message is as likely to contain a
+ * connection string as anything useful to a client.
+ */
+function normalise(error: unknown): AppError {
+  if (error instanceof AppError) return error;
+
+  if (error instanceof ZodError) {
+    return AppError.validation(toFieldErrors(error));
   }
 
   // body-parser signals malformed JSON and oversized payloads with a `type`.
-  const parserError = err as BodyParserError;
+  const parserError = error as BodyParserError;
   if (parserError?.type === 'entity.too.large') {
-    return {
-      code: 'payload_too_large',
-      message: 'Request body is too large',
-      expected: true,
-    };
+    return AppError.payloadTooLarge();
   }
   if (parserError?.type === 'entity.parse.failed') {
-    return {
-      code: 'bad_request',
-      message: 'Request body is not valid JSON',
-      expected: true,
-    };
+    return AppError.badRequest('Request body is not valid JSON');
   }
 
-  return {
-    code: 'internal_error',
-    message: 'Internal server error',
-    expected: false,
-  };
+  return AppError.internal(
+    error instanceof Error ? error.message : 'Unknown error',
+    error,
+  );
 }
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
-  const { code, message, details, expected } = classify(err);
-  const status = err instanceof ApiError ? err.status : statusFor(code);
+  const error = normalise(err);
 
-  // Unexpected faults are logged at error with the stack; expected ones are
-  // ordinary control flow and would otherwise drown out real incidents.
-  if (expected) {
-    req.log?.info({ code, status }, 'Request rejected');
+  // Expected errors are ordinary control flow and would drown out real incidents
+  // if logged at error; unexpected ones carry the stack.
+  if (error.expected) {
+    req.log?.info(
+      { code: error.code, status: error.status, requestId: req.requestId },
+      'Request rejected',
+    );
   } else {
-    req.log?.error({ err, code, status }, 'Unhandled request error');
+    req.log?.error(
+      { err, code: error.code, status: error.status, requestId: req.requestId },
+      'Unhandled request error',
+    );
+  }
+
+  // Access denials also go to the security channel, where they are alertable as a
+  // rate rather than read individually.
+  if (error.code === 'forbidden' || error.code === 'unauthorized') {
+    recordSecurityEvent(
+      securityLogger,
+      {
+        event: 'authorization.denied',
+        outcome: 'denied',
+        requestId: req.requestId,
+        ...(req.auth?.userId !== undefined ? { userId: req.auth.userId } : {}),
+        ...(req.ip !== undefined ? { ipAddress: req.ip } : {}),
+        method: req.method,
+        path: req.path,
+        code: error.code,
+      },
+      'Request denied',
+    );
   }
 
   if (res.headersSent) {
+    // A partially-written response cannot be replaced with an error envelope, so
+    // the connection is destroyed rather than sending a corrupt body.
     res.destroy();
     return;
   }
 
-  res.status(status).json({
-    error: {
-      code,
-      // Never leak an unexpected error's message to the client in production.
-      message: expected || !isProduction ? message : 'Internal server error',
-      ...(details !== undefined ? { details } : {}),
-      requestId: req.id,
-    },
-  });
+  res.status(error.status).json(
+    serialiseError(error, {
+      ...(req.requestId !== undefined ? { requestId: req.requestId } : {}),
+      // Internal messages are visible outside production, where they save a trip
+      // to the logs, and withheld in production, where they leak.
+      exposeInternalMessage: !isProduction,
+    }),
+  );
 };
-
-function statusFor(code: ErrorCode): number {
-  return new ApiError(code, '').status;
-}
