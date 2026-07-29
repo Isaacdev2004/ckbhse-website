@@ -12,5 +12,4 @@ attached_assets
 # Generated — regenerate rather than reformat
 lib/api-client-react/src/generated
 lib/api-zod/src/generated
-artifacts/mockup-sandbox/src/.generated
 lib/db/migrations
