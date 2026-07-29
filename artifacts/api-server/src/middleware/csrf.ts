@@ -66,10 +66,21 @@ export const issueCsrfToken: RequestHandler = (req, res, next) => {
 /**
  * Rejects an unsafe request whose header token does not match its cookie token.
  *
- * Requests carrying no session cookie are exempt: CSRF is an attack on ambient
- * credentials, so a request with none to abuse has nothing to forge. That
- * exemption is what lets this be mounted globally today without breaking
+ * Requests carrying *no cookies at all* are exempt: CSRF is an attack on ambient
+ * credentials, so a request with none to abuse has nothing to forge. That is what
+ * lets this be mounted globally without breaking non-browser callers or
  * unauthenticated endpoints such as the contact form.
+ *
+ * The exemption deliberately tests for any cookie rather than for the CSRF cookie
+ * specifically. Keying it on the CSRF cookie would fail *open* in the one case
+ * that matters: a request that presents a session cookie but no CSRF cookie would
+ * be waved through. Today both cookies share `sameSite` and `path` so they always
+ * travel together, but that coupling is implicit — the moment a session cookie
+ * needs `sameSite: 'none'` to serve a cross-origin client, it would start arriving
+ * without its CSRF counterpart and the exemption would authenticate forged
+ * requests. Failing closed costs a cookie-bearing client one rejected request,
+ * which a page load repairs, because `issueCsrfToken` primes the token on any
+ * response.
  */
 export const verifyCsrfToken: RequestHandler = (req, _res, next) => {
   if (SAFE_METHODS.has(req.method)) {
@@ -77,16 +88,18 @@ export const verifyCsrfToken: RequestHandler = (req, _res, next) => {
     return;
   }
 
-  const cookieToken = req.cookies?.[csrfConfig.cookieName];
-  const headerToken = req.headers[csrfConfig.headerName];
+  const cookies = req.cookies as Record<string, unknown> | undefined;
 
-  // No cookie at all means no ambient credential to abuse.
-  if (typeof cookieToken !== 'string') {
+  if (cookies === undefined || Object.keys(cookies).length === 0) {
     next();
     return;
   }
 
+  const cookieToken = cookies[csrfConfig.cookieName];
+  const headerToken = req.headers[csrfConfig.headerName];
+
   if (
+    typeof cookieToken !== 'string' ||
     typeof headerToken !== 'string' ||
     !tokensMatch(cookieToken, headerToken)
   ) {

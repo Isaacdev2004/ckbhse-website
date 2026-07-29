@@ -94,6 +94,21 @@ describe('CSRF protection', () => {
     expect(res.status).toBe(404);
   });
 
+  it('rejects a cookie-bearing unsafe request that has no CSRF cookie', async () => {
+    // The exemption above must key on "no cookies at all", not on "no CSRF
+    // cookie". Keying it on the CSRF cookie fails open for exactly the request
+    // that matters: one presenting a session cookie without its CSRF
+    // counterpart, which is what a `sameSite: 'none'` session cookie would
+    // produce.
+    const res = await request(app)
+      .post('/api/nope')
+      .set('Cookie', 'session=forged')
+      .send({});
+
+    expect(res.status).toBe(403);
+    expect(res.body.error.code).toBe('forbidden');
+  });
+
   it('rejects an unsafe request whose cookie has no matching header', async () => {
     const token = generateCsrfToken();
 
