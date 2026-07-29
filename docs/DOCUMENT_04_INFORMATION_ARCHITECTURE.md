@@ -70,15 +70,15 @@ Three mechanisms carry this IA from 250 routes to whatever comes next.
 
 BRS §4 describes six ecosystems, and this brief separates the Consultant Portal from the Staff Portal, giving seven experiences. They are delivered as **five front-end applications** against one Express API.
 
-| # | Application | Workspace package | Serves | Status |
-| --- | --- | --- | --- | --- |
-| 1 | Public Website | `artifacts/ckbhse-website` | Guests, prospects, applicants, search engines | Exists (11 routes) |
-| 2 | Client Portal | `artifacts/client-portal` | Registered Client | Planned |
-| 3 | Training / LMS | `artifacts/lms` | Student, Trainer | Planned |
-| 4 | Staff Portal | `artifacts/staff-portal` | Consultant, Operations, HR, Finance, Marketing, Support | Planned |
-| 5 | Administration Portal | `artifacts/admin-portal` | Admin, Super Admin | Planned |
-| — | API | `artifacts/api-server` | All of the above | Exists (2 endpoints) |
-| — | Shared services | `lib/*` | All of the above | Partly exists |
+| #   | Application           | Workspace package          | Serves                                                  | Status               |
+| --- | --------------------- | -------------------------- | ------------------------------------------------------- | -------------------- |
+| 1   | Public Website        | `artifacts/ckbhse-website` | Guests, prospects, applicants, search engines           | Exists (11 routes)   |
+| 2   | Client Portal         | `artifacts/client-portal`  | Registered Client                                       | Planned              |
+| 3   | Training / LMS        | `artifacts/lms`            | Student, Trainer                                        | Planned              |
+| 4   | Staff Portal          | `artifacts/staff-portal`   | Consultant, Operations, HR, Finance, Marketing, Support | Planned              |
+| 5   | Administration Portal | `artifacts/admin-portal`   | Admin, Super Admin                                      | Planned              |
+| —   | API                   | `artifacts/api-server`     | All of the above                                        | Exists (2 endpoints) |
+| —   | Shared services       | `lib/*`                    | All of the above                                        | Partly exists        |
 
 This matches Document 03's projection of four additional front ends, and it does so deliberately — see §2.3.
 
@@ -88,7 +88,7 @@ This matches Document 03's projection of four additional front ends, and it does
 
 **Client Portal.** The authenticated home of the commercial relationship: projects, audit reports, documents, invoices, bookings, and messaging. Its organising question is "what is happening with my compliance?" Data isolation is absolute here, per BRS §10 — this is the ecosystem where the tenant boundary is most exposed to users.
 
-**Training / LMS.** Delivers accredited education to two distinct audiences in one application: learners consuming content and trainers authoring it. Kept separate from the Client Portal because a learner's relationship is with *content and assessment*, whereas a client's is with *an engagement* — and because many learners are individuals with no client relationship at all.
+**Training / LMS.** Delivers accredited education to two distinct audiences in one application: learners consuming content and trainers authoring it. Kept separate from the Client Portal because a learner's relationship is with _content and assessment_, whereas a client's is with _an engagement_ — and because many learners are individuals with no client relationship at all.
 
 **Staff Portal.** Internal operations: CRM, project delivery, scheduling, audit fieldwork, HR, approvals, and internal reporting. One application, role-scoped, presenting materially different surfaces to a consultant and to an operations manager.
 
@@ -147,14 +147,14 @@ Ten navigation mechanisms. Each is justified by the job it does; a mechanism wit
 
 **Public website.** The current eight-item flat bar (Home, Services, Industries, Training, Knowledge, Case Studies, Careers, Contact) will not survive the expansion to 79 public pages. It becomes **six items with grouped disclosure**:
 
-| Item | Contains | Rationale |
-| --- | --- | --- |
-| Services | Service pillars, industries, compliance areas | The commercial core; the deepest branch |
-| Training | Course catalogue, categories, accreditation, delivery formats | Second revenue stream, distinct search intent |
-| Knowledge | Guides, templates, policies, blog, downloads | The authority surface; highest page count |
-| About | Company, leadership, accreditations, partners, careers | Trust signals, grouped |
-| Case Studies | Flat collection with filters | Proof, high in the decision journey |
-| Contact | Contact, offices, booking | Conversion |
+| Item         | Contains                                                      | Rationale                                     |
+| ------------ | ------------------------------------------------------------- | --------------------------------------------- |
+| Services     | Service pillars, industries, compliance areas                 | The commercial core; the deepest branch       |
+| Training     | Course catalogue, categories, accreditation, delivery formats | Second revenue stream, distinct search intent |
+| Knowledge    | Guides, templates, policies, blog, downloads                  | The authority surface; highest page count     |
+| About        | Company, leadership, accreditations, partners, careers        | Trust signals, grouped                        |
+| Case Studies | Flat collection with filters                                  | Proof, high in the decision journey           |
+| Contact      | Contact, offices, booking                                     | Conversion                                    |
 
 Six is chosen deliberately over eight or ten. Primary navigation is scanned, not read, and each additional item reduces the likelihood that any single one is noticed. Grouping trades one interaction for a large reduction in scanning cost, and the group headings are themselves useful landing pages rather than empty menu parents.
 
@@ -316,7 +316,7 @@ Three segments maximum. A sub-service exists as a page only where it has indepen
 /industries/food-and-beverage
 ```
 
-**Industry is deliberately flat, and industry pages do not nest services.** A page at `/industries/construction/health-and-safety` would duplicate `/services/health-and-safety` with different framing — two URLs competing for the same query, splitting authority, and doubling the maintenance surface. Instead an industry page *links* to relevant services and filters case studies by sector. This is the facet-not-branch rule from §1.6, and Services is chosen as the canonical hierarchy because that is how the commercial offer is actually structured.
+**Industry is deliberately flat, and industry pages do not nest services.** A page at `/industries/construction/health-and-safety` would duplicate `/services/health-and-safety` with different framing — two URLs competing for the same query, splitting authority, and doubling the maintenance surface. Instead an industry page _links_ to relevant services and filters case studies by sector. This is the facet-not-branch rule from §1.6, and Services is chosen as the canonical hierarchy because that is how the commercial offer is actually structured.
 
 ### 4.5 Training (public surface)
 
@@ -441,20 +441,20 @@ Three technical distinctions that IA documents routinely get wrong, and that mat
 
 ### 4.11 Route count summary
 
-| Section | Static routes | Dynamic templates | Notes |
-| --- | --- | --- | --- |
-| Home and top level | 7 | 0 | |
-| About | 5 | 1 | 3 pages deliberately omitted |
-| Services | 1 | 2 | 21 named pillars/sub-services |
-| Industries | 1 | 1 | 8 industries, flat |
-| Training (public) | 5 | 4 | Catalogue plus 3 facet types |
-| Case studies, testimonials | 2 | 1 | |
-| Knowledge Centre | 6 | 5 | 2 branches deliberately omitted |
-| Blog and news | 2 | 5 | Separate lifecycle from Knowledge |
-| Careers | 3 | 2 | Includes unauthenticated upload |
-| Legal | 8 | 0 | 3 redirects required |
-| Conversion, system, error | 9 | 0 | 3 owned by DevOps |
-| **Total** | **49** | **21** | **70 addressable route patterns** |
+| Section                    | Static routes | Dynamic templates | Notes                             |
+| -------------------------- | ------------- | ----------------- | --------------------------------- |
+| Home and top level         | 7             | 0                 |                                   |
+| About                      | 5             | 1                 | 3 pages deliberately omitted      |
+| Services                   | 1             | 2                 | 21 named pillars/sub-services     |
+| Industries                 | 1             | 1                 | 8 industries, flat                |
+| Training (public)          | 5             | 4                 | Catalogue plus 3 facet types      |
+| Case studies, testimonials | 2             | 1                 |                                   |
+| Knowledge Centre           | 6             | 5                 | 2 branches deliberately omitted   |
+| Blog and news              | 2             | 5                 | Separate lifecycle from Knowledge |
+| Careers                    | 3             | 2                 | Includes unauthenticated upload   |
+| Legal                      | 8             | 0                 | 3 redirects required              |
+| Conversion, system, error  | 9             | 0                 | 3 owned by DevOps                 |
+| **Total**                  | **49**        | **21**            | **70 addressable route patterns** |
 
 The 22 named service pages in §4.3 and 8 industry pages in §4.4 are **content instances** served by the dynamic templates, not additional patterns. Counting them, the public site launches with **79 concrete URLs** plus unbounded template-served content (guides, articles, courses, case studies, vacancies).
 
@@ -865,7 +865,7 @@ The `/learn/instructor` prefix is a deliberate namespace rather than a separate 
 
 ### 9.4 Course versioning is an IA constraint, not only a data one
 
-Document 03 establishes that **enrolments pin a course version**, so that published content changing does not invalidate in-progress learners. This has a direct navigational consequence: `/learn/courses/<id>` renders the structure of *the version the learner is enrolled on*, which may differ from what `/training/courses/<slug>` advertises publicly today.
+Document 03 establishes that **enrolments pin a course version**, so that published content changing does not invalidate in-progress learners. This has a direct navigational consequence: `/learn/courses/<id>` renders the structure of _the version the learner is enrolled on_, which may differ from what `/training/courses/<slug>` advertises publicly today.
 
 This is not an edge case, it is the normal state of any course that has ever been updated. Designers and engineers must treat the learner's course structure as version-scoped, or learners will encounter lessons that no longer exist.
 
@@ -994,14 +994,14 @@ Seven journeys. Each names its entry points, decision points, primary tasks, exi
 
 ### 11.1 Public website
 
-| Depth | Count | Examples | Verdict |
-| --- | --- | --- | --- |
-| 0 | 1 | `/` | |
-| 1 | 21 | `/services`, `/blog`, `/faq`, `/pricing` | Ideal |
-| 2 | 31 | `/services/<slug>`, `/blog/<slug>`, `/about/leadership` | Ideal |
-| 3 | 16 | `/services/<slug>/<sub>`, `/knowledge/guides/<slug>` | At target |
-| 4 | 1 | `/careers/vacancies/<slug>/apply` | Acceptable |
-| 5+ | 0 | — | None |
+| Depth | Count | Examples                                                | Verdict    |
+| ----- | ----- | ------------------------------------------------------- | ---------- |
+| 0     | 1     | `/`                                                     |            |
+| 1     | 21    | `/services`, `/blog`, `/faq`, `/pricing`                | Ideal      |
+| 2     | 31    | `/services/<slug>`, `/blog/<slug>`, `/about/leadership` | Ideal      |
+| 3     | 16    | `/services/<slug>/<sub>`, `/knowledge/guides/<slug>`    | At target  |
+| 4     | 1     | `/careers/vacancies/<slug>/apply`                       | Acceptable |
+| 5+    | 0     | —                                                       | None       |
 
 Total 70. Including the named instances, the deepest concrete public URL is `/services/health-and-safety/risk-assessments` at depth 3.
 
@@ -1011,21 +1011,21 @@ The structural reason this holds is the facet-not-branch decision (§4.4, §4.7)
 
 ### 11.2 Authenticated portals
 
-| Route | Depth | Verdict |
-| --- | --- | --- |
-| `/portal/projects/<id>` | 3 | At target |
-| `/portal/projects/<id>/timeline` | 4 | Acceptable — tab within record |
-| `/portal/projects/<id>/audits/<auditId>` | 5 | **Flagged** |
-| `/portal/company/users/<id>` | 4 | Acceptable |
-| `/staff/clients/<id>/projects` | 4 | Acceptable — tab within record |
-| `/staff/audits/<id>/fieldwork` | 4 | Acceptable |
-| `/staff/hr/recruitment/<id>` | 4 | Acceptable |
-| `/admin/users/<id>/roles` | 4 | Acceptable |
-| `/admin/training/courses/<id>/versions` | 5 | **Flagged** |
-| `/learn/courses/<id>/lessons/<lessonId>` | 5 | Sanctioned exception (§9.3) |
-| `/learn/instructor/courses/<id>/modules` | 5 | **Flagged** |
-| `/learn/instructor/courses/<id>/learners` | 5 | **Flagged** |
-| `/learn/instructor/courses/<id>/versions` | 5 | **Flagged** |
+| Route                                     | Depth | Verdict                        |
+| ----------------------------------------- | ----- | ------------------------------ |
+| `/portal/projects/<id>`                   | 3     | At target                      |
+| `/portal/projects/<id>/timeline`          | 4     | Acceptable — tab within record |
+| `/portal/projects/<id>/audits/<auditId>`  | 5     | **Flagged**                    |
+| `/portal/company/users/<id>`              | 4     | Acceptable                     |
+| `/staff/clients/<id>/projects`            | 4     | Acceptable — tab within record |
+| `/staff/audits/<id>/fieldwork`            | 4     | Acceptable                     |
+| `/staff/hr/recruitment/<id>`              | 4     | Acceptable                     |
+| `/admin/users/<id>/roles`                 | 4     | Acceptable                     |
+| `/admin/training/courses/<id>/versions`   | 5     | **Flagged**                    |
+| `/learn/courses/<id>/lessons/<lessonId>`  | 5     | Sanctioned exception (§9.3)    |
+| `/learn/instructor/courses/<id>/modules`  | 5     | **Flagged**                    |
+| `/learn/instructor/courses/<id>/learners` | 5     | **Flagged**                    |
+| `/learn/instructor/courses/<id>/versions` | 5     | **Flagged**                    |
 
 ### 11.3 The five flagged routes, and the recommendation
 
@@ -1039,7 +1039,7 @@ Applying both recommendations leaves **no route in the platform above four segme
 
 ### 11.4 The principle behind the ceiling
 
-Depth is a proxy for two real costs: the number of decisions a user makes to reach content, and the dilution of link authority across a hierarchy. Nesting a child record under a parent trades a stable, linkable identity for a display convenience — and breadcrumbs plus tabs deliver the hierarchical *understanding* without paying the URL cost.
+Depth is a proxy for two real costs: the number of decisions a user makes to reach content, and the dilution of link authority across a hierarchy. Nesting a child record under a parent trades a stable, linkable identity for a display convenience — and breadcrumbs plus tabs deliver the hierarchical _understanding_ without paying the URL cost.
 
 The general rule for this platform: **if a record has its own lifecycle, its own permissions, or its own audit trail, it gets a top-level identity.** Audits, invoices, certificates, and findings all qualify. Tabs and timelines do not.
 
@@ -1100,18 +1100,18 @@ Guide  →  Related Course  →  Enrolment  →  Certificate
 
 ### 12.4 Relationship cardinality
 
-| From | To | Cardinality | Surfaces as |
-| --- | --- | --- | --- |
-| Service | Industry | many-to-many | "Industries we serve" / "Services for this sector" |
-| Service | Case study | one-to-many | "Proof" section on the service page |
-| Service | Course | many-to-many | "Related training" |
-| Service | Guide | many-to-many | "Guidance on this topic" |
-| Guide | Template | one-to-many | "Downloads" within the guide |
-| Guide | Legislation | many-to-many | "Relevant regulations" |
-| Course | Accreditation | many-to-one | Trust badge and facet page |
-| Course | Certificate | one-to-many | Learner credential |
-| Case study | Testimonial | one-to-one (optional) | Pull quote |
-| Consultant | Content | one-to-many | Author attribution |
+| From       | To            | Cardinality           | Surfaces as                                        |
+| ---------- | ------------- | --------------------- | -------------------------------------------------- |
+| Service    | Industry      | many-to-many          | "Industries we serve" / "Services for this sector" |
+| Service    | Case study    | one-to-many           | "Proof" section on the service page                |
+| Service    | Course        | many-to-many          | "Related training"                                 |
+| Service    | Guide         | many-to-many          | "Guidance on this topic"                           |
+| Guide      | Template      | one-to-many           | "Downloads" within the guide                       |
+| Guide      | Legislation   | many-to-many          | "Relevant regulations"                             |
+| Course     | Accreditation | many-to-one           | Trust badge and facet page                         |
+| Course     | Certificate   | one-to-many           | Learner credential                                 |
+| Case study | Testimonial   | one-to-one (optional) | Pull quote                                         |
+| Consultant | Content       | one-to-many           | Author attribution                                 |
 
 ---
 
@@ -1119,25 +1119,25 @@ Guide  →  Related Course  →  Enrolment  →  Certificate
 
 ### 13.1 Two searches, not one
 
-| | Public search | Portal search |
-| --- | --- | --- |
-| Route | `/search` | In-app, per ecosystem |
-| Index | Published public content only | Tenant- and permission-scoped records |
-| Auth | None | Required |
-| Risk | Low | **Cross-tenant data leak** |
-| Engine | PostgreSQL full-text | PostgreSQL full-text |
+|        | Public search                 | Portal search                         |
+| ------ | ----------------------------- | ------------------------------------- |
+| Route  | `/search`                     | In-app, per ecosystem                 |
+| Index  | Published public content only | Tenant- and permission-scoped records |
+| Auth   | None                          | Required                              |
+| Risk   | Low                           | **Cross-tenant data leak**            |
+| Engine | PostgreSQL full-text          | PostgreSQL full-text                  |
 
 Keeping them separate is a security decision. A single index spanning public content and tenant records would make every query a permission problem, and the failure mode of getting it wrong is disclosing one client's audit findings to another.
 
 ### 13.2 Public search
 
-Indexes services, industries, courses, guides, templates, policies, legislation, glossary terms, blog and news articles, case studies, FAQs, and vacancies. Results are grouped by content type rather than presented as one ranked list, because a visitor searching "asbestos" wants to know whether CKBHSE offers a *service*, a *course*, or *guidance* — and a flat list obscures that distinction.
+Indexes services, industries, courses, guides, templates, policies, legislation, glossary terms, blog and news articles, case studies, FAQs, and vacancies. Results are grouped by content type rather than presented as one ranked list, because a visitor searching "asbestos" wants to know whether CKBHSE offers a _service_, a _course_, or _guidance_ — and a flat list obscures that distinction.
 
-Zero-result pages must offer routes onward: popular content, a link to `/contact`, and category browsing. `/search` is `noindex` (search result pages are thin, duplicative, and generate crawl waste) while remaining fully crawlable in the sense that all *content* it surfaces is reachable through navigation and the sitemap.
+Zero-result pages must offer routes onward: popular content, a link to `/contact`, and category browsing. `/search` is `noindex` (search result pages are thin, duplicative, and generate crawl waste) while remaining fully crawlable in the sense that all _content_ it surfaces is reachable through navigation and the sitemap.
 
 ### 13.3 Portal search
 
-Scoped to the acting ecosystem: a consultant searching from `/staff` finds clients, projects, audits, findings, and documents *within their assignments*; a client searching from `/portal` finds only their own organisation's records.
+Scoped to the acting ecosystem: a consultant searching from `/staff` finds clients, projects, audits, findings, and documents _within their assignments_; a client searching from `/portal` finds only their own organisation's records.
 
 Results indicate their type and parent context, because "Audit report" is useless without knowing which project and client it belongs to.
 
@@ -1179,13 +1179,13 @@ The IA contribution is the route inventory that scopes the work, plus per-route 
 
 ### 14.2 Landing page tiers
 
-| Tier | Routes | Purpose | Search intent |
-| --- | --- | --- | --- |
-| 1 — Pillars | `/services/<slug>`, `/industries/<slug>`, `/training` | Rank for high-volume commercial terms | Commercial |
-| 2 — Sub-services and courses | `/services/<slug>/<sub>`, `/training/courses/<slug>` | Rank for specific, high-intent terms | Transactional |
-| 3 — Guidance | `/knowledge/guides/<slug>`, `/knowledge/legislation/<slug>` | Capture informational search; feed tier 1 | Informational |
-| 4 — Editorial | `/blog/<slug>`, `/news/<slug>` | Freshness, long-tail, topical authority | Informational |
-| 5 — Proof and trust | `/case-studies/<slug>`, `/about/accreditations` | Convert rather than acquire | Navigational |
+| Tier                         | Routes                                                      | Purpose                                   | Search intent |
+| ---------------------------- | ----------------------------------------------------------- | ----------------------------------------- | ------------- |
+| 1 — Pillars                  | `/services/<slug>`, `/industries/<slug>`, `/training`       | Rank for high-volume commercial terms     | Commercial    |
+| 2 — Sub-services and courses | `/services/<slug>/<sub>`, `/training/courses/<slug>`        | Rank for specific, high-intent terms      | Transactional |
+| 3 — Guidance                 | `/knowledge/guides/<slug>`, `/knowledge/legislation/<slug>` | Capture informational search; feed tier 1 | Informational |
+| 4 — Editorial                | `/blog/<slug>`, `/news/<slug>`                              | Freshness, long-tail, topical authority   | Informational |
+| 5 — Proof and trust          | `/case-studies/<slug>`, `/about/accreditations`             | Convert rather than acquire               | Navigational  |
 
 Tier 3 is where most organic traffic will arrive, and tier 1 is where it converts. The internal link from guidance to service (§12.2) is the mechanism connecting them, which is why it is specified as a requirement rather than left to editorial judgement.
 
@@ -1221,17 +1221,17 @@ Facet landing pages — `/training/categories/<slug>`, `/training/accreditations
 
 ### 14.6 Structured data
 
-| Type | Applied to |
-| --- | --- |
-| `Organization`, `LocalBusiness` | Site-wide, `/about`, `/about/offices` |
-| `Service` | `/services/<slug>` and sub-services |
-| `Course`, `CourseInstance` | `/training/courses/<slug>`, `/training/schedule` |
-| `Article`, `BlogPosting` | `/blog/<slug>`, `/news/<slug>`, guides |
-| `FAQPage` | `/faq`, and FAQ sections within pillars |
-| `JobPosting` | `/careers/vacancies/<slug>` |
-| `BreadcrumbList` | Every page at depth ≥ 3 |
-| `Person` | `/about/leadership/<slug>`, content authors |
-| `Review`, `AggregateRating` | `/testimonials`, case studies where genuine |
+| Type                            | Applied to                                       |
+| ------------------------------- | ------------------------------------------------ |
+| `Organization`, `LocalBusiness` | Site-wide, `/about`, `/about/offices`            |
+| `Service`                       | `/services/<slug>` and sub-services              |
+| `Course`, `CourseInstance`      | `/training/courses/<slug>`, `/training/schedule` |
+| `Article`, `BlogPosting`        | `/blog/<slug>`, `/news/<slug>`, guides           |
+| `FAQPage`                       | `/faq`, and FAQ sections within pillars          |
+| `JobPosting`                    | `/careers/vacancies/<slug>`                      |
+| `BreadcrumbList`                | Every page at depth ≥ 3                          |
+| `Person`                        | `/about/leadership/<slug>`, content authors      |
+| `Review`, `AggregateRating`     | `/testimonials`, case studies where genuine      |
 
 `Course` markup on `/training/courses/<slug>` is the highest-value item, since course rich results carry provider, price, and delivery mode directly into the search listing.
 
@@ -1257,40 +1257,40 @@ Readiness is preserved by three constraints instead: the default locale never ca
 
 Document 03.5 §10.1 forbids branching on role names. This matrix therefore maps **route group → required permission → roles that hold it**. The roles column is informational; the permission is the contract.
 
-| Route group | Access | Required permission | Roles holding it |
-| --- | --- | --- | --- |
-| `/`, `/services/*`, `/industries/*`, `/blog/*`, `/knowledge/*`, `/case-studies/*`, `/about/*`, `/careers/*`, `/legal/*`, `/faq`, `/pricing`, `/search`, `/sitemap` | **Public** | none | Everyone |
-| `/contact`, `/book-consultation`, `/careers/vacancies/*/apply`, `/newsletter/*` | **Public write** | none (rate-limited) | Everyone |
-| `/training`, `/training/courses/*`, `/training/verify` | **Public** | none | Everyone |
-| `/portal/*` | **Client** | `portal.access` | Registered Client |
-| `/portal/company/users*` | **Client admin** | `client.user.manage` | Client administrator |
-| `/portal/invoices/*` | **Client** | `finance.invoice.view.own` | Registered Client |
-| `/learn/*` (learner) | **Authenticated** | `learning.enrolment.access` | Student, and any role enrolled |
-| `/learn/instructor/*` | **Trainer** | `training.course.author` | Trainer |
-| `/learn/instructor/marking/*` | **Trainer** | `training.assessment.mark` | Trainer |
-| `/staff/*` (shared) | **Internal** | `staff.access` | All internal roles |
-| `/staff/my-clients`, `/staff/audits/*`, `/staff/inspections/*`, `/staff/risk-assessments/*` | **Consultant** | `consultancy.audit.conduct` | Consultant, Operations Manager |
-| `/staff/audits/*/report` (issuance) | **Consultant** | `consultancy.audit.issue` | Consultant (senior), Operations Manager |
-| `/staff/crm/*`, `/staff/clients/*` | **Internal** | `crm.client.view` | Operations, Marketing, Support, Finance |
-| `/staff/assignments`, `/staff/scheduling` | **Operations** | `operations.assignment.manage` | Operations Manager |
-| `/staff/approvals/*` | **Approver** | `operations.approval.action` | Operations Manager, Admin |
-| `/staff/hr/*` | **HR only** | `hr.record.view` | HR |
-| `/staff/finance/*` | **Finance only** | `finance.invoice.manage` | Finance |
-| `/staff/marketing/*` | **Marketing only** | `marketing.content.publish` | Marketing |
-| `/staff/support/*` | **Support** | `support.ticket.manage` | Customer Support |
-| `/admin/*` | **Admin** | `admin.access` | Admin, Super Admin |
-| `/admin/users/*`, `/admin/roles/*` | **Admin** | `identity.user.manage` | Admin, Super Admin |
-| `/admin/cms/*`, `/admin/media/*` | **Admin** | `cms.content.manage` | Admin, Marketing (scoped) |
-| `/admin/organizations/*`, `/admin/projects`, `/admin/invoices` | **Cross-tenant** | `platform.tenant.view` | Admin, Super Admin |
-| `/admin/audit-logs/*` | **Admin** | `platform.audit.read` | Admin, Super Admin |
-| `/admin/security/*`, `/admin/backups`, `/admin/environment`, `/admin/settings/legal` | **Super Admin only** | `platform.security.manage` | Super Admin |
-| `/admin/feature-flags`, `/admin/api-keys`, `/admin/integrations/*` | **Super Admin** | `platform.integration.manage` | Super Admin |
+| Route group                                                                                                                                                        | Access               | Required permission            | Roles holding it                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- | ------------------------------ | --------------------------------------- |
+| `/`, `/services/*`, `/industries/*`, `/blog/*`, `/knowledge/*`, `/case-studies/*`, `/about/*`, `/careers/*`, `/legal/*`, `/faq`, `/pricing`, `/search`, `/sitemap` | **Public**           | none                           | Everyone                                |
+| `/contact`, `/book-consultation`, `/careers/vacancies/*/apply`, `/newsletter/*`                                                                                    | **Public write**     | none (rate-limited)            | Everyone                                |
+| `/training`, `/training/courses/*`, `/training/verify`                                                                                                             | **Public**           | none                           | Everyone                                |
+| `/portal/*`                                                                                                                                                        | **Client**           | `portal.access`                | Registered Client                       |
+| `/portal/company/users*`                                                                                                                                           | **Client admin**     | `client.user.manage`           | Client administrator                    |
+| `/portal/invoices/*`                                                                                                                                               | **Client**           | `finance.invoice.view.own`     | Registered Client                       |
+| `/learn/*` (learner)                                                                                                                                               | **Authenticated**    | `learning.enrolment.access`    | Student, and any role enrolled          |
+| `/learn/instructor/*`                                                                                                                                              | **Trainer**          | `training.course.author`       | Trainer                                 |
+| `/learn/instructor/marking/*`                                                                                                                                      | **Trainer**          | `training.assessment.mark`     | Trainer                                 |
+| `/staff/*` (shared)                                                                                                                                                | **Internal**         | `staff.access`                 | All internal roles                      |
+| `/staff/my-clients`, `/staff/audits/*`, `/staff/inspections/*`, `/staff/risk-assessments/*`                                                                        | **Consultant**       | `consultancy.audit.conduct`    | Consultant, Operations Manager          |
+| `/staff/audits/*/report` (issuance)                                                                                                                                | **Consultant**       | `consultancy.audit.issue`      | Consultant (senior), Operations Manager |
+| `/staff/crm/*`, `/staff/clients/*`                                                                                                                                 | **Internal**         | `crm.client.view`              | Operations, Marketing, Support, Finance |
+| `/staff/assignments`, `/staff/scheduling`                                                                                                                          | **Operations**       | `operations.assignment.manage` | Operations Manager                      |
+| `/staff/approvals/*`                                                                                                                                               | **Approver**         | `operations.approval.action`   | Operations Manager, Admin               |
+| `/staff/hr/*`                                                                                                                                                      | **HR only**          | `hr.record.view`               | HR                                      |
+| `/staff/finance/*`                                                                                                                                                 | **Finance only**     | `finance.invoice.manage`       | Finance                                 |
+| `/staff/marketing/*`                                                                                                                                               | **Marketing only**   | `marketing.content.publish`    | Marketing                               |
+| `/staff/support/*`                                                                                                                                                 | **Support**          | `support.ticket.manage`        | Customer Support                        |
+| `/admin/*`                                                                                                                                                         | **Admin**            | `admin.access`                 | Admin, Super Admin                      |
+| `/admin/users/*`, `/admin/roles/*`                                                                                                                                 | **Admin**            | `identity.user.manage`         | Admin, Super Admin                      |
+| `/admin/cms/*`, `/admin/media/*`                                                                                                                                   | **Admin**            | `cms.content.manage`           | Admin, Marketing (scoped)               |
+| `/admin/organizations/*`, `/admin/projects`, `/admin/invoices`                                                                                                     | **Cross-tenant**     | `platform.tenant.view`         | Admin, Super Admin                      |
+| `/admin/audit-logs/*`                                                                                                                                              | **Admin**            | `platform.audit.read`          | Admin, Super Admin                      |
+| `/admin/security/*`, `/admin/backups`, `/admin/environment`, `/admin/settings/legal`                                                                               | **Super Admin only** | `platform.security.manage`     | Super Admin                             |
+| `/admin/feature-flags`, `/admin/api-keys`, `/admin/integrations/*`                                                                                                 | **Super Admin**      | `platform.integration.manage`  | Super Admin                             |
 
 ### 15.2 Three boundary rules
 
 **Navigation hiding is presentation; the server is the boundary.** A route absent from a user's navigation is still authorised on every request. Document 03.5 §10.7 is binding: a client-side guard is a suggestion.
 
-**Tenant scope is orthogonal to permission.** `finance.invoice.view.own` grants a client access to invoices; *which* invoices is determined by the authorisation context in the repository layer, never by the route. This is why no `/portal` route accepts an organisation identifier.
+**Tenant scope is orthogonal to permission.** `finance.invoice.view.own` grants a client access to invoices; _which_ invoices is determined by the authorisation context in the repository layer, never by the route. This is why no `/portal` route accepts an organisation identifier.
 
 **Cross-tenant access is the audited exception.** Only the three `/admin` route groups marked cross-tenant may span organisations, and every access — not merely every mutation — is logged (§8.4).
 
@@ -1298,12 +1298,12 @@ Document 03.5 §10.1 forbids branching on role names. This matrix therefore maps
 
 Four routes accept unauthenticated writes, and each is an abuse surface requiring the §11.5 and §11.4 controls from Document 03.5:
 
-| Route | Risk | Controls |
-| --- | --- | --- |
-| `/contact` | Spam, injection | Rate limit, validation, spam scoring, size cap |
-| `/book-consultation` | Slot exhaustion | Rate limit, database-level slot constraint |
+| Route                        | Risk                      | Controls                                                                                    |
+| ---------------------------- | ------------------------- | ------------------------------------------------------------------------------------------- |
+| `/contact`                   | Spam, injection           | Rate limit, validation, spam scoring, size cap                                              |
+| `/book-consultation`         | Slot exhaustion           | Rate limit, database-level slot constraint                                                  |
 | `/careers/vacancies/*/apply` | **Anonymous file upload** | Rate limit, content inspection, malware scan, pre-signed direct upload, generated filenames |
-| `/newsletter/*` | List abuse | Double opt-in, rate limit, one-click unsubscribe |
+| `/newsletter/*`              | List abuse                | Double opt-in, rate limit, one-click unsubscribe                                            |
 
 The application route is the highest-risk unauthenticated surface in the platform and should be built last among the four, after the file storage architecture (Document 03, D4) exists.
 
@@ -1319,14 +1319,14 @@ These align with Document 03.5 §7.3, which already sets kebab-case front-end ro
 
 ### 16.2 Prefix allocation
 
-| Prefix | Application | Indexed |
-| --- | --- | --- |
-| `/` | Public website | Yes |
-| `/portal` | Client Portal | No |
-| `/learn` | Training / LMS | No |
-| `/staff` | Staff and Consultant Portal | No |
-| `/admin` | Administration Portal | No |
-| `/api/v1` | API | No |
+| Prefix    | Application                 | Indexed |
+| --------- | --------------------------- | ------- |
+| `/`       | Public website              | Yes     |
+| `/portal` | Client Portal               | No      |
+| `/learn`  | Training / LMS              | No      |
+| `/staff`  | Staff and Consultant Portal | No      |
+| `/admin`  | Administration Portal       | No      |
+| `/api/v1` | API                         | No      |
 
 Short, memorable, unambiguous, and free of collisions with public content namespaces. `/portal` and `/learn` are preferred over `/client` and `/lms`: the first names the thing the user uses rather than the label the business applies to them, and the second avoids an initialism.
 
@@ -1346,22 +1346,22 @@ Genuine state transitions are modelled as the creation of a sub-resource rather 
 
 Three permanent (301) redirects are needed to reach the target structure:
 
-| From (current) | To (target) |
-| --- | --- |
-| `/privacy-policy` | `/legal/privacy` |
-| `/terms-conditions` | `/legal/terms` |
-| `/cookie-policy` | `/legal/cookies` |
+| From (current)      | To (target)      |
+| ------------------- | ---------------- |
+| `/privacy-policy`   | `/legal/privacy` |
+| `/terms-conditions` | `/legal/terms`   |
+| `/cookie-policy`    | `/legal/cookies` |
 
 **These cost nothing today and will cost link equity after launch.** The site is not publicly launched — the contact form discards submissions and metadata is still placeholder — so these URLs have no inbound links or accumulated ranking. Making the change before launch avoids a redirect chain that would otherwise persist for the life of the platform. A redirect map belongs at `/admin/cms/redirects` from the outset, because URL changes are inevitable over years and an unmanaged redirect table becomes an outage.
 
 ### 16.7 Stability guarantees
 
-| Tier | Guarantee | Applies to |
-| --- | --- | --- |
-| Permanent | Never changes without a redirect and a recorded decision | `/services/*`, `/industries/*`, `/training/courses/*`, `/knowledge/*`, `/legal/*` |
-| Stable | Changes only with a redirect | `/blog/*`, `/case-studies/*`, `/about/*` |
-| Internal | May change with releases; not indexed, not externally linked | `/portal/*`, `/learn/*`, `/staff/*`, `/admin/*` |
-| Versioned | Breaking changes require a new version | `/api/v1/*` |
+| Tier      | Guarantee                                                    | Applies to                                                                        |
+| --------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| Permanent | Never changes without a redirect and a recorded decision     | `/services/*`, `/industries/*`, `/training/courses/*`, `/knowledge/*`, `/legal/*` |
+| Stable    | Changes only with a redirect                                 | `/blog/*`, `/case-studies/*`, `/about/*`                                          |
+| Internal  | May change with releases; not indexed, not externally linked | `/portal/*`, `/learn/*`, `/staff/*`, `/admin/*`                                   |
+| Versioned | Breaking changes require a new version                       | `/api/v1/*`                                                                       |
 
 The distinction matters operationally: internal portal routes may be refactored freely, which is what makes the §11.3 depth recommendations cheap to adopt. Public routes may not.
 
@@ -1373,29 +1373,29 @@ The distinction matters operationally: internal portal routes may be refactored 
 
 Ownership means responsibility for accuracy and currency. Approval means the right to publish.
 
-| Content area | Routes | Owner | Approver |
-| --- | --- | --- | --- |
-| Homepage, brand messaging | `/` | Marketing | Directors |
-| Service pages | `/services/*` | Operations | Directors |
-| Industry pages | `/industries/*` | Marketing | Operations |
-| Course catalogue and content | `/training/*`, `/learn/instructor/*` | Training | Training lead + accrediting body |
-| Guides, templates, policies, legislation | `/knowledge/*` | HSEQ Consultants | Operations (technical accuracy) |
-| Glossary | `/knowledge/glossary/*` | HSEQ Consultants | Operations |
-| Blog and news | `/blog/*`, `/news/*` | Marketing | Marketing lead |
-| Case studies | `/case-studies/*` | Marketing | **Client written approval** + Operations |
-| Testimonials | `/testimonials` | Marketing | **Client written approval** |
-| About, leadership, accreditations, partners | `/about/*` | Marketing | Directors |
-| Careers and vacancies | `/careers/*` | HR | HR lead |
-| Pricing | `/pricing` | Finance | Directors |
-| FAQ | `/faq` | Customer Support | Operations |
-| Legal and compliance | `/legal/*` | Directors | **External legal counsel** |
-| Accessibility statement | `/legal/accessibility` | Engineering | Directors |
-| SEO metadata and structured data | site-wide | Marketing | Engineering (technical correctness) |
-| Redirects | `/admin/cms/redirects` | Engineering | Engineering |
-| Internal knowledge base | `/staff/knowledge/*` | Operations | Operations |
-| Internal announcements | `/staff/announcements` | Directors / HR | Directors |
-| Notification and email templates | `/admin/*templates` | Marketing (copy) | Engineering (variables) |
-| Platform settings, roles, security | `/admin/security/*`, `/admin/settings/*` | IT Administrator | Super Admin |
+| Content area                                | Routes                                   | Owner            | Approver                                 |
+| ------------------------------------------- | ---------------------------------------- | ---------------- | ---------------------------------------- |
+| Homepage, brand messaging                   | `/`                                      | Marketing        | Directors                                |
+| Service pages                               | `/services/*`                            | Operations       | Directors                                |
+| Industry pages                              | `/industries/*`                          | Marketing        | Operations                               |
+| Course catalogue and content                | `/training/*`, `/learn/instructor/*`     | Training         | Training lead + accrediting body         |
+| Guides, templates, policies, legislation    | `/knowledge/*`                           | HSEQ Consultants | Operations (technical accuracy)          |
+| Glossary                                    | `/knowledge/glossary/*`                  | HSEQ Consultants | Operations                               |
+| Blog and news                               | `/blog/*`, `/news/*`                     | Marketing        | Marketing lead                           |
+| Case studies                                | `/case-studies/*`                        | Marketing        | **Client written approval** + Operations |
+| Testimonials                                | `/testimonials`                          | Marketing        | **Client written approval**              |
+| About, leadership, accreditations, partners | `/about/*`                               | Marketing        | Directors                                |
+| Careers and vacancies                       | `/careers/*`                             | HR               | HR lead                                  |
+| Pricing                                     | `/pricing`                               | Finance          | Directors                                |
+| FAQ                                         | `/faq`                                   | Customer Support | Operations                               |
+| Legal and compliance                        | `/legal/*`                               | Directors        | **External legal counsel**               |
+| Accessibility statement                     | `/legal/accessibility`                   | Engineering      | Directors                                |
+| SEO metadata and structured data            | site-wide                                | Marketing        | Engineering (technical correctness)      |
+| Redirects                                   | `/admin/cms/redirects`                   | Engineering      | Engineering                              |
+| Internal knowledge base                     | `/staff/knowledge/*`                     | Operations       | Operations                               |
+| Internal announcements                      | `/staff/announcements`                   | Directors / HR   | Directors                                |
+| Notification and email templates            | `/admin/*templates`                      | Marketing (copy) | Engineering (variables)                  |
+| Platform settings, roles, security          | `/admin/security/*`, `/admin/settings/*` | IT Administrator | Super Admin                              |
 
 ### 17.2 Two hard approval gates
 
@@ -1405,16 +1405,16 @@ Ownership means responsibility for accuracy and currency. Approval means the rig
 
 ### 17.3 Review cycles
 
-| Content | Cycle | Trigger |
-| --- | --- | --- |
-| Legislation explainers | Quarterly, and on regulatory change | Regulatory monitoring |
-| Service and industry pages | Annually | Service change |
-| Guides and templates | Annually | Legislation or practice change |
-| Course content | Per accreditation cycle | Accrediting body requirement |
-| Case studies | Every two years | Client relationship change |
-| Legal pages | Annually, and on regulatory change | Counsel review |
-| Accessibility statement | Annually, and on significant UI change | WCAG conformance change |
-| Pricing | As required | Commercial decision |
+| Content                    | Cycle                                  | Trigger                        |
+| -------------------------- | -------------------------------------- | ------------------------------ |
+| Legislation explainers     | Quarterly, and on regulatory change    | Regulatory monitoring          |
+| Service and industry pages | Annually                               | Service change                 |
+| Guides and templates       | Annually                               | Legislation or practice change |
+| Course content             | Per accreditation cycle                | Accrediting body requirement   |
+| Case studies               | Every two years                        | Client relationship change     |
+| Legal pages                | Annually, and on regulatory change     | Counsel review                 |
+| Accessibility statement    | Annually, and on significant UI change | WCAG conformance change        |
+| Pricing                    | As required                            | Commercial decision            |
 
 Evergreen content that is not reviewed silently becomes wrong, and for a compliance consultancy, wrong guidance is a professional liability rather than a stale page. Review dates are tracked in the CMS with overdue items surfacing in `/staff/tasks`.
 
@@ -1485,25 +1485,25 @@ Namespaces reserved now so that BRS §4's future products land predictably. **No
 
 ### 19.2 Reserved authenticated namespaces
 
-| Future product | Reserved namespace | Primary ecosystem | Notes |
-| --- | --- | --- | --- |
-| AI HSEQ Assistant | `/portal/assistant`, `/staff/assistant` | Both | Cross-cutting; must respect the acting authorisation context, and must never surface content the user could not otherwise reach |
-| Risk Assessment Builder | `/staff/risk-assessments/builder`, `/portal/risk-assessments` | Staff, Client | Namespace already partly in use (§6); builder extends it |
-| Method Statement Builder | `/staff/method-statements` | Staff | Versioned, approval-gated, same pattern as risk assessments |
-| COSHH Manager | `/staff/coshh`, `/portal/coshh` | Both | Substance register plus assessments |
-| Incident Reporting | `/staff/incidents`, `/portal/incidents/new` | Both | Staff namespace already in use; client-facing reporting is new |
-| Inspection App | `/staff/inspections` | Staff | Already reserved (§6); the mobile and offline surface |
-| Permit-to-Work | `/staff/permits`, `/portal/permits` | Both | Approval workflow with time-bounded validity |
-| Equipment Register | `/portal/equipment`, `/staff/equipment` | Both | Asset records with inspection cycles |
-| Compliance Dashboard | `/portal/compliance` | Client | Extends `/portal/compliance-calendar` |
-| Contractor Portal | `/contractor` | New ecosystem | Third-party organisations; a new tenant *relationship type*, not a new tenancy model |
-| Supplier Portal | `/supplier` | New ecosystem | As above |
-| Customer Success Portal | folded into `/portal` | Client | An experience, not an ecosystem — same reasoning as §2.3 |
-| Mobile application | `/api/v1` only | — | No new front-end routes; see §19.4 |
+| Future product           | Reserved namespace                                            | Primary ecosystem | Notes                                                                                                                           |
+| ------------------------ | ------------------------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| AI HSEQ Assistant        | `/portal/assistant`, `/staff/assistant`                       | Both              | Cross-cutting; must respect the acting authorisation context, and must never surface content the user could not otherwise reach |
+| Risk Assessment Builder  | `/staff/risk-assessments/builder`, `/portal/risk-assessments` | Staff, Client     | Namespace already partly in use (§6); builder extends it                                                                        |
+| Method Statement Builder | `/staff/method-statements`                                    | Staff             | Versioned, approval-gated, same pattern as risk assessments                                                                     |
+| COSHH Manager            | `/staff/coshh`, `/portal/coshh`                               | Both              | Substance register plus assessments                                                                                             |
+| Incident Reporting       | `/staff/incidents`, `/portal/incidents/new`                   | Both              | Staff namespace already in use; client-facing reporting is new                                                                  |
+| Inspection App           | `/staff/inspections`                                          | Staff             | Already reserved (§6); the mobile and offline surface                                                                           |
+| Permit-to-Work           | `/staff/permits`, `/portal/permits`                           | Both              | Approval workflow with time-bounded validity                                                                                    |
+| Equipment Register       | `/portal/equipment`, `/staff/equipment`                       | Both              | Asset records with inspection cycles                                                                                            |
+| Compliance Dashboard     | `/portal/compliance`                                          | Client            | Extends `/portal/compliance-calendar`                                                                                           |
+| Contractor Portal        | `/contractor`                                                 | New ecosystem     | Third-party organisations; a new tenant _relationship type_, not a new tenancy model                                            |
+| Supplier Portal          | `/supplier`                                                   | New ecosystem     | As above                                                                                                                        |
+| Customer Success Portal  | folded into `/portal`                                         | Client            | An experience, not an ecosystem — same reasoning as §2.3                                                                        |
+| Mobile application       | `/api/v1` only                                                | —                 | No new front-end routes; see §19.4                                                                                              |
 
 ### 19.3 Two architectural notes on reservation
 
-**Contractor and Supplier portals introduce a new relationship type, not a new tenancy model.** Both involve third-party organisations that must see a *slice* of a client's data. This is expressible within the existing single-organisation tenancy plus a cross-organisation grant, and it must not be implemented by relaxing tenant isolation. Reserving the namespace is cheap; the data model implication should be revisited before either is built, because getting it wrong reopens BRS §10.
+**Contractor and Supplier portals introduce a new relationship type, not a new tenancy model.** Both involve third-party organisations that must see a _slice_ of a client's data. This is expressible within the existing single-organisation tenancy plus a cross-organisation grant, and it must not be implemented by relaxing tenant isolation. Reserving the namespace is cheap; the data model implication should be revisited before either is built, because getting it wrong reopens BRS §10.
 
 **The AI Assistant is the highest-risk future product from an IA and security standpoint.** It is cross-cutting by nature, which means it will be tempted to read across every domain. It must operate strictly within the acting user's authorisation context and must never surface content the user could not reach directly — the same rule as permission-aware search (§13.6), and for the same reason. Reserving `/portal/assistant` and `/staff/assistant` separately rather than a single global `/assistant` is deliberate: it makes the scoping boundary explicit in the URL.
 
@@ -1549,35 +1549,30 @@ No namespace is reserved for a public API, a marketplace, a community forum, or 
 
 ### 20.3 Bottlenecks and risks
 
-| Risk | Severity | Where it bites | Mitigation |
-| --- | --- | --- | --- |
-| Permission-aware search leaking across tenants | **Critical** | `/staff`, `/portal` search | Query-time filtering in the repository; cross-tenant test mandatory (§13.6) |
-| Prerendering pipeline not delivered | **Launch gate** | All public routes | Scoped by §4; owns BRS §9 SEO compliance |
-| Contact form discarding submissions | **Launch gate** | Every public journey terminates here | §10.2; first persistence requirement |
-| Cross-tenant admin routes misused | High | `/admin/organizations`, `/admin/projects` | Platform-scope permission, log reads as well as writes, unmistakable tenant context (§8.4) |
-| Anonymous file upload | High | `/careers/vacancies/*/apply` | Build last, after file storage architecture exists (§15.3) |
-| Composite screens becoming unmaintainable | Medium | Project record, course builder | Deliberate design; feature-folder discipline |
-| Facet pages diluting canonical courses | Medium | `/training/*` facets | Strict canonical rules (§14.5) |
-| URL churn after launch | Medium | Public routes | Make the three redirects now while free (§16.6) |
-| Navigation composition drifting from permissions | Medium | All portals | Derive navigation from the permission catalogue, never from a parallel list |
-| Notification deep links breaking | Low | Email → portal | Internal route stability tier is weak by design (§16.7); deep links need stable targets, which is a further argument for §11.3 |
+| Risk                                             | Severity        | Where it bites                            | Mitigation                                                                                                                     |
+| ------------------------------------------------ | --------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Permission-aware search leaking across tenants   | **Critical**    | `/staff`, `/portal` search                | Query-time filtering in the repository; cross-tenant test mandatory (§13.6)                                                    |
+| Prerendering pipeline not delivered              | **Launch gate** | All public routes                         | Scoped by §4; owns BRS §9 SEO compliance                                                                                       |
+| Contact form discarding submissions              | **Launch gate** | Every public journey terminates here      | §10.2; first persistence requirement                                                                                           |
+| Cross-tenant admin routes misused                | High            | `/admin/organizations`, `/admin/projects` | Platform-scope permission, log reads as well as writes, unmistakable tenant context (§8.4)                                     |
+| Anonymous file upload                            | High            | `/careers/vacancies/*/apply`              | Build last, after file storage architecture exists (§15.3)                                                                     |
+| Composite screens becoming unmaintainable        | Medium          | Project record, course builder            | Deliberate design; feature-folder discipline                                                                                   |
+| Facet pages diluting canonical courses           | Medium          | `/training/*` facets                      | Strict canonical rules (§14.5)                                                                                                 |
+| URL churn after launch                           | Medium          | Public routes                             | Make the three redirects now while free (§16.6)                                                                                |
+| Navigation composition drifting from permissions | Medium          | All portals                               | Derive navigation from the permission catalogue, never from a parallel list                                                    |
+| Notification deep links breaking                 | Low             | Email → portal                            | Internal route stability tier is weak by design (§16.7); deep links need stable targets, which is a further argument for §11.3 |
 
 ### 20.4 Recommendations
 
 **Before UI design begins.**
+
 1. Adopt the five §11.3 depth fixes, particularly promoting audits to `/portal/audits/<id>`. Cheapest now, and it makes notification deep links stable.
 2. Make the three §16.6 legal redirects. Free before launch; permanent cost after.
 3. Confirm the single-origin path-prefixed topology with DevOps, since `.replit` currently declares no build or run command (D19) and this is a prerequisite for first deployment.
 
-**Before the first portal is built.**
-4. Specify the prerendering pipeline as a named deliverable with §4 as its input.
-5. Design the permission-aware search contract before any search UI, since it is the highest-severity risk in this document.
-6. Design the composite project record screen first — it is the pattern every other record view will copy.
+**Before the first portal is built.** 4. Specify the prerendering pipeline as a named deliverable with §4 as its input. 5. Design the permission-aware search contract before any search UI, since it is the highest-severity risk in this document. 6. Design the composite project record screen first — it is the pattern every other record view will copy.
 
-**Before the public site launches.**
-7. Wire the contact form to `/staff/crm/enquiries`, closing the launch gate and the §10.2 handover.
-8. Deliver per-route metadata and structured data for all 56 indexed route patterns.
-9. Publish `/legal/accessibility` with a tested conformance claim.
+**Before the public site launches.** 7. Wire the contact form to `/staff/crm/enquiries`, closing the launch gate and the §10.2 handover. 8. Deliver per-route metadata and structured data for all 56 indexed route patterns. 9. Publish `/legal/accessibility` with a tested conformance claim.
 
 **Sequencing.** Build in journey order, not sitemap order. The public conversion path (§10.1, §10.2) first, because it is the only ecosystem currently generating value and both launch gates sit on it. Then the Client Portal, because it retains the clients that path wins. Then the LMS, then internal tooling — which is currently done by humans and therefore not blocking revenue.
 
@@ -1587,47 +1582,46 @@ No namespace is reserved for a public API, a marketplace, a community forum, or 
 
 Coverage confirmation against the brief.
 
-| # | Required section | Delivered in | Notes |
-| --- | --- | --- | --- |
-| 1 | Executive Summary | §1 | Includes closure of the framework question |
-| 2 | Platform Ecosystem | §2 | 6 ecosystems → 5 applications; topology decision |
-| 3 | Global Navigation | §3 | 10 mechanisms |
-| 4 | Complete Public Sitemap | §4 | 70 route patterns; omissions justified |
-| 5 | Client Portal IA | §5 | 29 routes |
-| 6 | Consultant Portal IA | §6 | 27 routes; delivery model in §2.3 |
-| 7 | Staff Portal IA | §7 | 60 routes across 6 role experiences |
-| 8 | Admin Portal IA | §8 | 70 routes |
-| 9 | LMS IA | §9 | 31 routes, learner and trainer |
-| 10 | User Journeys | §10 | 7 journeys with handover points |
-| 11 | Navigation Depth Analysis | §11 | Every route; 4 flagged with fixes |
-| 12 | Content Relationships | §12 | Graph, cardinality, cross-linking rules |
-| 13 | Search Architecture | §13 | Two indexes; the critical security rule |
-| 14 | SEO Architecture | §14 | Tiers, clusters, canonicals, structured data |
-| 15 | Permission Matrix | §15 | Permission-based per Document 03.5 |
-| 16 | URL Strategy | §16 | Conventions, prefixes, redirects, stability tiers |
-| 17 | Content Governance | §17 | Ownership, approval gates, review cycles |
-| 18 | Accessibility | §18 | Navigation-level WCAG 2.2 AA |
-| 19 | Future Expansion | §19 | 13 namespaces reserved |
-| 20 | Architecture Review | §20 | Strengths, weaknesses, risks, sequencing |
+| #   | Required section          | Delivered in | Notes                                             |
+| --- | ------------------------- | ------------ | ------------------------------------------------- |
+| 1   | Executive Summary         | §1           | Includes closure of the framework question        |
+| 2   | Platform Ecosystem        | §2           | 6 ecosystems → 5 applications; topology decision  |
+| 3   | Global Navigation         | §3           | 10 mechanisms                                     |
+| 4   | Complete Public Sitemap   | §4           | 70 route patterns; omissions justified            |
+| 5   | Client Portal IA          | §5           | 29 routes                                         |
+| 6   | Consultant Portal IA      | §6           | 27 routes; delivery model in §2.3                 |
+| 7   | Staff Portal IA           | §7           | 60 routes across 6 role experiences               |
+| 8   | Admin Portal IA           | §8           | 70 routes                                         |
+| 9   | LMS IA                    | §9           | 31 routes, learner and trainer                    |
+| 10  | User Journeys             | §10          | 7 journeys with handover points                   |
+| 11  | Navigation Depth Analysis | §11          | Every route; 4 flagged with fixes                 |
+| 12  | Content Relationships     | §12          | Graph, cardinality, cross-linking rules           |
+| 13  | Search Architecture       | §13          | Two indexes; the critical security rule           |
+| 14  | SEO Architecture          | §14          | Tiers, clusters, canonicals, structured data      |
+| 15  | Permission Matrix         | §15          | Permission-based per Document 03.5                |
+| 16  | URL Strategy              | §16          | Conventions, prefixes, redirects, stability tiers |
+| 17  | Content Governance        | §17          | Ownership, approval gates, review cycles          |
+| 18  | Accessibility             | §18          | Navigation-level WCAG 2.2 AA                      |
+| 19  | Future Expansion          | §19          | 13 namespaces reserved                            |
+| 20  | Architecture Review       | §20          | Strengths, weaknesses, risks, sequencing          |
 
 **Approximate route totals:** 70 public, 29 client portal, 27 consultant, 60 staff, 70 admin, 31 LMS — **roughly 250 addressable route patterns** across five applications. Consultant and staff routes overlap by design (§2.3), and 30 named service and industry pages are template instances rather than additional patterns.
 
 ### Alignment with approved decisions
 
-| Decision | How this document respects it |
-| --- | --- |
-| Express is the single backend | One API at `/api/v1` serving all five front ends; no per-app backend |
-| React + Vite is the frontend foundation | No framework migration proposed; §1.3 and §14.1 accept the resulting SEO obligation as an explicit deliverable |
-| Shared UI components are reused | `lib/ui` is the sole primitive source; §2.3 folds consultant and trainer experiences into existing applications rather than duplicating |
-| Repository pattern is mandatory | Tenant scoping and permission-aware search specified at the repository layer (§5.1, §13.6, §15.2) |
-| Backend uses layer-based packages | No change proposed; §16.4 aligns route nouns to API resources |
-| Frontend uses feature-based organisation | Portal routes map to feature folders per Document 03.5 §6.3 |
-| Multi-tenant architecture enforced | No route accepts an organisation identifier; cross-tenant access confined to three audited admin routes |
-| RBAC enforced | §15 expressed as permissions, never role names |
-| Audit logging mandatory | Every `/admin` route audited; cross-tenant reads logged as well as writes |
-| Avoid AI-generated duplication | §2.3 explicitly rejects a sixth application; §4 rejects parallel format hierarchies |
+| Decision                                 | How this document respects it                                                                                                           |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Express is the single backend            | One API at `/api/v1` serving all five front ends; no per-app backend                                                                    |
+| React + Vite is the frontend foundation  | No framework migration proposed; §1.3 and §14.1 accept the resulting SEO obligation as an explicit deliverable                          |
+| Shared UI components are reused          | `lib/ui` is the sole primitive source; §2.3 folds consultant and trainer experiences into existing applications rather than duplicating |
+| Repository pattern is mandatory          | Tenant scoping and permission-aware search specified at the repository layer (§5.1, §13.6, §15.2)                                       |
+| Backend uses layer-based packages        | No change proposed; §16.4 aligns route nouns to API resources                                                                           |
+| Frontend uses feature-based organisation | Portal routes map to feature folders per Document 03.5 §6.3                                                                             |
+| Multi-tenant architecture enforced       | No route accepts an organisation identifier; cross-tenant access confined to three audited admin routes                                 |
+| RBAC enforced                            | §15 expressed as permissions, never role names                                                                                          |
+| Audit logging mandatory                  | Every `/admin` route audited; cross-tenant reads logged as well as writes                                                               |
+| Avoid AI-generated duplication           | §2.3 explicitly rejects a sixth application; §4 rejects parallel format hierarchies                                                     |
 
 ---
 
 _End of document._
-

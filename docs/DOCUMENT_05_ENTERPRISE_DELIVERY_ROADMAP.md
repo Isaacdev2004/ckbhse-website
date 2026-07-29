@@ -16,18 +16,18 @@
 
 Any roadmap that misstates its starting point produces a plausible sequence and a wrong one. The verified state of the repository at `b00fbce`:
 
-| Layer | State | Evidence |
-| --- | --- | --- |
-| Monorepo, tooling, CI | **Complete** | pnpm workspaces, 5 lib packages, CI runs format, lint, typecheck, test, build, and OpenAPI client-sync |
-| Shared design system | **Complete** | `lib/ui`, 55 primitives, sole copy |
-| API hardening | **Complete** | helmet, CORS allowlist, rate limiting, error envelope, structured logging, graceful shutdown, validated env |
-| Database schema | **Empty** | `lib/db/src/schema/index.ts` exports nothing; no `migrations/` directory exists |
-| API surface | **2 endpoints** | `/healthz`, `/readyz` only. No auth, no domain routes, no database connection |
-| Public website | **11 routes** | 12 page files; contact form calls `preventDefault()` and discards; one shared `<title>` |
-| Automated tests | **1 file** | `artifacts/api-server/src/app.test.ts` |
-| CI quality gates | **Partial** | No end-to-end, accessibility, or security scanning |
-| Deployment | **Not wired** | `.replit` declares an autoscale target with no `build` or `run` command |
-| `mockup-sandbox` | **No purpose** | Contains no mockups; debt item D18 |
+| Layer                 | State           | Evidence                                                                                                    |
+| --------------------- | --------------- | ----------------------------------------------------------------------------------------------------------- |
+| Monorepo, tooling, CI | **Complete**    | pnpm workspaces, 5 lib packages, CI runs format, lint, typecheck, test, build, and OpenAPI client-sync      |
+| Shared design system  | **Complete**    | `lib/ui`, 55 primitives, sole copy                                                                          |
+| API hardening         | **Complete**    | helmet, CORS allowlist, rate limiting, error envelope, structured logging, graceful shutdown, validated env |
+| Database schema       | **Empty**       | `lib/db/src/schema/index.ts` exports nothing; no `migrations/` directory exists                             |
+| API surface           | **2 endpoints** | `/healthz`, `/readyz` only. No auth, no domain routes, no database connection                               |
+| Public website        | **11 routes**   | 12 page files; contact form calls `preventDefault()` and discards; one shared `<title>`                     |
+| Automated tests       | **1 file**      | `artifacts/api-server/src/app.test.ts`                                                                      |
+| CI quality gates      | **Partial**     | No end-to-end, accessibility, or security scanning                                                          |
+| Deployment            | **Not wired**   | `.replit` declares an autoscale target with no `build` or `run` command                                     |
+| `mockup-sandbox`      | **No purpose**  | Contains no mockups; debt item D18                                                                          |
 
 The honest summary: **the foundations and the standards are real, and the domain is at zero.** Documents 02 through 04 specify roughly 250 route patterns, a full domain model, and an RBAC scheme, none of which exists in code. There is no `users` table, no session, no tenant, no persistence of any kind.
 
@@ -57,16 +57,16 @@ The alternative approaches were considered and rejected for specific reasons.
 
 ### 1.4 Expected business outcomes
 
-| Outcome | Delivered at | Why it matters |
-| --- | --- | --- |
-| No enquiry is lost | Milestone 2 | Every submission is currently discarded; this is pure recovered revenue |
-| Site is discoverable in search | Milestone 2 | 56 prerendered routes with real metadata, replacing one shared title |
-| Consultations booked without phone calls | Milestone 2 | Removes friction at the highest-intent moment |
-| Clients self-serve compliance status | Milestone 4 | Reduces inbound support load; increases retention |
-| Consultants capture findings on site once | Milestone 5 | Removes duplicate data entry, the largest internal efficiency gain |
-| Training sold and delivered online | Milestone 6 | Opens the second revenue stream |
-| Business publishes content without engineering | Milestone 7 | Removes engineering from the marketing critical path |
-| Internal operations leave spreadsheets | Milestone 8 | Efficiency, not revenue — hence its position |
+| Outcome                                        | Delivered at | Why it matters                                                          |
+| ---------------------------------------------- | ------------ | ----------------------------------------------------------------------- |
+| No enquiry is lost                             | Milestone 2  | Every submission is currently discarded; this is pure recovered revenue |
+| Site is discoverable in search                 | Milestone 2  | 56 prerendered routes with real metadata, replacing one shared title    |
+| Consultations booked without phone calls       | Milestone 2  | Removes friction at the highest-intent moment                           |
+| Clients self-serve compliance status           | Milestone 4  | Reduces inbound support load; increases retention                       |
+| Consultants capture findings on site once      | Milestone 5  | Removes duplicate data entry, the largest internal efficiency gain      |
+| Training sold and delivered online             | Milestone 6  | Opens the second revenue stream                                         |
+| Business publishes content without engineering | Milestone 7  | Removes engineering from the marketing critical path                    |
+| Internal operations leave spreadsheets         | Milestone 8  | Efficiency, not revenue — hence its position                            |
 
 ### 1.5 The single most important recommendation
 
@@ -88,16 +88,16 @@ A slice is the smallest change that delivers observable value across every layer
 
 The reference slices, in dependency order:
 
-| Slice | Produces | Consumes |
-| --- | --- | --- |
-| Enquiry | Public form → staff triage view | — |
-| Identity | Users, sessions, organisations, roles, permissions | — |
-| Project | Staff creates → client views | Identity |
-| Document | Consultant uploads → client downloads | Identity, Project, file storage |
-| Audit | Consultant conducts and issues → client reads | Identity, Project, Document |
-| Invoice | Finance raises → client views and pays | Identity, Project |
-| Course and Enrolment | Admin authors → student learns → certificate issued | Identity |
-| Booking | Public or client books → staff schedules | Identity (partly public) |
+| Slice                | Produces                                            | Consumes                        |
+| -------------------- | --------------------------------------------------- | ------------------------------- |
+| Enquiry              | Public form → staff triage view                     | —                               |
+| Identity             | Users, sessions, organisations, roles, permissions  | —                               |
+| Project              | Staff creates → client views                        | Identity                        |
+| Document             | Consultant uploads → client downloads               | Identity, Project, file storage |
+| Audit                | Consultant conducts and issues → client reads       | Identity, Project, Document     |
+| Invoice              | Finance raises → client views and pays              | Identity, Project               |
+| Course and Enrolment | Admin authors → student learns → certificate issued | Identity                        |
+| Booking              | Public or client books → staff schedules            | Identity (partly public)        |
 
 ### 2.2 Incremental delivery
 
@@ -117,7 +117,7 @@ Three items carry disproportionate risk and are therefore scheduled earlier than
 
 ### 2.4 Customer-value-first delivery
 
-Within any milestone, work that a customer can see precedes work only engineers can see, unless a dependency forbids it. The ordering test is: *if we stopped here, would anything be better for a user than it was yesterday?* A phase that cannot answer yes is either mis-scoped or is genuine foundation work that should be named as such rather than disguised as a feature.
+Within any milestone, work that a customer can see precedes work only engineers can see, unless a dependency forbids it. The ordering test is: _if we stopped here, would anything be better for a user than it was yesterday?_ A phase that cannot answer yes is either mis-scoped or is genuine foundation work that should be named as such rather than disguised as a feature.
 
 This is why Milestone 1 completes the public website before Milestone 3 builds authentication, even though authentication is architecturally more fundamental. Nothing about the public site needs it.
 
@@ -157,19 +157,19 @@ A roadmap that only adds is a wish list. Three explicit removals:
 
 Eleven milestones. Complexity is expressed in **team-weeks for the reference team in §21**, not calendar dates, per the brief.
 
-| # | Milestone | Outcome | Complexity | Value | Risk |
-| --- | --- | --- | --- | --- | --- |
-| M0 | Foundation Complete | Deployable pipeline, real schema, full CI gates | 3–4 wk | Enabling | Low |
-| M1 | Public Website Complete | 56 prerendered routes, real metadata, WCAG AA | 6–8 wk | High | Low |
-| M2 | Lead Generation — **first production launch** | No enquiry lost; site live and indexed | 2–3 wk | **Highest** | Medium |
-| M3 | Identity & Access Foundation | Auth, RBAC, tenancy, audit logging | 5–7 wk | Enabling | **High** |
-| M4 | Client Portal Core | Clients see projects and documents | 8–10 wk | High | Medium |
-| M5 | Consultancy Delivery Platform | Consultants capture and issue on site | 8–10 wk | High | **High** |
-| M6 | Training Platform (LMS) | Courses sold and delivered online | 10–12 wk | High | Medium |
-| M7 | Administration & CMS | Business publishes without engineering | 8–10 wk | Medium | Medium |
-| M8 | Staff Operations Platform | Internal operations leave spreadsheets | 8–10 wk | Medium | Low |
-| M9 | Enterprise Hardening | Security, performance, resilience verified | 4–6 wk | Enabling | Medium |
-| M10 | Full Platform GA | All ecosystems live under one operating model | 2–3 wk | High | Low |
+| #   | Milestone                                     | Outcome                                         | Complexity | Value       | Risk     |
+| --- | --------------------------------------------- | ----------------------------------------------- | ---------- | ----------- | -------- |
+| M0  | Foundation Complete                           | Deployable pipeline, real schema, full CI gates | 3–4 wk     | Enabling    | Low      |
+| M1  | Public Website Complete                       | 56 prerendered routes, real metadata, WCAG AA   | 6–8 wk     | High        | Low      |
+| M2  | Lead Generation — **first production launch** | No enquiry lost; site live and indexed          | 2–3 wk     | **Highest** | Medium   |
+| M3  | Identity & Access Foundation                  | Auth, RBAC, tenancy, audit logging              | 5–7 wk     | Enabling    | **High** |
+| M4  | Client Portal Core                            | Clients see projects and documents              | 8–10 wk    | High        | Medium   |
+| M5  | Consultancy Delivery Platform                 | Consultants capture and issue on site           | 8–10 wk    | High        | **High** |
+| M6  | Training Platform (LMS)                       | Courses sold and delivered online               | 10–12 wk   | High        | Medium   |
+| M7  | Administration & CMS                          | Business publishes without engineering          | 8–10 wk    | Medium      | Medium   |
+| M8  | Staff Operations Platform                     | Internal operations leave spreadsheets          | 8–10 wk    | Medium      | Low      |
+| M9  | Enterprise Hardening                          | Security, performance, resilience verified      | 4–6 wk     | Enabling    | Medium   |
+| M10 | Full Platform GA                              | All ecosystems live under one operating model   | 2–3 wk     | High        | Low      |
 
 **Sequential total: 64–83 team-weeks.** With the two-track parallelism in §22, the elapsed range is **roughly 48 weeks at the optimistic end and 60 at the conservative end** — about eleven to fourteen months at the reference team shape. §22.1 lays out the conservative sequence in full, and that is the one to plan against; the optimistic end assumes a third concurrent stream from week 43 and no content delay in M1, neither of which should be assumed.
 
@@ -179,19 +179,19 @@ The single most useful number in this table is not the total but the position of
 
 The brief offers a ten-milestone example. This plan keeps its structure and makes three deliberate changes, each justified.
 
-| Brief's example | This plan | Change and rationale |
-| --- | --- | --- |
-| M0 Foundation Complete | M0 | Unchanged, with the specific gaps in §1.1 named |
-| M1 Public Website | M1 | Unchanged |
-| M2 Lead Generation | M2 | **Becomes the first production launch** (§1.5) |
-| M3 Authentication | M3 Identity & Access | Widened to include RBAC, tenancy, and audit logging, which are inseparable from authentication in a multi-tenant platform |
-| M4 Client Portal | M4 Client Portal Core | Scoped to projects and documents, and **paired with the minimum internal write capability** (§3.3) |
-| M5 Consultancy Platform | M5 | Unchanged |
-| M6 Training Platform | M6 | Unchanged |
-| M7 Administration | M7 Administration & CMS | Explicitly includes the content-source migration begun in M1 (§7.2) |
-| — | **M8 Staff Operations** | **Added.** CRM, scheduling, HR, finance and approvals are a substantial platform, not a footnote to administration |
-| M8 Enterprise Hardening | M9 | Renumbered |
-| M9 Production Launch | M10 Full Platform GA | Reframed: production begins at M2, so this is general availability of the complete platform |
+| Brief's example         | This plan               | Change and rationale                                                                                                      |
+| ----------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| M0 Foundation Complete  | M0                      | Unchanged, with the specific gaps in §1.1 named                                                                           |
+| M1 Public Website       | M1                      | Unchanged                                                                                                                 |
+| M2 Lead Generation      | M2                      | **Becomes the first production launch** (§1.5)                                                                            |
+| M3 Authentication       | M3 Identity & Access    | Widened to include RBAC, tenancy, and audit logging, which are inseparable from authentication in a multi-tenant platform |
+| M4 Client Portal        | M4 Client Portal Core   | Scoped to projects and documents, and **paired with the minimum internal write capability** (§3.3)                        |
+| M5 Consultancy Platform | M5                      | Unchanged                                                                                                                 |
+| M6 Training Platform    | M6                      | Unchanged                                                                                                                 |
+| M7 Administration       | M7 Administration & CMS | Explicitly includes the content-source migration begun in M1 (§7.2)                                                       |
+| —                       | **M8 Staff Operations** | **Added.** CRM, scheduling, HR, finance and approvals are a substantial platform, not a footnote to administration        |
+| M8 Enterprise Hardening | M9                      | Renumbered                                                                                                                |
+| M9 Production Launch    | M10 Full Platform GA    | Reframed: production begins at M2, so this is general availability of the complete platform                               |
 
 ### 3.3 The dependency the milestone order must respect
 
@@ -201,12 +201,12 @@ A Client Portal showing projects, documents, audit reports, invoices and certifi
 
 So each milestone from M4 onward contains a **complete two-sided slice**:
 
-| Milestone | Internal capability (write) | Client-facing capability (read) |
-| --- | --- | --- |
-| M4 | Staff creates project, uploads document | Client views project, downloads document |
-| M5 | Consultant conducts audit, issues report | Client reads issued report, sees findings |
-| M6 | Admin authors course; trainer marks | Student enrols, learns, receives certificate |
-| M8 | Finance raises invoice | Client views and pays invoice |
+| Milestone | Internal capability (write)              | Client-facing capability (read)              |
+| --------- | ---------------------------------------- | -------------------------------------------- |
+| M4        | Staff creates project, uploads document  | Client views project, downloads document     |
+| M5        | Consultant conducts audit, issues report | Client reads issued report, sees findings    |
+| M6        | Admin authors course; trainer marks      | Student enrols, learns, receives certificate |
+| M8        | Finance raises invoice                   | Client views and pays invoice                |
 
 The invoice slice is deliberately late. Payment integration carries the highest external-dependency risk in the platform, and clients can be invoiced by existing means in the interim. Nothing else depends on it, which makes it the safest thing to defer.
 
@@ -262,6 +262,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** Working migration pipeline with a reversible baseline; live database connection; successful deployment to a staging environment; CI running eight gates; file-storage ADR; two removals completed.
 
 **Acceptance criteria.**
+
 - `pnpm run verify` passes, and CI additionally runs end-to-end, accessibility, and security scans.
 - A migration can be applied and rolled back against a clean database.
 - `/readyz` returns unhealthy when the database is unreachable and healthy when it is.
@@ -295,6 +296,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** 70 route patterns implemented; 56 prerendered with unique metadata and structured data; navigation and breadcrumbs; accessibility conformance; performance budgets enforced; redirect map.
 
 **Acceptance criteria.**
+
 - Every indexed route returns prerendered HTML containing its own title, description, canonical, and structured data, verified by an automated crawl in CI rather than by inspection.
 - `axe` reports zero critical or serious violations across all public routes.
 - Keyboard-only traversal reaches every interactive element; focus moves to `<h1>` on route change.
@@ -327,6 +329,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** Enquiry and booking slices complete with tests; email delivery; abuse controls; internal enquiry view; production environment with monitoring, alerting, verified backups and a rehearsed rollback; analytics goals.
 
 **Acceptance criteria.**
+
 - A submitted enquiry is persisted, acknowledged by email, notified internally, visible to staff, and recorded in the audit log — verified by an end-to-end test, not manually.
 - A booking cannot double-book a slot under concurrent submission, enforced by a database constraint rather than application logic.
 - Rate limiting and spam controls demonstrably reject abusive traffic without rejecting legitimate submissions.
@@ -362,6 +365,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** Tenancy model; authentication flows; permission catalogue and role composition; authorisation middleware; immutable audit log; cross-tenant test template; permission-aware query contract; MFA for privileged roles; minimal user administration.
 
 **Acceptance criteria.**
+
 - A user of organisation A cannot read, list, count, or paginate any record of organisation B, verified by tests at the repository level, the API level, and end to end.
 - Every mutating endpoint writes an audit entry containing actor, action, target, timestamp, and before-and-after state.
 - The application's database role cannot `UPDATE` or `DELETE` audit rows, verified by a test that attempts it.
@@ -398,6 +402,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** Client portal application; file storage; project and document slices both sides; dashboard; tasks; permission-aware search; notifications; delegated administration.
 
 **Acceptance criteria.**
+
 - A client sees exactly their own organisation's projects and documents, verified by cross-tenant tests at every layer.
 - Search returns only records the acting user may access, verified by a test in which a user searches for a term appearing only in another tenant's data and receives no results and no count.
 - Uploads are scanned, stored under generated names, and served only through signed expiring URLs.
@@ -434,6 +439,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** Staff portal shell with consultant experience; audit lifecycle with immutable issuance; offline-tolerant fieldwork capture; inspections and incidents; risk assessments; client-facing report delivery; messaging.
 
 **Acceptance criteria.**
+
 - An audit can be conducted entirely on a mobile device, including photographic evidence, with the connection interrupted mid-session and no data lost.
 - Repeated submission of the same fieldwork payload creates one record, verified by an idempotency test.
 - An issued report cannot be modified; a correction produces a new version and both remain retrievable.
@@ -469,6 +475,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** LMS application; course authoring with version pinning; catalogue and enrolment; payment; lesson and video delivery; assessment and marking; immutable certificates with three views; learner and trainer experiences; client training visibility.
 
 **Acceptance criteria.**
+
 - A learner enrolled on version 1 continues to see version 1 after version 2 is published, verified by test.
 - Progress persists through an abandoned session and resumes at the correct position.
 - Video is never served through the API and signed URLs expire.
@@ -504,6 +511,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** Admin portal; identity administration; CMS with versioning, rollback and approval gates; media library; SEO administration; training administration; audit log explorer; system operations surfaces; feature flags; cross-tenant oversight.
 
 **Acceptance criteria.**
+
 - Marketing publishes, updates and rolls back a public page with no engineering involvement and no deployment.
 - A case study cannot be published without a recorded client approval.
 - Content changes are versioned, attributable, and reversible to any prior version.
@@ -538,6 +546,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** CRM and lead pipeline; scheduling and capacity; unified approval queue; invoice slice both sides; HR module; finance module; operational reporting; marketing and support surfaces.
 
 **Acceptance criteria.**
+
 - An enquiry progresses to client and project with every transition audited and permission-gated.
 - HR routes are unreachable by Operations, verified by test.
 - Every approval type appears in one queue and produces one auditable record.
@@ -572,6 +581,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 **Deliverables.** Penetration test report with findings closed; load test results against budgets; accessibility audit report; rehearsed and timed disaster recovery; tenant isolation review; database tuning; observability and runbooks; retention and deletion implemented.
 
 **Acceptance criteria.**
+
 - No critical or high security findings remain open.
 - Performance budgets met at projected peak load with headroom.
 - Zero critical or serious accessibility violations across all applications.
@@ -608,54 +618,54 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 
 ### 5.1 Definitions
 
-| Workstream | Scope | Peak milestones |
-| --- | --- | --- |
-| Architecture | ADRs, patterns, review, standards enforcement | Continuous, heaviest M0, M3 |
-| Database | Schema, migrations, indexes, performance | M0, M3, then per slice |
-| Backend | Repositories, services, API routes, OpenAPI | M3 onward, continuous |
-| Authentication & Authorisation | Sessions, RBAC, tenancy, audit logging | M3, then per slice |
-| Frontend — Public | Public website, prerendering, SEO surface | M1, M2 |
-| Frontend — Portals | Four authenticated applications | M4 onward |
-| Shared UI | `lib/ui` extension as portal needs emerge | M4 onward |
-| CMS & Content Platform | Content model, authoring, versioning | M1 (model), M7 (authoring) |
-| Consultancy Domain | Audits, findings, inspections, fieldwork | M5 |
-| Training Domain | Courses, assessment, certification | M6 |
-| Operations Domain | CRM, scheduling, HR, finance, approvals | M8 |
-| Infrastructure & DevOps | Environments, CI/CD, deployment, backups | M0, M2, continuous |
-| Observability | Logging, metrics, tracing, alerting, runbooks | M2, M9 |
-| QA | Test strategy, automation, gates, regression | Continuous from M0 |
-| Accessibility | WCAG conformance, assistive-technology testing | M1, then per portal |
-| SEO | Metadata, structured data, indexing, performance | M1, M2, M7 |
-| Analytics | Events, funnels, dashboards | M2, then per portal |
-| Security | Threat modelling, review, scanning, response | M0, M3, M9 |
-| Documentation | Technical and user documentation | Continuous |
-| Content Production | Copy, imagery, case studies, course material | M1 onward — **business-owned** |
+| Workstream                     | Scope                                            | Peak milestones                |
+| ------------------------------ | ------------------------------------------------ | ------------------------------ |
+| Architecture                   | ADRs, patterns, review, standards enforcement    | Continuous, heaviest M0, M3    |
+| Database                       | Schema, migrations, indexes, performance         | M0, M3, then per slice         |
+| Backend                        | Repositories, services, API routes, OpenAPI      | M3 onward, continuous          |
+| Authentication & Authorisation | Sessions, RBAC, tenancy, audit logging           | M3, then per slice             |
+| Frontend — Public              | Public website, prerendering, SEO surface        | M1, M2                         |
+| Frontend — Portals             | Four authenticated applications                  | M4 onward                      |
+| Shared UI                      | `lib/ui` extension as portal needs emerge        | M4 onward                      |
+| CMS & Content Platform         | Content model, authoring, versioning             | M1 (model), M7 (authoring)     |
+| Consultancy Domain             | Audits, findings, inspections, fieldwork         | M5                             |
+| Training Domain                | Courses, assessment, certification               | M6                             |
+| Operations Domain              | CRM, scheduling, HR, finance, approvals          | M8                             |
+| Infrastructure & DevOps        | Environments, CI/CD, deployment, backups         | M0, M2, continuous             |
+| Observability                  | Logging, metrics, tracing, alerting, runbooks    | M2, M9                         |
+| QA                             | Test strategy, automation, gates, regression     | Continuous from M0             |
+| Accessibility                  | WCAG conformance, assistive-technology testing   | M1, then per portal            |
+| SEO                            | Metadata, structured data, indexing, performance | M1, M2, M7                     |
+| Analytics                      | Events, funnels, dashboards                      | M2, then per portal            |
+| Security                       | Threat modelling, review, scanning, response     | M0, M3, M9                     |
+| Documentation                  | Technical and user documentation                 | Continuous                     |
+| Content Production             | Copy, imagery, case studies, course material     | M1 onward — **business-owned** |
 
 ### 5.2 Concurrency
 
 **Safe to run concurrently.**
 
-| Streams | Condition |
-| --- | --- |
-| Frontend-Public + Backend/Auth | The two tracks in §2.5; no shared code before M2 |
-| Content Production + everything | Business-owned; the M1 constraint |
-| Accessibility + Frontend | Accessibility is embedded per feature, not a phase |
-| SEO + Frontend-Public | Same surface, different concerns |
-| Documentation + everything | Continuous |
-| DevOps + feature work | Separate concerns after M0 |
-| Two domain workstreams | Only when they touch different aggregates and neither is changing the repository or auth patterns |
+| Streams                         | Condition                                                                                         |
+| ------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Frontend-Public + Backend/Auth  | The two tracks in §2.5; no shared code before M2                                                  |
+| Content Production + everything | Business-owned; the M1 constraint                                                                 |
+| Accessibility + Frontend        | Accessibility is embedded per feature, not a phase                                                |
+| SEO + Frontend-Public           | Same surface, different concerns                                                                  |
+| Documentation + everything      | Continuous                                                                                        |
+| DevOps + feature work           | Separate concerns after M0                                                                        |
+| Two domain workstreams          | Only when they touch different aggregates and neither is changing the repository or auth patterns |
 
 **Must be sequential.**
 
-| Streams | Reason |
-| --- | --- |
-| Database schema → Backend | Repositories cannot precede tables |
-| Auth/RBAC → any portal | Every portal route authorises server-side |
-| Auth/RBAC → permission-aware search | Search inherits the query contract |
-| File storage decision → documents, certificates, media, applications | Four features, one architecture |
-| Content model → CMS authoring | M7 is a source swap only if M1 got the model right |
-| Payment integration → invoicing | M8 reuses M6's integration |
-| Feature work → hardening verification | Cannot load-test what does not exist |
+| Streams                                                              | Reason                                             |
+| -------------------------------------------------------------------- | -------------------------------------------------- |
+| Database schema → Backend                                            | Repositories cannot precede tables                 |
+| Auth/RBAC → any portal                                               | Every portal route authorises server-side          |
+| Auth/RBAC → permission-aware search                                  | Search inherits the query contract                 |
+| File storage decision → documents, certificates, media, applications | Four features, one architecture                    |
+| Content model → CMS authoring                                        | M7 is a source swap only if M1 got the model right |
+| Payment integration → invoicing                                      | M8 reuses M6's integration                         |
+| Feature work → hardening verification                                | Cannot load-test what does not exist               |
 
 **The real limit on parallelism is review capacity, not headcount.** Document 03.5's standards are enforced by review; more concurrent streams than the architecture workstream can review produces divergent implementations of the same pattern. Two to three concurrent streams is the safe ceiling at the reference team shape.
 
@@ -712,35 +722,35 @@ The practical consequence: **M3 is the one milestone where taking extra time is 
 
 ### 6.3 Fine-grained dependencies
 
-| Capability | Hard dependencies |
-| --- | --- |
-| Any persistence | Schema + migrations + `DATABASE_URL` (M0) |
-| Any deployment | Build and run commands, edge routing (M0) |
-| Enquiry slice | Persistence, email provider |
-| Any authenticated route | Sessions, permission catalogue, authorisation middleware (M3) |
-| Any tenant-scoped repository | Tenancy model, cross-tenant test template (M3) |
-| Permission-aware search | Query contract (M3), first repository (M4) |
-| Document upload/download | File storage decision (M0), implementation (M4) |
-| Audit report issuance | Projects, documents, audit logging, approval permission |
-| Certificate issuance | Enrolment, assessment, immutable artifact storage |
-| Course purchase | Payment integration, public catalogue (M1) |
-| CMS authoring | Typed content model (M1) |
-| Invoice payment | Payment integration (M6) |
-| Load testing | The features being tested |
+| Capability                   | Hard dependencies                                             |
+| ---------------------------- | ------------------------------------------------------------- |
+| Any persistence              | Schema + migrations + `DATABASE_URL` (M0)                     |
+| Any deployment               | Build and run commands, edge routing (M0)                     |
+| Enquiry slice                | Persistence, email provider                                   |
+| Any authenticated route      | Sessions, permission catalogue, authorisation middleware (M3) |
+| Any tenant-scoped repository | Tenancy model, cross-tenant test template (M3)                |
+| Permission-aware search      | Query contract (M3), first repository (M4)                    |
+| Document upload/download     | File storage decision (M0), implementation (M4)               |
+| Audit report issuance        | Projects, documents, audit logging, approval permission       |
+| Certificate issuance         | Enrolment, assessment, immutable artifact storage             |
+| Course purchase              | Payment integration, public catalogue (M1)                    |
+| CMS authoring                | Typed content model (M1)                                      |
+| Invoice payment              | Payment integration (M6)                                      |
+| Load testing                 | The features being tested                                     |
 
 ### 6.4 External dependencies
 
 Each needs selection ahead of the milestone that consumes it, because procurement is slower than engineering.
 
-| Dependency | Needed by | Select during | Risk if late |
-| --- | --- | --- | --- |
-| Managed Postgres | M0 | Now | Blocks everything |
-| Object storage + CDN | M4 | M0 | Blocks documents |
-| Transactional email | M2 | M1 | **Blocks first launch** |
-| Payment provider | M6 | M5 | Blocks second revenue stream |
-| Malware scanning | M4 | M3 | Blocks upload go-live |
-| Error and performance monitoring | M2 | M1 | Blocks launch readiness |
-| Accrediting body integration | M6 | M5 | May constrain certificate format |
+| Dependency                       | Needed by | Select during | Risk if late                     |
+| -------------------------------- | --------- | ------------- | -------------------------------- |
+| Managed Postgres                 | M0        | Now           | Blocks everything                |
+| Object storage + CDN             | M4        | M0            | Blocks documents                 |
+| Transactional email              | M2        | M1            | **Blocks first launch**          |
+| Payment provider                 | M6        | M5            | Blocks second revenue stream     |
+| Malware scanning                 | M4        | M3            | Blocks upload go-live            |
+| Error and performance monitoring | M2        | M1            | Blocks launch readiness          |
+| Accrediting body integration     | M6        | M5            | May constrain certificate format |
 
 The email provider is the sharpest of these: it is small, easily overlooked, and gates the first production launch.
 
@@ -752,17 +762,17 @@ The email provider is the sharpest of these: it is small, easily overlooked, and
 
 Nine increments across M1 and M2. Each is independently reviewable and deployable to staging.
 
-| # | Increment | Scope | Depends on |
-| --- | --- | --- | --- |
-| P1 | Content model and navigation shell | Typed content schemas, six-group navigation, mobile drawer, footer, breadcrumbs | M0 |
-| P2 | Prerendering pipeline | Static generation, per-route metadata, canonicals, structured data, sitemap, `robots.txt` | P1 |
-| P3 | Company and trust | `/about` and children, accreditations, partners, offices, testimonials | P1 |
-| P4 | Commercial core | Services hub, 6 pillars, 16 sub-services, industries | P1, P2 |
-| P5 | Training public surface | Training hub, catalogue, course pages, facet landings, schedule | P1, P2 |
-| P6 | Knowledge and editorial | Knowledge hub, guides, templates, policies, legislation, glossary, blog, news | P1, P2 |
-| P7 | Proof and careers | Case studies, vacancies with `JobPosting`, application form | P1, P2 |
-| P8 | Legal, system and error | Legal group, redirects, 404, edge-served 500, maintenance, offline, search | P1 |
-| P9 | Conversion | Contact, booking, enquiry persistence, email, confirmations, analytics | M0, P3–P8 |
+| #   | Increment                          | Scope                                                                                     | Depends on |
+| --- | ---------------------------------- | ----------------------------------------------------------------------------------------- | ---------- |
+| P1  | Content model and navigation shell | Typed content schemas, six-group navigation, mobile drawer, footer, breadcrumbs           | M0         |
+| P2  | Prerendering pipeline              | Static generation, per-route metadata, canonicals, structured data, sitemap, `robots.txt` | P1         |
+| P3  | Company and trust                  | `/about` and children, accreditations, partners, offices, testimonials                    | P1         |
+| P4  | Commercial core                    | Services hub, 6 pillars, 16 sub-services, industries                                      | P1, P2     |
+| P5  | Training public surface            | Training hub, catalogue, course pages, facet landings, schedule                           | P1, P2     |
+| P6  | Knowledge and editorial            | Knowledge hub, guides, templates, policies, legislation, glossary, blog, news             | P1, P2     |
+| P7  | Proof and careers                  | Case studies, vacancies with `JobPosting`, application form                               | P1, P2     |
+| P8  | Legal, system and error            | Legal group, redirects, 404, edge-served 500, maintenance, offline, search                | P1         |
+| P9  | Conversion                         | Contact, booking, enquiry persistence, email, confirmations, analytics                    | M0, P3–P8  |
 
 P1 and P2 are prerequisites for everything and should be built by the strongest available frontend engineer. P3 through P8 are highly parallelisable — different route groups, shared primitives, minimal interaction — making this the milestone where additional frontend capacity converts most directly into schedule.
 
@@ -772,11 +782,11 @@ P1 and P2 are prerequisites for everything and should be built by the strongest 
 
 The tension: Milestone 7 delivers a database-backed CMS, but the public site must launch long before it. Three options exist.
 
-| Option | Launch speed | Cost at M7 |
-| --- | --- | --- |
-| Hardcode copy in TSX | Fastest | **Rewrite every page** |
-| Database-backed CMS in M1 | Slowest — blocks launch on an admin portal | None |
-| **Typed content files in the repository** | Fast | **Swap the source, not the pages** |
+| Option                                    | Launch speed                               | Cost at M7                         |
+| ----------------------------------------- | ------------------------------------------ | ---------------------------------- |
+| Hardcode copy in TSX                      | Fastest                                    | **Rewrite every page**             |
+| Database-backed CMS in M1                 | Slowest — blocks launch on an admin portal | None                               |
+| **Typed content files in the repository** | Fast                                       | **Swap the source, not the pages** |
 
 The third is recommended. Content lives in version-controlled structured files validated by the same Zod schemas the CMS will later use, and the prerender step reads them at build time. This gives versioning, rollback, diffable review and an audit trail through git immediately, and maps naturally onto the Document 04 §17 approval gates via pull-request review.
 
@@ -804,22 +814,22 @@ The public site launches at the end of M2 when all of the following hold. These 
 
 ### 8.1 Order and rationale
 
-| # | Increment | Milestone | Why here |
-| --- | --- | --- | --- |
-| C1 | Application shell, permission-composed navigation, account and session UI | M4 | Everything else renders inside it |
-| C2 | Dashboard skeleton | M4 | Landing surface; populated as sources arrive |
-| C3 | **Projects** (with internal write) | M4 | The spine — everything else hangs off a project |
-| C4 | **Documents** (with internal upload) | M4 | Highest-frequency client task; needs file storage |
-| C5 | Permission-aware search | M4 | Built once projects and documents exist to search |
-| C6 | Tasks | M4 | Completes the dashboard's attention aggregation |
-| C7 | Notifications | M4 | Pulls clients back; needs records to notify about |
-| C8 | Delegated user administration | M4 | Client admins onboard colleagues |
-| C9 | Audit reports and findings | M5 | Produced by M5's consultant tooling |
-| C10 | Messaging | M5 | Paired with consultant messaging |
-| C11 | Training visibility and certificates | M6 | Requires the LMS |
-| C12 | Compliance calendar | M6 | Derived from certificate expiry and audit cycles |
-| C13 | Invoices and payment | M8 | Requires M6 payment integration |
-| C14 | Bookings and support tickets | M8 | Requires scheduling and support queue |
+| #   | Increment                                                                 | Milestone | Why here                                          |
+| --- | ------------------------------------------------------------------------- | --------- | ------------------------------------------------- |
+| C1  | Application shell, permission-composed navigation, account and session UI | M4        | Everything else renders inside it                 |
+| C2  | Dashboard skeleton                                                        | M4        | Landing surface; populated as sources arrive      |
+| C3  | **Projects** (with internal write)                                        | M4        | The spine — everything else hangs off a project   |
+| C4  | **Documents** (with internal upload)                                      | M4        | Highest-frequency client task; needs file storage |
+| C5  | Permission-aware search                                                   | M4        | Built once projects and documents exist to search |
+| C6  | Tasks                                                                     | M4        | Completes the dashboard's attention aggregation   |
+| C7  | Notifications                                                             | M4        | Pulls clients back; needs records to notify about |
+| C8  | Delegated user administration                                             | M4        | Client admins onboard colleagues                  |
+| C9  | Audit reports and findings                                                | M5        | Produced by M5's consultant tooling               |
+| C10 | Messaging                                                                 | M5        | Paired with consultant messaging                  |
+| C11 | Training visibility and certificates                                      | M6        | Requires the LMS                                  |
+| C12 | Compliance calendar                                                       | M6        | Derived from certificate expiry and audit cycles  |
+| C13 | Invoices and payment                                                      | M8        | Requires M6 payment integration                   |
+| C14 | Bookings and support tickets                                              | M8        | Requires scheduling and support queue             |
 
 ### 8.2 Dependency notes
 
@@ -837,20 +847,20 @@ The public site launches at the end of M2 when all of the following hold. These 
 
 Delivered as a role-scoped experience within `artifacts/staff-portal`, per the approved decision in Document 04 §2.3.
 
-| # | Increment | Milestone | Why here |
-| --- | --- | --- | --- |
-| N1 | Internal shell with role-scoped navigation and consultant landing | M5 | Shared with all internal roles |
-| N2 | Assigned clients and projects, scoped by authorisation context | M5 | Scope is derived server-side, never filtered client-side |
-| N3 | **Mobile fieldwork capture** | M5 | **Built first within M5** — hardest requirements, must not be an adaptation |
-| N4 | Audits, checklists, findings, severity | M5 | Consumes fieldwork capture |
-| N5 | Corrective actions | M5 | Produced by findings |
-| N6 | Report drafting and issuance | M5 | Issuance is the client-facing handover |
-| N7 | Inspections and incidents | M5 | Reuse the fieldwork pattern |
-| N8 | Risk assessments with approval | M5 | Reuse the approval pattern |
-| N9 | Calendar, meetings, tasks | M5 | Coordination, valuable once delivery works |
-| N10 | Client messaging | M5 | Paired with C10 |
-| N11 | Internal knowledge base | M7 | Content platform, not delivery |
-| N12 | Competencies and CPD | M8 | Overlaps HR |
+| #   | Increment                                                         | Milestone | Why here                                                                    |
+| --- | ----------------------------------------------------------------- | --------- | --------------------------------------------------------------------------- |
+| N1  | Internal shell with role-scoped navigation and consultant landing | M5        | Shared with all internal roles                                              |
+| N2  | Assigned clients and projects, scoped by authorisation context    | M5        | Scope is derived server-side, never filtered client-side                    |
+| N3  | **Mobile fieldwork capture**                                      | M5        | **Built first within M5** — hardest requirements, must not be an adaptation |
+| N4  | Audits, checklists, findings, severity                            | M5        | Consumes fieldwork capture                                                  |
+| N5  | Corrective actions                                                | M5        | Produced by findings                                                        |
+| N6  | Report drafting and issuance                                      | M5        | Issuance is the client-facing handover                                      |
+| N7  | Inspections and incidents                                         | M5        | Reuse the fieldwork pattern                                                 |
+| N8  | Risk assessments with approval                                    | M5        | Reuse the approval pattern                                                  |
+| N9  | Calendar, meetings, tasks                                         | M5        | Coordination, valuable once delivery works                                  |
+| N10 | Client messaging                                                  | M5        | Paired with C10                                                             |
+| N11 | Internal knowledge base                                           | M7        | Content platform, not delivery                                              |
+| N12 | Competencies and CPD                                              | M8        | Overlaps HR                                                                 |
 
 **N3 first is the most important sequencing decision in this milestone.** Document 04 §6.2 sets out why: on-site, one-handed, gloved, intermittent connectivity, photographic evidence, queued idempotent submission. Every other internal route is used at a desk. A desk-first design adapted afterwards will fail, and the failure surfaces in the field where it is most expensive to discover.
 
@@ -858,18 +868,18 @@ Delivered as a role-scoped experience within `artifacts/staff-portal`, per the a
 
 ## 10. Staff Portal Delivery Plan
 
-| # | Increment | Milestone | Why here |
-| --- | --- | --- | --- |
-| S1 | Minimal enquiry list | M2 | Enquiries must be actionable at first launch |
-| S2 | Project and document write surfaces | M4 | Pairs with C3 and C4 |
-| S3 | Consultant experience | M5 | §9 |
-| S4 | **CRM**: enquiry → lead → client → project | M8 | Completes the path S1 begins |
-| S5 | Scheduling, availability, capacity | M8 | Needs projects and consultants |
-| S6 | **Unified approval queue** | M8 | Consolidates approvals from M5–M8 |
-| S7 | Finance: invoices, payments, reconciliation | M8 | Needs M6 payment integration |
-| S8 | HR: people, competencies, recruitment, absence | M8 | Independent; behind its own permission boundary |
-| S9 | Operational reporting | M8 | Needs data to report on |
-| S10 | Announcements, marketing, support | M8 | Lower frequency |
+| #   | Increment                                      | Milestone | Why here                                        |
+| --- | ---------------------------------------------- | --------- | ----------------------------------------------- |
+| S1  | Minimal enquiry list                           | M2        | Enquiries must be actionable at first launch    |
+| S2  | Project and document write surfaces            | M4        | Pairs with C3 and C4                            |
+| S3  | Consultant experience                          | M5        | §9                                              |
+| S4  | **CRM**: enquiry → lead → client → project     | M8        | Completes the path S1 begins                    |
+| S5  | Scheduling, availability, capacity             | M8        | Needs projects and consultants                  |
+| S6  | **Unified approval queue**                     | M8        | Consolidates approvals from M5–M8               |
+| S7  | Finance: invoices, payments, reconciliation    | M8        | Needs M6 payment integration                    |
+| S8  | HR: people, competencies, recruitment, absence | M8        | Independent; behind its own permission boundary |
+| S9  | Operational reporting                          | M8        | Needs data to report on                         |
+| S10 | Announcements, marketing, support              | M8        | Lower frequency                                 |
 
 **S1 is a deliberate exception to the milestone structure.** Enquiries arriving at first launch must be visible to someone, so a minimal list ships in M2 behind interim protection, with its replacement a named M3 deliverable. This is recorded as debt with explicit repayment terms rather than left implicit — §2.7's principle applied honestly rather than pretending the shortcut does not exist.
 
@@ -879,22 +889,22 @@ Delivered as a role-scoped experience within `artifacts/staff-portal`, per the a
 
 ## 11. Administration Delivery Plan
 
-| # | Increment | Milestone | Why here |
-| --- | --- | --- | --- |
-| A1 | Minimal user administration and role assignment | M3 | Accounts must be creatable without database access |
-| A2 | Admin shell, Super Admin separation | M7 | Full portal |
-| A3 | Users, roles, permissions, organisations | M7 | Extends A1 |
-| A4 | **CMS content migration** | M7 | The §7.2 source swap |
-| A5 | Media library with usage tracking | M7 | Pairs with CMS |
-| A6 | SEO, redirects, navigation administration | M7 | Marketing self-service |
-| A7 | **Audit log explorer** | M7 | Makes M3's immutable log usable |
-| A8 | Training administration | M7 | After M6, against a real LMS |
-| A9 | Invoices and payments administration | M8 | Pairs with S7 |
-| A10 | Reports and analytics | M8 | Needs data |
-| A11 | System health, jobs, queues, cache | M7 | Operational necessity as surface grows |
-| A12 | Integrations, API keys, webhooks, email templates | M7 | External surface management |
-| A13 | Feature flags | M0 (minimal) → M7 (administration) | Flags are needed from M0; their UI is not |
-| A14 | Security, backups, environment, legal versions | M9 | Super Admin; pairs with hardening |
+| #   | Increment                                         | Milestone                          | Why here                                           |
+| --- | ------------------------------------------------- | ---------------------------------- | -------------------------------------------------- |
+| A1  | Minimal user administration and role assignment   | M3                                 | Accounts must be creatable without database access |
+| A2  | Admin shell, Super Admin separation               | M7                                 | Full portal                                        |
+| A3  | Users, roles, permissions, organisations          | M7                                 | Extends A1                                         |
+| A4  | **CMS content migration**                         | M7                                 | The §7.2 source swap                               |
+| A5  | Media library with usage tracking                 | M7                                 | Pairs with CMS                                     |
+| A6  | SEO, redirects, navigation administration         | M7                                 | Marketing self-service                             |
+| A7  | **Audit log explorer**                            | M7                                 | Makes M3's immutable log usable                    |
+| A8  | Training administration                           | M7                                 | After M6, against a real LMS                       |
+| A9  | Invoices and payments administration              | M8                                 | Pairs with S7                                      |
+| A10 | Reports and analytics                             | M8                                 | Needs data                                         |
+| A11 | System health, jobs, queues, cache                | M7                                 | Operational necessity as surface grows             |
+| A12 | Integrations, API keys, webhooks, email templates | M7                                 | External surface management                        |
+| A13 | Feature flags                                     | M0 (minimal) → M7 (administration) | Flags are needed from M0; their UI is not          |
+| A14 | Security, backups, environment, legal versions    | M9                                 | Super Admin; pairs with hardening                  |
 
 **A1 before A2 matters.** M3 needs accounts to exist without granting anyone direct database access. A minimal command-line or single-screen tool suffices and is replaced by A3.
 
@@ -906,22 +916,22 @@ Delivered as a role-scoped experience within `artifacts/staff-portal`, per the a
 
 ## 12. LMS Delivery Plan
 
-| # | Increment | Milestone | Why here |
-| --- | --- | --- | --- |
-| L1 | Public course pages | M1 | Highest-intent SEO entry points; ship with the site |
-| L2 | LMS shell, learner and trainer experiences | M6 | Application foundation |
-| L3 | **Course model with version pinning** | M6 | **Must be in the model from the start** |
-| L4 | Course authoring and structure | M6 | Trainers need content before learners |
-| L5 | Enrolment and payment | M6 | Connects L1 to L2 |
-| L6 | Lesson delivery, video, progress | M6 | The core learning experience |
-| L7 | Assessment: banks, quizzes, assignments | M6 | Required for certification |
-| L8 | Marking queue | M6 | Trainer work surface |
-| L9 | **Certificates** as immutable artifacts | M6 | The commercial outcome |
-| L10 | Learner dashboard, progress, transcript | M6 | Resume-where-I-left-off is the primary element |
-| L11 | Bookmarks, downloads, achievements | M6 | Retention, not core |
-| L12 | Client-side training visibility | M6 | The third certificate view |
-| L13 | Cohort and outcome reporting | M7 | Reporting after delivery works |
-| L14 | Course discussion | Post-launch | Reserved in Document 04 §9.1 |
+| #   | Increment                                  | Milestone   | Why here                                            |
+| --- | ------------------------------------------ | ----------- | --------------------------------------------------- |
+| L1  | Public course pages                        | M1          | Highest-intent SEO entry points; ship with the site |
+| L2  | LMS shell, learner and trainer experiences | M6          | Application foundation                              |
+| L3  | **Course model with version pinning**      | M6          | **Must be in the model from the start**             |
+| L4  | Course authoring and structure             | M6          | Trainers need content before learners               |
+| L5  | Enrolment and payment                      | M6          | Connects L1 to L2                                   |
+| L6  | Lesson delivery, video, progress           | M6          | The core learning experience                        |
+| L7  | Assessment: banks, quizzes, assignments    | M6          | Required for certification                          |
+| L8  | Marking queue                              | M6          | Trainer work surface                                |
+| L9  | **Certificates** as immutable artifacts    | M6          | The commercial outcome                              |
+| L10 | Learner dashboard, progress, transcript    | M6          | Resume-where-I-left-off is the primary element      |
+| L11 | Bookmarks, downloads, achievements         | M6          | Retention, not core                                 |
+| L12 | Client-side training visibility            | M6          | The third certificate view                          |
+| L13 | Cohort and outcome reporting               | M7          | Reporting after delivery works                      |
+| L14 | Course discussion                          | Post-launch | Reserved in Document 04 §9.1                        |
 
 **L3 is the critical decision.** Enrolments pin a course version so that publishing changes does not invalidate in-progress learners. Document 04 §9.4 notes this is the normal state of any updated course. Retrofitting versioning onto a live LMS means migrating in-flight enrolments — one of the most expensive corrections available in this programme, and entirely avoidable by modelling it on day one.
 
@@ -933,23 +943,23 @@ Delivered as a role-scoped experience within `artifacts/staff-portal`, per the a
 
 Delivery milestone for each cross-cutting concern, with the principle that infrastructure arrives in the milestone that first genuinely needs it — early enough to shape what follows, late enough to be informed by real requirements.
 
-| # | Concern | Delivered | Notes |
-| --- | --- | --- | --- |
-| 13.1 | **Configuration** | M0 | Validated env schema exists with 9 variables; `DATABASE_URL` and provider credentials added as consumed. Boot-time validation already fails fast, which is correct |
-| 13.2 | **Logging** | Exists | Structured logging with `requestId` correlation in place; extend to correlate across audit entries |
-| 13.3 | **Rate limiting** | Exists | In place; per-route tuning for the four public write surfaces in M2 |
-| 13.4 | **Monitoring & alerting** | M2 | Required for first production launch, not after it |
-| 13.5 | **Background jobs** | M2 minimal → M6 full | Email dispatch in M2; certificate generation, video processing and digests in M6 |
-| 13.6 | **Email** | M2 | Transactional first; templates administered in M7 |
-| 13.7 | **Authentication** | M3 | Sessions in `HttpOnly` cookies, single origin per Document 04 §2.4 |
-| 13.8 | **Authorisation** | M3 | Permission catalogue migration-seeded; roles composed at runtime |
-| 13.9 | **Audit logging** | M3 | `UPDATE`/`DELETE` revoked from the application database role |
-| 13.10 | **File storage** | M0 decision → M4 implementation | Pre-signed upload, generated names, malware scan, signed expiring downloads |
-| 13.11 | **Search** | M3 contract → M4 first implementation | Postgres full-text; permission filtering at query time inside the repository |
-| 13.12 | **Caching** | M4 → M9 tuning | Prerendered public site needs little; portals need query-level caching |
-| 13.13 | **Feature flags** | M0 | The mechanism that keeps incomplete work off long-lived branches |
-| 13.14 | **Analytics** | M2 | Public funnel first; portal analytics per portal |
-| 13.15 | **API documentation & OpenAPI** | Exists, extended per slice | CI already verifies the generated client matches the spec — the discipline is established and needs only to be maintained |
+| #     | Concern                         | Delivered                             | Notes                                                                                                                                                              |
+| ----- | ------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 13.1  | **Configuration**               | M0                                    | Validated env schema exists with 9 variables; `DATABASE_URL` and provider credentials added as consumed. Boot-time validation already fails fast, which is correct |
+| 13.2  | **Logging**                     | Exists                                | Structured logging with `requestId` correlation in place; extend to correlate across audit entries                                                                 |
+| 13.3  | **Rate limiting**               | Exists                                | In place; per-route tuning for the four public write surfaces in M2                                                                                                |
+| 13.4  | **Monitoring & alerting**       | M2                                    | Required for first production launch, not after it                                                                                                                 |
+| 13.5  | **Background jobs**             | M2 minimal → M6 full                  | Email dispatch in M2; certificate generation, video processing and digests in M6                                                                                   |
+| 13.6  | **Email**                       | M2                                    | Transactional first; templates administered in M7                                                                                                                  |
+| 13.7  | **Authentication**              | M3                                    | Sessions in `HttpOnly` cookies, single origin per Document 04 §2.4                                                                                                 |
+| 13.8  | **Authorisation**               | M3                                    | Permission catalogue migration-seeded; roles composed at runtime                                                                                                   |
+| 13.9  | **Audit logging**               | M3                                    | `UPDATE`/`DELETE` revoked from the application database role                                                                                                       |
+| 13.10 | **File storage**                | M0 decision → M4 implementation       | Pre-signed upload, generated names, malware scan, signed expiring downloads                                                                                        |
+| 13.11 | **Search**                      | M3 contract → M4 first implementation | Postgres full-text; permission filtering at query time inside the repository                                                                                       |
+| 13.12 | **Caching**                     | M4 → M9 tuning                        | Prerendered public site needs little; portals need query-level caching                                                                                             |
+| 13.13 | **Feature flags**               | M0                                    | The mechanism that keeps incomplete work off long-lived branches                                                                                                   |
+| 13.14 | **Analytics**                   | M2                                    | Public funnel first; portal analytics per portal                                                                                                                   |
+| 13.15 | **API documentation & OpenAPI** | Exists, extended per slice            | CI already verifies the generated client matches the spec — the discipline is established and needs only to be maintained                                          |
 
 ### 13.16 The two that must not slip
 
@@ -969,20 +979,20 @@ The implication for this roadmap: **test coverage is built with each slice, neve
 
 ### 14.2 Test levels and gates
 
-| Level | Scope | When | Gate | Pass criteria |
-| --- | --- | --- | --- | --- |
-| Unit | Pure logic, validators, domain rules | Every PR | CI blocking | All pass; coverage on domain logic does not decrease |
-| Integration | Repositories against a real Postgres | Every PR | CI blocking | All pass; **every tenant-scoped repository has a cross-tenant test** |
-| API contract | Routes against OpenAPI, including error envelopes | Every PR | CI blocking | Spec and implementation agree; generated client in sync |
-| Authorisation | Every route against every relevant permission | Every PR from M3 | CI blocking | No route reachable without its permission; no cross-tenant read |
-| End-to-end | Critical journeys in a browser | Every PR (smoke), nightly (full) | CI blocking on smoke | Smoke green; full suite green before release |
-| Accessibility | `axe` on every route; manual per portal | Every PR (automated) | CI blocking | Zero critical or serious violations |
-| Performance | Lighthouse budgets; API latency | Every PR (public), per release | CI blocking on budgets | Budgets met at throttled mobile baseline |
-| Security | Dependency and secret scanning; SAST | Every PR | CI blocking | No high or critical findings |
-| Load | Sustained and peak traffic | M9, then per major release | Release gate | BRS §9 targets met with headroom |
-| Penetration | Adversarial, external | M3 (auth scope), M9 (full) | Release gate | No critical or high findings open |
-| Regression | Accumulated suite | Every release | Release gate | No regressions |
-| Acceptance | Business verification against BRS | Per milestone | Milestone gate | Product owner sign-off |
+| Level         | Scope                                             | When                             | Gate                   | Pass criteria                                                        |
+| ------------- | ------------------------------------------------- | -------------------------------- | ---------------------- | -------------------------------------------------------------------- |
+| Unit          | Pure logic, validators, domain rules              | Every PR                         | CI blocking            | All pass; coverage on domain logic does not decrease                 |
+| Integration   | Repositories against a real Postgres              | Every PR                         | CI blocking            | All pass; **every tenant-scoped repository has a cross-tenant test** |
+| API contract  | Routes against OpenAPI, including error envelopes | Every PR                         | CI blocking            | Spec and implementation agree; generated client in sync              |
+| Authorisation | Every route against every relevant permission     | Every PR from M3                 | CI blocking            | No route reachable without its permission; no cross-tenant read      |
+| End-to-end    | Critical journeys in a browser                    | Every PR (smoke), nightly (full) | CI blocking on smoke   | Smoke green; full suite green before release                         |
+| Accessibility | `axe` on every route; manual per portal           | Every PR (automated)             | CI blocking            | Zero critical or serious violations                                  |
+| Performance   | Lighthouse budgets; API latency                   | Every PR (public), per release   | CI blocking on budgets | Budgets met at throttled mobile baseline                             |
+| Security      | Dependency and secret scanning; SAST              | Every PR                         | CI blocking            | No high or critical findings                                         |
+| Load          | Sustained and peak traffic                        | M9, then per major release       | Release gate           | BRS §9 targets met with headroom                                     |
+| Penetration   | Adversarial, external                             | M3 (auth scope), M9 (full)       | Release gate           | No critical or high findings open                                    |
+| Regression    | Accumulated suite                                 | Every release                    | Release gate           | No regressions                                                       |
+| Acceptance    | Business verification against BRS                 | Per milestone                    | Milestone gate         | Product owner sign-off                                               |
 
 ### 14.3 The three non-negotiable tests
 
@@ -1010,12 +1020,12 @@ A milestone passes when every gate above is green, its §4 acceptance criteria a
 
 ### 15.2 Environments
 
-| Environment | Purpose | Data | Deploys from | Access |
-| --- | --- | --- | --- | --- |
-| Local | Development | Seeded fixtures | Working tree | Engineer |
-| CI | Verification | Ephemeral per run | Pull request | Automated |
-| Staging | Integration, acceptance, rehearsal | Anonymised or synthetic | `main`, automatically | Team, product, QA |
-| Production | Live | Real | Tagged release, approved | Restricted |
+| Environment | Purpose                            | Data                    | Deploys from             | Access            |
+| ----------- | ---------------------------------- | ----------------------- | ------------------------ | ----------------- |
+| Local       | Development                        | Seeded fixtures         | Working tree             | Engineer          |
+| CI          | Verification                       | Ephemeral per run       | Pull request             | Automated         |
+| Staging     | Integration, acceptance, rehearsal | Anonymised or synthetic | `main`, automatically    | Team, product, QA |
+| Production  | Live                               | Real                    | Tagged release, approved | Restricted        |
 
 **Staging must never contain unanonymised client data.** Audit findings and personal data carry the same confidentiality obligations wherever they sit, and a staging environment with looser access controls holding real data is a breach waiting to be reported.
 
@@ -1052,15 +1062,15 @@ Monitoring from M2: error rate, latency percentiles, database health and pool sa
 
 ### 15.8 Release approvals
 
-| Change | Approval |
-| --- | --- |
-| Any pull request | One reviewer; architecture review for pattern changes |
-| Staging deploy | Automatic on green pipeline |
-| Production deploy | Technical lead plus product owner |
-| Migration touching existing data | Technical lead plus architecture review |
-| Permission or role change | Super Admin, audited |
-| Security-affecting change | Security owner |
-| Rollback | Technical lead, or on-call unilaterally during an incident |
+| Change                           | Approval                                                   |
+| -------------------------------- | ---------------------------------------------------------- |
+| Any pull request                 | One reviewer; architecture review for pattern changes      |
+| Staging deploy                   | Automatic on green pipeline                                |
+| Production deploy                | Technical lead plus product owner                          |
+| Migration touching existing data | Technical lead plus architecture review                    |
+| Permission or role change        | Super Admin, audited                                       |
+| Security-affecting change        | Security owner                                             |
+| Rollback                         | Technical lead, or on-call unilaterally during an incident |
 
 Rollback authority during an incident sits with whoever is on call, without waiting for approval. Requiring sign-off to stop an outage lengthens it.
 
@@ -1072,60 +1082,60 @@ Likelihood and impact are Low / Medium / High. Owner refers to the §21 roles.
 
 ### 16.1 Technical
 
-| Risk | L | I | Mitigation | Owner |
-| --- | --- | --- | --- | --- |
-| Tenant isolation flaw reaches production | Medium | **Critical** | Repository-enforced scoping; cross-tenant test per repository; external review as M3 exit criterion; independent re-review in M9 | Architecture |
-| Search leaks across tenants or leaks counts | Medium | **Critical** | Query-time filtering inside the repository; the §14.3 no-results-and-no-count test; contract defined in M3 before any UI | Backend |
-| Course versioning retrofitted after launch | Low | **High** | Version pinning in the M6 model from day one (L3) | Architecture |
-| Prerendering pipeline underestimated | **High** | High | Scoped precisely at 56 patterns; P2 built early by a senior engineer; automated crawl verification in CI | Frontend |
-| Offline fieldwork capture harder than expected | **High** | High | N3 built first in M5; idempotent submission with client keys; field-tested on real devices early | Frontend |
-| Repository pattern drifts across teams | Medium | High | Templates from M3; architecture review on pattern changes; concurrency capped at review capacity (§5.2) | Architecture |
-| Duplicated UI components reappear | Medium | Medium | `lib/ui` as sole source; `components/ui/` forbidden and lint-enforced; the 6,479-line consolidation as precedent | Frontend |
-| Migration causes data loss | Low | **Critical** | Expand-and-contract; forward-only in production; review required; restore-verified backups | Backend |
-| Payment integration edge cases | Medium | High | Provider-hosted flows; idempotency keys; reconciliation; deferred to M6/M8 when patterns are mature | Backend |
-| Performance degrades as data grows | Medium | Medium | Index review and load testing in M9; budgets in CI from M1 | Backend |
+| Risk                                           | L        | I            | Mitigation                                                                                                                       | Owner        |
+| ---------------------------------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| Tenant isolation flaw reaches production       | Medium   | **Critical** | Repository-enforced scoping; cross-tenant test per repository; external review as M3 exit criterion; independent re-review in M9 | Architecture |
+| Search leaks across tenants or leaks counts    | Medium   | **Critical** | Query-time filtering inside the repository; the §14.3 no-results-and-no-count test; contract defined in M3 before any UI         | Backend      |
+| Course versioning retrofitted after launch     | Low      | **High**     | Version pinning in the M6 model from day one (L3)                                                                                | Architecture |
+| Prerendering pipeline underestimated           | **High** | High         | Scoped precisely at 56 patterns; P2 built early by a senior engineer; automated crawl verification in CI                         | Frontend     |
+| Offline fieldwork capture harder than expected | **High** | High         | N3 built first in M5; idempotent submission with client keys; field-tested on real devices early                                 | Frontend     |
+| Repository pattern drifts across teams         | Medium   | High         | Templates from M3; architecture review on pattern changes; concurrency capped at review capacity (§5.2)                          | Architecture |
+| Duplicated UI components reappear              | Medium   | Medium       | `lib/ui` as sole source; `components/ui/` forbidden and lint-enforced; the 6,479-line consolidation as precedent                 | Frontend     |
+| Migration causes data loss                     | Low      | **Critical** | Expand-and-contract; forward-only in production; review required; restore-verified backups                                       | Backend      |
+| Payment integration edge cases                 | Medium   | High         | Provider-hosted flows; idempotency keys; reconciliation; deferred to M6/M8 when patterns are mature                              | Backend      |
+| Performance degrades as data grows             | Medium   | Medium       | Index review and load testing in M9; budgets in CI from M1                                                                       | Backend      |
 
 ### 16.2 Business
 
-| Risk | L | I | Mitigation | Owner |
-| --- | --- | --- | --- | --- |
-| **Content not ready, delaying M1** | **High** | High | Content is business-owned and the most likely M1 constraint; start production during M0; launch with a defensible subset and publish the rest incrementally — the CMS-less content model (§7.2) makes incremental publication cheap | Product / Marketing |
-| Scope grows with 250 documented routes | **High** | High | Milestone exit criteria are binding; new scope enters the post-launch roadmap (§19), not the current milestone | Product |
-| Client approval for case studies not obtained | Medium | Medium | Approval is a hard gate (Document 04 §17.2); begin obtaining consent during M1 | Marketing |
-| Second revenue stream delayed by LMS size | Medium | High | M6 is the largest milestone; L1 course pages ship in M1 so enquiry-led sales work before the LMS exists | Product |
-| Internal adoption resistance | Medium | Medium | M8 positioned after the platform has proven itself externally; training in M10 | Operations |
+| Risk                                          | L        | I      | Mitigation                                                                                                                                                                                                                          | Owner               |
+| --------------------------------------------- | -------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| **Content not ready, delaying M1**            | **High** | High   | Content is business-owned and the most likely M1 constraint; start production during M0; launch with a defensible subset and publish the rest incrementally — the CMS-less content model (§7.2) makes incremental publication cheap | Product / Marketing |
+| Scope grows with 250 documented routes        | **High** | High   | Milestone exit criteria are binding; new scope enters the post-launch roadmap (§19), not the current milestone                                                                                                                      | Product             |
+| Client approval for case studies not obtained | Medium   | Medium | Approval is a hard gate (Document 04 §17.2); begin obtaining consent during M1                                                                                                                                                      | Marketing           |
+| Second revenue stream delayed by LMS size     | Medium   | High   | M6 is the largest milestone; L1 course pages ship in M1 so enquiry-led sales work before the LMS exists                                                                                                                             | Product             |
+| Internal adoption resistance                  | Medium   | Medium | M8 positioned after the platform has proven itself externally; training in M10                                                                                                                                                      | Operations          |
 
 ### 16.3 Operational
 
-| Risk | L | I | Mitigation | Owner |
-| --- | --- | --- | --- | --- |
-| Deployment not wired blocks everything | **High** | **Critical** | First M0 work item; D19 is a known gap | DevOps |
-| No monitoring at first launch | Medium | High | Monitoring is an M2 launch gate, not an M9 activity | DevOps |
-| Backups never restore-tested | Medium | **Critical** | Restore verification is an M2 acceptance criterion | DevOps |
-| Alert fatigue from untuned thresholds | Medium | Medium | Thresholds tuned against real traffic in M9 | DevOps |
-| Single points of knowledge | Medium | Medium | Documentation continuous; review spreads context; no single owner for a critical path area | Engineering Manager |
+| Risk                                   | L        | I            | Mitigation                                                                                 | Owner               |
+| -------------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------ | ------------------- |
+| Deployment not wired blocks everything | **High** | **Critical** | First M0 work item; D19 is a known gap                                                     | DevOps              |
+| No monitoring at first launch          | Medium   | High         | Monitoring is an M2 launch gate, not an M9 activity                                        | DevOps              |
+| Backups never restore-tested           | Medium   | **Critical** | Restore verification is an M2 acceptance criterion                                         | DevOps              |
+| Alert fatigue from untuned thresholds  | Medium   | Medium       | Thresholds tuned against real traffic in M9                                                | DevOps              |
+| Single points of knowledge             | Medium   | Medium       | Documentation continuous; review spreads context; no single owner for a critical path area | Engineering Manager |
 
 ### 16.4 Security
 
-| Risk | L | I | Mitigation | Owner |
-| --- | --- | --- | --- | --- |
-| Anonymous file upload abused | Medium | **High** | Built last of the four public write surfaces, after storage exists; scanning, generated names, content inspection, rate limits | Security |
-| Session or CSRF weakness | Low | **Critical** | Single origin keeps cookies first-party; `SameSite` plus origin check; external review in M3 | Security |
-| Privilege escalation via delegated admin | Medium | High | A client admin can grant no permission they do not hold; every grant audited | Backend |
-| Cross-tenant admin route misused | Medium | High | Platform-scope permission; reads logged as well as writes; unmistakable tenant context | Architecture |
-| Real client data in staging | Medium | **High** | Anonymised or synthetic only; enforced in the deploy pipeline | DevOps |
-| Secret exposure | Low | **Critical** | Secret scanning in CI from M0; rotation rehearsed in M9 | Security |
+| Risk                                     | L      | I            | Mitigation                                                                                                                     | Owner        |
+| ---------------------------------------- | ------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------ |
+| Anonymous file upload abused             | Medium | **High**     | Built last of the four public write surfaces, after storage exists; scanning, generated names, content inspection, rate limits | Security     |
+| Session or CSRF weakness                 | Low    | **Critical** | Single origin keeps cookies first-party; `SameSite` plus origin check; external review in M3                                   | Security     |
+| Privilege escalation via delegated admin | Medium | High         | A client admin can grant no permission they do not hold; every grant audited                                                   | Backend      |
+| Cross-tenant admin route misused         | Medium | High         | Platform-scope permission; reads logged as well as writes; unmistakable tenant context                                         | Architecture |
+| Real client data in staging              | Medium | **High**     | Anonymised or synthetic only; enforced in the deploy pipeline                                                                  | DevOps       |
+| Secret exposure                          | Low    | **Critical** | Secret scanning in CI from M0; rotation rehearsed in M9                                                                        | Security     |
 
 ### 16.5 Schedule and integration
 
-| Risk | L | I | Mitigation | Owner |
-| --- | --- | --- | --- | --- |
-| **Email provider not selected, gating first launch** | Medium | **High** | Small, easily overlooked, gates M2; select during M1 (§6.4) | DevOps |
-| M3 overruns and blocks everything downstream | Medium | **High** | Extra time in M3 is cheaper than saving it (§6.2); Track A continues delivering value in parallel | Engineering Manager |
-| Parallelism exceeds review capacity | **High** | Medium | Two to three concurrent streams capped (§5.2) | Architecture |
-| Accrediting body constrains certificate format | Medium | Medium | Engage during M5, before M6 builds certification | Product |
-| Payment provider onboarding slower than build | Medium | Medium | Begin commercial onboarding during M5 | Product |
-| Estimates wrong because team shape differs | **High** | Medium | Estimates are team-weeks at the §21 reference shape; re-baseline against the actual team before committing dates | Engineering Manager |
+| Risk                                                 | L        | I        | Mitigation                                                                                                       | Owner               |
+| ---------------------------------------------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------- | ------------------- |
+| **Email provider not selected, gating first launch** | Medium   | **High** | Small, easily overlooked, gates M2; select during M1 (§6.4)                                                      | DevOps              |
+| M3 overruns and blocks everything downstream         | Medium   | **High** | Extra time in M3 is cheaper than saving it (§6.2); Track A continues delivering value in parallel                | Engineering Manager |
+| Parallelism exceeds review capacity                  | **High** | Medium   | Two to three concurrent streams capped (§5.2)                                                                    | Architecture        |
+| Accrediting body constrains certificate format       | Medium   | Medium   | Engage during M5, before M6 builds certification                                                                 | Product             |
+| Payment provider onboarding slower than build        | Medium   | Medium   | Begin commercial onboarding during M5                                                                            | Product             |
+| Estimates wrong because team shape differs           | **High** | Medium   | Estimates are team-weeks at the §21 reference shape; re-baseline against the actual team before committing dates | Engineering Manager |
 
 ### 16.6 The five to watch
 
@@ -1145,44 +1155,44 @@ Two gate sets, because there are two launches: the public site at M2 and full pl
 
 ### 17.1 Gate A — Public site (end of M2)
 
-| # | Gate | Verified by | Blocking |
-| --- | --- | --- | --- |
-| A1 | Every indexed route prerendered with unique metadata, canonical and structured data | Automated crawl in CI | Yes |
-| A2 | Zero critical or serious accessibility violations; keyboard traversal complete | `axe` in CI plus manual keyboard pass | Yes |
-| A3 | Accessibility statement published with a tested conformance claim | Engineering plus director sign-off | Yes |
-| A4 | Performance budgets met on throttled mobile | Lighthouse in CI | Yes |
-| A5 | Enquiry and booking persist, notify, audit | End-to-end test | Yes |
-| A6 | Abuse controls active on all four public write surfaces | Security test | Yes |
-| A7 | Legal pages published and approved by external counsel | Counsel sign-off | Yes |
-| A8 | Redirects in place; 404 returns HTTP 404; edge serves 500, maintenance, offline | Automated check | Yes |
-| A9 | Analytics and consent live; conversion goals firing | Manual verification | Yes |
-| A10 | Monitoring and alerting active | Injected failure triggers alert | Yes |
-| A11 | Backups verified **by actual restore** | Restore into scratch environment | Yes |
-| A12 | Rollback rehearsed and timed | Rehearsal record | Yes |
-| A13 | No critical or high defects open | Defect triage | Yes |
-| A14 | Dependency and secret scans clean | CI | Yes |
+| #   | Gate                                                                                | Verified by                           | Blocking |
+| --- | ----------------------------------------------------------------------------------- | ------------------------------------- | -------- |
+| A1  | Every indexed route prerendered with unique metadata, canonical and structured data | Automated crawl in CI                 | Yes      |
+| A2  | Zero critical or serious accessibility violations; keyboard traversal complete      | `axe` in CI plus manual keyboard pass | Yes      |
+| A3  | Accessibility statement published with a tested conformance claim                   | Engineering plus director sign-off    | Yes      |
+| A4  | Performance budgets met on throttled mobile                                         | Lighthouse in CI                      | Yes      |
+| A5  | Enquiry and booking persist, notify, audit                                          | End-to-end test                       | Yes      |
+| A6  | Abuse controls active on all four public write surfaces                             | Security test                         | Yes      |
+| A7  | Legal pages published and approved by external counsel                              | Counsel sign-off                      | Yes      |
+| A8  | Redirects in place; 404 returns HTTP 404; edge serves 500, maintenance, offline     | Automated check                       | Yes      |
+| A9  | Analytics and consent live; conversion goals firing                                 | Manual verification                   | Yes      |
+| A10 | Monitoring and alerting active                                                      | Injected failure triggers alert       | Yes      |
+| A11 | Backups verified **by actual restore**                                              | Restore into scratch environment      | Yes      |
+| A12 | Rollback rehearsed and timed                                                        | Rehearsal record                      | Yes      |
+| A13 | No critical or high defects open                                                    | Defect triage                         | Yes      |
+| A14 | Dependency and secret scans clean                                                   | CI                                    | Yes      |
 
 ### 17.2 Gate B — Full platform GA (end of M10)
 
 Gate A remains in force, plus:
 
-| # | Gate | Verified by | Blocking |
-| --- | --- | --- | --- |
-| B1 | External penetration test with no critical or high findings open | External report | Yes |
-| B2 | **Tenant isolation independently verified** | Independent review | Yes |
-| B3 | **Permission-aware search verified to leak neither records nor counts** | Security test plus review | Yes |
-| B4 | Authorisation enforced server-side on every route | Automated authorisation suite | Yes |
-| B5 | Audit logging active on every mutating endpoint; immutability enforced by database privilege | Automated test | Yes |
-| B6 | Performance targets met at projected peak load with headroom | Load test | Yes |
-| B7 | Accessibility verified across all five applications including assistive technology | Audit report | Yes |
-| B8 | Disaster recovery rehearsed; RTO and RPO demonstrated | Rehearsal record | Yes |
-| B9 | Data retention and deletion operational per GDPR | Process test | Yes |
-| B10 | Monitoring, alerting and runbooks complete; alerts tuned against real traffic | On-call rehearsal | Yes |
-| B11 | Documentation complete for every audience | Review | Yes |
-| B12 | Support processes and escalation live; support resolves common issues without engineering | Process rehearsal | Yes |
-| B13 | Every §24 architecture validation checklist signed | Architecture sign-off | Yes |
-| B14 | No critical or high defects open | Defect triage | Yes |
-| B15 | Payment reconciliation verified against provider records | Finance sign-off | Yes |
+| #   | Gate                                                                                         | Verified by                   | Blocking |
+| --- | -------------------------------------------------------------------------------------------- | ----------------------------- | -------- |
+| B1  | External penetration test with no critical or high findings open                             | External report               | Yes      |
+| B2  | **Tenant isolation independently verified**                                                  | Independent review            | Yes      |
+| B3  | **Permission-aware search verified to leak neither records nor counts**                      | Security test plus review     | Yes      |
+| B4  | Authorisation enforced server-side on every route                                            | Automated authorisation suite | Yes      |
+| B5  | Audit logging active on every mutating endpoint; immutability enforced by database privilege | Automated test                | Yes      |
+| B6  | Performance targets met at projected peak load with headroom                                 | Load test                     | Yes      |
+| B7  | Accessibility verified across all five applications including assistive technology           | Audit report                  | Yes      |
+| B8  | Disaster recovery rehearsed; RTO and RPO demonstrated                                        | Rehearsal record              | Yes      |
+| B9  | Data retention and deletion operational per GDPR                                             | Process test                  | Yes      |
+| B10 | Monitoring, alerting and runbooks complete; alerts tuned against real traffic                | On-call rehearsal             | Yes      |
+| B11 | Documentation complete for every audience                                                    | Review                        | Yes      |
+| B12 | Support processes and escalation live; support resolves common issues without engineering    | Process rehearsal             | Yes      |
+| B13 | Every §24 architecture validation checklist signed                                           | Architecture sign-off         | Yes      |
+| B14 | No critical or high defects open                                                             | Defect triage                 | Yes      |
+| B15 | Payment reconciliation verified against provider records                                     | Finance sign-off              | Yes      |
 
 ### 17.3 The three gates most likely to be argued about
 
@@ -1198,57 +1208,57 @@ Metrics are grouped by audience and each has a baseline, because a target withou
 
 ### 18.1 Technical
 
-| Metric | Baseline | Target | From |
-| --- | --- | --- | --- |
-| Automated test files | **1** | Every slice covered at unit, integration and authorisation level | M0 |
-| CI gates | 6 | 9 | M0 |
-| CI pipeline duration | — | Under 15 min for the blocking path | M0 |
-| Cross-tenant tests | 0 | One per tenant-scoped repository | M3 |
-| Deployment frequency | **Not possible** | At least weekly to production | M2 |
-| Change failure rate | — | Under 15% | M2 |
-| Mean time to restore | — | Under 1 hour | M2 |
-| Duplicated UI component sets | 1 (`lib/ui`) | Remains 1 | Continuous |
+| Metric                       | Baseline         | Target                                                           | From       |
+| ---------------------------- | ---------------- | ---------------------------------------------------------------- | ---------- |
+| Automated test files         | **1**            | Every slice covered at unit, integration and authorisation level | M0         |
+| CI gates                     | 6                | 9                                                                | M0         |
+| CI pipeline duration         | —                | Under 15 min for the blocking path                               | M0         |
+| Cross-tenant tests           | 0                | One per tenant-scoped repository                                 | M3         |
+| Deployment frequency         | **Not possible** | At least weekly to production                                    | M2         |
+| Change failure rate          | —                | Under 15%                                                        | M2         |
+| Mean time to restore         | —                | Under 1 hour                                                     | M2         |
+| Duplicated UI component sets | 1 (`lib/ui`)     | Remains 1                                                        | Continuous |
 
 ### 18.2 Business
 
-| Metric | Baseline | Target | From |
-| --- | --- | --- | --- |
-| Enquiries captured | **0 — all discarded** | 100% of submissions persisted | M2 |
-| Consultations booked online | 0 | Majority of bookings self-service | M2 |
-| Organic search entrances | Effectively 0 | Growing month on month | M2 |
-| Indexed pages | 11 with one shared title | 56 with unique metadata | M2 |
-| Course enrolments online | 0 | Second revenue stream contributing | M6 |
-| Content published without engineering | 0% | 100% | M7 |
+| Metric                                | Baseline                 | Target                             | From |
+| ------------------------------------- | ------------------------ | ---------------------------------- | ---- |
+| Enquiries captured                    | **0 — all discarded**    | 100% of submissions persisted      | M2   |
+| Consultations booked online           | 0                        | Majority of bookings self-service  | M2   |
+| Organic search entrances              | Effectively 0            | Growing month on month             | M2   |
+| Indexed pages                         | 11 with one shared title | 56 with unique metadata            | M2   |
+| Course enrolments online              | 0                        | Second revenue stream contributing | M6   |
+| Content published without engineering | 0%                       | 100%                               | M7   |
 
 ### 18.3 Operational
 
-| Metric | Baseline | Target | From |
-| --- | --- | --- | --- |
-| Uptime | — | 99.9% | M2 |
-| Backup restore verified | Never | Monthly | M2 |
-| Alert precision | — | Under 10% false positives | M9 |
-| Manual steps to deploy | Undefined | 0 | M0 |
-| Duplicate data entry by consultants | Every audit | 0 | M5 |
+| Metric                              | Baseline    | Target                    | From |
+| ----------------------------------- | ----------- | ------------------------- | ---- |
+| Uptime                              | —           | 99.9%                     | M2   |
+| Backup restore verified             | Never       | Monthly                   | M2   |
+| Alert precision                     | —           | Under 10% false positives | M9   |
+| Manual steps to deploy              | Undefined   | 0                         | M0   |
+| Duplicate data entry by consultants | Every audit | 0                         | M5   |
 
 ### 18.4 Customer
 
-| Metric | Baseline | Target | From |
-| --- | --- | --- | --- |
-| Clients answering "am I compliant?" without contacting CKBHSE | 0% | Majority | M4 |
-| Portal adoption among active clients | 0% | Over 70% within one quarter | M4 |
-| Course completion rate | — | Over 80% of paid enrolments | M6 |
-| Time from audit issuance to client visibility | Manual, days | Under 1 minute | M5 |
+| Metric                                                        | Baseline     | Target                      | From |
+| ------------------------------------------------------------- | ------------ | --------------------------- | ---- |
+| Clients answering "am I compliant?" without contacting CKBHSE | 0%           | Majority                    | M4   |
+| Portal adoption among active clients                          | 0%           | Over 70% within one quarter | M4   |
+| Course completion rate                                        | —            | Over 80% of paid enrolments | M6   |
+| Time from audit issuance to client visibility                 | Manual, days | Under 1 minute              | M5   |
 
 ### 18.5 Security, performance and support
 
-| Metric | Baseline | Target | From |
-| --- | --- | --- | --- |
-| Open critical or high vulnerabilities | Unknown | 0 | M0 |
-| Cross-tenant incidents | — | **0, permanently** | M3 |
-| Audited mutating endpoints | 0 | 100% | M3 |
-| Largest Contentful Paint, mobile | Unmeasured | Under 2.5 s | M2 |
-| API p95 latency | — | Under 300 ms | M4 |
-| Support tickets resolved without engineering | — | Over 80% | M10 |
+| Metric                                       | Baseline   | Target             | From |
+| -------------------------------------------- | ---------- | ------------------ | ---- |
+| Open critical or high vulnerabilities        | Unknown    | 0                  | M0   |
+| Cross-tenant incidents                       | —          | **0, permanently** | M3   |
+| Audited mutating endpoints                   | 0          | 100%               | M3   |
+| Largest Contentful Paint, mobile             | Unmeasured | Under 2.5 s        | M2   |
+| API p95 latency                              | —          | Under 300 ms       | M4   |
+| Support tickets resolved without engineering | —          | Over 80%           | M10  |
 
 **The one metric that must never move from zero is cross-tenant incidents.** Every other target admits degradation and recovery; this one does not, because a single incident is a confidentiality breach with regulatory and commercial consequences.
 
@@ -1260,22 +1270,22 @@ Sequenced by dependency and value, not designed. Document 04 §19 has already re
 
 ### 19.1 Sequence
 
-| Wave | Capability | Reserved at | Rationale |
-| --- | --- | --- | --- |
-| 1 | **Risk Assessment Builder** | `/staff/risk-assessments/builder`, `/portal/risk-assessments` | Namespace partly in use from M5; highest client demand; reuses the approval and versioning patterns already built |
-| 1 | **Incident Reporting** (client-facing) | `/portal/incidents/new` | Internal side exists from M5; client-facing reporting is the smaller half |
-| 1 | Compliance Dashboard | `/portal/compliance` | Extends the M4 compliance calendar |
-| 2 | **Method Statement Builder** | `/staff/method-statements` | Same pattern as risk assessments; build second to reuse it |
-| 2 | COSHH Manager | `/staff/coshh`, `/portal/coshh` | Substance register plus assessments |
-| 2 | Equipment Register | `/portal/equipment`, `/staff/equipment` | Asset records with inspection cycles |
-| 3 | **Permit-to-Work** | `/staff/permits`, `/portal/permits` | Time-bounded validity and approval workflow; more complex than it appears |
-| 3 | **Mobile Application** | `/api/v1` only | No new routes; see §19.3 |
-| 4 | **AI HSEQ Assistant** | `/portal/assistant`, `/staff/assistant` | Deliberately late; see §19.2 |
-| 4 | Subscription Platform | Extends `/admin/subscriptions` | Recurring revenue; needs stable pricing and entitlements |
-| 5 | **Contractor Portal** | `/contractor` | Needs the §19.4 data-model decision first |
-| 5 | Supplier Portal | `/supplier` | As above |
-| 5 | Customer Success | Folded into `/portal` | An experience, not an ecosystem |
-| 6 | API Marketplace | Not reserved | Deliberately unreserved (Document 04 §19.5); requires a public API product decision that does not yet exist |
+| Wave | Capability                             | Reserved at                                                   | Rationale                                                                                                         |
+| ---- | -------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| 1    | **Risk Assessment Builder**            | `/staff/risk-assessments/builder`, `/portal/risk-assessments` | Namespace partly in use from M5; highest client demand; reuses the approval and versioning patterns already built |
+| 1    | **Incident Reporting** (client-facing) | `/portal/incidents/new`                                       | Internal side exists from M5; client-facing reporting is the smaller half                                         |
+| 1    | Compliance Dashboard                   | `/portal/compliance`                                          | Extends the M4 compliance calendar                                                                                |
+| 2    | **Method Statement Builder**           | `/staff/method-statements`                                    | Same pattern as risk assessments; build second to reuse it                                                        |
+| 2    | COSHH Manager                          | `/staff/coshh`, `/portal/coshh`                               | Substance register plus assessments                                                                               |
+| 2    | Equipment Register                     | `/portal/equipment`, `/staff/equipment`                       | Asset records with inspection cycles                                                                              |
+| 3    | **Permit-to-Work**                     | `/staff/permits`, `/portal/permits`                           | Time-bounded validity and approval workflow; more complex than it appears                                         |
+| 3    | **Mobile Application**                 | `/api/v1` only                                                | No new routes; see §19.3                                                                                          |
+| 4    | **AI HSEQ Assistant**                  | `/portal/assistant`, `/staff/assistant`                       | Deliberately late; see §19.2                                                                                      |
+| 4    | Subscription Platform                  | Extends `/admin/subscriptions`                                | Recurring revenue; needs stable pricing and entitlements                                                          |
+| 5    | **Contractor Portal**                  | `/contractor`                                                 | Needs the §19.4 data-model decision first                                                                         |
+| 5    | Supplier Portal                        | `/supplier`                                                   | As above                                                                                                          |
+| 5    | Customer Success                       | Folded into `/portal`                                         | An experience, not an ecosystem                                                                                   |
+| 6    | API Marketplace                        | Not reserved                                                  | Deliberately unreserved (Document 04 §19.5); requires a public API product decision that does not yet exist       |
 
 ### 19.2 Why the AI Assistant is late
 
@@ -1301,36 +1311,36 @@ Priority reflects **the cost of not having it**, which is why some low-visibilit
 
 Cannot launch, or blocks everything downstream.
 
-| Capability | Milestone | Why critical |
-| --- | --- | --- |
-| Schema and migrations | M0 | No persistence exists; everything depends on it |
-| Deployment pipeline | M0 | Currently impossible (D19) |
-| Enquiry persistence | M2 | Every submission is discarded — active revenue loss |
-| Per-route metadata and prerendering | M1–M2 | 11 routes share one title; BRS §9 requires SEO |
-| Authentication and sessions | M3 | Gates every authenticated capability |
-| Tenancy and RBAC | M3 | Multi-tenant isolation is a legal obligation |
-| Audit logging | M3 | BRS §10 mandatory; retrofitting is a rewrite |
-| Permission-aware search | M3–M4 | Highest-severity data-leak risk |
-| File storage | M0–M4 | Four features depend on one architecture |
-| Monitoring, backups, rollback | M2 | Production readiness, not hardening |
-| Legal and accessibility pages | M1 | Regulatory obligation |
+| Capability                          | Milestone | Why critical                                        |
+| ----------------------------------- | --------- | --------------------------------------------------- |
+| Schema and migrations               | M0        | No persistence exists; everything depends on it     |
+| Deployment pipeline                 | M0        | Currently impossible (D19)                          |
+| Enquiry persistence                 | M2        | Every submission is discarded — active revenue loss |
+| Per-route metadata and prerendering | M1–M2     | 11 routes share one title; BRS §9 requires SEO      |
+| Authentication and sessions         | M3        | Gates every authenticated capability                |
+| Tenancy and RBAC                    | M3        | Multi-tenant isolation is a legal obligation        |
+| Audit logging                       | M3        | BRS §10 mandatory; retrofitting is a rewrite        |
+| Permission-aware search             | M3–M4     | Highest-severity data-leak risk                     |
+| File storage                        | M0–M4     | Four features depend on one architecture            |
+| Monitoring, backups, rollback       | M2        | Production readiness, not hardening                 |
+| Legal and accessibility pages       | M1        | Regulatory obligation                               |
 
 ### 20.2 High
 
 Core value; the platform is materially incomplete without them.
 
-| Capability | Milestone | Why high |
-| --- | --- | --- |
-| Public IA and navigation | M1 | The entire acquisition surface |
-| Consultation booking | M2 | Conversion at peak intent |
-| Client portal shell, projects, documents | M4 | The client relationship |
-| Audit lifecycle and issuance | M5 | The core service |
-| Mobile fieldwork capture | M5 | Largest internal efficiency gain |
-| Course delivery and certification | M6 | Second revenue stream |
-| Course version pinning | M6 | Cheap now, near-impossible later |
-| CMS content migration | M7 | Removes engineering from publication |
-| Audit log explorer | M7 | Makes the audit log usable |
-| Feature flags | M0 | Delivery mechanism, not a feature |
+| Capability                               | Milestone | Why high                             |
+| ---------------------------------------- | --------- | ------------------------------------ |
+| Public IA and navigation                 | M1        | The entire acquisition surface       |
+| Consultation booking                     | M2        | Conversion at peak intent            |
+| Client portal shell, projects, documents | M4        | The client relationship              |
+| Audit lifecycle and issuance             | M5        | The core service                     |
+| Mobile fieldwork capture                 | M5        | Largest internal efficiency gain     |
+| Course delivery and certification        | M6        | Second revenue stream                |
+| Course version pinning                   | M6        | Cheap now, near-impossible later     |
+| CMS content migration                    | M7        | Removes engineering from publication |
+| Audit log explorer                       | M7        | Makes the audit log usable           |
+| Feature flags                            | M0        | Delivery mechanism, not a feature    |
 
 ### 20.3 Medium
 
@@ -1358,43 +1368,43 @@ Course discussion forums · achievements and badges · saved searches · advance
 
 Estimates throughout this document are **team-weeks at this shape.** A different shape changes the elapsed time, not the sequence.
 
-| Role | FTE | Primary ownership |
-| --- | --- | --- |
-| Technical Lead / Architect | 1 | ADRs, patterns, review, standards enforcement, critical-path decisions |
-| Backend Engineer | 2 | Schema, repositories, services, API, authorisation |
-| Frontend Engineer | 2 | Public site, portals, `lib/ui`, accessibility |
-| Full-stack Engineer | 1 | Flex across tracks; vertical slice ownership |
-| QA Engineer | 0.5 | Strategy, automation, gates, regression |
-| DevOps Engineer | 0.5 | Environments, CI/CD, deployment, observability, backups |
-| UX Designer | 0.5 | Journeys, portal design, fieldwork surface |
-| **Engineering total** | **7.5** | |
-| Product Owner | 0.5 | Scope, acceptance, priority |
-| Content and Marketing | business | Copy, SEO content, case studies |
-| Operations and Training SMEs | business | Service content, course material, domain review |
+| Role                         | FTE      | Primary ownership                                                      |
+| ---------------------------- | -------- | ---------------------------------------------------------------------- |
+| Technical Lead / Architect   | 1        | ADRs, patterns, review, standards enforcement, critical-path decisions |
+| Backend Engineer             | 2        | Schema, repositories, services, API, authorisation                     |
+| Frontend Engineer            | 2        | Public site, portals, `lib/ui`, accessibility                          |
+| Full-stack Engineer          | 1        | Flex across tracks; vertical slice ownership                           |
+| QA Engineer                  | 0.5      | Strategy, automation, gates, regression                                |
+| DevOps Engineer              | 0.5      | Environments, CI/CD, deployment, observability, backups                |
+| UX Designer                  | 0.5      | Journeys, portal design, fieldwork surface                             |
+| **Engineering total**        | **7.5**  |                                                                        |
+| Product Owner                | 0.5      | Scope, acceptance, priority                                            |
+| Content and Marketing        | business | Copy, SEO content, case studies                                        |
+| Operations and Training SMEs | business | Service content, course material, domain review                        |
 
 ### 21.2 Ownership by area
 
-| Area | Accountable | Consulted |
-| --- | --- | --- |
-| Architecture and ADRs | Technical Lead | Backend, Frontend |
-| Engineering standards enforcement | Technical Lead | All engineers |
-| Schema and migrations | Backend | Technical Lead |
-| Repository pattern and tenancy | Backend | Technical Lead, Security |
-| Authentication and authorisation | Backend | Technical Lead, Security |
-| Audit logging | Backend | Technical Lead |
-| Public website and SEO | Frontend | Marketing, Product |
-| Portal interfaces | Frontend | UX, Product |
-| `lib/ui` | Frontend | All engineers |
-| Accessibility | Frontend | QA, UX |
-| Prerendering pipeline | Frontend | DevOps |
-| Test strategy and gates | QA | Technical Lead |
-| Environments, CI/CD, observability | DevOps | Technical Lead |
-| Security review and response | Technical Lead (until a security owner exists) | External reviewer |
-| Content and approval gates | Marketing | Operations, Directors, Counsel |
-| Course content | Training | Accrediting bodies |
-| Support processes | Operations | Product |
-| Technical documentation | Whoever writes the code | Technical Lead |
-| User documentation | Product | Operations, Support |
+| Area                               | Accountable                                    | Consulted                      |
+| ---------------------------------- | ---------------------------------------------- | ------------------------------ |
+| Architecture and ADRs              | Technical Lead                                 | Backend, Frontend              |
+| Engineering standards enforcement  | Technical Lead                                 | All engineers                  |
+| Schema and migrations              | Backend                                        | Technical Lead                 |
+| Repository pattern and tenancy     | Backend                                        | Technical Lead, Security       |
+| Authentication and authorisation   | Backend                                        | Technical Lead, Security       |
+| Audit logging                      | Backend                                        | Technical Lead                 |
+| Public website and SEO             | Frontend                                       | Marketing, Product             |
+| Portal interfaces                  | Frontend                                       | UX, Product                    |
+| `lib/ui`                           | Frontend                                       | All engineers                  |
+| Accessibility                      | Frontend                                       | QA, UX                         |
+| Prerendering pipeline              | Frontend                                       | DevOps                         |
+| Test strategy and gates            | QA                                             | Technical Lead                 |
+| Environments, CI/CD, observability | DevOps                                         | Technical Lead                 |
+| Security review and response       | Technical Lead (until a security owner exists) | External reviewer              |
+| Content and approval gates         | Marketing                                      | Operations, Directors, Counsel |
+| Course content                     | Training                                       | Accrediting bodies             |
+| Support processes                  | Operations                                     | Product                        |
+| Technical documentation            | Whoever writes the code                        | Technical Lead                 |
+| User documentation                 | Product                                        | Operations, Support            |
 
 **Security has no dedicated owner in the reference team.** This is a real gap, mitigated by external review at M3 and M9 and by the Technical Lead holding the accountability in the interim. It should be named explicitly rather than assumed away, because unowned security work is not done.
 
@@ -1420,27 +1430,27 @@ Relative weeks, not calendar dates. Two tracks run concurrently, converging at M
 
 ### 22.1 Sequence
 
-| Weeks | Track A — Public & Content | Track B — Platform Foundation | Milestone |
-| --- | --- | --- | --- |
-| 1–2 | Content model, navigation shell (P1) | Schema baseline, migrations, `DATABASE_URL`, deployment wiring | M0 |
-| 3–4 | Prerendering pipeline (P2) | CI gates, storage ADR, `customFetch` fix, removals, seeds | **M0 done** |
-| 5–6 | Company, trust, commercial core (P3, P4) | Tenancy model, organisations, sessions | M1 / M3 |
-| 7–8 | Training surface, knowledge, editorial (P5, P6) | Authentication flows, permission catalogue | M1 / M3 |
-| 9–10 | Proof, careers, legal, system routes (P7, P8) | Authorisation middleware, audit logging | **M1 done** / M3 |
-| 11–12 | **Conversion: enquiry, booking, email, analytics (P9)** | Cross-tenant test template, permission-aware query contract | **M2 — FIRST PRODUCTION LAUNCH** |
-| 13–14 | SEO monitoring, content backfill, iteration | MFA, external auth review, minimal user admin | **M3 done** |
-| 15–18 | Client portal shell, dashboard, projects (C1–C3) | File storage implementation, project repositories | M4 |
-| 19–22 | Documents, search, tasks, notifications (C4–C8) | Document and search repositories, depth fixes | **M4 done** |
-| 23–26 | **Mobile fieldwork surface first (N3)**, internal shell (N1, N2) | Audit domain, findings, corrective actions | M5 |
-| 27–30 | Audits, issuance, inspections, messaging (N4–N10) | Issuance state machine, immutability, idempotency | **M5 done** |
-| 31–34 | LMS shell, course authoring, catalogue (L2–L5) | Course model with version pinning, payment integration | M6 |
-| 35–38 | Lesson delivery, assessment, marking (L6–L8) | Video delivery, progress persistence, background jobs | M6 |
-| 39–42 | Certificates, learner dashboard, client visibility (L9–L12) | Certificate generation, three-view consistency | **M6 done** |
-| 43–46 | Admin shell, CMS migration, media (A2–A6) | Audit log explorer, system operations (A7, A11, A12) | M7 |
-| 47–50 | CRM, scheduling, approvals, HR (S4–S6, S8) | Invoice slice, payments, reconciliation (S7) | M7 / M8 |
-| 51–54 | Reporting, marketing, support (S9, S10) | Performance tuning, index review | **M8 done** |
-| 55–58 | Accessibility audit remediation | Penetration test, load test, DR rehearsal, retention | **M9 done** |
-| 59–60 | Documentation, training, support processes | Launch gate verification | **M10 — FULL GA** |
+| Weeks | Track A — Public & Content                                       | Track B — Platform Foundation                                  | Milestone                        |
+| ----- | ---------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------- |
+| 1–2   | Content model, navigation shell (P1)                             | Schema baseline, migrations, `DATABASE_URL`, deployment wiring | M0                               |
+| 3–4   | Prerendering pipeline (P2)                                       | CI gates, storage ADR, `customFetch` fix, removals, seeds      | **M0 done**                      |
+| 5–6   | Company, trust, commercial core (P3, P4)                         | Tenancy model, organisations, sessions                         | M1 / M3                          |
+| 7–8   | Training surface, knowledge, editorial (P5, P6)                  | Authentication flows, permission catalogue                     | M1 / M3                          |
+| 9–10  | Proof, careers, legal, system routes (P7, P8)                    | Authorisation middleware, audit logging                        | **M1 done** / M3                 |
+| 11–12 | **Conversion: enquiry, booking, email, analytics (P9)**          | Cross-tenant test template, permission-aware query contract    | **M2 — FIRST PRODUCTION LAUNCH** |
+| 13–14 | SEO monitoring, content backfill, iteration                      | MFA, external auth review, minimal user admin                  | **M3 done**                      |
+| 15–18 | Client portal shell, dashboard, projects (C1–C3)                 | File storage implementation, project repositories              | M4                               |
+| 19–22 | Documents, search, tasks, notifications (C4–C8)                  | Document and search repositories, depth fixes                  | **M4 done**                      |
+| 23–26 | **Mobile fieldwork surface first (N3)**, internal shell (N1, N2) | Audit domain, findings, corrective actions                     | M5                               |
+| 27–30 | Audits, issuance, inspections, messaging (N4–N10)                | Issuance state machine, immutability, idempotency              | **M5 done**                      |
+| 31–34 | LMS shell, course authoring, catalogue (L2–L5)                   | Course model with version pinning, payment integration         | M6                               |
+| 35–38 | Lesson delivery, assessment, marking (L6–L8)                     | Video delivery, progress persistence, background jobs          | M6                               |
+| 39–42 | Certificates, learner dashboard, client visibility (L9–L12)      | Certificate generation, three-view consistency                 | **M6 done**                      |
+| 43–46 | Admin shell, CMS migration, media (A2–A6)                        | Audit log explorer, system operations (A7, A11, A12)           | M7                               |
+| 47–50 | CRM, scheduling, approvals, HR (S4–S6, S8)                       | Invoice slice, payments, reconciliation (S7)                   | M7 / M8                          |
+| 51–54 | Reporting, marketing, support (S9, S10)                          | Performance tuning, index review                               | **M8 done**                      |
+| 55–58 | Accessibility audit remediation                                  | Penetration test, load test, DR rehearsal, retention           | **M9 done**                      |
+| 59–60 | Documentation, training, support processes                       | Launch gate verification                                       | **M10 — FULL GA**                |
 
 **Elapsed: approximately 60 weeks.** This is the conservative reading and the one to plan against. The optimistic end of §3.1's range assumes a third stream from week 43 and no content delay in M1; treat any figure below 55 weeks as a stretch rather than a plan.
 
@@ -1504,26 +1514,26 @@ Every slice done; §4 acceptance criteria demonstrated to the product owner; §2
 
 Applied at the **start** of each phase to confirm the plan conforms, and at the **end** to confirm the implementation did. Signed by the Technical Lead.
 
-| # | Check | How verified |
-| --- | --- | --- |
-| 1 | Architecture respected — Express single backend, React + Vite frontend, no new framework or runtime | Review |
-| 2 | Engineering standards followed per Document 03.5 | Lint, review |
-| 3 | **Repository pattern enforced** — no data access outside a repository | Automated check plus review |
-| 4 | Layer-based backend, feature-based frontend | Review |
-| 5 | **Tenant scope derived from authorisation context**, never a request parameter | Review plus cross-tenant test |
-| 6 | **Permission checks server-side on every route**, resolving permissions not roles | Automated authorisation suite |
-| 7 | **Audit logging active** on every mutating endpoint | Automated test |
-| 8 | **Search authorisation respected** — filtering at query time, leaking neither records nor counts | Security test |
-| 9 | **No duplicated components** — `lib/ui` sole source, no `components/ui/` | Automated check |
-| 10 | Information architecture respected — routes match Document 04, depth ceiling honoured | Review |
-| 11 | URL conventions and stability tiers honoured; redirects recorded for any public change | Review |
-| 12 | API additive or versioned; OpenAPI and client in sync | CI |
-| 13 | Migrations reversible in development; expand-and-contract where data exists | Review |
-| 14 | Performance within budget; no N+1 introduced | Automated plus review |
-| 15 | Accessibility conformance maintained | `axe` plus manual |
-| 16 | Secrets absent from code; scans clean | CI |
-| 17 | Feature flags used for incomplete work rather than long-lived branches | Review |
-| 18 | Documentation and ADRs current | Review |
+| #   | Check                                                                                               | How verified                  |
+| --- | --------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 1   | Architecture respected — Express single backend, React + Vite frontend, no new framework or runtime | Review                        |
+| 2   | Engineering standards followed per Document 03.5                                                    | Lint, review                  |
+| 3   | **Repository pattern enforced** — no data access outside a repository                               | Automated check plus review   |
+| 4   | Layer-based backend, feature-based frontend                                                         | Review                        |
+| 5   | **Tenant scope derived from authorisation context**, never a request parameter                      | Review plus cross-tenant test |
+| 6   | **Permission checks server-side on every route**, resolving permissions not roles                   | Automated authorisation suite |
+| 7   | **Audit logging active** on every mutating endpoint                                                 | Automated test                |
+| 8   | **Search authorisation respected** — filtering at query time, leaking neither records nor counts    | Security test                 |
+| 9   | **No duplicated components** — `lib/ui` sole source, no `components/ui/`                            | Automated check               |
+| 10  | Information architecture respected — routes match Document 04, depth ceiling honoured               | Review                        |
+| 11  | URL conventions and stability tiers honoured; redirects recorded for any public change              | Review                        |
+| 12  | API additive or versioned; OpenAPI and client in sync                                               | CI                            |
+| 13  | Migrations reversible in development; expand-and-contract where data exists                         | Review                        |
+| 14  | Performance within budget; no N+1 introduced                                                        | Automated plus review         |
+| 15  | Accessibility conformance maintained                                                                | `axe` plus manual             |
+| 16  | Secrets absent from code; scans clean                                                               | CI                            |
+| 17  | Feature flags used for incomplete work rather than long-lived branches                              | Review                        |
+| 18  | Documentation and ADRs current                                                                      | Review                        |
 
 ### 24.1 Checks 3, 5, 6, 7, 8 and 9 are the load-bearing ones
 
@@ -1545,18 +1555,18 @@ The remaining checks guard quality. These six guard correctness, and a phase sho
 
 ### 25.2 Immediate next actions
 
-| # | Action | Owner | Blocks |
-| --- | --- | --- | --- |
-| 1 | Add `build` and `run` commands to `.replit`; establish edge path routing | DevOps | All deployment |
-| 2 | Author the M0 schema baseline: organisations, users, enquiries | Backend | All persistence |
-| 3 | Add `DATABASE_URL` to the env schema; wire connection and real readiness probe | Backend | All persistence |
-| 4 | Add Playwright, `axe`, and dependency/secret scanning to CI | QA / DevOps | Quality gates |
-| 5 | Record the file-storage ADR | Technical Lead | M4 documents |
-| 6 | **Select the email provider** | DevOps / Product | **First launch** |
-| 7 | Define the typed content model and Zod schemas | Frontend / Product | All of M1 |
-| 8 | **Begin content production** | Marketing / Operations | M1 completion |
-| 9 | Delete `mockup-sandbox` and the duplicate `middlewares/` directory | Any engineer | Nothing — do it while it is trivial |
-| 10 | Re-baseline §22 against the actual team shape | Engineering Manager | Any date commitment |
+| #   | Action                                                                         | Owner                  | Blocks                              |
+| --- | ------------------------------------------------------------------------------ | ---------------------- | ----------------------------------- |
+| 1   | Add `build` and `run` commands to `.replit`; establish edge path routing       | DevOps                 | All deployment                      |
+| 2   | Author the M0 schema baseline: organisations, users, enquiries                 | Backend                | All persistence                     |
+| 3   | Add `DATABASE_URL` to the env schema; wire connection and real readiness probe | Backend                | All persistence                     |
+| 4   | Add Playwright, `axe`, and dependency/secret scanning to CI                    | QA / DevOps            | Quality gates                       |
+| 5   | Record the file-storage ADR                                                    | Technical Lead         | M4 documents                        |
+| 6   | **Select the email provider**                                                  | DevOps / Product       | **First launch**                    |
+| 7   | Define the typed content model and Zod schemas                                 | Frontend / Product     | All of M1                           |
+| 8   | **Begin content production**                                                   | Marketing / Operations | M1 completion                       |
+| 9   | Delete `mockup-sandbox` and the duplicate `middlewares/` directory             | Any engineer           | Nothing — do it while it is trivial |
+| 10  | Re-baseline §22 against the actual team shape                                  | Engineering Manager    | Any date commitment                 |
 
 Items 1 through 5 are M0 engineering. Items 6 through 8 are procurement and content that must start now because they are slower than the code that depends on them.
 
@@ -1609,5 +1619,3 @@ Within M2, the **enquiry slice is the right first vertical slice** in the whole 
 ---
 
 _End of document._
-
-
