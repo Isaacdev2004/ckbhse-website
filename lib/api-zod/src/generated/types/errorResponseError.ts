@@ -6,11 +6,15 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { ErrorResponseErrorCode } from './errorResponseErrorCode';
+import type { ErrorResponseErrorDetails } from './errorResponseErrorDetails';
 
 export type ErrorResponseError = {
+  /** Stable, machine-readable classification. Clients branch on this rather than on the HTTP status or the message text. */
   code: ErrorResponseErrorCode;
+  /** Human-readable summary. Safe to display for expected errors; generic for internal faults, which never disclose their cause. */
   message: string;
-  /** Field-level validation detail, when applicable. */
-  details?: unknown;
+  /** Structured, client-safe detail. Carries `fieldErrors` for validation failures; otherwise error-specific. */
+  details?: ErrorResponseErrorDetails;
+  /** Correlation id, matching the `x-request-id` response header and the server logs. Quote it when reporting a fault. */
   requestId?: string;
 };

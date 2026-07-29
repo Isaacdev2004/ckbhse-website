@@ -6,6 +6,9 @@
  * OpenAPI spec version: 0.1.0
  */
 
+/**
+ * Stable, machine-readable classification. Clients branch on this rather than on the HTTP status or the message text.
+ */
 export type ErrorResponseErrorCode = typeof ErrorResponseErrorCode[keyof typeof ErrorResponseErrorCode];
 
 

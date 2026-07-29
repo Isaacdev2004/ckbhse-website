@@ -21,6 +21,18 @@ export interface ReadinessStatus {
   status: ReadinessStatusStatus;
 }
 
+/**
+ * A single field-level validation failure.
+ */
+export interface FieldError {
+  /** Dotted path to the offending field, e.g. `contact.email`. */
+  path: string;
+  message: string;
+}
+
+/**
+ * Stable, machine-readable classification. Clients branch on this rather than on the HTTP status or the message text.
+ */
 export type ErrorResponseErrorCode = typeof ErrorResponseErrorCode[keyof typeof ErrorResponseErrorCode];
 
 
@@ -37,18 +49,79 @@ export const ErrorResponseErrorCode = {
   service_unavailable: 'service_unavailable',
 } as const;
 
+/**
+ * Structured, client-safe detail. Carries `fieldErrors` for validation failures; otherwise error-specific.
+ */
+export type ErrorResponseErrorDetails = {
+  fieldErrors?: FieldError[];
+  [key: string]: unknown;
+ };
+
 export type ErrorResponseError = {
+  /** Stable, machine-readable classification. Clients branch on this rather than on the HTTP status or the message text. */
   code: ErrorResponseErrorCode;
+  /** Human-readable summary. Safe to display for expected errors; generic for internal faults, which never disclose their cause. */
   message: string;
-  /** Field-level validation detail, when applicable. */
-  details?: unknown;
+  /** Structured, client-safe detail. Carries `fieldErrors` for validation failures; otherwise error-specific. */
+  details?: ErrorResponseErrorDetails;
+  /** Correlation id, matching the `x-request-id` response header and the server logs. Quote it when reporting a fault. */
   requestId?: string;
 };
 
 /**
- * Standard error envelope returned by every failing endpoint.
+ * Standard error envelope returned by every failing endpoint. The `code` enum is kept in lockstep with `ErrorCode` in `lib/platform/src/errors`; adding a code requires updating both.
  */
 export interface ErrorResponse {
   error: ErrorResponseError;
 }
+
+/**
+ * The request was malformed or failed validation.
+ */
+export type BadRequestResponse = ErrorResponse;
+
+/**
+ * Authentication is required, or the session has expired.
+ */
+export type UnauthorizedResponse = ErrorResponse;
+
+/**
+ * Authenticated, but lacking the required permission or tenant scope. Retrying with the same credentials will not succeed.
+ */
+export type ForbiddenResponse = ErrorResponse;
+
+/**
+ * The resource does not exist, or exists outside the caller's tenant. The two are deliberately indistinguishable.
+ */
+export type NotFoundResponse = ErrorResponse;
+
+/**
+ * The request conflicts with the current state of the resource.
+ */
+export type ConflictResponse = ErrorResponse;
+
+/**
+ * The request body exceeded the configured limit.
+ */
+export type PayloadTooLargeResponse = ErrorResponse;
+
+/**
+ * The request was well-formed but semantically invalid. `error.details` carries `fieldErrors` for field-level failures.
+ */
+export type UnprocessableEntityResponse = ErrorResponse;
+
+/**
+ * Too many requests. Retry after the window resets.
+ */
+export type RateLimitedResponse = ErrorResponse;
+
+/**
+ * An unexpected fault. The message is generic by design; quote `error.requestId` when reporting it.
+ */
+export type InternalErrorResponse = ErrorResponse;
+
+/**
+ * The service is temporarily unable to handle the request.
+ */
+export type ServiceUnavailableResponse = ErrorResponse;
 

@@ -8,7 +8,7 @@
 import type { ErrorResponseError } from './errorResponseError';
 
 /**
- * Standard error envelope returned by every failing endpoint.
+ * Standard error envelope returned by every failing endpoint. The `code` enum is kept in lockstep with `ErrorCode` in `lib/platform/src/errors`; adding a code requires updating both.
  */
 export interface ErrorResponse {
   error: ErrorResponseError;
