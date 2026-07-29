@@ -783,7 +783,7 @@ Automated `axe` checks on every page and major component, in CI, per BRS §9's W
 
 ### 14.7 Smoke and regression tests
 
-Smoke: after every deploy, verify `/healthz` and `/readyz`, one authenticated read, and one static page. Fast enough to gate a rollback.
+Smoke: after every deploy, verify `/api/healthz` and `/api/readyz`, one authenticated read, and one static page. Fast enough to gate a rollback.
 
 Regression: **every fixed bug gets a test that fails before the fix and passes after.** No exceptions. This is the cheapest test to write, because the reproduction already exists at that moment, and it is the only mechanism that reliably prevents recurrence.
 

@@ -43,17 +43,17 @@ Scale, in the conventional sense. Ten thousand organisations and a hundred thous
 
 Nine workspace packages under pnpm, with TypeScript project references wiring them together:
 
-| Package                    | Role                                                                     | State                                                 |
-| -------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------- |
-| `artifacts/ckbhse-website` | Public marketing SPA — Vite 7, React 19, wouter, Tailwind v4             | 11 routes, 8 substantive pages, all content hardcoded |
-| `artifacts/api-server`     | Express 5 API                                                            | Hardened edge; two endpoints (`/healthz`, `/readyz`)  |
-| `artifacts/mockup-sandbox` | Component preview harness                                                | Functional but **contains zero mockups**              |
-| `lib/ui`                   | Shared design system — 55 shadcn primitives, hooks, `cn`, structural CSS | Complete, sole copy                                   |
-| `lib/api-spec`             | `openapi.yaml` plus Orval configuration                                  | Source of truth for contracts                         |
-| `lib/api-client-react`     | Generated React Query hooks and `customFetch`                            | Generated; drift-checked in CI                        |
-| `lib/api-zod`              | Generated Zod validators                                                 | Generated; drift-checked in CI                        |
-| `lib/db`                   | Drizzle client and migration runner                                      | Wired; **schema directory is empty**                  |
-| `scripts`                  | Workspace tooling                                                        | Minimal                                               |
+| Package                    | Role                                                                     | State                                                        |
+| -------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------ |
+| `artifacts/ckbhse-website` | Public marketing SPA — Vite 7, React 19, wouter, Tailwind v4             | 11 routes, 8 substantive pages, all content hardcoded        |
+| `artifacts/api-server`     | Express 5 API                                                            | Hardened edge; two endpoints (`/api/healthz`, `/api/readyz`) |
+| `artifacts/mockup-sandbox` | Component preview harness                                                | Functional but **contains zero mockups**                     |
+| `lib/ui`                   | Shared design system — 55 shadcn primitives, hooks, `cn`, structural CSS | Complete, sole copy                                          |
+| `lib/api-spec`             | `openapi.yaml` plus Orval configuration                                  | Source of truth for contracts                                |
+| `lib/api-client-react`     | Generated React Query hooks and `customFetch`                            | Generated; drift-checked in CI                               |
+| `lib/api-zod`              | Generated Zod validators                                                 | Generated; drift-checked in CI                               |
+| `lib/db`                   | Drizzle client and migration runner                                      | Wired; **schema directory is empty**                         |
+| `scripts`                  | Workspace tooling                                                        | Minimal                                                      |
 
 ## Strengths
 

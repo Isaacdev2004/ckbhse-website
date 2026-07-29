@@ -296,7 +296,7 @@ All four items in §7 Phase 1 are complete.
 
 Errors are now normalised: an `ApiError` class maps a fixed set of codes to statuses, and a single error middleware converts `ApiError`, `ZodError`, and body-parser failures into one envelope carrying `code`, `message`, `details`, and `requestId`. Internal details are suppressed in production. The envelope is published in the OpenAPI spec, so clients get it as a generated type rather than by convention.
 
-Liveness (`/healthz`) and readiness (`/readyz`) are separate, and `/readyz` returns 503 once shutdown begins so a load balancer drains the instance before it stops accepting connections.
+Liveness (`/api/healthz`) and readiness (`/api/readyz`) are separate, and `/api/readyz` returns 503 once shutdown begins so a load balancer drains the instance before it stops accepting connections.
 
 ### 10.3 Versioned migrations (§7 step 8)
 

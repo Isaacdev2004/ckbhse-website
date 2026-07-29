@@ -22,7 +22,7 @@ Any roadmap that misstates its starting point produces a plausible sequence and 
 | Shared design system  | **Complete**    | `lib/ui`, 55 primitives, sole copy                                                                          |
 | API hardening         | **Complete**    | helmet, CORS allowlist, rate limiting, error envelope, structured logging, graceful shutdown, validated env |
 | Database schema       | **Empty**       | `lib/db/src/schema/index.ts` exports nothing; no `migrations/` directory exists                             |
-| API surface           | **2 endpoints** | `/healthz`, `/readyz` only. No auth, no domain routes, no database connection                               |
+| API surface           | **2 endpoints** | `/api/healthz`, `/api/readyz` only. No auth, no domain routes, no database connection                       |
 | Public website        | **11 routes**   | 12 page files; contact form calls `preventDefault()` and discards; one shared `<title>`                     |
 | Automated tests       | **1 file**      | `artifacts/api-server/src/app.test.ts`                                                                      |
 | CI quality gates      | **Partial**     | No end-to-end, accessibility, or security scanning                                                          |
@@ -265,7 +265,7 @@ Each phase states objectives, features, dependencies, deliverables, acceptance c
 
 - `pnpm run verify` passes, and CI additionally runs end-to-end, accessibility, and security scans.
 - A migration can be applied and rolled back against a clean database.
-- `/readyz` returns unhealthy when the database is unreachable and healthy when it is.
+- `/api/readyz` returns unhealthy when the database is unreachable and healthy when it is.
 - A commit to `main` produces a deployed staging environment with no manual steps.
 - No `components/ui/` directory exists in any application, and `mockup-sandbox` is gone.
 
@@ -1056,7 +1056,7 @@ Application rollback is a redeploy of the previous tagged release, rehearsed and
 
 Automated database backups with point-in-time recovery, **verified by actual restore into a scratch environment** in M2 and rehearsed in M9. A backup that has never been restored is untested.
 
-`/healthz` and `/readyz` exist; M0 makes readiness reflect real database health rather than process liveness, so orchestration stops routing traffic to an instance that cannot serve it.
+`/api/healthz` and `/api/readyz` exist; M0 makes readiness reflect real database health rather than process liveness, so orchestration stops routing traffic to an instance that cannot serve it.
 
 Monitoring from M2: error rate, latency percentiles, database health and pool saturation, queue depth, availability, and Core Web Vitals from real users. Alert thresholds are tuned against real traffic in M9 — thresholds set before there is traffic are guesses that train the team to ignore alerts.
 

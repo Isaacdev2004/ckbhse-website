@@ -49,6 +49,7 @@ The website's dev server proxies `/api` to the API server, so run both and use a
 - `docs/DOCUMENT_04_INFORMATION_ARCHITECTURE.md` — the complete sitemap, navigation model, permission matrix and URL strategy across all five applications.
 - `docs/DOCUMENT_05_ENTERPRISE_DELIVERY_ROADMAP.md` — the eleven milestones, their sequencing and exit criteria.
 - `docs/IMPLEMENTATION_PHASE_01_REPORT.md` — what the foundation hardening phase built, and what Phase 02 should do first.
+- `docs/IMPLEMENTATION_PHASE_01_1_PRODUCTION_READINESS_REPORT.md` — production startup, health probes, security validation, deployment guidance, and smoke checklist.
 
 ## Using the design system
 
@@ -130,6 +131,37 @@ Not built yet: client portal, LMS, staff portal, administration portal, and all 
 - **The audit sink currently writes to the log, not a table.** That satisfies the framework obligation but not the retention one — logs rotate and are not a compliance record. Swapping in the database sink is one line in `container.ts` once the audit table exists.
 - **CSRF verification is already mounted globally** and exempts requests that carry no cookie, so it is inert today and automatically protects the first state-changing authenticated route. Do not add a per-route opt-in.
 - **The `ErrorResponse.error.code` enum in the OpenAPI spec and `ErrorCode` in `lib/platform` must agree.** One is generated from YAML, so the compiler cannot check it; `artifacts/api-server/src/contract.test.ts` does instead.
+
+## Production operations
+
+Full findings: `docs/IMPLEMENTATION_PHASE_01_1_PRODUCTION_READINESS_REPORT.md`.
+
+**Health endpoints (monitoring must use these paths):**
+
+| Probe     | URL                | Success                  | Notes                                                             |
+| --------- | ------------------ | ------------------------ | ----------------------------------------------------------------- |
+| Liveness  | `GET /api/healthz` | `200 {"status":"ok"}`    | Does not check the database                                       |
+| Readiness | `GET /api/readyz`  | `200 {"status":"ready"}` | Returns `503 {"status":"shutting_down"}` during graceful shutdown |
+
+Root-level `/healthz` and `/readyz` return **404** by design — the API router is mounted at `/api`.
+
+**Local production API boot:**
+
+```bash
+pnpm --filter @workspace/api-server run build
+# Required in production (see .env.example):
+#   COOKIE_SECRET (≥32 chars), TRUST_PROXY=true
+NODE_ENV=production APP_ENV=production COOKIE_SECRET=... TRUST_PROXY=true PORT=5000 \
+  node --enable-source-maps artifacts/api-server/dist/index.mjs
+```
+
+Or use `pnpm --filter @workspace/api-server run start` with a `.env` file at the repo root.
+
+**Replit production:** `artifacts/api-server/.replit-artifact/artifact.toml` configures build, run on port 8080, and startup health probe at `/api/healthz`.
+
+**Website production build:** `pnpm --filter @workspace/ckbhse-website run build` → static assets in `artifacts/ckbhse-website/dist/public/`. Serve separately or via the edge; the dev server proxies `/api` only in development.
+
+**Smoke after deploy:** application starts, `GET /api/healthz` and `GET /api/readyz` return 200, structured JSON logs appear, `x-request-id` header present on responses.
 
 ## User preferences
 
