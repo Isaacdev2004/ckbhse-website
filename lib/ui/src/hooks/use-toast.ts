@@ -36,13 +36,16 @@ type Action =
       type: ActionType['UPDATE_TOAST'];
       toast: Partial<ToasterToast>;
     }
+  // `toastId` is explicitly nullable rather than merely optional: passing
+  // `undefined` is the documented way to target every toast at once, which
+  // exactOptionalPropertyTypes would otherwise reject.
   | {
       type: ActionType['DISMISS_TOAST'];
-      toastId?: ToasterToast['id'];
+      toastId?: ToasterToast['id'] | undefined;
     }
   | {
       type: ActionType['REMOVE_TOAST'];
-      toastId?: ToasterToast['id'];
+      toastId?: ToasterToast['id'] | undefined;
     };
 
 interface State {
