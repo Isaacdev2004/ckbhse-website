@@ -1,0 +1,29 @@
+{
+  "name": "@workspace/platform",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./errors": "./src/errors/index.ts",
+    "./permissions": "./src/permissions/index.ts",
+    "./authorization": "./src/authorization/index.ts",
+    "./repository": "./src/repository/index.ts",
+    "./audit": "./src/audit/index.ts",
+    "./search": "./src/search/index.ts",
+    "./email": "./src/email/index.ts",
+    "./storage": "./src/storage/index.ts",
+    "./notifications": "./src/notifications/index.ts",
+    "./jobs": "./src/jobs/index.ts",
+    "./flags": "./src/flags/index.ts",
+    "./logging": "./src/logging/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vitest": "^4.1.10"
+  }
+}
