@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm --filter @workspace/ckbhse-website run build",
-  "outputDirectory": "artifacts/ckbhse-website/dist/public",
+  "buildCommand": "pnpm run build:vercel",
+  "outputDirectory": "public",
   "framework": null,
   "rewrites": [
     {

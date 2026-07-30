@@ -10,6 +10,7 @@
     "preinstall": "node ./scripts/enforce-pnpm.mjs",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "build:website": "pnpm --filter @workspace/ckbhse-website run build",
+  "build:vercel": "pnpm --filter @workspace/ckbhse-website run build && node ./scripts/vercel-stage-public.mjs",
     "build:api": "pnpm --filter @workspace/api-server run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
