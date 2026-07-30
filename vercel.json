@@ -4,13 +4,33 @@
   "buildCommand": "pnpm run build:vercel",
   "outputDirectory": "public",
   "framework": null,
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/admin/",
+      "permanent": true
+    },
+    {
+      "source": "/staff",
+      "destination": "/staff/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "https://ckbhse-api.onrender.com/api/:path*"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/admin/:path*",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/staff/:path*",
+      "destination": "/staff/index.html"
+    },
+    {
+      "source": "/((?!api/|admin/|staff/).*)",
       "destination": "/index.html"
     }
   ],
