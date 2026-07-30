@@ -1,0 +1,45 @@
+# Render Blueprint — CKBHSE API server
+# Docs: docs/runbooks/DEPLOYMENT.md
+#
+# After creating the service, set secret env vars in the Render dashboard
+# (COOKIE_SECRET, SUPABASE_DB_PASSWORD, etc.). Do not commit real values here.
+
+services:
+  - type: web
+    name: ckbhse-api
+    runtime: node
+    plan: starter
+    region: frankfurt
+    buildCommand: >-
+      corepack enable &&
+      pnpm install --frozen-lockfile &&
+      pnpm --filter @workspace/api-server run build
+    startCommand: node --enable-source-maps artifacts/api-server/dist/index.mjs
+    healthCheckPath: /api/readyz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: info
+      - key: TRUST_PROXY
+        value: 'true'
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_DB_PASSWORD
+        sync: false
+      - key: SUPABASE_POOLER_HOST
+        sync: false
+      - key: PLATFORM_ORGANIZATION_ID
+        value: 00000000-0000-4000-8000-000000000001
+      - key: COOKIE_SECRET
+        sync: false
+      - key: SITE_URL
+        sync: false
+      - key: CRM_SUPPORT_EMAIL
+        value: enquiries@ckbhse.co.uk
+      - key: EMAIL_FROM
+        value: noreply@ckbhse.co.uk
+      - key: EMAIL_FROM_NAME
+        value: CKBHSE

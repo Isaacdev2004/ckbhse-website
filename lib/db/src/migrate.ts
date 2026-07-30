@@ -1,32 +1,39 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import pg from 'pg';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createPoolConfig, resolveConnectionString } from './connection.js';
+import { loadEnvFile } from './load-env.js';
 
-// Uses its own short-lived pool rather than the application singleton in
-// ./index.ts, so running migrations never leaves an app connection pool open.
+const { Pool } = pg;
 
-const { DATABASE_URL } = process.env;
+loadEnvFile();
 
-if (!DATABASE_URL) {
-  console.error('DATABASE_URL must be set to run migrations.');
+let connectionString: string;
+try {
+  connectionString = resolveConnectionString('migrate');
+} catch (error) {
+  console.error(
+    error instanceof Error ? error.message : 'DATABASE connection is not configured.',
+  );
   process.exit(1);
 }
 
-const migrationsFolder = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
+const pool = new Pool(createPoolConfig(connectionString, { max: 1 }));
+const db = drizzle(pool);
+
+const migrationsFolder = join(
+  fileURLToPath(new URL('.', import.meta.url)),
   '..',
   'migrations',
 );
 
-const pool = new pg.Pool({ connectionString: DATABASE_URL, max: 1 });
-
 try {
-  await migrate(drizzle(pool), { migrationsFolder });
-  console.log('Migrations applied.');
-} catch (err) {
-  console.error('Migration failed:', err);
+  await migrate(db, { migrationsFolder });
+  console.log('Migrations applied successfully.');
+} catch (error) {
+  console.error('Migration failed:', error);
   process.exitCode = 1;
 } finally {
   await pool.end();

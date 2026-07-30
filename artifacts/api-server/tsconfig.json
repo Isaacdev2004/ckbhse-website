@@ -16,7 +16,22 @@
       "path": "../../lib/db"
     },
     {
+      "path": "../../lib/data"
+    },
+    {
+      "path": "../../lib/services"
+    },
+    {
+      "path": "../../lib/auth"
+    },
+    {
+      "path": "../../lib/domain"
+    },
+    {
       "path": "../../lib/api-zod"
+    },
+    {
+      "path": "../../lib/workers"
     }
   ]
 }

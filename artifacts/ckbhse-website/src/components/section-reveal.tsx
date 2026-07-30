@@ -1,5 +1,10 @@
 import { useEffect, useRef, type ReactNode } from 'react';
-import { motion, useInView, useAnimation } from 'framer-motion';
+import {
+  motion,
+  useInView,
+  useAnimation,
+  useReducedMotion,
+} from 'framer-motion';
 
 interface SectionRevealProps {
   children: ReactNode;
@@ -15,12 +20,17 @@ export function SectionReveal({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const controls = useAnimation();
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (isInView) {
       controls.start('visible');
     }
   }, [isInView, controls]);
+
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div
@@ -60,12 +70,17 @@ export function StaggerContainer({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const controls = useAnimation();
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     if (isInView) {
       controls.start('visible');
     }
   }, [isInView, controls]);
+
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div

@@ -2,6 +2,10 @@ import app from './app';
 import { logger } from './lib/logger';
 import { configSummary, serverConfig } from './config';
 import { beginShutdown } from './lib/lifecycle';
+import {
+  startBackgroundWorkers,
+  stopBackgroundWorkers,
+} from './container';
 
 const server = app.listen(serverConfig.port, (err) => {
   if (err) {
@@ -13,6 +17,7 @@ const server = app.listen(serverConfig.port, (err) => {
   // deployment is diagnosable from the first log line rather than by reproducing
   // the symptom.
   logger.info(configSummary(), 'Server listening');
+  startBackgroundWorkers();
 });
 
 // Autoscale deployments replace instances routinely, so in-flight requests must
@@ -32,14 +37,16 @@ function shutdown(signal: string) {
 
   timer.unref();
 
-  server.close((err) => {
-    if (err) {
-      logger.error({ err }, 'Error during shutdown');
-      process.exit(1);
-    }
+  void stopBackgroundWorkers().finally(() => {
+    server.close((err) => {
+      if (err) {
+        logger.error({ err }, 'Error during shutdown');
+        process.exit(1);
+      }
 
-    logger.info('Shutdown complete');
-    process.exit(0);
+      logger.info('Shutdown complete');
+      process.exit(0);
+    });
   });
 }
 

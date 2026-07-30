@@ -1,354 +1,477 @@
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  GraduationCap,
-  Award,
-  Clock,
-  Users,
-  BookOpen,
-  Video,
-  ArrowRight,
-} from 'lucide-react';
-import { Link } from 'wouter';
+import { Search, ArrowRight, GraduationCap } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
+import { createElement } from 'react';
 import { Button } from '@workspace/ui/components/button';
-import { Badge } from '@workspace/ui/components/badge';
+import { Input } from '@workspace/ui/components/input';
 import {
   SectionReveal,
   StaggerContainer,
   staggerItem,
 } from '@/components/section-reveal';
+import { PageShell } from '@/components/page-shell';
+import { PageContainer } from '@/components/page-container';
+import { FeatureGrid } from '@/components/corporate/feature-grid';
+import { CtaBanner } from '@/components/corporate/cta-banner';
+import { FaqAccordion } from '@/components/services/faq-accordion';
+import { PageStructuredData } from '@/components/page-structured-data';
+import { contentLoader } from '@/lib/content';
+import { filterTrainingCatalog } from '@workspace/content/training/catalog';
+import type {
+  DeliveryMethodId,
+  PathwayLevelId,
+  TrainingCategoryId,
+} from '@workspace/content/schemas';
+import { PATHWAY_LEVEL_LABELS } from '@workspace/content/schemas';
+import { resolveIcon } from '@/lib/icons';
+import { buildFaqSchema } from '@/lib/seo';
 
-const courses = [
-  {
-    id: 'iosh-managing-safely',
-    title: 'IOSH Managing Safely',
-    accreditation: 'IOSH Accredited',
-    level: 'Management',
-    duration: '3-4 days',
-    format: ['Classroom', 'Online'],
-    description:
-      'Industry-leading health and safety course for managers and supervisors across all sectors.',
-    outcomes: [
-      'Understand legal responsibilities',
-      'Identify and control risks',
-      'Investigate incidents effectively',
-      'Improve safety culture',
-    ],
-    price: 'From £395',
-  },
-  {
-    id: 'nebosh-general-certificate',
-    title: 'NEBOSH General Certificate',
-    accreditation: 'NEBOSH Accredited',
-    level: 'Professional',
-    duration: '10 days',
-    format: ['Classroom', 'Online'],
-    description:
-      'Gold standard health and safety qualification recognised globally.',
-    outcomes: [
-      'Professional H&S qualification',
-      'Risk assessment expertise',
-      'Legal knowledge',
-      'Career progression',
-    ],
-    price: 'From £1,295',
-  },
-  {
-    id: 'fire-warden',
-    title: 'Fire Warden Training',
-    accreditation: 'CPD Certified',
-    level: 'Operational',
-    duration: 'Half day',
-    format: ['On-site', 'Classroom'],
-    description:
-      'Equip designated fire wardens with the knowledge and skills to manage fire emergencies.',
-    outcomes: [
-      'Fire safety legislation',
-      'Evacuation procedures',
-      'Fire equipment use',
-      'Emergency response',
-    ],
-    price: 'From £95',
-  },
-  {
-    id: 'first-aid-at-work',
-    title: 'First Aid at Work',
-    accreditation: 'HSE Approved',
-    level: 'Operational',
-    duration: '3 days',
-    format: ['On-site', 'Classroom'],
-    description:
-      'Comprehensive first aid training to meet workplace emergency requirements.',
-    outcomes: [
-      'Emergency response skills',
-      'CPR and AED use',
-      'Injury and illness management',
-      'HSE compliance',
-    ],
-    price: 'From £295',
-  },
-  {
-    id: 'manual-handling',
-    title: 'Manual Handling Awareness',
-    accreditation: 'CPD Certified',
-    level: 'Operational',
-    duration: '2 hours',
-    format: ['On-site', 'Online'],
-    description:
-      'Practical training to reduce musculoskeletal injuries and improve lifting techniques.',
-    outcomes: [
-      'Safe lifting techniques',
-      'Risk identification',
-      'Injury prevention',
-      'Legal requirements',
-    ],
-    price: 'From £45',
-  },
-  {
-    id: 'coshh-awareness',
-    title: 'COSHH Awareness',
-    accreditation: 'CPD Certified',
-    level: 'Operational',
-    duration: '2 hours',
-    format: ['Online', 'Classroom'],
-    description:
-      'Control of Substances Hazardous to Health training for safe chemical handling.',
-    outcomes: [
-      'COSHH regulations',
-      'Hazard identification',
-      'Control measures',
-      'Safe chemical handling',
-    ],
-    price: 'From £55',
-  },
-  {
-    id: 'working-at-height',
-    title: 'Working at Height',
-    accreditation: 'CPD Certified',
-    level: 'Operational',
-    duration: 'Half day',
-    format: ['On-site', 'Classroom'],
-    description:
-      'Essential training for anyone working at height or managing such activities.',
-    outcomes: [
-      'Height safety legislation',
-      'Fall prevention',
-      'Equipment selection',
-      'Rescue procedures',
-    ],
-    price: 'From £85',
-  },
-  {
-    id: 'risk-assessment',
-    title: 'Risk Assessment Training',
-    accreditation: 'CPD Certified',
-    level: 'Management',
-    duration: '1 day',
-    format: ['Classroom', 'Online'],
-    description:
-      'Practical skills to conduct effective workplace risk assessments.',
-    outcomes: [
-      'Risk assessment methodology',
-      'Hazard identification',
-      'Control hierarchy',
-      'Documentation',
-    ],
-    price: 'From £195',
-  },
-];
+function useQueryParams() {
+  const [location] = useLocation();
+  return useMemo(
+    () => new URLSearchParams(location.split('?')[1] ?? ''),
+    [location],
+  );
+}
 
 export default function Training() {
+  const content = contentLoader.getTrainingHubPage();
+  const catalog = contentLoader.getTrainingCatalog();
+  const allCourses = contentLoader.getCoursePages();
+  const queryParams = useQueryParams();
+
+  const initialCategory = queryParams.get('category') ?? 'all';
+  const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
+  const [activeDelivery, setActiveDelivery] = useState('all');
+  const [activeIndustry, setActiveIndustry] = useState('all');
+  const [activeCertification, setActiveCertification] = useState('all');
+  const [activeDuration, setActiveDuration] = useState('all');
+  const [activePathway, setActivePathway] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredCatalog = useMemo(
+    () =>
+      filterTrainingCatalog(catalog, {
+        category: activeCategory as TrainingCategoryId | 'all',
+        deliveryMethod: activeDelivery as DeliveryMethodId | 'all',
+        industry: activeIndustry,
+        certification: activeCertification,
+        duration: activeDuration,
+        pathwayLevel: activePathway as PathwayLevelId | 'all',
+        query: searchQuery,
+      }),
+    [
+      catalog,
+      activeCategory,
+      activeDelivery,
+      activeIndustry,
+      activeCertification,
+      activeDuration,
+      activePathway,
+      searchQuery,
+    ],
+  );
+
+  const featuredCourses = useMemo(
+    () =>
+      content.featuredCourses
+        .map((ref) =>
+          allCourses.find(
+            (c) => c.category === ref.category && c.slug === ref.slug,
+          ),
+        )
+        .filter((c): c is NonNullable<typeof c> => c !== undefined),
+    [content.featuredCourses, allCourses],
+  );
+
+  const hubFaqSchema = useMemo(
+    () => (content.faqs.length > 0 ? [buildFaqSchema(content.faqs)] : []),
+    [content.faqs],
+  );
+
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero */}
+    <PageShell
+      seo={content.seo}
+      path="/training"
+      breadcrumbs={[
+        { label: 'Home', href: '/' },
+        { label: 'Training', href: '/training' },
+      ]}
+      withNavOffset={false}
+    >
+      {hubFaqSchema.length > 0 && <PageStructuredData data={hubFaqSchema} />}
+
       <section className="bg-gradient-to-br from-secondary via-secondary/95 to-secondary/90 text-secondary-foreground py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PageContainer>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] as const }}
             className="max-w-4xl"
           >
-            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
-              <Award className="w-4 h-4 text-primary" />
-              <span className="text-sm font-semibold text-primary">
-                Accredited Training Provider
-              </span>
-            </div>
-            <h1 className="font-display font-bold text-5xl md:text-6xl mb-6">
-              Safety Training Courses
+            {content.hero.badge && (
+              <p className="text-sm font-semibold uppercase tracking-wider opacity-80 mb-4">
+                {content.hero.badge}
+              </p>
+            )}
+            <h1
+              id="page-title"
+              tabIndex={-1}
+              className="font-display font-bold text-5xl md:text-6xl mb-6 outline-none"
+            >
+              {content.hero.title}
             </h1>
             <p className="text-xl opacity-90 leading-relaxed">
-              IOSH, NEBOSH, and specialist health and safety training delivered
-              by qualified professionals. Classroom, online, and on-site options
-              available.
+              {content.hero.description}
             </p>
           </motion.div>
-        </div>
+        </PageContainer>
       </section>
 
-      {/* Training Benefits */}
-      <SectionReveal className="py-16 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-card border border-card-border rounded-xl p-6 text-center">
-              <Award className="w-10 h-10 text-primary mx-auto mb-3" />
-              <h3 className="font-display font-semibold text-lg text-foreground mb-2">
-                Accredited Courses
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                IOSH, NEBOSH, HSE approved qualifications
-              </p>
-            </div>
-            <div className="bg-card border border-card-border rounded-xl p-6 text-center">
-              <Users className="w-10 h-10 text-primary mx-auto mb-3" />
-              <h3 className="font-display font-semibold text-lg text-foreground mb-2">
-                Expert Trainers
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Delivered by qualified safety professionals
-              </p>
-            </div>
-            <div className="bg-card border border-card-border rounded-xl p-6 text-center">
-              <BookOpen className="w-10 h-10 text-primary mx-auto mb-3" />
-              <h3 className="font-display font-semibold text-lg text-foreground mb-2">
-                Flexible Delivery
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Classroom, online, and on-site options
-              </p>
-            </div>
-            <div className="bg-card border border-card-border rounded-xl p-6 text-center">
-              <Video className="w-10 h-10 text-primary mx-auto mb-3" />
-              <h3 className="font-display font-semibold text-lg text-foreground mb-2">
-                Digital Resources
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Course materials and certificates online
-              </p>
-            </div>
-          </div>
-        </div>
+      <SectionReveal className="py-16 bg-background">
+        <PageContainer variant="narrow">
+          <h2 className="font-display font-bold text-3xl text-foreground mb-6">
+            {content.overview.title}
+          </h2>
+          {content.overview.paragraphs.map((p) => (
+            <p
+              key={p.slice(0, 40)}
+              className="text-lg text-muted-foreground leading-relaxed mb-4"
+            >
+              {p}
+            </p>
+          ))}
+        </PageContainer>
       </SectionReveal>
 
-      {/* Courses Grid */}
-      <section className="py-16 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="font-display font-bold text-4xl text-foreground mb-4">
-              Available Courses
+      {featuredCourses.length > 0 && (
+        <SectionReveal className="py-12 bg-muted/20">
+          <PageContainer>
+            <h2 className="font-display font-bold text-3xl text-foreground mb-8">
+              Featured courses
             </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              From foundation awareness to professional qualifications, we offer
-              training to suit every level.
-            </p>
-          </div>
-
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {courses.map((course) => (
-              <motion.div
-                key={course.id}
-                variants={staggerItem}
-                className="bg-card border border-card-border rounded-xl p-6 hover:shadow-xl hover:border-primary/50 transition-all"
-              >
-                {/* Header */}
-                <div className="mb-4">
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <h3 className="font-display font-semibold text-xl text-foreground">
-                      {course.title}
-                    </h3>
-                    <Badge variant="secondary" className="whitespace-nowrap">
-                      {course.level}
-                    </Badge>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredCourses.map((course) => (
+                <Link
+                  key={course.path}
+                  href={course.path}
+                  className="group bg-card border border-card-border rounded-xl p-6 hover:border-primary/50 hover:shadow-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                    {createElement(resolveIcon(course.icon), {
+                      className: 'w-6 h-6 text-primary',
+                      'aria-hidden': true,
+                    })}
                   </div>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    {course.description}
+                  <h3 className="font-display font-semibold text-xl text-foreground group-hover:text-primary mb-2">
+                    {course.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {course.hero.description}
                   </p>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">
-                      <Award className="w-3 h-3 mr-1" />
-                      {course.accreditation}
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="grid grid-cols-2 gap-3 mb-4 pb-4 border-b border-border">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Clock className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">
-                      {course.duration}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <GraduationCap className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-muted-foreground">
-                      {course.format.join(' / ')}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Outcomes */}
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-foreground mb-2">
-                    What You'll Learn
-                  </h4>
-                  <ul className="space-y-1">
-                    {course.outcomes.map((outcome, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start gap-2 text-sm text-muted-foreground"
-                      >
-                        <div className="w-1 h-1 bg-primary rounded-full mt-2 flex-shrink-0" />
-                        {outcome}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-border">
-                  <span className="font-display font-bold text-lg text-primary">
+                  <p className="text-sm font-medium text-primary mt-3">
                     {course.price}
-                  </span>
-                  <Link
-                    href="/contact"
-                    data-testid={`button-book-${course.id}`}
-                  >
-                    <Button variant="outline" size="sm" className="group">
-                      Book Now
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </PageContainer>
+        </SectionReveal>
+      )}
+
+      <div className="bg-background border-b border-border sticky top-20 z-40">
+        <PageContainer className="space-y-4 py-4">
+          <div className="relative max-w-md">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <Input
+              type="search"
+              placeholder="Search courses…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+              aria-label="Search training courses"
+            />
+          </div>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+            <button
+              type="button"
+              onClick={() => setActiveCategory('all')}
+              className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                activeCategory === 'all'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground'
+              }`}
+              aria-pressed={activeCategory === 'all'}
+            >
+              All Categories
+            </button>
+            {content.categories.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                  activeCategory === cat.id
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground'
+                }`}
+                aria-pressed={activeCategory === cat.id}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {content.deliveryMethodFilters.map((filter) => (
+              <button
+                key={filter.id}
+                type="button"
+                onClick={() => setActiveDelivery(filter.id)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium ${
+                  activeDelivery === filter.id
+                    ? 'bg-secondary text-secondary-foreground'
+                    : 'bg-muted/50 text-muted-foreground'
+                }`}
+                aria-pressed={activeDelivery === filter.id}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setActiveIndustry('all')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium ${activeIndustry === 'all' ? 'bg-secondary text-secondary-foreground' : 'bg-muted/50 text-muted-foreground'}`}
+              aria-pressed={activeIndustry === 'all'}
+            >
+              All Industries
+            </button>
+            {content.industryFilters.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => setActiveIndustry(f.id)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium ${activeIndustry === f.id ? 'bg-secondary text-secondary-foreground' : 'bg-muted/50 text-muted-foreground'}`}
+                aria-pressed={activeIndustry === f.id}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {content.certificationFilters.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => setActiveCertification(f.id)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium ${activeCertification === f.id ? 'bg-secondary text-secondary-foreground' : 'bg-muted/50 text-muted-foreground'}`}
+                aria-pressed={activeCertification === f.id}
+              >
+                {f.label}
+              </button>
+            ))}
+            {content.durationFilters.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => setActiveDuration(f.id)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium ${activeDuration === f.id ? 'bg-secondary text-secondary-foreground' : 'bg-muted/50 text-muted-foreground'}`}
+                aria-pressed={activeDuration === f.id}
+              >
+                {f.label}
+              </button>
+            ))}
+            {content.pathwayLevels.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => setActivePathway(f.id)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium ${activePathway === f.id ? 'bg-secondary text-secondary-foreground' : 'bg-muted/50 text-muted-foreground'}`}
+                aria-pressed={activePathway === f.id}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        </PageContainer>
+      </div>
+
+      <section className="py-16 bg-background" aria-live="polite">
+        <PageContainer>
+          <p className="text-sm text-muted-foreground mb-8">
+            Showing {filteredCatalog.length} course
+            {filteredCatalog.length !== 1 ? 's' : ''}
+          </p>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredCatalog.map((item) => {
+              const path = `/training/${item.category}/${item.slug}`;
+              return (
+                <motion.article
+                  key={path}
+                  variants={staggerItem}
+                  className="bg-card border border-card-border rounded-xl p-8 hover:shadow-xl hover:border-primary/50 transition-all"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      {createElement(resolveIcon(item.icon), {
+                        className: 'w-7 h-7 text-primary',
+                        'aria-hidden': true,
+                      })}
+                    </div>
+                    <div>
+                      <h3 className="font-display font-semibold text-2xl text-foreground mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {item.summary}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md">
+                      {item.accreditation}
+                    </span>
+                    <span className="text-xs px-2 py-1 bg-muted rounded-md text-muted-foreground">
+                      {PATHWAY_LEVEL_LABELS[item.level]}
+                    </span>
+                    <span className="text-xs px-2 py-1 bg-muted rounded-md text-muted-foreground">
+                      {item.duration}
+                    </span>
+                  </div>
+                  <Link href={path}>
+                    <Button variant="outline" className="w-full group">
+                      View course
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                </div>
-              </motion.div>
-            ))}
+                </motion.article>
+              );
+            })}
           </StaggerContainer>
-        </div>
+          {filteredCatalog.length === 0 && (
+            <p className="text-center text-muted-foreground py-12">
+              No courses match your filters.
+            </p>
+          )}
+        </PageContainer>
       </section>
 
-      {/* Corporate Training CTA */}
-      <SectionReveal className="py-24 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Users className="w-16 h-16 mx-auto mb-6 opacity-90" />
-          <h2 className="font-display font-bold text-4xl md:text-5xl mb-6">
-            Corporate Training Solutions
+      <SectionReveal className="py-16 bg-muted/20">
+        <PageContainer variant="narrow">
+          <h2 className="font-display font-bold text-3xl text-foreground mb-4">
+            {content.learningPathways.title}
           </h2>
-          <p className="text-xl opacity-90 mb-8 leading-relaxed">
-            Need to train multiple employees? We offer bespoke on-site training,
-            group discounts, and tailored programs for organisations.
+          <p className="text-muted-foreground mb-8">
+            {content.learningPathways.description}
           </p>
-          <Link href="/contact" data-testid="button-corporate-training">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="font-semibold group"
-            >
-              Enquire About Corporate Training
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
-        </div>
+          <div className="space-y-8">
+            {content.learningPathways.pathways.map((pathway, index) => (
+              <article
+                key={pathway.level}
+                className="relative pl-8 border-l-2 border-primary"
+              >
+                <span className="absolute -left-3 top-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
+                  {index + 1}
+                </span>
+                <h3 className="font-semibold text-foreground text-lg">
+                  {pathway.title}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {pathway.description}
+                </p>
+                <ul className="flex flex-wrap gap-2">
+                  {pathway.courses.map((ref) => {
+                    const course = allCourses.find(
+                      (c) => c.category === ref.category && c.slug === ref.slug,
+                    );
+                    if (!course) return null;
+                    return (
+                      <li key={course.path}>
+                        <Link
+                          href={course.path}
+                          className="text-sm text-primary hover:underline"
+                        >
+                          {course.title}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </PageContainer>
       </SectionReveal>
-    </div>
+
+      <SectionReveal className="py-16 bg-background">
+        <PageContainer>
+          <h2 className="font-display font-bold text-3xl text-foreground mb-2">
+            {content.whyTrain.title}
+          </h2>
+          {content.whyTrain.description && (
+            <p className="text-muted-foreground mb-8">
+              {content.whyTrain.description}
+            </p>
+          )}
+          <FeatureGrid items={content.whyTrain.items} />
+        </PageContainer>
+      </SectionReveal>
+
+      <SectionReveal className="py-16 bg-muted/20">
+        <PageContainer variant="narrow">
+          <div className="flex items-center gap-3 mb-6">
+            <GraduationCap
+              className="w-8 h-8 text-primary"
+              aria-hidden="true"
+            />
+            <h2 className="font-display font-bold text-3xl text-foreground">
+              {content.corporateTraining.title}
+            </h2>
+          </div>
+          <p className="text-muted-foreground mb-8">
+            {content.corporateTraining.description}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {content.corporateTraining.offerings.map((offering) => (
+              <article
+                key={offering.title}
+                className="bg-card border border-card-border rounded-xl p-6"
+              >
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+                  {createElement(resolveIcon(offering.icon), {
+                    className: 'w-5 h-5 text-primary',
+                    'aria-hidden': true,
+                  })}
+                </div>
+                <h3 className="font-semibold text-foreground mb-2">
+                  {offering.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {offering.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </PageContainer>
+      </SectionReveal>
+
+      <SectionReveal className="py-16 bg-background">
+        <PageContainer variant="narrow">
+          <FaqAccordion items={content.faqs} />
+        </PageContainer>
+      </SectionReveal>
+
+      <CtaBanner
+        title={content.consultationCta.title}
+        description={content.consultationCta.description}
+        buttonLabel={content.consultationCta.buttonLabel}
+        buttonHref={content.consultationCta.buttonHref}
+      />
+    </PageShell>
   );
 }

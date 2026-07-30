@@ -91,7 +91,35 @@ export const csrfConfig = {
 
 export const databaseConfig = {
   url: env.DATABASE_URL,
-  configured: env.DATABASE_URL !== undefined,
+  configured:
+    env.DATABASE_URL !== undefined ||
+    (env.SUPABASE_URL !== undefined &&
+      env.SUPABASE_DB_PASSWORD !== undefined &&
+      env.SUPABASE_DB_PASSWORD.length > 0),
+} as const;
+
+export const platformConfig = {
+  organizationId: env.PLATFORM_ORGANIZATION_ID,
+  configured: env.PLATFORM_ORGANIZATION_ID !== undefined,
+} as const;
+
+export const appVersion = env.APP_VERSION;
+
+export const buildConfig = {
+  sha: env.BUILD_SHA ?? null,
+  time: env.BUILD_TIME ?? null,
+} as const;
+
+export const emailConfig = {
+  supportEmail: env.CRM_SUPPORT_EMAIL ?? 'enquiries@ckbhse.co.uk',
+  fromEmail: env.EMAIL_FROM ?? 'noreply@ckbhse.co.uk',
+  fromName: env.EMAIL_FROM_NAME,
+  smtpHost: env.SMTP_HOST,
+  smtpPort: env.SMTP_PORT,
+  smtpSecure: env.SMTP_SECURE,
+  smtpUser: env.SMTP_USER,
+  smtpPass: env.SMTP_PASS,
+  smtpConfigured: env.SMTP_HOST !== undefined,
 } as const;
 
 /**
@@ -113,5 +141,7 @@ export function configSummary(): Record<string, unknown> {
     rateLimit: `${rateLimitConfig.max}/${rateLimitConfig.windowMs}ms`,
     cookieSecretConfigured: cookieConfig.secret !== undefined,
     databaseConfigured: databaseConfig.configured,
+    platformOrganizationConfigured: platformConfig.configured,
+    appVersion,
   };
 }

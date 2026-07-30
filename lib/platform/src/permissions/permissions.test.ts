@@ -29,6 +29,8 @@ describe('the permission catalogue', () => {
     expect(isPermission(PERMISSIONS.PROJECT_MANAGE)).toBe(true);
     expect(isPermission(PERMISSIONS.AUDIT_READ)).toBe(true);
     expect(isPermission(PERMISSIONS.AUDIT_CONDUCT)).toBe(true);
+    expect(isPermission(PERMISSIONS.CAPA_READ)).toBe(true);
+    expect(isPermission(PERMISSIONS.CAPA_VERIFY)).toBe(true);
   });
 
   it('keeps issuance separate from authoring', () => {

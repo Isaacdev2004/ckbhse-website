@@ -1,5 +1,6 @@
 import type { ErrorRequestHandler, RequestHandler } from 'express';
-import { ZodError } from 'zod/v4';
+import { ZodError as ZodErrorV4 } from 'zod/v4';
+import { ZodError as ZodErrorV3 } from 'zod';
 import {
   AppError,
   serialiseError,
@@ -28,11 +29,15 @@ interface BodyParserError extends Error {
 }
 
 /** Flatten a Zod error into the platform's field-error shape. */
-function toFieldErrors(error: ZodError): FieldError[] {
+function toFieldErrors(error: ZodErrorV4 | ZodErrorV3): FieldError[] {
   return error.issues.map((issue) => ({
     path: issue.path.join('.'),
     message: issue.message,
   }));
+}
+
+function isZodError(error: unknown): error is ZodErrorV4 | ZodErrorV3 {
+  return error instanceof ZodErrorV4 || error instanceof ZodErrorV3;
 }
 
 /**
@@ -45,7 +50,7 @@ function toFieldErrors(error: ZodError): FieldError[] {
 function normalise(error: unknown): AppError {
   if (error instanceof AppError) return error;
 
-  if (error instanceof ZodError) {
+  if (isZodError(error)) {
     return AppError.validation(toFieldErrors(error));
   }
 

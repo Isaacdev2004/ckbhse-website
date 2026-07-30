@@ -1,318 +1,381 @@
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Building2,
-  Factory,
-  Truck,
-  Droplet,
-  Heart,
-  GraduationCap,
-  Store,
-  Building,
-  ArrowRight,
-} from 'lucide-react';
-import { Link } from 'wouter';
+import { Search, ArrowRight } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
+import { createElement } from 'react';
 import { Button } from '@workspace/ui/components/button';
+import { Input } from '@workspace/ui/components/input';
 import {
   SectionReveal,
   StaggerContainer,
   staggerItem,
 } from '@/components/section-reveal';
+import { PageShell } from '@/components/page-shell';
+import { PageContainer } from '@/components/page-container';
+import { StatisticGrid } from '@/components/corporate/statistic-grid';
+import { CtaBanner } from '@/components/corporate/cta-banner';
+import { FaqAccordion } from '@/components/services/faq-accordion';
+import { PageStructuredData } from '@/components/page-structured-data';
+import { contentLoader } from '@/lib/content';
+import { filterIndustryCatalog } from '@workspace/content/industries/catalog';
+import type { IndustrySectorId } from '@workspace/content/schemas';
+import { resolveIcon } from '@/lib/icons';
+import { buildFaqSchema } from '@/lib/seo';
 
-const industries = [
-  {
-    id: 'construction',
-    icon: Building2,
-    name: 'Construction',
-    description:
-      'Comprehensive HSEQ support for construction sites, contractors, and project managers.',
-    challenges: [
-      'CDM 2015 compliance',
-      'Site safety management',
-      'Multi-contractor coordination',
-      'High-risk activities',
-    ],
-    solutions: [
-      'Principal Designer services',
-      'Site safety audits and inspections',
-      'Construction Phase Plans',
-      'Risk assessments and method statements',
-      'Toolbox talks and site inductions',
-      'CDM compliance documentation',
-    ],
-  },
-  {
-    id: 'manufacturing',
-    icon: Factory,
-    name: 'Manufacturing',
-    description:
-      'Safety systems, ISO compliance, and operational risk management for manufacturing facilities.',
-    challenges: [
-      'Machinery safety and guarding',
-      'ISO certification requirements',
-      'Occupational health risks',
-      'Environmental compliance',
-    ],
-    solutions: [
-      'ISO 9001, 14001, 45001 implementation',
-      'Machinery risk assessments',
-      'COSHH and chemical management',
-      'Noise and vibration assessments',
-      'Process safety management',
-      'Environmental impact assessments',
-    ],
-  },
-  {
-    id: 'logistics',
-    icon: Truck,
-    name: 'Logistics & Transport',
-    description:
-      'Fleet safety, driver compliance, and warehouse operations support.',
-    challenges: [
-      'Driver hours and fatigue',
-      'Loading and unloading risks',
-      'Warehouse safety',
-      'Fleet compliance',
-    ],
-    solutions: [
-      'Driver safety training and assessments',
-      'Warehouse risk assessments',
-      'Manual handling programs',
-      'Fork-lift truck safety',
-      'Loading bay inspections',
-      'Transport safety policies',
-    ],
-  },
-  {
-    id: 'oil-gas',
-    icon: Droplet,
-    name: 'Oil & Gas',
-    description:
-      'High-risk work procedures, process safety, and regulatory compliance for energy sector operations.',
-    challenges: [
-      'High-consequence hazards',
-      'Complex permit-to-work systems',
-      'Offshore and onshore risks',
-      'Regulatory scrutiny',
-    ],
-    solutions: [
-      'Permit-to-work system design',
-      'Process safety management',
-      'Emergency response planning',
-      'Major accident hazard analysis',
-      'Safety case development',
-      'Competency assurance systems',
-    ],
-  },
-  {
-    id: 'healthcare',
-    icon: Heart,
-    name: 'Healthcare',
-    description:
-      'Clinical and non-clinical safety, infection control, and compliance for healthcare providers.',
-    challenges: [
-      'Infection prevention',
-      'Patient and staff safety',
-      'Clinical risk management',
-      'CQC compliance',
-    ],
-    solutions: [
-      'Infection prevention audits',
-      'Clinical risk assessments',
-      'COSHH for healthcare settings',
-      'Fire safety in care settings',
-      'Manual handling for patient care',
-      'CQC compliance support',
-    ],
-  },
-  {
-    id: 'education',
-    icon: GraduationCap,
-    name: 'Educational Institutions',
-    description:
-      'Health and safety management for schools, colleges, and universities.',
-    challenges: [
-      'Safeguarding and duty of care',
-      'Science lab safety',
-      'Staff and student wellbeing',
-      'Emergency planning',
-    ],
-    solutions: [
-      'School safety policies',
-      'Fire evacuation planning',
-      'Science lab risk assessments',
-      'Staff safety training',
-      'Playground and sports safety',
-      'Educational visit planning',
-    ],
-  },
-  {
-    id: 'sme',
-    icon: Store,
-    name: 'Small & Medium Enterprises',
-    description: 'Affordable, scalable HSEQ support for growing businesses.',
-    challenges: [
-      'Limited internal resources',
-      'Cost-effective compliance',
-      'Practical safety solutions',
-      'Basic policy frameworks',
-    ],
-    solutions: [
-      'Essential health & safety policies',
-      'Workplace risk assessments',
-      'Staff training programs',
-      'Compliance health checks',
-      'Cost-effective retainer packages',
-      'Template documentation',
-    ],
-  },
-  {
-    id: 'enterprise',
-    icon: Building,
-    name: 'Large Enterprises',
-    description:
-      'Strategic HSEQ consulting, multi-site management, and enterprise-wide compliance programs.',
-    challenges: [
-      'Multi-site coordination',
-      'Complex regulatory landscape',
-      'Board-level reporting',
-      'Enterprise safety culture',
-    ],
-    solutions: [
-      'Enterprise HSEQ strategy',
-      'Multi-site audit programs',
-      'Executive safety dashboards',
-      'Safety culture assessments',
-      'Dedicated consultant teams',
-      'Global compliance support',
-    ],
-  },
-];
+function useQueryParams() {
+  const [location] = useLocation();
+  return useMemo(
+    () => new URLSearchParams(location.split('?')[1] ?? ''),
+    [location],
+  );
+}
 
 export default function Industries() {
+  const content = contentLoader.getIndustriesHubPage();
+  const catalog = contentLoader.getIndustryCatalog();
+  const allPages = contentLoader.getIndustryPages();
+  const queryParams = useQueryParams();
+
+  const initialSector = queryParams.get('sector') ?? 'all';
+  const [activeSector, setActiveSector] = useState<string>(initialSector);
+  const [activeTheme, setActiveTheme] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredCatalog = useMemo(
+    () =>
+      filterIndustryCatalog(catalog, {
+        sector: activeSector as IndustrySectorId | 'all',
+        regulatoryTheme: activeTheme,
+        query: searchQuery,
+      }),
+    [catalog, activeSector, activeTheme, searchQuery],
+  );
+
+  const featuredPages = useMemo(
+    () =>
+      content.featuredIndustries
+        .map((slug) => allPages.find((p) => p.slug === slug))
+        .filter((p): p is NonNullable<typeof p> => p !== undefined),
+    [content.featuredIndustries, allPages],
+  );
+
+  const hubFaqSchema = useMemo(
+    () => (content.faqs.length > 0 ? [buildFaqSchema(content.faqs)] : []),
+    [content.faqs],
+  );
+
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero */}
+    <PageShell
+      seo={content.seo}
+      path="/industries"
+      breadcrumbs={[
+        { label: 'Home', href: '/' },
+        { label: 'Industries', href: '/industries' },
+      ]}
+      withNavOffset={false}
+    >
+      {hubFaqSchema.length > 0 && <PageStructuredData data={hubFaqSchema} />}
+
       <section className="bg-gradient-to-br from-secondary via-secondary/95 to-secondary/90 text-secondary-foreground py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PageContainer>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] as const }}
             className="max-w-4xl"
           >
-            <h1 className="font-display font-bold text-5xl md:text-6xl mb-6">
-              Industry-Specific Expertise
+            {content.hero.badge && (
+              <p className="text-sm font-semibold uppercase tracking-wider opacity-80 mb-4">
+                {content.hero.badge}
+              </p>
+            )}
+            <h1
+              id="page-title"
+              tabIndex={-1}
+              className="font-display font-bold text-5xl md:text-6xl mb-6 outline-none"
+            >
+              {content.hero.title}
             </h1>
             <p className="text-xl opacity-90 leading-relaxed">
-              Tailored HSEQ solutions for the unique challenges, regulations,
-              and risk profiles of your sector.
+              {content.hero.description}
             </p>
           </motion.div>
-        </div>
+        </PageContainer>
       </section>
 
-      {/* Industries Grid */}
-      <section className="py-16 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <StaggerContainer className="grid grid-cols-1 gap-12">
-            {industries.map((industry) => (
-              <motion.div
-                key={industry.id}
-                variants={staggerItem}
-                id={industry.id}
-                className="bg-card border border-card-border rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
+      <SectionReveal className="py-16 bg-background">
+        <PageContainer variant="narrow">
+          <h2 className="font-display font-bold text-3xl text-foreground mb-6">
+            {content.overview.title}
+          </h2>
+          {content.overview.paragraphs.map((p) => (
+            <p
+              key={p.slice(0, 40)}
+              className="text-lg text-muted-foreground leading-relaxed mb-4"
+            >
+              {p}
+            </p>
+          ))}
+        </PageContainer>
+      </SectionReveal>
+
+      <SectionReveal className="py-12 bg-muted/20">
+        <PageContainer>
+          <StatisticGrid items={content.industryStatistics} />
+        </PageContainer>
+      </SectionReveal>
+
+      {featuredPages.length > 0 && (
+        <SectionReveal className="py-12 bg-background">
+          <PageContainer>
+            <h2 className="font-display font-bold text-3xl text-foreground mb-8">
+              Featured industries
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredPages.map((industry) => (
+                <Link
+                  key={industry.path}
+                  href={industry.path}
+                  className="group bg-card border border-card-border rounded-xl p-6 hover:border-primary/50 hover:shadow-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                    {createElement(resolveIcon(industry.icon), {
+                      className: 'w-6 h-6 text-primary',
+                      'aria-hidden': true,
+                    })}
+                  </div>
+                  <h3 className="font-display font-semibold text-xl text-foreground group-hover:text-primary mb-2">
+                    {industry.name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {industry.hero.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </PageContainer>
+        </SectionReveal>
+      )}
+
+      <div className="bg-background border-b border-border sticky top-20 z-40">
+        <PageContainer className="space-y-4 py-4">
+          <div className="relative max-w-md">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <Input
+              type="search"
+              placeholder="Search industries…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+              aria-label="Search industries"
+            />
+          </div>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+            <button
+              type="button"
+              onClick={() => setActiveSector('all')}
+              className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                activeSector === 'all'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground'
+              }`}
+              aria-pressed={activeSector === 'all'}
+            >
+              All Sectors
+            </button>
+            {content.sectors.map((sector) => (
+              <button
+                key={sector.id}
+                type="button"
+                onClick={() => setActiveSector(sector.id)}
+                className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+                  activeSector === sector.id
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground'
+                }`}
+                aria-pressed={activeSector === sector.id}
               >
-                <div className="grid lg:grid-cols-3 gap-8 p-8 lg:p-10">
-                  {/* Header */}
-                  <div className="lg:col-span-3">
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <industry.icon className="w-8 h-8 text-primary" />
-                      </div>
-                      <div>
-                        <h2 className="font-display font-bold text-3xl text-foreground mb-2">
-                          {industry.name}
-                        </h2>
-                        <p className="text-lg text-muted-foreground">
-                          {industry.description}
-                        </p>
-                      </div>
+                {sector.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+            <button
+              type="button"
+              onClick={() => setActiveTheme('all')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap ${
+                activeTheme === 'all'
+                  ? 'bg-secondary text-secondary-foreground'
+                  : 'bg-muted/50 text-muted-foreground'
+              }`}
+              aria-pressed={activeTheme === 'all'}
+            >
+              All Themes
+            </button>
+            {content.regulatoryThemes.map((theme) => (
+              <button
+                key={theme.id}
+                type="button"
+                onClick={() => setActiveTheme(theme.id)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap ${
+                  activeTheme === theme.id
+                    ? 'bg-secondary text-secondary-foreground'
+                    : 'bg-muted/50 text-muted-foreground'
+                }`}
+                aria-pressed={activeTheme === theme.id}
+              >
+                {theme.label}
+              </button>
+            ))}
+          </div>
+        </PageContainer>
+      </div>
+
+      <section className="py-16 bg-background" aria-live="polite">
+        <PageContainer>
+          <p className="text-sm text-muted-foreground mb-8">
+            Showing {filteredCatalog.length} industr
+            {filteredCatalog.length !== 1 ? 'ies' : 'y'}
+          </p>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredCatalog.map((item) => {
+              const path = `/industries/${item.slug}`;
+              return (
+                <motion.article
+                  key={path}
+                  variants={staggerItem}
+                  className="bg-card border border-card-border rounded-xl p-8 hover:shadow-xl hover:border-primary/50 transition-all"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      {createElement(resolveIcon(item.icon), {
+                        className: 'w-7 h-7 text-primary',
+                        'aria-hidden': true,
+                      })}
+                    </div>
+                    <div>
+                      <h3 className="font-display font-semibold text-2xl text-foreground mb-2">
+                        {item.name}
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {item.summary}
+                      </p>
                     </div>
                   </div>
-
-                  {/* Challenges */}
-                  <div>
-                    <h3 className="font-display font-semibold text-lg text-foreground mb-4">
-                      Common Challenges
-                    </h3>
-                    <ul className="space-y-2">
-                      {industry.challenges.map((challenge, index) => (
-                        <li
-                          key={index}
-                          className="text-sm text-muted-foreground flex items-start gap-2"
-                        >
-                          <span className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                          {challenge}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {item.topics.slice(0, 4).map((topic) => (
+                      <span
+                        key={topic}
+                        className="text-xs px-2 py-1 bg-muted rounded-md text-muted-foreground"
+                      >
+                        {topic}
+                      </span>
+                    ))}
                   </div>
-
-                  {/* Solutions */}
-                  <div className="lg:col-span-2">
-                    <h3 className="font-display font-semibold text-lg text-foreground mb-4">
-                      How We Help
-                    </h3>
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {industry.solutions.map((solution, index) => (
-                        <div key={index} className="flex items-start gap-2">
-                          <div className="w-5 h-5 bg-primary/10 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <div className="w-2 h-2 bg-primary rounded-full" />
-                          </div>
-                          <span className="text-sm text-foreground">
-                            {solution}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="px-8 lg:px-10 pb-8">
-                  <Link
-                    href="/contact"
-                    data-testid={`button-discuss-${industry.id}`}
-                  >
-                    <Button variant="outline" className="group">
-                      Discuss {industry.name} Solutions
+                  <Link href={path}>
+                    <Button variant="outline" className="w-full group">
+                      Explore {item.name}
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                </div>
-              </motion.div>
-            ))}
+                </motion.article>
+              );
+            })}
           </StaggerContainer>
-        </div>
+          {filteredCatalog.length === 0 && (
+            <p className="text-center text-muted-foreground py-12">
+              No industries match your filters.
+            </p>
+          )}
+        </PageContainer>
       </section>
 
-      {/* CTA */}
-      <SectionReveal className="py-24 bg-muted/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-display font-bold text-4xl md:text-5xl text-foreground mb-6">
-            Don't See Your Industry?
+      <SectionReveal className="py-16 bg-muted/20">
+        <PageContainer variant="narrow">
+          <h2 className="font-display font-bold text-3xl text-foreground mb-4">
+            {content.regulatoryLandscape.title}
           </h2>
-          <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-            We work across a wide range of sectors. Get in touch to discuss your
-            specific industry requirements.
+          <p className="text-muted-foreground mb-8">
+            {content.regulatoryLandscape.description}
           </p>
-          <Link href="/contact" data-testid="button-contact-us">
-            <Button size="lg" className="font-semibold group">
-              Contact Our Team
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
-        </div>
+          <div className="space-y-4">
+            {content.regulatoryLandscape.items.map((item) => (
+              <article
+                key={item.name}
+                className="bg-card border border-card-border rounded-xl p-6"
+              >
+                <h3 className="font-semibold text-foreground mb-2">
+                  {item.name}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {item.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </PageContainer>
       </SectionReveal>
-    </div>
+
+      <SectionReveal className="py-16 bg-background">
+        <PageContainer variant="narrow">
+          <h2 className="font-display font-bold text-3xl text-foreground mb-8">
+            {content.clientJourney.title}
+          </h2>
+          <ol className="space-y-6">
+            {content.clientJourney.steps.map((step, index) => (
+              <li key={step.title} className="flex gap-4">
+                <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm flex-shrink-0">
+                  {index + 1}
+                </span>
+                <div>
+                  <h3 className="font-semibold text-foreground">
+                    {step.title}
+                  </h3>
+                  <p className="text-muted-foreground">{step.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </PageContainer>
+      </SectionReveal>
+
+      <SectionReveal className="py-16 bg-muted/20">
+        <PageContainer variant="narrow">
+          <h2 className="font-display font-bold text-3xl text-foreground mb-6">
+            Related resources
+          </h2>
+          <ul className="space-y-3">
+            {content.relatedResources
+              .filter((r) => r.available !== false)
+              .map((resource) => (
+                <li key={resource.slug}>
+                  <Link
+                    href={resource.href}
+                    className="text-primary hover:underline"
+                  >
+                    {resource.title}
+                  </Link>
+                </li>
+              ))}
+          </ul>
+        </PageContainer>
+      </SectionReveal>
+
+      <SectionReveal className="py-16 bg-background">
+        <PageContainer variant="narrow">
+          <FaqAccordion items={content.faqs} />
+        </PageContainer>
+      </SectionReveal>
+
+      <CtaBanner
+        title={content.cta.title}
+        description={content.cta.description}
+        buttonLabel={content.cta.buttonLabel}
+        buttonHref={content.cta.buttonHref}
+      />
+    </PageShell>
   );
 }

@@ -156,6 +156,17 @@ describe('CSRF protection', () => {
   });
 });
 
+describe('session auth', () => {
+  it('rejects malformed session cookies without a 500', async () => {
+    const res = await request(app)
+      .get('/api/v1/auth/session')
+      .set('Cookie', 'ckbhse_session=invalid-session-id');
+
+    expect(res.status).toBe(401);
+    expect(res.body.error.code).toBe('unauthorized');
+  });
+});
+
 describe('error envelope consistency', () => {
   it('uses the same shape for every failure', async () => {
     const notFound = await request(app).get('/api/nope');

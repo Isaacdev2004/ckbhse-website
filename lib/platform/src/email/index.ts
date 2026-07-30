@@ -100,6 +100,7 @@ export function assertValidEmailMessage(message: EmailMessage): void {
  * cannot email a real client, and tests assert on `sent` rather than mocking a
  * transport.
  */
+
 export class InMemoryEmailProvider implements EmailProvider {
   readonly name = 'in-memory';
 
@@ -137,3 +138,6 @@ export class InMemoryEmailProvider implements EmailProvider {
     this.counter = 0;
   }
 }
+
+export { SmtpEmailProvider } from './smtp-provider.js';
+export type { SmtpEmailProviderConfig } from './smtp-provider.js';

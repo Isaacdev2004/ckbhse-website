@@ -22,7 +22,2862 @@ export const HealthCheckResponse = zod.object({
  * @summary Readiness check
  */
 export const ReadinessCheckResponse = zod.object({
-  "status": zod.enum(['ready', 'shutting_down'])
+  "status": zod.enum(['ready', 'shutting_down', 'not_ready'])
 })
+
+
+/**
+ * Returns ok while the process is running under the `/api/v1` namespace. Does not check downstream dependencies.
+ * @summary Versioned liveness check
+ */
+export const V1HealthCheckResponse = zod.object({
+  "status": zod.string()
+})
+
+
+/**
+ * Accepts a contact form submission from the public website, persists it, records an audit event, and enqueues a notification outbox message.
+ * @summary Submit a public contact enquiry
+ */
+
+
+export const submitContactEnquiryBodyEmailMin = 3;
+
+
+export const submitContactEnquiryBodyMessageMin = 10;
+
+
+
+export const SubmitContactEnquiryBody = zod.object({
+  "firstName": zod.string().min(1),
+  "lastName": zod.string().min(1),
+  "email": zod.string().min(submitContactEnquiryBodyEmailMin),
+  "phone": zod.string().nullish(),
+  "company": zod.string().nullish(),
+  "serviceInterest": zod.string().min(1),
+  "message": zod.string().min(submitContactEnquiryBodyMessageMin)
+})
+
+export const submitContactEnquiryResponseIdMin = 36;
+export const submitContactEnquiryResponseIdMax = 36;
+
+
+
+export const SubmitContactEnquiryResponse = zod.object({
+  "id": zod.string().min(submitContactEnquiryResponseIdMin).max(submitContactEnquiryResponseIdMax),
+  "status": zod.enum(['received']),
+  "message": zod.string()
+})
+
+
+/**
+ * Reports platform health including optional database connectivity when configured. Returns `degraded` when the database is unreachable.
+ * @summary Platform health metadata
+ */
+export const systemHealthResponseUptimeSecondsMin = 0;
+
+
+
+export const SystemHealthResponse = zod.object({
+  "status": zod.enum(['healthy', 'degraded', 'unhealthy']),
+  "timestamp": zod.coerce.date(),
+  "version": zod.string(),
+  "environment": zod.string(),
+  "uptimeSeconds": zod.number().min(systemHealthResponseUptimeSecondsMin),
+  "service": zod.string(),
+  "checks": zod.object({
+  "database": zod.enum(['ok', 'unavailable'])
+})
+})
+
+
+/**
+ * @summary Platform version metadata
+ */
+export const SystemVersionResponse = zod.object({
+  "version": zod.string(),
+  "environment": zod.string(),
+  "buildSha": zod.string().nullable(),
+  "buildTime": zod.coerce.date().nullable(),
+  "nodeVersion": zod.string()
+})
+
+
+/**
+ * @summary Authenticate with email and password
+ */
+export const loginBodyEmailMin = 3;
+
+
+
+
+export const LoginBody = zod.object({
+  "email": zod.string().min(loginBodyEmailMin),
+  "password": zod.string().min(1),
+  "rememberMe": zod.boolean().optional(),
+  "organizationId": zod.string().optional()
+})
+
+export const LoginResponse = zod.object({
+  "userId": zod.string(),
+  "organizationId": zod.string(),
+  "roles": zod.array(zod.string()),
+  "permissions": zod.array(zod.string())
+}).and(zod.object({
+  "user": zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "firstName": zod.string(),
+  "lastName": zod.string()
+})
+}))
+
+
+/**
+ * @summary End the current session
+ */
+export const LogoutResponse = zod.void()
+
+
+/**
+ * @summary Refresh session activity window
+ */
+export const RefreshSessionResponse = zod.object({
+  "userId": zod.string(),
+  "organizationId": zod.string(),
+  "roles": zod.array(zod.string()),
+  "permissions": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Change password for the current user
+ */
+export const ChangePasswordBody = zod.object({
+  "currentPassword": zod.string(),
+  "newPassword": zod.string()
+})
+
+export const ChangePasswordResponse = zod.void()
+
+
+/**
+ * @summary Request a password reset token
+ */
+export const requestPasswordResetBodyEmailMin = 3;
+
+
+
+export const RequestPasswordResetBody = zod.object({
+  "email": zod.string().min(requestPasswordResetBodyEmailMin)
+})
+
+export const RequestPasswordResetResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Reset password using a token
+ */
+export const ResetPasswordBody = zod.object({
+  "token": zod.string(),
+  "newPassword": zod.string()
+})
+
+export const ResetPasswordResponse = zod.void()
+
+
+/**
+ * Returns the authenticated staff session. In development, identity is resolved from trusted `x-dev-*` headers until real login lands in M2.3.
+ * @summary Current session
+ */
+export const AuthSessionResponse = zod.object({
+  "userId": zod.string(),
+  "organizationId": zod.string(),
+  "roles": zod.array(zod.string()),
+  "permissions": zod.array(zod.string())
+})
+
+
+/**
+ * Returns the authenticated user's profile, organization scope, roles, and resolved permissions. Requires an active session.
+ * @summary Current authenticated user profile
+ */
+export const CurrentUserResponse = zod.object({
+  "userId": zod.string(),
+  "organizationId": zod.string(),
+  "roles": zod.array(zod.string()),
+  "permissions": zod.array(zod.string())
+}).and(zod.object({
+  "user": zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "firstName": zod.string(),
+  "lastName": zod.string()
+})
+}))
+
+
+/**
+ * @summary Initiate a direct-to-storage file upload
+ */
+export const InitiateFileUploadBody = zod.object({
+  "originalFilename": zod.string(),
+  "contentType": zod.string(),
+  "sizeBytes": zod.number().int(),
+  "domain": zod.string(),
+  "entityType": zod.string().nullish(),
+  "entityId": zod.string().nullish()
+})
+
+export const InitiateFileUploadResponse = zod.object({
+  "upload": zod.object({
+  "id": zod.string(),
+  "organizationId": zod.string(),
+  "storageKey": zod.string(),
+  "originalFilename": zod.string(),
+  "contentType": zod.string(),
+  "sizeBytes": zod.number().int(),
+  "status": zod.string(),
+  "domain": zod.string(),
+  "entityType": zod.string().nullish(),
+  "entityId": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+}),
+  "uploadUrl": zod.string(),
+  "expiresInSeconds": zod.number().int()
+})
+
+
+/**
+ * @summary Confirm a completed direct upload
+ */
+export const CompleteFileUploadParams = zod.object({
+  "uploadId": zod.coerce.string()
+})
+
+export const CompleteFileUploadResponse = zod.object({
+  "upload": zod.object({
+  "id": zod.string(),
+  "organizationId": zod.string(),
+  "storageKey": zod.string(),
+  "originalFilename": zod.string(),
+  "contentType": zod.string(),
+  "sizeBytes": zod.number().int(),
+  "status": zod.string(),
+  "domain": zod.string(),
+  "entityType": zod.string().nullish(),
+  "entityId": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
+})
+
+
+/**
+ * @summary Issue a short-lived download URL for an uploaded file
+ */
+export const GetFileDownloadGrantParams = zod.object({
+  "uploadId": zod.coerce.string()
+})
+
+export const GetFileDownloadGrantResponse = zod.object({
+  "uploadId": zod.string(),
+  "downloadUrl": zod.string(),
+  "expiresInSeconds": zod.number().int(),
+  "originalFilename": zod.string(),
+  "contentType": zod.string()
+})
+
+
+/**
+ * @summary Search and list leads
+ */
+export const listLeadsQueryOffsetDefault = 0;
+export const listLeadsQueryOffsetMin = 0;
+
+export const listLeadsQueryLimitDefault = 25;
+export const listLeadsQueryLimitMax = 100;
+
+
+
+export const ListLeadsQueryParams = zod.object({
+  "q": zod.coerce.string().optional(),
+  "status": zod.enum(['new', 'acknowledged', 'qualified', 'proposal_sent', 'negotiation', 'won', 'lost', 'archived']).optional(),
+  "priority": zod.enum(['low', 'normal', 'high', 'urgent']).optional(),
+  "assignee": zod.coerce.string().optional(),
+  "offset": zod.coerce.number().min(listLeadsQueryOffsetMin).default(listLeadsQueryOffsetDefault),
+  "limit": zod.coerce.number().min(1).max(listLeadsQueryLimitMax).default(listLeadsQueryLimitDefault)
+})
+
+export const ListLeadsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "organizationId": zod.string(),
+  "contactRequestId": zod.string().nullish(),
+  "firstName": zod.string(),
+  "lastName": zod.string(),
+  "email": zod.string(),
+  "phone": zod.string().nullish(),
+  "company": zod.string().nullish(),
+  "serviceInterest": zod.string(),
+  "industry": zod.string().nullish(),
+  "trainingInterest": zod.string().nullish(),
+  "message": zod.string().nullish(),
+  "status": zod.enum(['new', 'acknowledged', 'qualified', 'proposal_sent', 'negotiation', 'won', 'lost', 'archived']),
+  "priority": zod.enum(['low', 'normal', 'high', 'urgent']),
+  "source": zod.enum(['website', 'referral', 'phone', 'email', 'event', 'partner', 'other']),
+  "assignedToUserId": zod.string().nullish(),
+  "score": zod.number().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})),
+  "hasMore": zod.boolean(),
+  "total": zod.number()
+})
+
+
+/**
+ * @summary Get lead by id
+ */
+export const getLeadPathIdMin = 36;
+export const getLeadPathIdMax = 36;
+
+
+
+export const GetLeadParams = zod.object({
+  "id": zod.coerce.string().min(getLeadPathIdMin).max(getLeadPathIdMax)
+})
+
+export const GetLeadResponse = zod.object({
+  "id": zod.string(),
+  "organizationId": zod.string(),
+  "contactRequestId": zod.string().nullish(),
+  "firstName": zod.string(),
+  "lastName": zod.string(),
+  "email": zod.string(),
+  "phone": zod.string().nullish(),
+  "company": zod.string().nullish(),
+  "serviceInterest": zod.string(),
+  "industry": zod.string().nullish(),
+  "trainingInterest": zod.string().nullish(),
+  "message": zod.string().nullish(),
+  "status": zod.enum(['new', 'acknowledged', 'qualified', 'proposal_sent', 'negotiation', 'won', 'lost', 'archived']),
+  "priority": zod.enum(['low', 'normal', 'high', 'urgent']),
+  "source": zod.enum(['website', 'referral', 'phone', 'email', 'event', 'partner', 'other']),
+  "assignedToUserId": zod.string().nullish(),
+  "score": zod.number().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Transition lead status
+ */
+export const updateLeadStatusPathIdMin = 36;
+export const updateLeadStatusPathIdMax = 36;
+
+
+
+export const UpdateLeadStatusParams = zod.object({
+  "id": zod.coerce.string().min(updateLeadStatusPathIdMin).max(updateLeadStatusPathIdMax)
+})
+
+export const UpdateLeadStatusBody = zod.object({
+  "status": zod.enum(['new', 'acknowledged', 'qualified', 'proposal_sent', 'negotiation', 'won', 'lost', 'archived']),
+  "reason": zod.string().nullish()
+})
+
+export const UpdateLeadStatusResponse = zod.object({
+  "id": zod.string(),
+  "organizationId": zod.string(),
+  "contactRequestId": zod.string().nullish(),
+  "firstName": zod.string(),
+  "lastName": zod.string(),
+  "email": zod.string(),
+  "phone": zod.string().nullish(),
+  "company": zod.string().nullish(),
+  "serviceInterest": zod.string(),
+  "industry": zod.string().nullish(),
+  "trainingInterest": zod.string().nullish(),
+  "message": zod.string().nullish(),
+  "status": zod.enum(['new', 'acknowledged', 'qualified', 'proposal_sent', 'negotiation', 'won', 'lost', 'archived']),
+  "priority": zod.enum(['low', 'normal', 'high', 'urgent']),
+  "source": zod.enum(['website', 'referral', 'phone', 'email', 'event', 'partner', 'other']),
+  "assignedToUserId": zod.string().nullish(),
+  "score": zod.number().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Assign lead to staff member
+ */
+export const assignLeadPathIdMin = 36;
+export const assignLeadPathIdMax = 36;
+
+
+
+export const AssignLeadParams = zod.object({
+  "id": zod.coerce.string().min(assignLeadPathIdMin).max(assignLeadPathIdMax)
+})
+
+export const AssignLeadBody = zod.object({
+  "assigneeUserId": zod.string(),
+  "reason": zod.string().nullish()
+})
+
+export const AssignLeadResponse = zod.object({
+  "id": zod.string(),
+  "organizationId": zod.string(),
+  "contactRequestId": zod.string().nullish(),
+  "firstName": zod.string(),
+  "lastName": zod.string(),
+  "email": zod.string(),
+  "phone": zod.string().nullish(),
+  "company": zod.string().nullish(),
+  "serviceInterest": zod.string(),
+  "industry": zod.string().nullish(),
+  "trainingInterest": zod.string().nullish(),
+  "message": zod.string().nullish(),
+  "status": zod.enum(['new', 'acknowledged', 'qualified', 'proposal_sent', 'negotiation', 'won', 'lost', 'archived']),
+  "priority": zod.enum(['low', 'normal', 'high', 'urgent']),
+  "source": zod.enum(['website', 'referral', 'phone', 'email', 'event', 'partner', 'other']),
+  "assignedToUserId": zod.string().nullish(),
+  "score": zod.number().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Lead activity timeline
+ */
+export const getLeadTimelinePathIdMin = 36;
+export const getLeadTimelinePathIdMax = 36;
+
+
+
+export const GetLeadTimelineParams = zod.object({
+  "id": zod.coerce.string().min(getLeadTimelinePathIdMin).max(getLeadTimelinePathIdMax)
+})
+
+export const GetLeadTimelineResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "kind": zod.enum(['activity', 'status', 'note']),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "occurredAt": zod.coerce.date(),
+  "actorUserId": zod.string().nullish(),
+  "metadata": zod.record(zod.string(), zod.unknown()).nullish()
+}))
+})
+
+
+/**
+ * @summary Add internal or external note
+ */
+export const addLeadNotePathIdMin = 36;
+export const addLeadNotePathIdMax = 36;
+
+
+
+export const AddLeadNoteParams = zod.object({
+  "id": zod.coerce.string().min(addLeadNotePathIdMin).max(addLeadNotePathIdMax)
+})
+
+
+export const addLeadNoteBodyIsInternalDefault = true;
+
+export const AddLeadNoteBody = zod.object({
+  "body": zod.string().min(1),
+  "isInternal": zod.boolean().default(addLeadNoteBodyIsInternalDefault)
+})
+
+export const AddLeadNoteResponse = zod.object({
+  "id": zod.string(),
+  "kind": zod.enum(['activity', 'status', 'note']),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "occurredAt": zod.coerce.date(),
+  "actorUserId": zod.string().nullish(),
+  "metadata": zod.record(zod.string(), zod.unknown()).nullish()
+})
+
+
+/**
+ * @summary CRM dashboard metrics
+ */
+export const GetDashboardMetricsResponse = zod.object({
+  "newLeads": zod.number(),
+  "qualified": zod.number(),
+  "won": zod.number(),
+  "lost": zod.number(),
+  "openLeads": zod.number(),
+  "averageResponseMinutes": zod.number().nullish()
+})
+
+
+/**
+ * @summary List reminders for a lead
+ */
+export const ListRemindersQueryParams = zod.object({
+  "leadId": zod.coerce.string()
+})
+
+export const ListRemindersResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "leadId": zod.string(),
+  "title": zod.string(),
+  "dueAt": zod.coerce.date(),
+  "priority": zod.enum(['low', 'normal', 'high', 'urgent']),
+  "completedAt": zod.coerce.date().nullish(),
+  "assignedToUserId": zod.string().nullish(),
+  "isRecurring": zod.boolean(),
+  "createdAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Create follow-up reminder
+ */
+export const CreateReminderBody = zod.object({
+  "leadId": zod.string(),
+  "title": zod.string(),
+  "dueAt": zod.coerce.date(),
+  "priority": zod.enum(['low', 'normal', 'high', 'urgent']).optional()
+})
+
+export const CreateReminderResponse = zod.object({
+  "id": zod.string(),
+  "leadId": zod.string(),
+  "title": zod.string(),
+  "dueAt": zod.coerce.date(),
+  "priority": zod.enum(['low', 'normal', 'high', 'urgent']),
+  "completedAt": zod.coerce.date().nullish(),
+  "assignedToUserId": zod.string().nullish(),
+  "isRecurring": zod.boolean(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Mark reminder complete
+ */
+export const CompleteReminderParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const CompleteReminderResponse = zod.void()
+
+
+/**
+ * @summary List lead tags
+ */
+export const ListLeadTagsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "color": zod.string().nullish()
+}))
+})
+
+
+/**
+ * @summary Create lead tag
+ */
+
+
+
+export const CreateLeadTagBody = zod.object({
+  "name": zod.string().min(1),
+  "color": zod.string().nullish()
+})
+
+export const CreateLeadTagResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "color": zod.string().nullish()
+})
+
+
+/**
+ * @summary Client portal executive dashboard
+ */
+export const PortalDashboardResponse = zod.object({
+  "organizationName": zod.string(),
+  "complianceScore": zod.number().nullish(),
+  "healthScore": zod.number().nullish(),
+  "openActions": zod.number(),
+  "expiringCertificates": zod.number(),
+  "openSupportTickets": zod.number(),
+  "upcomingAudits": zod.array(zod.record(zod.string(), zod.unknown())),
+  "recentDocuments": zod.array(zod.record(zod.string(), zod.unknown())),
+  "recentActivities": zod.array(zod.record(zod.string(), zod.unknown())),
+  "activeProjects": zod.array(zod.record(zod.string(), zod.unknown()))
+})
+
+
+/**
+ * @summary Organization workspace profile
+ */
+export const PortalOrganisationResponse = zod.record(zod.string(), zod.unknown())
+
+
+/**
+ * @summary Organization members
+ */
+export const PortalUsersQueryParams = zod.object({
+  "q": zod.coerce.string().optional()
+})
+
+export const PortalUsersResponse = zod.object({
+  "items": zod.array(zod.record(zod.string(), zod.unknown()))
+})
+
+
+/**
+ * @summary Organization projects
+ */
+export const PortalProjectsQueryParams = zod.object({
+  "status": zod.coerce.string().optional()
+})
+
+export const PortalProjectsResponse = zod.object({
+  "items": zod.array(zod.record(zod.string(), zod.unknown()))
+})
+
+
+/**
+ * @summary Organization documents
+ */
+export const PortalDocumentsQueryParams = zod.object({
+  "q": zod.coerce.string().optional()
+})
+
+export const PortalDocumentsResponse = zod.object({
+  "items": zod.array(zod.record(zod.string(), zod.unknown()))
+})
+
+
+/**
+ * @summary Support tickets
+ */
+export const PortalSupportTicketsResponse = zod.object({
+  "items": zod.array(zod.record(zod.string(), zod.unknown()))
+})
+
+
+/**
+ * @summary Create support ticket
+ */
+export const CreatePortalSupportTicketBody = zod.object({
+  "subject": zod.string(),
+  "category": zod.string().nullish(),
+  "priority": zod.string().optional()
+})
+
+export const CreatePortalSupportTicketResponse = zod.record(zod.string(), zod.unknown())
+
+
+/**
+ * @summary Unified activity timeline
+ */
+export const PortalActivityResponse = zod.object({
+  "items": zod.array(zod.record(zod.string(), zod.unknown()))
+})
+
+
+/**
+ * @summary Learning dashboard metrics
+ */
+export const LearningDashboardResponse = zod.record(zod.string(), zod.unknown())
+
+
+/**
+ * @summary Training catalogue (M1 content)
+ */
+export const LearningCatalogueQueryParams = zod.object({
+  "q": zod.coerce.string().optional(),
+  "category": zod.coerce.string().optional()
+})
+
+export const LearningCatalogueResponse = zod.object({
+  "items": zod.array(zod.record(zod.string(), zod.unknown()))
+})
+
+
+/**
+ * @summary List enrolments
+ */
+export const ListEnrolmentsResponse = zod.object({
+  "items": zod.array(zod.record(zod.string(), zod.unknown()))
+})
+
+
+/**
+ * @summary Create enrolment
+ */
+export const CreateEnrolmentBody = zod.object({
+  "courseCategory": zod.string(),
+  "courseSlug": zod.string(),
+  "pathwayId": zod.string().nullish(),
+  "isMandatory": zod.boolean().optional(),
+  "source": zod.string().optional()
+})
+
+export const CreateEnrolmentResponse = zod.record(zod.string(), zod.unknown())
+
+
+/**
+ * @summary Learning transcript
+ */
+export const LearningTranscriptResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List course certificates
+ */
+export const ListLearningCertificatesResponse = zod.object({
+  "items": zod.array(zod.record(zod.string(), zod.unknown()))
+})
+
+
+/**
+ * @summary Learning analytics
+ */
+export const LearningAnalyticsResponse = zod.record(zod.string(), zod.unknown())
+
+
+/**
+ * @summary Trainer workspace dashboard
+ */
+export const TrainerDashboardResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Audit executive dashboard
+ */
+export const AuditDashboardResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List compliance audits
+ */
+export const ListAuditsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Create audit plan
+ */
+export const CreateAuditBody = zod.object({
+  "name": zod.string()
+})
+
+export const CreateAuditResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Audit detail
+ */
+export const GetAuditParams = zod.object({
+  "auditId": zod.coerce.string()
+})
+
+export const GetAuditResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List audit templates
+ */
+export const ListAuditTemplatesResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Audit calendar events
+ */
+export const AuditCalendarResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Compliance dashboard widgets
+ */
+export const ComplianceDashboardResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Compliance workspace aggregate
+ */
+export const ComplianceWorkspaceResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Legal register entries
+ */
+export const ListLegalRegisterResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Executive compliance analytics dashboard
+ */
+export const ComplianceAnalyticsExecutiveResponse = zod.object({
+  "complianceScore": zod.number(),
+  "trendDirection": zod.enum(['up', 'down', 'stable']),
+  "trendDelta": zod.number(),
+  "widgets": zod.record(zod.string(), zod.unknown()),
+  "trends": zod.record(zod.string(), zod.unknown())
+})
+
+
+/**
+ * @summary Compliance KPI engine snapshot
+ */
+export const ComplianceAnalyticsKpisResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Compliance trend history
+ */
+export const ComplianceAnalyticsTrendsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Regulatory monitoring and alerts
+ */
+export const ComplianceAnalyticsRegulatoryResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary ISO framework coverage dashboard
+ */
+export const ComplianceAnalyticsIsoQueryParams = zod.object({
+  "frameworkId": zod.coerce.string().optional()
+})
+
+export const ComplianceAnalyticsIsoResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Control effectiveness analytics
+ */
+export const ComplianceAnalyticsControlsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Cross-domain performance analytics
+ */
+export const ComplianceAnalyticsPerformanceResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Regulatory alert inbox
+ */
+export const ComplianceAnalyticsAlertsQueryParams = zod.object({
+  "status": zod.coerce.string().optional()
+})
+
+export const ComplianceAnalyticsAlertsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Acknowledge a regulatory alert
+ */
+export const AcknowledgeComplianceAnalyticsAlertParams = zod.object({
+  "alertId": zod.coerce.string()
+})
+
+export const AcknowledgeComplianceAnalyticsAlertResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List BI export jobs
+ */
+export const ComplianceAnalyticsExportsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Create BI export job
+ */
+export const CreateComplianceAnalyticsExportBody = zod.object({
+  "exportType": zod.string(),
+  "format": zod.string().optional()
+})
+
+export const CreateComplianceAnalyticsExportResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Sync compliance calendar from legal register
+ */
+export const ComplianceAnalyticsCalendarSyncResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Record current-month KPI snapshot
+ */
+export const ComplianceAnalyticsSnapshotResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List inspections
+ */
+export const ListInspectionsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Create inspection
+ */
+export const CreateInspectionBody = zod.object({
+  "name": zod.string()
+})
+
+export const CreateInspectionResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Inspection dashboard
+ */
+export const InspectionDashboardResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List CAPA records
+ */
+export const ListCapaResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Create CAPA record
+ */
+export const CreateCapaBody = zod.object({
+  "title": zod.string(),
+  "capaType": zod.enum(['corrective', 'preventive'])
+})
+
+export const CreateCapaResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary CAPA dashboard metrics
+ */
+export const CapaDashboardResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Get CAPA detail
+ */
+export const GetCapaParams = zod.object({
+  "capaId": zod.coerce.string()
+})
+
+export const GetCapaResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Update CAPA record
+ */
+export const UpdateCapaParams = zod.object({
+  "capaId": zod.coerce.string()
+})
+
+export const UpdateCapaBody = zod.object({
+
+}).passthrough()
+
+export const UpdateCapaResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List CAPA records for client portal
+ */
+export const PortalListCapaResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary CAPA dashboard for client portal
+ */
+export const PortalCapaDashboardResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List risk assessments
+ */
+export const ListRiskAssessmentsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Create risk assessment
+ */
+export const CreateRiskAssessmentBody = zod.object({
+  "title": zod.string()
+})
+
+export const CreateRiskAssessmentResponse = zod.void()
+
+
+/**
+ * @summary Risk dashboard metrics
+ */
+export const RiskAssessmentDashboardResponse = zod.unknown()
+
+
+/**
+ * @summary Risk heat map data
+ */
+export const RiskHeatMapResponse = zod.unknown()
+
+
+/**
+ * @summary List risk assessments for client portal
+ */
+export const PortalListRiskAssessmentsResponse = zod.unknown()
+
+
+/**
+ * @summary Risk dashboard for client portal
+ */
+export const PortalRiskDashboardResponse = zod.unknown()
+
+
+/**
+ * @summary Client compliance workspace aggregate
+ */
+export const PortalComplianceResponse = zod.object({
+  "complianceScore": zod.number().nullish(),
+  "tasks": zod.array(zod.record(zod.string(), zod.unknown())),
+  "actions": zod.array(zod.record(zod.string(), zod.unknown())),
+  "workspace": zod.record(zod.string(), zod.unknown()).optional(),
+  "analytics": zod.object({
+  "complianceScore": zod.number(),
+  "trendDirection": zod.enum(['up', 'down', 'stable']),
+  "trendDelta": zod.number(),
+  "widgets": zod.record(zod.string(), zod.unknown()),
+  "trends": zod.record(zod.string(), zod.unknown())
+}).optional()
+})
+
+
+/**
+ * @summary Client executive compliance analytics
+ */
+export const PortalComplianceAnalyticsExecutiveResponse = zod.object({
+  "complianceScore": zod.number(),
+  "trendDirection": zod.enum(['up', 'down', 'stable']),
+  "trendDelta": zod.number(),
+  "widgets": zod.record(zod.string(), zod.unknown()),
+  "trends": zod.record(zod.string(), zod.unknown())
+})
+
+
+/**
+ * @summary Client regulatory monitoring view
+ */
+export const PortalComplianceAnalyticsRegulatoryResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Client open regulatory alerts
+ */
+export const PortalComplianceAnalyticsAlertsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "severity": zod.string(),
+  "status": zod.string().optional(),
+  "alertType": zod.string().optional()
+}))
+})
+
+
+/**
+ * @summary CAPA detail for client portal
+ */
+export const PortalGetCapaParams = zod.object({
+  "capaId": zod.coerce.string()
+})
+
+export const PortalGetCapaResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Risk heat map for client portal
+ */
+export const PortalRiskHeatMapResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Risk assessment detail for client portal
+ */
+export const PortalGetRiskAssessmentParams = zod.object({
+  "assessmentId": zod.coerce.string()
+})
+
+export const PortalGetRiskAssessmentResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List audits for client portal
+ */
+export const PortalListAuditsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Upcoming audit calendar for client portal
+ */
+export const PortalAuditCalendarResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Closed audit history for client portal
+ */
+export const PortalAuditHistoryResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Published audit reports for client portal
+ */
+export const PortalAuditReportsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Audit detail for client portal
+ */
+export const PortalGetAuditParams = zod.object({
+  "auditId": zod.coerce.string()
+})
+
+export const PortalGetAuditResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary List inspections for client portal
+ */
+export const PortalListInspectionsResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Upcoming inspection calendar for client portal
+ */
+export const PortalInspectionCalendarResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Completed inspection history for client portal
+ */
+export const PortalInspectionHistoryResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Inspection detail for client portal
+ */
+export const PortalGetInspectionParams = zod.object({
+  "inspectionId": zod.coerce.string()
+})
+
+export const PortalGetInspectionResponse = zod.object({
+
+}).passthrough()
+
+
+/**
+ * @summary Platform admin dashboard metrics
+ */
+export const AdminDashboardResponse = zod.object({
+  "organizationCount": zod.number().int(),
+  "userCount": zod.number().int(),
+  "activeUserCount": zod.number().int(),
+  "auditLogCount24h": zod.number().int(),
+  "openOutboxJobs": zod.number().int()
+})
+
+
+/**
+ * @summary List all organizations
+ */
+export const AdminListOrganizationsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "status": zod.string(),
+  "type": zod.string(),
+  "createdAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Search platform users
+ */
+export const AdminListUsersQueryParams = zod.object({
+  "keyword": zod.coerce.string().optional()
+})
+
+export const AdminListUsersResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "email": zod.string(),
+  "firstName": zod.string(),
+  "lastName": zod.string(),
+  "status": zod.string(),
+  "roles": zod.array(zod.string())
+}))
+})
+
+
+/**
+ * @summary List platform roles
+ */
+export const AdminListRolesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "key": zod.string(),
+  "name": zod.string(),
+  "description": zod.string().nullish(),
+  "isSystem": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary List platform permissions
+ */
+export const AdminListPermissionsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "key": zod.string(),
+  "name": zod.string(),
+  "domain": zod.string()
+}))
+})
+
+
+/**
+ * @summary Search platform audit logs
+ */
+export const AdminSearchAuditLogsQueryParams = zod.object({
+  "organizationId": zod.coerce.string().optional(),
+  "entity": zod.coerce.string().optional(),
+  "entityId": zod.coerce.string().optional(),
+  "actorUserId": zod.coerce.string().optional(),
+  "requestId": zod.coerce.string().optional(),
+  "action": zod.coerce.string().optional(),
+  "limit": zod.coerce.number().int().optional()
+})
+
+export const AdminSearchAuditLogsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "organizationId": zod.string().nullish(),
+  "entity": zod.string(),
+  "entityId": zod.string(),
+  "action": zod.string(),
+  "eventType": zod.string(),
+  "severity": zod.string(),
+  "actorUserId": zod.string().nullish(),
+  "actorKind": zod.string(),
+  "requestId": zod.string(),
+  "occurredAt": zod.coerce.date(),
+  "previousValues": zod.unknown().nullish(),
+  "newValues": zod.unknown().nullish()
+}))
+})
+
+
+/**
+ * @summary List feature flags
+ */
+export const AdminListFeatureFlagsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "key": zod.string(),
+  "enabled": zod.boolean(),
+  "description": zod.string().nullish(),
+  "organizationId": zod.string().nullish()
+}))
+})
+
+
+/**
+ * @summary Update a global feature flag
+ */
+export const AdminUpdateFeatureFlagParams = zod.object({
+  "key": zod.coerce.string()
+})
+
+export const AdminUpdateFeatureFlagBody = zod.object({
+  "enabled": zod.boolean(),
+  "description": zod.string().nullish()
+})
+
+export const AdminUpdateFeatureFlagResponse = zod.object({
+  "id": zod.string(),
+  "key": zod.string(),
+  "enabled": zod.boolean(),
+  "description": zod.string().nullish(),
+  "organizationId": zod.string().nullish()
+})
+
+
+/**
+ * @summary Authenticated system health snapshot
+ */
+export const AdminSystemHealthResponse = zod.record(zod.string(), zod.unknown())
+
+
+/**
+ * @summary Authenticated build and version metadata
+ */
+export const AdminSystemVersionResponse = zod.record(zod.string(), zod.unknown())
+
+
+/**
+ * @summary CMS workspace dashboard metrics
+ */
+export const AdminCmsDashboardResponse = zod.object({
+  "totalEntries": zod.number().int(),
+  "publishedEntries": zod.number().int(),
+  "draftEntries": zod.number().int(),
+  "archivedEntries": zod.number().int(),
+  "pendingReviewEntries": zod.number().int(),
+  "pendingClientApprovalEntries": zod.number().int()
+})
+
+
+/**
+ * @summary List CMS content entries
+ */
+export const AdminCmsListEntriesQueryParams = zod.object({
+  "contentType": zod.coerce.string().optional(),
+  "status": zod.coerce.string().optional(),
+  "keyword": zod.coerce.string().optional(),
+  "pendingClientApproval": zod.coerce.boolean().optional()
+})
+
+export const AdminCmsListEntriesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+}))
+})
+
+
+/**
+ * @summary Create a CMS content entry
+ */
+export const AdminCmsCreateEntryBody = zod.object({
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "locale": zod.string().optional(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "seo": zod.record(zod.string(), zod.unknown()).optional(),
+  "payload": zod.unknown(),
+  "requiresClientApproval": zod.boolean().optional(),
+  "changeSummary": zod.string().nullish()
+})
+
+export const AdminCmsCreateEntryResponse = zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+})
+
+
+/**
+ * @summary Get CMS entry detail with versions
+ */
+export const AdminCmsGetEntryParams = zod.object({
+  "entryId": zod.coerce.string()
+})
+
+export const AdminCmsGetEntryResponse = zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+}).and(zod.object({
+  "seo": zod.record(zod.string(), zod.unknown()),
+  "reviewDueAt": zod.coerce.date().nullish(),
+  "scheduledAt": zod.coerce.date().nullish(),
+  "clientApprovedAt": zod.coerce.date().nullish(),
+  "currentVersionId": zod.string().nullish(),
+  "publishedVersionId": zod.string().nullish(),
+  "payload": zod.unknown().nullish(),
+  "versions": zod.array(zod.object({
+  "id": zod.string(),
+  "versionNumber": zod.number().int(),
+  "changeSummary": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "createdBy": zod.string().nullish(),
+  "isPublished": zod.boolean()
+}))
+}))
+
+
+/**
+ * @summary Save a new draft version
+ */
+export const AdminCmsUpdateDraftParams = zod.object({
+  "entryId": zod.coerce.string()
+})
+
+export const AdminCmsUpdateDraftBody = zod.object({
+  "title": zod.string().optional(),
+  "seo": zod.record(zod.string(), zod.unknown()).optional(),
+  "payload": zod.unknown(),
+  "changeSummary": zod.string().nullish()
+})
+
+export const AdminCmsUpdateDraftResponse = zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+})
+
+
+/**
+ * @summary Publish the current draft version
+ */
+export const AdminCmsPublishEntryParams = zod.object({
+  "entryId": zod.coerce.string()
+})
+
+export const AdminCmsPublishEntryResponse = zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+})
+
+
+/**
+ * @summary Record client approval for a CMS entry
+ */
+export const AdminCmsApproveClientEntryParams = zod.object({
+  "entryId": zod.coerce.string()
+})
+
+export const AdminCmsApproveClientEntryResponse = zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+})
+
+
+/**
+ * @summary Schedule a CMS entry for future publish
+ */
+export const AdminCmsScheduleEntryParams = zod.object({
+  "entryId": zod.coerce.string()
+})
+
+export const AdminCmsScheduleEntryBody = zod.object({
+  "scheduledAt": zod.coerce.date(),
+  "reviewDueAt": zod.coerce.date().nullish()
+})
+
+export const AdminCmsScheduleEntryResponse = zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+})
+
+
+/**
+ * @summary List entries awaiting client approval
+ */
+export const AdminCmsListPendingApprovalsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+}))
+})
+
+
+/**
+ * @summary Publish due scheduled entries and count review reminders
+ */
+export const AdminCmsRunDueWorkflowResponse = zod.object({
+  "published": zod.number().int(),
+  "reviewReminders": zod.number().int(),
+  "errors": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Archive a CMS entry
+ */
+export const AdminCmsArchiveEntryParams = zod.object({
+  "entryId": zod.coerce.string()
+})
+
+export const AdminCmsArchiveEntryResponse = zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+})
+
+
+/**
+ * @summary Roll back to a prior version (creates new draft)
+ */
+export const AdminCmsRollbackEntryParams = zod.object({
+  "entryId": zod.coerce.string()
+})
+
+export const AdminCmsRollbackEntryBody = zod.object({
+  "versionId": zod.string()
+})
+
+export const AdminCmsRollbackEntryResponse = zod.object({
+  "id": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "status": zod.string(),
+  "locale": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "publishedAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date(),
+  "requiresClientApproval": zod.boolean(),
+  "versionNumber": zod.number().int().nullish()
+})
+
+
+/**
+ * @summary Import published content from lib/content files
+ */
+export const AdminCmsImportFromFilesBody = zod.object({
+  "skipExisting": zod.boolean().optional()
+})
+
+export const AdminCmsImportFromFilesResponse = zod.object({
+  "imported": zod.number().int(),
+  "skipped": zod.number().int(),
+  "errors": zod.array(zod.string())
+})
+
+
+/**
+ * @summary List published CMS content entries
+ */
+export const publicContentListEntriesQueryLocaleDefault = `en-GB`;
+
+export const PublicContentListEntriesQueryParams = zod.object({
+  "locale": zod.coerce.string().default(publicContentListEntriesQueryLocaleDefault)
+})
+
+export const PublicContentListEntriesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "path": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "seo": zod.record(zod.string(), zod.unknown()),
+  "payload": zod.unknown(),
+  "publishedAt": zod.coerce.date().nullish()
+}))
+})
+
+
+/**
+ * @summary Export published CMS content as a build snapshot
+ */
+export const publicContentSnapshotQueryLocaleDefault = `en-GB`;
+
+export const PublicContentSnapshotQueryParams = zod.object({
+  "locale": zod.coerce.string().default(publicContentSnapshotQueryLocaleDefault)
+})
+
+export const PublicContentSnapshotResponse = zod.object({
+  "generatedAt": zod.coerce.date(),
+  "locale": zod.string(),
+  "entries": zod.array(zod.object({
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "seo": zod.record(zod.string(), zod.unknown()),
+  "payload": zod.record(zod.string(), zod.unknown())
+}))
+})
+
+
+/**
+ * @summary Get a published CMS entry by path
+ */
+export const publicContentByPathQueryLocaleDefault = `en-GB`;
+
+export const PublicContentByPathQueryParams = zod.object({
+  "path": zod.coerce.string(),
+  "locale": zod.coerce.string().default(publicContentByPathQueryLocaleDefault)
+})
+
+export const PublicContentByPathResponse = zod.object({
+  "path": zod.string(),
+  "contentType": zod.string(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "category": zod.string().nullish(),
+  "segment": zod.string().nullish(),
+  "seo": zod.record(zod.string(), zod.unknown()),
+  "payload": zod.unknown(),
+  "publishedAt": zod.coerce.date().nullish()
+})
+
+
+/**
+ * @summary List CMS media assets
+ */
+export const AdminCmsListMediaResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "key": zod.string(),
+  "filename": zod.string(),
+  "mimeType": zod.string(),
+  "sizeBytes": zod.number().int(),
+  "altText": zod.string().nullish(),
+  "caption": zod.string().nullish(),
+  "publicUrl": zod.string(),
+  "usageCount": zod.number().int(),
+  "createdAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Upload a CMS media asset
+ */
+export const AdminCmsUploadMediaBody = zod.object({
+  "key": zod.string(),
+  "filename": zod.string(),
+  "mimeType": zod.string(),
+  "dataBase64": zod.string(),
+  "altText": zod.string().nullish(),
+  "caption": zod.string().nullish()
+})
+
+export const AdminCmsUploadMediaResponse = zod.object({
+  "id": zod.string(),
+  "key": zod.string(),
+  "filename": zod.string(),
+  "mimeType": zod.string(),
+  "sizeBytes": zod.number().int(),
+  "altText": zod.string().nullish(),
+  "caption": zod.string().nullish(),
+  "publicUrl": zod.string(),
+  "usageCount": zod.number().int(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List CMS entries with SEO metadata
+ */
+export const AdminCmsListSeoResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "contentType": zod.string(),
+  "status": zod.string(),
+  "seo": zod.record(zod.string(), zod.unknown()),
+  "publishedAt": zod.coerce.date().nullish()
+}))
+})
+
+
+/**
+ * @summary Update SEO metadata for a CMS entry
+ */
+export const AdminCmsUpdateSeoParams = zod.object({
+  "entryId": zod.coerce.string()
+})
+
+export const AdminCmsUpdateSeoBody = zod.object({
+  "seo": zod.record(zod.string(), zod.unknown())
+})
+
+export const AdminCmsUpdateSeoResponse = zod.object({
+  "id": zod.string(),
+  "path": zod.string(),
+  "title": zod.string(),
+  "contentType": zod.string(),
+  "status": zod.string(),
+  "seo": zod.record(zod.string(), zod.unknown()),
+  "publishedAt": zod.coerce.date().nullish()
+})
+
+
+/**
+ * @summary List registered KPI definitions
+ */
+export const ReportingListKpiDefinitionsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "key": zod.string(),
+  "domain": zod.string(),
+  "label": zod.string(),
+  "unit": zod.string(),
+  "description": zod.string().nullish()
+}))
+})
+
+
+/**
+ * @summary List KPI snapshots for the current or specified period
+ */
+export const ReportingListKpisQueryParams = zod.object({
+  "snapshotPeriod": zod.coerce.string().optional()
+})
+
+export const ReportingListKpisResponse = zod.object({
+  "items": zod.array(zod.object({
+  "snapshotPeriod": zod.string(),
+  "domain": zod.string(),
+  "key": zod.string(),
+  "label": zod.string(),
+  "value": zod.number(),
+  "unit": zod.string(),
+  "trendDirection": zod.enum(['up', 'down', 'stable']),
+  "trendDelta": zod.number(),
+  "updatedAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Cross-domain executive summary
+ */
+export const ReportingExecutiveSummaryResponse = zod.object({
+  "snapshotPeriod": zod.string(),
+  "overallScore": zod.number(),
+  "trendDirection": zod.enum(['up', 'down', 'stable']),
+  "trendDelta": zod.number(),
+  "domains": zod.array(zod.object({
+  "domain": zod.string(),
+  "score": zod.number(),
+  "kpiCount": zod.number().int()
+})),
+  "highlights": zod.array(zod.object({
+  "snapshotPeriod": zod.string(),
+  "domain": zod.string(),
+  "key": zod.string(),
+  "label": zod.string(),
+  "value": zod.number(),
+  "unit": zod.string(),
+  "trendDirection": zod.enum(['up', 'down', 'stable']),
+  "trendDelta": zod.number(),
+  "updatedAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Materialized view registry status
+ */
+export const ReportingListViewsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "viewKey": zod.string(),
+  "description": zod.string().nullish(),
+  "lastRefreshedAt": zod.coerce.date().nullish(),
+  "refreshStatus": zod.enum(['idle', 'running', 'failed']),
+  "rowCount": zod.number().int()
+}))
+})
+
+
+/**
+ * @summary Saved report definitions for the organisation
+ */
+export const ReportingListDefinitionsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "domain": zod.string(),
+  "updatedAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Refresh KPI snapshots from domain providers
+ */
+export const ReportingRefreshSnapshotsResponse = zod.object({
+  "snapshotPeriod": zod.string(),
+  "upserted": zod.number().int(),
+  "readings": zod.array(zod.object({
+  "key": zod.string(),
+  "domain": zod.string(),
+  "label": zod.string(),
+  "value": zod.number(),
+  "unit": zod.string()
+}))
+})
+
+
+/**
+ * @summary Dashboard widget type catalogue
+ */
+export const ReportingListWidgetCatalogResponse = zod.object({
+  "items": zod.array(zod.object({
+  "type": zod.enum(['metric', 'trend', 'table', 'chart', 'heatmap', 'benchmark']),
+  "label": zod.string(),
+  "description": zod.string()
+}))
+})
+
+
+/**
+ * @summary List available dashboards
+ */
+export const ReportingListDashboardsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "dashboardKey": zod.string(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "domain": zod.string().nullish(),
+  "isDefault": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Get dashboard with resolved widget data
+ */
+export const ReportingGetDashboardParams = zod.object({
+  "dashboardKey": zod.coerce.string()
+})
+
+export const ReportingGetDashboardResponse = zod.object({
+  "dashboardKey": zod.string(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "domain": zod.string().nullish(),
+  "snapshotPeriod": zod.string().nullish(),
+  "widgets": zod.array(zod.object({
+  "widgetKey": zod.string(),
+  "widgetType": zod.enum(['metric', 'trend', 'table', 'chart', 'heatmap', 'benchmark']),
+  "title": zod.string(),
+  "config": zod.record(zod.string(), zod.unknown()),
+  "defaultOrder": zod.number().int(),
+  "colSpan": zod.number().int(),
+  "order": zod.number().int(),
+  "visible": zod.boolean(),
+  "data": zod.unknown().nullish()
+})),
+  "layout": zod.array(zod.object({
+  "widgetKey": zod.string(),
+  "order": zod.number().int(),
+  "visible": zod.boolean(),
+  "colSpan": zod.number().int()
+}))
+})
+
+
+/**
+ * @summary Get user dashboard layout
+ */
+export const ReportingGetDashboardLayoutParams = zod.object({
+  "dashboardKey": zod.coerce.string()
+})
+
+export const ReportingGetDashboardLayoutResponse = zod.object({
+  "dashboardKey": zod.string(),
+  "layout": zod.array(zod.object({
+  "widgetKey": zod.string(),
+  "order": zod.number().int(),
+  "visible": zod.boolean(),
+  "colSpan": zod.number().int()
+})),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Save personalized dashboard layout
+ */
+export const ReportingSaveDashboardLayoutParams = zod.object({
+  "dashboardKey": zod.coerce.string()
+})
+
+export const ReportingSaveDashboardLayoutBody = zod.object({
+  "layout": zod.array(zod.object({
+  "widgetKey": zod.string(),
+  "order": zod.number().int(),
+  "visible": zod.boolean(),
+  "colSpan": zod.number().int()
+}))
+})
+
+export const ReportingSaveDashboardLayoutResponse = zod.object({
+  "dashboardKey": zod.string(),
+  "layout": zod.array(zod.object({
+  "widgetKey": zod.string(),
+  "order": zod.number().int(),
+  "visible": zod.boolean(),
+  "colSpan": zod.number().int()
+})),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List saved report definitions
+ */
+export const ReportingListReportsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "domain": zod.string(),
+  "updatedAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Create a saved report definition
+ */
+export const ReportingCreateReportBody = zod.object({
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "domain": zod.string(),
+  "definition": zod.object({
+  "sourceType": zod.enum(['kpi', 'executive']),
+  "columns": zod.array(zod.string()).optional(),
+  "filters": zod.record(zod.string(), zod.unknown()).optional()
+})
+})
+
+export const ReportingCreateReportResponse = zod.object({
+  "id": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "domain": zod.string(),
+  "definition": zod.object({
+  "sourceType": zod.enum(['kpi', 'executive']),
+  "columns": zod.array(zod.string()).optional(),
+  "filters": zod.record(zod.string(), zod.unknown()).optional()
+}),
+  "createdBy": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get a saved report definition
+ */
+export const ReportingGetReportParams = zod.object({
+  "reportKey": zod.coerce.string()
+})
+
+export const ReportingGetReportResponse = zod.object({
+  "id": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "domain": zod.string(),
+  "definition": zod.object({
+  "sourceType": zod.enum(['kpi', 'executive']),
+  "columns": zod.array(zod.string()).optional(),
+  "filters": zod.record(zod.string(), zod.unknown()).optional()
+}),
+  "createdBy": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update a saved report definition
+ */
+export const ReportingUpdateReportParams = zod.object({
+  "reportKey": zod.coerce.string()
+})
+
+export const ReportingUpdateReportBody = zod.object({
+  "title": zod.string().optional(),
+  "domain": zod.string().optional(),
+  "definition": zod.object({
+  "sourceType": zod.enum(['kpi', 'executive']),
+  "columns": zod.array(zod.string()).optional(),
+  "filters": zod.record(zod.string(), zod.unknown()).optional()
+}).optional()
+})
+
+export const ReportingUpdateReportResponse = zod.object({
+  "id": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "domain": zod.string(),
+  "definition": zod.object({
+  "sourceType": zod.enum(['kpi', 'executive']),
+  "columns": zod.array(zod.string()).optional(),
+  "filters": zod.record(zod.string(), zod.unknown()).optional()
+}),
+  "createdBy": zod.string().nullish(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Delete a saved report definition
+ */
+export const ReportingDeleteReportParams = zod.object({
+  "reportKey": zod.coerce.string()
+})
+
+export const ReportingDeleteReportResponse = zod.void()
+
+
+/**
+ * @summary Execute a saved report and return tabular results
+ */
+export const ReportingRunReportParams = zod.object({
+  "reportKey": zod.coerce.string()
+})
+
+export const ReportingRunReportResponse = zod.object({
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "sourceType": zod.enum(['kpi', 'executive']),
+  "snapshotPeriod": zod.string().nullish(),
+  "columns": zod.array(zod.object({
+  "key": zod.string(),
+  "label": zod.string()
+})),
+  "rows": zod.array(zod.record(zod.string(), zod.unknown())),
+  "rowCount": zod.number().int(),
+  "executedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List report export jobs
+ */
+export const ReportingListExportsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "reportKey": zod.string(),
+  "format": zod.enum(['csv', 'xlsx', 'pdf']),
+  "status": zod.enum(['pending', 'processing', 'ready', 'failed']),
+  "fileKey": zod.string().nullish(),
+  "errorMessage": zod.string().nullish(),
+  "completedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Export a report to CSV, XLSX, or PDF
+ */
+export const ReportingCreateExportParams = zod.object({
+  "reportKey": zod.coerce.string()
+})
+
+export const ReportingCreateExportBody = zod.object({
+  "format": zod.enum(['csv', 'xlsx', 'pdf']).optional()
+})
+
+export const ReportingCreateExportResponse = zod.object({
+  "id": zod.string(),
+  "reportKey": zod.string(),
+  "format": zod.enum(['csv', 'xlsx', 'pdf']),
+  "status": zod.enum(['pending', 'processing', 'ready', 'failed']),
+  "fileKey": zod.string().nullish(),
+  "errorMessage": zod.string().nullish(),
+  "completedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get export job status
+ */
+export const ReportingGetExportParams = zod.object({
+  "jobId": zod.coerce.string()
+})
+
+export const ReportingGetExportResponse = zod.object({
+  "id": zod.string(),
+  "reportKey": zod.string(),
+  "format": zod.enum(['csv', 'xlsx', 'pdf']),
+  "status": zod.enum(['pending', 'processing', 'ready', 'failed']),
+  "fileKey": zod.string().nullish(),
+  "errorMessage": zod.string().nullish(),
+  "completedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get signed download URL for a completed export
+ */
+export const ReportingGetExportDownloadParams = zod.object({
+  "jobId": zod.coerce.string()
+})
+
+export const ReportingGetExportDownloadResponse = zod.object({
+  "jobId": zod.string(),
+  "downloadUrl": zod.string(),
+  "expiresInSeconds": zod.number().int(),
+  "contentType": zod.string(),
+  "filename": zod.string()
+})
+
+
+/**
+ * @summary List report delivery schedules
+ */
+export const ReportingListSchedulesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "scheduleKey": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "cadence": zod.enum(['daily', 'weekly', 'monthly']),
+  "timeUtc": zod.string(),
+  "format": zod.enum(['csv', 'xlsx', 'pdf']),
+  "recipients": zod.array(zod.string()),
+  "enabled": zod.boolean(),
+  "lastRunAt": zod.coerce.date().nullish(),
+  "nextRunAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+}))
+})
+
+
+/**
+ * @summary Create a report delivery schedule
+ */
+export const ReportingCreateScheduleBody = zod.object({
+  "scheduleKey": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "cadence": zod.enum(['daily', 'weekly', 'monthly']),
+  "timeUtc": zod.string(),
+  "format": zod.enum(['csv', 'xlsx', 'pdf']),
+  "recipients": zod.array(zod.string()).optional(),
+  "enabled": zod.boolean().optional()
+})
+
+export const ReportingCreateScheduleResponse = zod.object({
+  "id": zod.string(),
+  "scheduleKey": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "cadence": zod.enum(['daily', 'weekly', 'monthly']),
+  "timeUtc": zod.string(),
+  "format": zod.enum(['csv', 'xlsx', 'pdf']),
+  "recipients": zod.array(zod.string()),
+  "enabled": zod.boolean(),
+  "lastRunAt": zod.coerce.date().nullish(),
+  "nextRunAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Process due schedules for the organisation
+ */
+export const ReportingRunDueSchedulesResponse = zod.object({
+  "processed": zod.number().int(),
+  "results": zod.array(zod.object({
+  "scheduleKey": zod.string(),
+  "exportJobId": zod.string()
+}))
+})
+
+
+/**
+ * @summary Get a report schedule
+ */
+export const ReportingGetScheduleParams = zod.object({
+  "scheduleKey": zod.coerce.string()
+})
+
+export const ReportingGetScheduleResponse = zod.object({
+  "id": zod.string(),
+  "scheduleKey": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "cadence": zod.enum(['daily', 'weekly', 'monthly']),
+  "timeUtc": zod.string(),
+  "format": zod.enum(['csv', 'xlsx', 'pdf']),
+  "recipients": zod.array(zod.string()),
+  "enabled": zod.boolean(),
+  "lastRunAt": zod.coerce.date().nullish(),
+  "nextRunAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update a report schedule
+ */
+export const ReportingUpdateScheduleParams = zod.object({
+  "scheduleKey": zod.coerce.string()
+})
+
+export const ReportingUpdateScheduleBody = zod.object({
+  "title": zod.string().optional(),
+  "cadence": zod.enum(['daily', 'weekly', 'monthly']).optional(),
+  "timeUtc": zod.string().optional(),
+  "format": zod.enum(['csv', 'xlsx', 'pdf']).optional(),
+  "recipients": zod.array(zod.string()).optional(),
+  "enabled": zod.boolean().optional()
+})
+
+export const ReportingUpdateScheduleResponse = zod.object({
+  "id": zod.string(),
+  "scheduleKey": zod.string(),
+  "reportKey": zod.string(),
+  "title": zod.string(),
+  "cadence": zod.enum(['daily', 'weekly', 'monthly']),
+  "timeUtc": zod.string(),
+  "format": zod.enum(['csv', 'xlsx', 'pdf']),
+  "recipients": zod.array(zod.string()),
+  "enabled": zod.boolean(),
+  "lastRunAt": zod.coerce.date().nullish(),
+  "nextRunAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Delete a report schedule
+ */
+export const ReportingDeleteScheduleParams = zod.object({
+  "scheduleKey": zod.coerce.string()
+})
+
+export const ReportingDeleteScheduleResponse = zod.void()
+
+
+/**
+ * @summary List Power BI connections
+ */
+export const ReportingListBiConnectionsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "connectionKey": zod.string(),
+  "provider": zod.string(),
+  "workspaceId": zod.string(),
+  "datasetName": zod.string(),
+  "datasetKey": zod.string(),
+  "enabled": zod.boolean(),
+  "lastSyncAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})).optional()
+})
+
+
+/**
+ * @summary Create Power BI connection
+ */
+export const ReportingCreateBiConnectionBody = zod.object({
+  "connectionKey": zod.string(),
+  "workspaceId": zod.string(),
+  "datasetName": zod.string(),
+  "datasetKey": zod.string(),
+  "enabled": zod.boolean().optional(),
+  "metadata": zod.record(zod.string(), zod.unknown()).optional()
+})
+
+export const ReportingCreateBiConnectionResponse = zod.object({
+  "id": zod.string(),
+  "connectionKey": zod.string(),
+  "provider": zod.string(),
+  "workspaceId": zod.string(),
+  "datasetName": zod.string(),
+  "datasetKey": zod.string(),
+  "enabled": zod.boolean(),
+  "lastSyncAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get Power BI connection
+ */
+export const ReportingGetBiConnectionParams = zod.object({
+  "connectionKey": zod.coerce.string()
+})
+
+export const ReportingGetBiConnectionResponse = zod.object({
+  "id": zod.string(),
+  "connectionKey": zod.string(),
+  "provider": zod.string(),
+  "workspaceId": zod.string(),
+  "datasetName": zod.string(),
+  "datasetKey": zod.string(),
+  "enabled": zod.boolean(),
+  "lastSyncAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update Power BI connection
+ */
+export const ReportingUpdateBiConnectionParams = zod.object({
+  "connectionKey": zod.coerce.string()
+})
+
+export const ReportingUpdateBiConnectionBody = zod.object({
+  "workspaceId": zod.string().optional(),
+  "datasetName": zod.string().optional(),
+  "datasetKey": zod.string().optional(),
+  "enabled": zod.boolean().optional(),
+  "metadata": zod.record(zod.string(), zod.unknown()).optional()
+})
+
+export const ReportingUpdateBiConnectionResponse = zod.object({
+  "id": zod.string(),
+  "connectionKey": zod.string(),
+  "provider": zod.string(),
+  "workspaceId": zod.string(),
+  "datasetName": zod.string(),
+  "datasetKey": zod.string(),
+  "enabled": zod.boolean(),
+  "lastSyncAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get incremental refresh manifest for Power BI
+ */
+export const ReportingGetBiManifestParams = zod.object({
+  "connectionKey": zod.coerce.string()
+})
+
+export const ReportingGetBiManifestResponse = zod.object({
+  "connectionKey": zod.string(),
+  "datasetKey": zod.string(),
+  "refreshMode": zod.enum(['full', 'incremental']),
+  "watermark": zod.record(zod.string(), zod.unknown()),
+  "tables": zod.array(zod.object({
+  "name": zod.string().optional(),
+  "primaryKey": zod.array(zod.string()).optional(),
+  "incrementalColumn": zod.string().optional()
+})),
+  "lastExportAt": zod.coerce.date().nullish()
+})
+
+
+/**
+ * @summary List BI dataset export jobs
+ */
+export const ReportingListBiExportsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "connectionKey": zod.string(),
+  "datasetKey": zod.string(),
+  "exportType": zod.enum(['full', 'incremental']),
+  "status": zod.enum(['pending', 'processing', 'ready', 'failed']),
+  "fileKey": zod.string().nullish(),
+  "rowCount": zod.number().int(),
+  "watermark": zod.record(zod.string(), zod.unknown()).optional(),
+  "errorMessage": zod.string().nullish(),
+  "completedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date()
+})).optional()
+})
+
+
+/**
+ * @summary Export dataset for Power BI consumption
+ */
+export const ReportingCreateBiExportParams = zod.object({
+  "connectionKey": zod.coerce.string()
+})
+
+export const ReportingCreateBiExportBody = zod.object({
+  "exportType": zod.enum(['full', 'incremental']).optional()
+})
+
+export const ReportingCreateBiExportResponse = zod.object({
+  "id": zod.string(),
+  "connectionKey": zod.string(),
+  "datasetKey": zod.string(),
+  "exportType": zod.enum(['full', 'incremental']),
+  "status": zod.enum(['pending', 'processing', 'ready', 'failed']),
+  "fileKey": zod.string().nullish(),
+  "rowCount": zod.number().int(),
+  "watermark": zod.record(zod.string(), zod.unknown()).optional(),
+  "errorMessage": zod.string().nullish(),
+  "completedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get BI export job
+ */
+export const ReportingGetBiExportParams = zod.object({
+  "exportId": zod.coerce.string()
+})
+
+export const ReportingGetBiExportResponse = zod.object({
+  "id": zod.string(),
+  "connectionKey": zod.string(),
+  "datasetKey": zod.string(),
+  "exportType": zod.enum(['full', 'incremental']),
+  "status": zod.enum(['pending', 'processing', 'ready', 'failed']),
+  "fileKey": zod.string().nullish(),
+  "rowCount": zod.number().int(),
+  "watermark": zod.record(zod.string(), zod.unknown()).optional(),
+  "errorMessage": zod.string().nullish(),
+  "completedAt": zod.coerce.date().nullish(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get signed download URL for BI export
+ */
+export const ReportingGetBiExportDownloadParams = zod.object({
+  "exportId": zod.coerce.string()
+})
+
+export const ReportingGetBiExportDownloadResponse = zod.object({
+  "exportId": zod.string(),
+  "downloadUrl": zod.string(),
+  "expiresInSeconds": zod.number().int(),
+  "contentType": zod.string(),
+  "filename": zod.string()
+})
+
+
+/**
+ * @summary List benchmark cohorts
+ */
+export const ReportingListBenchmarkCohortsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "cohortKey": zod.string(),
+  "label": zod.string(),
+  "industry": zod.string().nullish(),
+  "description": zod.string().nullish()
+})).optional()
+})
+
+
+/**
+ * @summary Compare organization KPIs to benchmark cohort
+ */
+export const ReportingCompareBenchmarksQueryParams = zod.object({
+  "cohortKey": zod.coerce.string().optional(),
+  "snapshotPeriod": zod.coerce.string().optional()
+})
+
+export const ReportingCompareBenchmarksResponse = zod.object({
+  "cohortKey": zod.string(),
+  "snapshotPeriod": zod.string(),
+  "items": zod.array(zod.object({
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "label": zod.string(),
+  "organizationValue": zod.number(),
+  "cohortMedian": zod.number(),
+  "percentileRank": zod.number(),
+  "gapToMedian": zod.number(),
+  "performanceBand": zod.enum(['below', 'at', 'above'])
+}))
+})
+
+
+/**
+ * @summary Trend analysis for a KPI
+ */
+export const ReportingGetTrendAnalysisParams = zod.object({
+  "kpiKey": zod.coerce.string()
+})
+
+export const ReportingGetTrendAnalysisResponse = zod.object({
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "label": zod.string(),
+  "seasonalityFlag": zod.enum(['none', 'possible', 'likely']),
+  "trendDirection": zod.enum(['up', 'down', 'stable']),
+  "points": zod.array(zod.object({
+  "snapshotPeriod": zod.string(),
+  "value": zod.number(),
+  "movingAverage": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary List predictive forecast stubs
+ */
+export const ReportingListForecastsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "label": zod.string(),
+  "snapshotPeriod": zod.string(),
+  "forecastPeriod": zod.string(),
+  "projectedValue": zod.number(),
+  "confidence": zod.enum(['low', 'medium', 'high']),
+  "method": zod.string(),
+  "riskOfBreach": zod.boolean(),
+  "updatedAt": zod.coerce.date()
+})).optional()
+})
+
+
+/**
+ * @summary Refresh predictive forecast stubs
+ */
+export const ReportingRefreshForecastsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "label": zod.string(),
+  "snapshotPeriod": zod.string(),
+  "forecastPeriod": zod.string(),
+  "projectedValue": zod.number(),
+  "confidence": zod.enum(['low', 'medium', 'high']),
+  "method": zod.string(),
+  "riskOfBreach": zod.boolean(),
+  "updatedAt": zod.coerce.date()
+})).optional()
+})
+
+
+/**
+ * @summary Get forecast for a KPI
+ */
+export const ReportingGetForecastParams = zod.object({
+  "kpiKey": zod.coerce.string()
+})
+
+export const ReportingGetForecastResponse = zod.object({
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "label": zod.string(),
+  "snapshotPeriod": zod.string(),
+  "forecastPeriod": zod.string(),
+  "projectedValue": zod.number(),
+  "confidence": zod.enum(['low', 'medium', 'high']),
+  "method": zod.string(),
+  "riskOfBreach": zod.boolean(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary List KPI threshold subscriptions
+ */
+export const ReportingListSubscriptionsResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "subscriptionKey": zod.string(),
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "thresholdOperator": zod.enum(['lt', 'lte', 'gt', 'gte']),
+  "thresholdValue": zod.number(),
+  "channel": zod.enum(['email', 'in_app']),
+  "enabled": zod.boolean(),
+  "lastTriggeredAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})).optional()
+})
+
+
+/**
+ * @summary Create KPI threshold subscription
+ */
+export const ReportingCreateSubscriptionBody = zod.object({
+  "subscriptionKey": zod.string(),
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "thresholdOperator": zod.enum(['lt', 'lte', 'gt', 'gte']),
+  "thresholdValue": zod.number(),
+  "channel": zod.enum(['email', 'in_app']).optional(),
+  "enabled": zod.boolean().optional()
+})
+
+export const ReportingCreateSubscriptionResponse = zod.object({
+  "id": zod.string(),
+  "subscriptionKey": zod.string(),
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "thresholdOperator": zod.enum(['lt', 'lte', 'gt', 'gte']),
+  "thresholdValue": zod.number(),
+  "channel": zod.enum(['email', 'in_app']),
+  "enabled": zod.boolean(),
+  "lastTriggeredAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Evaluate KPI threshold subscriptions
+ */
+export const ReportingEvaluateSubscriptionsResponse = zod.object({
+  "evaluated": zod.number().int(),
+  "triggered": zod.number().int(),
+  "triggeredKeys": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Get KPI subscription
+ */
+export const ReportingGetSubscriptionParams = zod.object({
+  "subscriptionKey": zod.coerce.string()
+})
+
+export const ReportingGetSubscriptionResponse = zod.object({
+  "id": zod.string(),
+  "subscriptionKey": zod.string(),
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "thresholdOperator": zod.enum(['lt', 'lte', 'gt', 'gte']),
+  "thresholdValue": zod.number(),
+  "channel": zod.enum(['email', 'in_app']),
+  "enabled": zod.boolean(),
+  "lastTriggeredAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update KPI subscription
+ */
+export const ReportingUpdateSubscriptionParams = zod.object({
+  "subscriptionKey": zod.coerce.string()
+})
+
+export const ReportingUpdateSubscriptionBody = zod.object({
+  "thresholdOperator": zod.enum(['lt', 'lte', 'gt', 'gte']).optional(),
+  "thresholdValue": zod.number().optional(),
+  "channel": zod.enum(['email', 'in_app']).optional(),
+  "enabled": zod.boolean().optional()
+})
+
+export const ReportingUpdateSubscriptionResponse = zod.object({
+  "id": zod.string(),
+  "subscriptionKey": zod.string(),
+  "kpiKey": zod.string(),
+  "domain": zod.string(),
+  "thresholdOperator": zod.enum(['lt', 'lte', 'gt', 'gte']),
+  "thresholdValue": zod.number(),
+  "channel": zod.enum(['email', 'in_app']),
+  "enabled": zod.boolean(),
+  "lastTriggeredAt": zod.coerce.date().nullish(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Delete KPI subscription
+ */
+export const ReportingDeleteSubscriptionParams = zod.object({
+  "subscriptionKey": zod.coerce.string()
+})
+
+export const ReportingDeleteSubscriptionResponse = zod.void()
 
 

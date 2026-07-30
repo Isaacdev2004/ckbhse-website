@@ -1,0 +1,28 @@
+{
+  "name": "@workspace/workers",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./outbox/outbox-worker": "./src/outbox/outbox-worker.ts",
+    "./outbox/handlers/contact-request-created.handler": "./src/outbox/handlers/contact-request-created.handler.ts",
+    "./outbox/handlers/notification-dispatch.handler": "./src/outbox/handlers/notification-dispatch.handler.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@workspace/data": "workspace:*",
+    "@workspace/db": "workspace:*",
+    "@workspace/domain": "workspace:*",
+    "@workspace/platform": "workspace:*",
+    "@workspace/services": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vitest": "^4.1.10"
+  }
+}

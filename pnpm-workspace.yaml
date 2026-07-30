@@ -3,6 +3,7 @@ packages:
   - lib/*
   - lib/integrations/*
   - scripts
+  - e2e
 
 autoInstallPeers: false
 
@@ -38,6 +39,7 @@ minimumReleaseAgeExclude:
 
 onlyBuiltDependencies:
   - "@swc/core"
+  - argon2
   - esbuild
   - msw
   - unrs-resolver

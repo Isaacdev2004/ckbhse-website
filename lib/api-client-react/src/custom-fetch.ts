@@ -25,6 +25,24 @@ const DEFAULT_CREDENTIALS: RequestCredentials = 'same-origin';
 // ---------------------------------------------------------------------------
 
 let _baseUrl: string | null = null;
+let _devAuthHeaders: Record<string, string> = {};
+
+function readBrowserCookie(name: string): string | undefined {
+  if (typeof document === 'undefined') {
+    return undefined;
+  }
+  const match = document.cookie.match(
+    new RegExp(`(?:^|; )${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}=([^;]*)`),
+  );
+  return match?.[1] !== undefined ? decodeURIComponent(match[1]) : undefined;
+}
+
+/**
+ * Set development auth headers forwarded on every request (staff portal only).
+ */
+export function setDevAuthHeaders(headers: Record<string, string>): void {
+  _devAuthHeaders = { ...headers };
+}
 
 /**
  * Set a base URL that is prepended to every relative request URL
@@ -327,6 +345,17 @@ async function parseSuccessBody(
   }
 }
 
+function resolveCsrfHeaders(method: string): HeadersInit | undefined {
+  if (method === 'GET' || method === 'HEAD' || method === 'OPTIONS') {
+    return undefined;
+  }
+  const token = readBrowserCookie('csrf_token');
+  if (token === undefined) {
+    return undefined;
+  }
+  return { 'x-csrf-token': token };
+}
+
 export async function customFetch<T = unknown>(
   input: RequestInfo | URL,
   options: CustomFetchOptions = {},
@@ -343,6 +372,8 @@ export async function customFetch<T = unknown>(
   const headers = mergeHeaders(
     isRequest(input) ? input.headers : undefined,
     headersInit,
+    _devAuthHeaders,
+    resolveCsrfHeaders(method),
   );
 
   if (

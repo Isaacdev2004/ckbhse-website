@@ -12,4 +12,5 @@ export type ReadinessStatusStatus = typeof ReadinessStatusStatus[keyof typeof Re
 export const ReadinessStatusStatus = {
   ready: 'ready',
   shutting_down: 'shutting_down',
+  not_ready: 'not_ready',
 } as const;

@@ -10,6 +10,42 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: contact
+    description: Public contact enquiries
+  - name: system
+    description: Platform diagnostics
+  - name: auth
+    description: Authentication (foundation placeholders)
+  - name: users
+    description: User profiles (foundation placeholders)
+  - name: files
+    description: File uploads (foundation placeholders)
+  - name: leads
+    description: CRM lead management
+  - name: dashboard
+    description: CRM dashboard metrics
+  - name: reminders
+    description: Lead follow-up reminders
+  - name: tags
+    description: Lead tags
+  - name: portal
+    description: Client portal workspace
+  - name: learning
+    description: Enterprise learning management
+  - name: audits
+    description: Audit, inspection and compliance management
+  - name: compliance
+    description: Compliance workspace and regulatory framework
+  - name: inspections
+    description: Inspection management
+  - name: capa
+    description: Corrective and preventive action management
+  - name: risk-assessments
+    description: Risk assessments and hazard registers
+  - name: admin
+    description: Platform administration and governance
+  - name: cms
+    description: Public content management
 paths:
   /healthz:
     get:
@@ -55,7 +91,3553 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReadinessStatus"
+  /v1/health:
+    get:
+      operationId: v1HealthCheck
+      tags: [health]
+      summary: Versioned liveness check
+      description: >
+        Returns ok while the process is running under the `/api/v1` namespace.
+        Does not check downstream dependencies.
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/contact:
+    post:
+      operationId: submitContactEnquiry
+      tags: [contact]
+      summary: Submit a public contact enquiry
+      description: >
+        Accepts a contact form submission from the public website, persists it,
+        records an audit event, and enqueues a notification outbox message.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitContactEnquiryRequest"
+      responses:
+        "201":
+          description: Enquiry accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactEnquiryResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/system/health:
+    get:
+      operationId: systemHealth
+      tags: [system]
+      summary: Platform health metadata
+      description: >
+        Reports platform health including optional database connectivity when
+        configured. Returns `degraded` when the database is unreachable.
+      responses:
+        "200":
+          description: Health metadata
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemHealthResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/system/version:
+    get:
+      operationId: systemVersion
+      tags: [system]
+      summary: Platform version metadata
+      responses:
+        "200":
+          description: Version metadata
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemVersionResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Authenticate with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Authenticated session established
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: End the current session
+      responses:
+        "204":
+          description: Logged out
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/auth/refresh:
+    post:
+      operationId: refreshSession
+      tags: [auth]
+      summary: Refresh session activity window
+      responses:
+        "200":
+          description: Refreshed session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSessionResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/auth/change-password:
+    post:
+      operationId: changePassword
+      tags: [auth]
+      summary: Change password for the current user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordRequest"
+      responses:
+        "204":
+          description: Password changed
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/auth/request-password-reset:
+    post:
+      operationId: requestPasswordReset
+      tags: [auth]
+      summary: Request a password reset token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestPasswordResetRequest"
+      responses:
+        "200":
+          description: Reset request accepted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/auth/reset-password:
+    post:
+      operationId: resetPassword
+      tags: [auth]
+      summary: Reset password using a token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetPasswordRequest"
+      responses:
+        "204":
+          description: Password reset
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/auth/session:
+    get:
+      operationId: authSession
+      tags: [auth]
+      summary: Current session
+      description: >
+        Returns the authenticated staff session. In development, identity is
+        resolved from trusted `x-dev-*` headers until real login lands in M2.3.
+      responses:
+        "200":
+          description: Active session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSessionResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/users/me:
+    get:
+      operationId: currentUser
+      tags: [users]
+      summary: Current authenticated user profile
+      description: >
+        Returns the authenticated user's profile, organization scope, roles, and
+        resolved permissions. Requires an active session.
+      responses:
+        "200":
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /v1/files:
+    post:
+      operationId: initiateFileUpload
+      tags: [files]
+      summary: Initiate a direct-to-storage file upload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InitiateFileUploadRequest"
+      responses:
+        "201":
+          description: Upload session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InitiateFileUploadResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/files/{uploadId}/complete:
+    post:
+      operationId: completeFileUpload
+      tags: [files]
+      summary: Confirm a completed direct upload
+      parameters:
+        - name: uploadId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Upload confirmed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompleteFileUploadResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/files/{uploadId}/download:
+    get:
+      operationId: getFileDownloadGrant
+      tags: [files]
+      summary: Issue a short-lived download URL for an uploaded file
+      parameters:
+        - name: uploadId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Download grant
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FileDownloadGrant"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/leads:
+    get:
+      operationId: listLeads
+      tags: [leads]
+      summary: Search and list leads
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            $ref: "#/components/schemas/LeadStatus"
+        - name: priority
+          in: query
+          schema:
+            $ref: "#/components/schemas/LeadPriority"
+        - name: assignee
+          in: query
+          schema:
+            type: string
+        - name: offset
+          in: query
+          schema:
+            type: number
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 25
+      responses:
+        "200":
+          description: Lead page
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/leads/{id}:
+    get:
+      operationId: getLead
+      tags: [leads]
+      summary: Get lead by id
+      parameters:
+        - $ref: "#/components/parameters/LeadId"
+      responses:
+        "200":
+          description: Lead
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/leads/{id}/status:
+    patch:
+      operationId: updateLeadStatus
+      tags: [leads]
+      summary: Transition lead status
+      parameters:
+        - $ref: "#/components/parameters/LeadId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateLeadStatusRequest"
+      responses:
+        "200":
+          description: Updated lead
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/leads/{id}/assign:
+    post:
+      operationId: assignLead
+      tags: [leads]
+      summary: Assign lead to staff member
+      parameters:
+        - $ref: "#/components/parameters/LeadId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssignLeadRequest"
+      responses:
+        "200":
+          description: Updated lead
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/leads/{id}/timeline:
+    get:
+      operationId: getLeadTimeline
+      tags: [leads]
+      summary: Lead activity timeline
+      parameters:
+        - $ref: "#/components/parameters/LeadId"
+      responses:
+        "200":
+          description: Timeline entries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadTimelineResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/leads/{id}/notes:
+    post:
+      operationId: addLeadNote
+      tags: [leads]
+      summary: Add internal or external note
+      parameters:
+        - $ref: "#/components/parameters/LeadId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddLeadNoteRequest"
+      responses:
+        "201":
+          description: Timeline note entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimelineEntry"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/dashboard:
+    get:
+      operationId: getDashboardMetrics
+      tags: [dashboard]
+      summary: CRM dashboard metrics
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardMetrics"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/reminders:
+    get:
+      operationId: listReminders
+      tags: [reminders]
+      summary: List reminders for a lead
+      parameters:
+        - name: leadId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reminders
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReminderListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+    post:
+      operationId: createReminder
+      tags: [reminders]
+      summary: Create follow-up reminder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateReminderRequest"
+      responses:
+        "201":
+          description: Reminder created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadReminder"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/reminders/{id}/complete:
+    post:
+      operationId: completeReminder
+      tags: [reminders]
+      summary: Mark reminder complete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Reminder completed
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/tags:
+    get:
+      operationId: listLeadTags
+      tags: [tags]
+      summary: List lead tags
+      responses:
+        "200":
+          description: Tags
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadTagListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+    post:
+      operationId: createLeadTag
+      tags: [tags]
+      summary: Create lead tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLeadTagRequest"
+      responses:
+        "201":
+          description: Tag created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadTag"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/portal/dashboard:
+    get:
+      operationId: portalDashboard
+      tags: [portal]
+      summary: Client portal executive dashboard
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortalDashboardResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/portal/organisation:
+    get:
+      operationId: portalOrganisation
+      tags: [portal]
+      summary: Organization workspace profile
+      responses:
+        "200":
+          description: Organization details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortalOrganisationResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/portal/users:
+    get:
+      operationId: portalUsers
+      tags: [portal]
+      summary: Organization members
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Members
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortalMemberListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/portal/projects:
+    get:
+      operationId: portalProjects
+      tags: [portal]
+      summary: Organization projects
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Projects
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortalProjectListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/portal/documents:
+    get:
+      operationId: portalDocuments
+      tags: [portal]
+      summary: Organization documents
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Documents
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortalDocumentListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/portal/support:
+    get:
+      operationId: portalSupportTickets
+      tags: [portal]
+      summary: Support tickets
+      responses:
+        "200":
+          description: Tickets
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortalSupportTicketListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+    post:
+      operationId: createPortalSupportTicket
+      tags: [portal]
+      summary: Create support ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePortalSupportTicketRequest"
+      responses:
+        "201":
+          description: Ticket created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortalSupportTicket"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/portal/activity:
+    get:
+      operationId: portalActivity
+      tags: [portal]
+      summary: Unified activity timeline
+      responses:
+        "200":
+          description: Activity feed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortalActivityListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/learning/dashboard:
+    get:
+      operationId: learningDashboard
+      tags: [learning]
+      summary: Learning dashboard metrics
+      responses:
+        "200":
+          description: Dashboard data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LearningDashboardResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/learning/catalogue:
+    get:
+      operationId: learningCatalogue
+      tags: [learning]
+      summary: Training catalogue (M1 content)
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Catalogue items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LearningCatalogueResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/learning/enrolments:
+    get:
+      operationId: listEnrolments
+      tags: [learning]
+      summary: List enrolments
+      responses:
+        "200":
+          description: Enrolment list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnrolmentListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: createEnrolment
+      tags: [learning]
+      summary: Create enrolment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEnrolmentRequest"
+      responses:
+        "201":
+          description: Enrolment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Enrolment"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/learning/transcript:
+    get:
+      operationId: learningTranscript
+      tags: [learning]
+      summary: Learning transcript
+      responses:
+        "200":
+          description: Transcript
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/learning/certificates:
+    get:
+      operationId: listLearningCertificates
+      tags: [learning]
+      summary: List course certificates
+      responses:
+        "200":
+          description: Certificates
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LearningCertificateListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/learning/analytics:
+    get:
+      operationId: learningAnalytics
+      tags: [learning]
+      summary: Learning analytics
+      responses:
+        "200":
+          description: Analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LearningAnalyticsResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/learning/trainer/dashboard:
+    get:
+      operationId: trainerDashboard
+      tags: [learning]
+      summary: Trainer workspace dashboard
+      responses:
+        "200":
+          description: Trainer dashboard
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/audits/dashboard:
+    get:
+      operationId: auditDashboard
+      tags: [audits]
+      summary: Audit executive dashboard
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/audits:
+    get:
+      operationId: listAudits
+      tags: [audits]
+      summary: List compliance audits
+      responses:
+        "200":
+          description: Audit list
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: createAudit
+      tags: [audits]
+      summary: Create audit plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Audit created
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/audits/{auditId}:
+    get:
+      operationId: getAudit
+      tags: [audits]
+      summary: Audit detail
+      parameters:
+        - name: auditId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Audit detail
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/audits/templates:
+    get:
+      operationId: listAuditTemplates
+      tags: [audits]
+      summary: List audit templates
+      responses:
+        "200":
+          description: Template list
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/audits/calendar:
+    get:
+      operationId: auditCalendar
+      tags: [audits]
+      summary: Audit calendar events
+      responses:
+        "200":
+          description: Calendar events
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/dashboard:
+    get:
+      operationId: complianceDashboard
+      tags: [compliance]
+      summary: Compliance dashboard widgets
+      responses:
+        "200":
+          description: Dashboard
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/workspace:
+    get:
+      operationId: complianceWorkspace
+      tags: [compliance]
+      summary: Compliance workspace aggregate
+      responses:
+        "200":
+          description: Workspace
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/legal-register:
+    get:
+      operationId: listLegalRegister
+      tags: [compliance]
+      summary: Legal register entries
+      responses:
+        "200":
+          description: Legal register
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/executive:
+    get:
+      operationId: complianceAnalyticsExecutive
+      tags: [compliance]
+      summary: Executive compliance analytics dashboard
+      responses:
+        "200":
+          description: Executive dashboard
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComplianceExecutiveDashboard"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/kpis:
+    get:
+      operationId: complianceAnalyticsKpis
+      tags: [compliance]
+      summary: Compliance KPI engine snapshot
+      responses:
+        "200":
+          description: KPI data
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/trends:
+    get:
+      operationId: complianceAnalyticsTrends
+      tags: [compliance]
+      summary: Compliance trend history
+      responses:
+        "200":
+          description: Trend series
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/regulatory:
+    get:
+      operationId: complianceAnalyticsRegulatory
+      tags: [compliance]
+      summary: Regulatory monitoring and alerts
+      responses:
+        "200":
+          description: Regulatory intelligence
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/iso:
+    get:
+      operationId: complianceAnalyticsIso
+      tags: [compliance]
+      summary: ISO framework coverage dashboard
+      parameters:
+        - in: query
+          name: frameworkId
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ISO dashboard
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/controls:
+    get:
+      operationId: complianceAnalyticsControls
+      tags: [compliance]
+      summary: Control effectiveness analytics
+      responses:
+        "200":
+          description: Control effectiveness
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/performance:
+    get:
+      operationId: complianceAnalyticsPerformance
+      tags: [compliance]
+      summary: Cross-domain performance analytics
+      responses:
+        "200":
+          description: Performance analytics
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/alerts:
+    get:
+      operationId: complianceAnalyticsAlerts
+      tags: [compliance]
+      summary: Regulatory alert inbox
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Alert list
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/alerts/{alertId}/acknowledge:
+    post:
+      operationId: acknowledgeComplianceAnalyticsAlert
+      tags: [compliance]
+      summary: Acknowledge a regulatory alert
+      parameters:
+        - name: alertId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Acknowledged alert
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/exports:
+    get:
+      operationId: complianceAnalyticsExports
+      tags: [compliance]
+      summary: List BI export jobs
+      responses:
+        "200":
+          description: Export jobs
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: createComplianceAnalyticsExport
+      tags: [compliance]
+      summary: Create BI export job
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [exportType]
+              properties:
+                exportType:
+                  type: string
+                format:
+                  type: string
+      responses:
+        "201":
+          description: Export job created
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/calendar/sync:
+    post:
+      operationId: complianceAnalyticsCalendarSync
+      tags: [compliance]
+      summary: Sync compliance calendar from legal register
+      responses:
+        "200":
+          description: Calendar sync result
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/compliance/analytics/snapshot:
+    post:
+      operationId: complianceAnalyticsSnapshot
+      tags: [compliance]
+      summary: Record current-month KPI snapshot
+      responses:
+        "201":
+          description: Snapshot recorded
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/inspections:
+    get:
+      operationId: listInspections
+      tags: [inspections]
+      summary: List inspections
+      responses:
+        "200":
+          description: Inspection list
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: createInspection
+      tags: [inspections]
+      summary: Create inspection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/inspections/dashboard:
+    get:
+      operationId: inspectionDashboard
+      tags: [inspections]
+      summary: Inspection dashboard
+      responses:
+        "200":
+          description: Dashboard
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/capa:
+    get:
+      operationId: listCapa
+      tags: [capa]
+      summary: List CAPA records
+      responses:
+        "200":
+          description: CAPA list
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: createCapa
+      tags: [capa]
+      summary: Create CAPA record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, capaType]
+              properties:
+                title:
+                  type: string
+                capaType:
+                  type: string
+                  enum: [corrective, preventive]
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/capa/dashboard:
+    get:
+      operationId: capaDashboard
+      tags: [capa]
+      summary: CAPA dashboard metrics
+      responses:
+        "200":
+          description: Dashboard
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/capa/{capaId}:
+    get:
+      operationId: getCapa
+      tags: [capa]
+      summary: Get CAPA detail
+      parameters:
+        - name: capaId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: CAPA detail
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    patch:
+      operationId: updateCapa
+      tags: [capa]
+      summary: Update CAPA record
+      parameters:
+        - name: capaId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/capa:
+    get:
+      operationId: portalListCapa
+      tags: [portal, capa]
+      summary: List CAPA records for client portal
+      responses:
+        "200":
+          description: Portal CAPA list
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/capa/dashboard:
+    get:
+      operationId: portalCapaDashboard
+      tags: [portal, capa]
+      summary: CAPA dashboard for client portal
+      responses:
+        "200":
+          description: Portal CAPA dashboard
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/risk-assessments:
+    get:
+      operationId: listRiskAssessments
+      tags: [risk-assessments]
+      summary: List risk assessments
+      responses:
+        "200":
+          description: Risk assessment list
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: createRiskAssessment
+      tags: [risk-assessments]
+      summary: Create risk assessment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title:
+                  type: string
+      responses:
+        "201":
+          description: Created
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/risk-assessments/dashboard:
+    get:
+      operationId: riskAssessmentDashboard
+      tags: [risk-assessments]
+      summary: Risk dashboard metrics
+      responses:
+        "200":
+          description: Dashboard
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/risk-assessments/heatmap:
+    get:
+      operationId: riskHeatMap
+      tags: [risk-assessments]
+      summary: Risk heat map data
+      responses:
+        "200":
+          description: Heat map
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/risk-assessments:
+    get:
+      operationId: portalListRiskAssessments
+      tags: [portal, risk-assessments]
+      summary: List risk assessments for client portal
+      responses:
+        "200":
+          description: Portal risk list
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/risk-assessments/dashboard:
+    get:
+      operationId: portalRiskDashboard
+      tags: [portal, risk-assessments]
+      summary: Risk dashboard for client portal
+      responses:
+        "200":
+          description: Portal risk dashboard
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/compliance:
+    get:
+      operationId: portalCompliance
+      tags: [portal, compliance]
+      summary: Client compliance workspace aggregate
+      responses:
+        "200":
+          description: Portal compliance workspace
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortalComplianceResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/compliance/analytics/executive:
+    get:
+      operationId: portalComplianceAnalyticsExecutive
+      tags: [portal, compliance]
+      summary: Client executive compliance analytics
+      responses:
+        "200":
+          description: Executive analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComplianceExecutiveDashboard"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/compliance/analytics/regulatory:
+    get:
+      operationId: portalComplianceAnalyticsRegulatory
+      tags: [portal, compliance]
+      summary: Client regulatory monitoring view
+      responses:
+        "200":
+          description: Regulatory analytics
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/compliance/analytics/alerts:
+    get:
+      operationId: portalComplianceAnalyticsAlerts
+      tags: [portal, compliance]
+      summary: Client open regulatory alerts
+      responses:
+        "200":
+          description: Open alerts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegulatoryAlertListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/capa/{capaId}:
+    get:
+      operationId: portalGetCapa
+      tags: [portal, capa]
+      summary: CAPA detail for client portal
+      parameters:
+        - name: capaId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: CAPA detail
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/risk-assessments/heatmap:
+    get:
+      operationId: portalRiskHeatMap
+      tags: [portal, risk-assessments]
+      summary: Risk heat map for client portal
+      responses:
+        "200":
+          description: Heat map
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/risk-assessments/{assessmentId}:
+    get:
+      operationId: portalGetRiskAssessment
+      tags: [portal, risk-assessments]
+      summary: Risk assessment detail for client portal
+      parameters:
+        - name: assessmentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Assessment detail
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/audits:
+    get:
+      operationId: portalListAudits
+      tags: [portal, audits]
+      summary: List audits for client portal
+      responses:
+        "200":
+          description: Audit list
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/audits/calendar:
+    get:
+      operationId: portalAuditCalendar
+      tags: [portal, audits]
+      summary: Upcoming audit calendar for client portal
+      responses:
+        "200":
+          description: Calendar events
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/audits/history:
+    get:
+      operationId: portalAuditHistory
+      tags: [portal, audits]
+      summary: Closed audit history for client portal
+      responses:
+        "200":
+          description: Audit history
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/audits/reports:
+    get:
+      operationId: portalAuditReports
+      tags: [portal, audits]
+      summary: Published audit reports for client portal
+      responses:
+        "200":
+          description: Report index
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/audits/{auditId}:
+    get:
+      operationId: portalGetAudit
+      tags: [portal, audits]
+      summary: Audit detail for client portal
+      parameters:
+        - name: auditId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Audit detail
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/inspections:
+    get:
+      operationId: portalListInspections
+      tags: [portal, inspections]
+      summary: List inspections for client portal
+      responses:
+        "200":
+          description: Inspection list
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/inspections/calendar:
+    get:
+      operationId: portalInspectionCalendar
+      tags: [portal, inspections]
+      summary: Upcoming inspection calendar for client portal
+      responses:
+        "200":
+          description: Calendar events
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/inspections/history:
+    get:
+      operationId: portalInspectionHistory
+      tags: [portal, inspections]
+      summary: Completed inspection history for client portal
+      responses:
+        "200":
+          description: Inspection history
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/portal/inspections/{inspectionId}:
+    get:
+      operationId: portalGetInspection
+      tags: [portal, inspections]
+      summary: Inspection detail for client portal
+      parameters:
+        - name: inspectionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Inspection detail
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/admin/dashboard:
+    get:
+      operationId: adminDashboard
+      tags: [admin]
+      summary: Platform admin dashboard metrics
+      responses:
+        "200":
+          description: Admin dashboard
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminDashboardData"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/organizations:
+    get:
+      operationId: adminListOrganizations
+      tags: [admin]
+      summary: List all organizations
+      responses:
+        "200":
+          description: Organization list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminOrganizationListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/users:
+    get:
+      operationId: adminListUsers
+      tags: [admin]
+      summary: Search platform users
+      parameters:
+        - name: keyword
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUserListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/roles:
+    get:
+      operationId: adminListRoles
+      tags: [admin]
+      summary: List platform roles
+      responses:
+        "200":
+          description: Role list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminRoleListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/permissions:
+    get:
+      operationId: adminListPermissions
+      tags: [admin]
+      summary: List platform permissions
+      responses:
+        "200":
+          description: Permission list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminPermissionListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/audit-logs:
+    get:
+      operationId: adminSearchAuditLogs
+      tags: [admin]
+      summary: Search platform audit logs
+      parameters:
+        - name: organizationId
+          in: query
+          schema:
+            type: string
+        - name: entity
+          in: query
+          schema:
+            type: string
+        - name: entityId
+          in: query
+          schema:
+            type: string
+        - name: actorUserId
+          in: query
+          schema:
+            type: string
+        - name: requestId
+          in: query
+          schema:
+            type: string
+        - name: action
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Audit log entries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAuditLogListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/feature-flags:
+    get:
+      operationId: adminListFeatureFlags
+      tags: [admin]
+      summary: List feature flags
+      responses:
+        "200":
+          description: Feature flags
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminFeatureFlagListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/feature-flags/{key}:
+    patch:
+      operationId: adminUpdateFeatureFlag
+      tags: [admin]
+      summary: Update a global feature flag
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminFeatureFlagUpdateRequest"
+      responses:
+        "200":
+          description: Updated feature flag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminFeatureFlagRow"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/admin/system/health:
+    get:
+      operationId: adminSystemHealth
+      tags: [admin]
+      summary: Authenticated system health snapshot
+      responses:
+        "200":
+          description: System health
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/system/version:
+    get:
+      operationId: adminSystemVersion
+      tags: [admin]
+      summary: Authenticated build and version metadata
+      responses:
+        "200":
+          description: Version info
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/cms/dashboard:
+    get:
+      operationId: adminCmsDashboard
+      tags: [admin, cms]
+      summary: CMS workspace dashboard metrics
+      responses:
+        "200":
+          description: CMS dashboard
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsDashboardData"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/cms/entries:
+    get:
+      operationId: adminCmsListEntries
+      tags: [admin, cms]
+      summary: List CMS content entries
+      parameters:
+        - name: contentType
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: keyword
+          in: query
+          schema:
+            type: string
+        - name: pendingClientApproval
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: CMS entries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntryListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: adminCmsCreateEntry
+      tags: [admin, cms]
+      summary: Create a CMS content entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCmsEntryRequest"
+      responses:
+        "201":
+          description: Created entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntrySummary"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /v1/admin/cms/entries/{entryId}:
+    get:
+      operationId: adminCmsGetEntry
+      tags: [admin, cms]
+      summary: Get CMS entry detail with versions
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: CMS entry detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntryDetail"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/admin/cms/entries/{entryId}/draft:
+    patch:
+      operationId: adminCmsUpdateDraft
+      tags: [admin, cms]
+      summary: Save a new draft version
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCmsDraftRequest"
+      responses:
+        "200":
+          description: Updated entry summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntrySummary"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/admin/cms/entries/{entryId}/publish:
+    post:
+      operationId: adminCmsPublishEntry
+      tags: [admin, cms]
+      summary: Publish the current draft version
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Published entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntrySummary"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /v1/admin/cms/entries/{entryId}/approve-client:
+    post:
+      operationId: adminCmsApproveClientEntry
+      tags: [admin, cms]
+      summary: Record client approval for a CMS entry
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Approved entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntrySummary"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /v1/admin/cms/entries/{entryId}/schedule:
+    post:
+      operationId: adminCmsScheduleEntry
+      tags: [admin, cms]
+      summary: Schedule a CMS entry for future publish
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduleCmsEntryRequest"
+      responses:
+        "200":
+          description: Scheduled entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntrySummary"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/admin/cms/approvals/pending:
+    get:
+      operationId: adminCmsListPendingApprovals
+      tags: [admin, cms]
+      summary: List entries awaiting client approval
+      responses:
+        "200":
+          description: Pending approval entries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntryListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/cms/workflow/run-due:
+    post:
+      operationId: adminCmsRunDueWorkflow
+      tags: [admin, cms]
+      summary: Publish due scheduled entries and count review reminders
+      responses:
+        "200":
+          description: Workflow run summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsWorkflowRunResult"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/cms/entries/{entryId}/archive:
+    post:
+      operationId: adminCmsArchiveEntry
+      tags: [admin, cms]
+      summary: Archive a CMS entry
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Archived entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntrySummary"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/admin/cms/entries/{entryId}/rollback:
+    post:
+      operationId: adminCmsRollbackEntry
+      tags: [admin, cms]
+      summary: Roll back to a prior version (creates new draft)
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsRollbackRequest"
+      responses:
+        "200":
+          description: Rolled back entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsEntrySummary"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/admin/cms/import-from-files:
+    post:
+      operationId: adminCmsImportFromFiles
+      tags: [admin, cms]
+      summary: Import published content from lib/content files
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsImportRequest"
+      responses:
+        "200":
+          description: Import summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsImportResult"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/content/entries:
+    get:
+      operationId: publicContentListEntries
+      tags: [content]
+      summary: List published CMS content entries
+      parameters:
+        - name: locale
+          in: query
+          schema:
+            type: string
+            default: en-GB
+      responses:
+        "200":
+          description: Published entries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicContentListResponse"
+        "503":
+          $ref: "#/components/responses/NotFound"
+  /v1/content/snapshot:
+    get:
+      operationId: publicContentSnapshot
+      tags: [content]
+      summary: Export published CMS content as a build snapshot
+      parameters:
+        - name: locale
+          in: query
+          schema:
+            type: string
+            default: en-GB
+      responses:
+        "200":
+          description: CMS content snapshot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsContentSnapshot"
+  /v1/content/by-path:
+    get:
+      operationId: publicContentByPath
+      tags: [content]
+      summary: Get a published CMS entry by path
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: locale
+          in: query
+          schema:
+            type: string
+            default: en-GB
+      responses:
+        "200":
+          description: Published entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicContentEntry"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/admin/cms/media:
+    get:
+      operationId: adminCmsListMedia
+      tags: [admin, cms]
+      summary: List CMS media assets
+      responses:
+        "200":
+          description: Media assets
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsMediaListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: adminCmsUploadMedia
+      tags: [admin, cms]
+      summary: Upload a CMS media asset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsMediaUploadRequest"
+      responses:
+        "201":
+          description: Uploaded asset
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsMediaAssetSummary"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          $ref: "#/components/responses/NotFound"
+  /v1/admin/cms/seo:
+    get:
+      operationId: adminCmsListSeo
+      tags: [admin, cms]
+      summary: List CMS entries with SEO metadata
+      responses:
+        "200":
+          description: SEO summaries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsSeoListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/admin/cms/seo/{entryId}:
+    patch:
+      operationId: adminCmsUpdateSeo
+      tags: [admin, cms]
+      summary: Update SEO metadata for a CMS entry
+      parameters:
+        - name: entryId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CmsSeoUpdateRequest"
+      responses:
+        "200":
+          description: Updated SEO summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CmsSeoEntrySummary"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/kpi-definitions:
+    get:
+      operationId: reportingListKpiDefinitions
+      tags: [reporting]
+      summary: List registered KPI definitions
+      responses:
+        "200":
+          description: KPI definition catalogue
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingKpiDefinitionListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "503":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/kpis:
+    get:
+      operationId: reportingListKpis
+      tags: [reporting]
+      summary: List KPI snapshots for the current or specified period
+      parameters:
+        - name: snapshotPeriod
+          in: query
+          schema:
+            type: string
+            example: "2026-07"
+      responses:
+        "200":
+          description: KPI snapshots
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingKpiListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/executive-summary:
+    get:
+      operationId: reportingExecutiveSummary
+      tags: [reporting]
+      summary: Cross-domain executive summary
+      responses:
+        "200":
+          description: Executive summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingExecutiveSummary"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/views:
+    get:
+      operationId: reportingListViews
+      tags: [reporting]
+      summary: Materialized view registry status
+      responses:
+        "200":
+          description: View registry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingViewListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/definitions:
+    get:
+      operationId: reportingListDefinitions
+      tags: [reporting]
+      summary: Saved report definitions for the organisation
+      responses:
+        "200":
+          description: Report definitions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingDefinitionListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/refresh:
+    post:
+      operationId: reportingRefreshSnapshots
+      tags: [reporting]
+      summary: Refresh KPI snapshots from domain providers
+      responses:
+        "202":
+          description: Refresh result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingRefreshResult"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/widgets/catalog:
+    get:
+      operationId: reportingListWidgetCatalog
+      tags: [reporting]
+      summary: Dashboard widget type catalogue
+      responses:
+        "200":
+          description: Widget catalogue
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingWidgetCatalogResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "503":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/dashboards:
+    get:
+      operationId: reportingListDashboards
+      tags: [reporting]
+      summary: List available dashboards
+      responses:
+        "200":
+          description: Dashboard list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingDashboardListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/dashboards/{dashboardKey}:
+    get:
+      operationId: reportingGetDashboard
+      tags: [reporting]
+      summary: Get dashboard with resolved widget data
+      parameters:
+        - name: dashboardKey
+          in: path
+          required: true
+          schema:
+            type: string
+            example: executive
+      responses:
+        "200":
+          description: Dashboard view
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingDashboardView"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/dashboards/{dashboardKey}/layout:
+    get:
+      operationId: reportingGetDashboardLayout
+      tags: [reporting]
+      summary: Get user dashboard layout
+      parameters:
+        - name: dashboardKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User layout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingDashboardLayout"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      operationId: reportingSaveDashboardLayout
+      tags: [reporting]
+      summary: Save personalized dashboard layout
+      parameters:
+        - name: dashboardKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingDashboardLayoutSaveRequest"
+      responses:
+        "200":
+          description: Saved layout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingDashboardLayout"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/reports:
+    get:
+      operationId: reportingListReports
+      tags: [reporting]
+      summary: List saved report definitions
+      responses:
+        "200":
+          description: Report definitions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingReportListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: reportingCreateReport
+      tags: [reporting]
+      summary: Create a saved report definition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingReportCreateRequest"
+      responses:
+        "201":
+          description: Created report definition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingReportDetail"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /v1/reporting/reports/{reportKey}:
+    get:
+      operationId: reportingGetReport
+      tags: [reporting]
+      summary: Get a saved report definition
+      parameters:
+        - name: reportKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Report definition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingReportDetail"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      operationId: reportingUpdateReport
+      tags: [reporting]
+      summary: Update a saved report definition
+      parameters:
+        - name: reportKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingReportUpdateRequest"
+      responses:
+        "200":
+          description: Updated report definition
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingReportDetail"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      operationId: reportingDeleteReport
+      tags: [reporting]
+      summary: Delete a saved report definition
+      parameters:
+        - name: reportKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/reports/{reportKey}/run:
+    post:
+      operationId: reportingRunReport
+      tags: [reporting]
+      summary: Execute a saved report and return tabular results
+      parameters:
+        - name: reportKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Report execution result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingReportExecutionResult"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/exports:
+    get:
+      operationId: reportingListExports
+      tags: [reporting]
+      summary: List report export jobs
+      responses:
+        "200":
+          description: Export jobs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingExportListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/reports/{reportKey}/export:
+    post:
+      operationId: reportingCreateExport
+      tags: [reporting]
+      summary: Export a report to CSV, XLSX, or PDF
+      parameters:
+        - name: reportKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingExportCreateRequest"
+      responses:
+        "201":
+          description: Export job created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingExportJob"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/exports/{jobId}:
+    get:
+      operationId: reportingGetExport
+      tags: [reporting]
+      summary: Get export job status
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Export job
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingExportJob"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/exports/{jobId}/download:
+    get:
+      operationId: reportingGetExportDownload
+      tags: [reporting]
+      summary: Get signed download URL for a completed export
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Download descriptor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingExportDownload"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /v1/reporting/schedules:
+    get:
+      operationId: reportingListSchedules
+      tags: [reporting]
+      summary: List report delivery schedules
+      responses:
+        "200":
+          description: Schedules
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingScheduleListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    post:
+      operationId: reportingCreateSchedule
+      tags: [reporting]
+      summary: Create a report delivery schedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingScheduleCreateRequest"
+      responses:
+        "201":
+          description: Created schedule
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingSchedule"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          $ref: "#/components/responses/Conflict"
+  /v1/reporting/schedules/run-due:
+    post:
+      operationId: reportingRunDueSchedules
+      tags: [reporting]
+      summary: Process due schedules for the organisation
+      responses:
+        "200":
+          description: Delivery result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingScheduleRunResult"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/schedules/{scheduleKey}:
+    get:
+      operationId: reportingGetSchedule
+      tags: [reporting]
+      summary: Get a report schedule
+      parameters:
+        - name: scheduleKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Schedule
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingSchedule"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      operationId: reportingUpdateSchedule
+      tags: [reporting]
+      summary: Update a report schedule
+      parameters:
+        - name: scheduleKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingScheduleUpdateRequest"
+      responses:
+        "200":
+          description: Updated schedule
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingSchedule"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      operationId: reportingDeleteSchedule
+      tags: [reporting]
+      summary: Delete a report schedule
+      parameters:
+        - name: scheduleKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/bi/connections:
+    get:
+      operationId: reportingListBiConnections
+      tags: [reporting]
+      summary: List Power BI connections
+      responses:
+        "200":
+          description: BI connections
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ReportingBiConnection"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: reportingCreateBiConnection
+      tags: [reporting]
+      summary: Create Power BI connection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingBiConnectionCreateRequest"
+      responses:
+        "201":
+          description: Created connection
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingBiConnection"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/bi/connections/{connectionKey}:
+    get:
+      operationId: reportingGetBiConnection
+      tags: [reporting]
+      summary: Get Power BI connection
+      parameters:
+        - name: connectionKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: BI connection
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingBiConnection"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      operationId: reportingUpdateBiConnection
+      tags: [reporting]
+      summary: Update Power BI connection
+      parameters:
+        - name: connectionKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingBiConnectionUpdateRequest"
+      responses:
+        "200":
+          description: Updated connection
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingBiConnection"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/bi/connections/{connectionKey}/manifest:
+    get:
+      operationId: reportingGetBiManifest
+      tags: [reporting]
+      summary: Get incremental refresh manifest for Power BI
+      parameters:
+        - name: connectionKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Incremental refresh manifest
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingBiIncrementalManifest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/bi/exports:
+    get:
+      operationId: reportingListBiExports
+      tags: [reporting]
+      summary: List BI dataset export jobs
+      responses:
+        "200":
+          description: BI export jobs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ReportingBiExportJob"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/reporting/bi/connections/{connectionKey}/export:
+    post:
+      operationId: reportingCreateBiExport
+      tags: [reporting]
+      summary: Export dataset for Power BI consumption
+      parameters:
+        - name: connectionKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                exportType:
+                  type: string
+                  enum: [full, incremental]
+      responses:
+        "201":
+          description: Export job
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingBiExportJob"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/bi/exports/{exportId}:
+    get:
+      operationId: reportingGetBiExport
+      tags: [reporting]
+      summary: Get BI export job
+      parameters:
+        - name: exportId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Export job
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingBiExportJob"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/bi/exports/{exportId}/download:
+    get:
+      operationId: reportingGetBiExportDownload
+      tags: [reporting]
+      summary: Get signed download URL for BI export
+      parameters:
+        - name: exportId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Download details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingBiExportDownload"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/benchmarks/cohorts:
+    get:
+      operationId: reportingListBenchmarkCohorts
+      tags: [reporting]
+      summary: List benchmark cohorts
+      responses:
+        "200":
+          description: Benchmark cohorts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ReportingBenchmarkCohort"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/reporting/benchmarks/compare:
+    get:
+      operationId: reportingCompareBenchmarks
+      tags: [reporting]
+      summary: Compare organization KPIs to benchmark cohort
+      parameters:
+        - name: cohortKey
+          in: query
+          schema:
+            type: string
+        - name: snapshotPeriod
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Benchmark comparison
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingBenchmarkComparison"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/trends/{kpiKey}:
+    get:
+      operationId: reportingGetTrendAnalysis
+      tags: [reporting]
+      summary: Trend analysis for a KPI
+      parameters:
+        - name: kpiKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Trend analysis
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingTrendAnalysis"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/forecasts:
+    get:
+      operationId: reportingListForecasts
+      tags: [reporting]
+      summary: List predictive forecast stubs
+      responses:
+        "200":
+          description: Forecasts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ReportingForecast"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/reporting/forecasts/refresh:
+    post:
+      operationId: reportingRefreshForecasts
+      tags: [reporting]
+      summary: Refresh predictive forecast stubs
+      responses:
+        "202":
+          description: Refreshed forecasts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ReportingForecast"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/forecasts/{kpiKey}:
+    get:
+      operationId: reportingGetForecast
+      tags: [reporting]
+      summary: Get forecast for a KPI
+      parameters:
+        - name: kpiKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Forecast
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingForecast"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /v1/reporting/subscriptions:
+    get:
+      operationId: reportingListSubscriptions
+      tags: [reporting]
+      summary: List KPI threshold subscriptions
+      responses:
+        "200":
+          description: Subscriptions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ReportingKpiSubscription"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+    post:
+      operationId: reportingCreateSubscription
+      tags: [reporting]
+      summary: Create KPI threshold subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingKpiSubscriptionCreateRequest"
+      responses:
+        "201":
+          description: Created subscription
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingKpiSubscription"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/subscriptions/evaluate:
+    post:
+      operationId: reportingEvaluateSubscriptions
+      tags: [reporting]
+      summary: Evaluate KPI threshold subscriptions
+      responses:
+        "200":
+          description: Evaluation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingSubscriptionEvaluation"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/reporting/subscriptions/{subscriptionKey}:
+    get:
+      operationId: reportingGetSubscription
+      tags: [reporting]
+      summary: Get KPI subscription
+      parameters:
+        - name: subscriptionKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Subscription
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingKpiSubscription"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      operationId: reportingUpdateSubscription
+      tags: [reporting]
+      summary: Update KPI subscription
+      parameters:
+        - name: subscriptionKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportingKpiSubscriptionUpdateRequest"
+      responses:
+        "200":
+          description: Updated subscription
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportingKpiSubscription"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      operationId: reportingDeleteSubscription
+      tags: [reporting]
+      summary: Delete KPI subscription
+      parameters:
+        - name: subscriptionKey
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
 components:
+  parameters:
+    LeadId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 36
+        maxLength: 36
   # Reusable error responses. Every operation references these rather than
   # restating the envelope, so the contract cannot drift per endpoint and the
   # generated client has one error type to narrow on.
@@ -145,9 +3727,594 @@ components:
       properties:
         status:
           type: string
-          enum: [ready, shutting_down]
+          enum: [ready, shutting_down, not_ready]
       required:
         - status
+    SubmitContactEnquiryRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 3
+        phone:
+          type: string
+          nullable: true
+        company:
+          type: string
+          nullable: true
+        serviceInterest:
+          type: string
+          minLength: 1
+        message:
+          type: string
+          minLength: 10
+      required:
+        - firstName
+        - lastName
+        - email
+        - serviceInterest
+        - message
+    ContactEnquiryResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 36
+          maxLength: 36
+        status:
+          type: string
+          enum: [received]
+        message:
+          type: string
+      required:
+        - id
+        - status
+        - message
+    SystemHealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        timestamp:
+          type: string
+          format: date-time
+        version:
+          type: string
+        environment:
+          type: string
+        uptimeSeconds:
+          type: number
+          minimum: 0
+        service:
+          type: string
+        checks:
+          type: object
+          properties:
+            database:
+              type: string
+              enum: [ok, unavailable]
+          required:
+            - database
+      required:
+        - status
+        - timestamp
+        - version
+        - environment
+        - uptimeSeconds
+        - service
+        - checks
+    SystemVersionResponse:
+      type: object
+      properties:
+        version:
+          type: string
+        environment:
+          type: string
+        buildSha:
+          type: string
+          nullable: true
+        buildTime:
+          type: string
+          format: date-time
+          nullable: true
+        nodeVersion:
+          type: string
+      required:
+        - version
+        - environment
+        - buildSha
+        - buildTime
+        - nodeVersion
+    AuthSessionResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+        organizationId:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+        - userId
+        - organizationId
+        - roles
+        - permissions
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          minLength: 3
+        password:
+          type: string
+          minLength: 1
+        rememberMe:
+          type: boolean
+        organizationId:
+          type: string
+      required:
+        - email
+        - password
+    LoginResponse:
+      allOf:
+        - $ref: "#/components/schemas/AuthSessionResponse"
+        - type: object
+          properties:
+            user:
+              $ref: "#/components/schemas/AuthUserSummary"
+          required:
+            - user
+    AuthUserSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+    ChangePasswordRequest:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string
+      required:
+        - currentPassword
+        - newPassword
+    RequestPasswordResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          minLength: 3
+      required:
+        - email
+    ResetPasswordRequest:
+      type: object
+      properties:
+        token:
+          type: string
+        newPassword:
+          type: string
+      required:
+        - token
+        - newPassword
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    LeadStatus:
+      type: string
+      enum:
+        - new
+        - acknowledged
+        - qualified
+        - proposal_sent
+        - negotiation
+        - won
+        - lost
+        - archived
+    LeadPriority:
+      type: string
+      enum:
+        - low
+        - normal
+        - high
+        - urgent
+    LeadSource:
+      type: string
+      enum:
+        - website
+        - referral
+        - phone
+        - email
+        - event
+        - partner
+        - other
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+        organizationId:
+          type: string
+        contactRequestId:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        company:
+          type: string
+          nullable: true
+        serviceInterest:
+          type: string
+        industry:
+          type: string
+          nullable: true
+        trainingInterest:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+        status:
+          $ref: "#/components/schemas/LeadStatus"
+        priority:
+          $ref: "#/components/schemas/LeadPriority"
+        source:
+          $ref: "#/components/schemas/LeadSource"
+        assignedToUserId:
+          type: string
+          nullable: true
+        score:
+          type: number
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - organizationId
+        - firstName
+        - lastName
+        - email
+        - serviceInterest
+        - status
+        - priority
+        - source
+        - createdAt
+        - updatedAt
+    InitiateFileUploadRequest:
+      type: object
+      properties:
+        originalFilename:
+          type: string
+        contentType:
+          type: string
+        sizeBytes:
+          type: integer
+        domain:
+          type: string
+        entityType:
+          type: string
+          nullable: true
+        entityId:
+          type: string
+          nullable: true
+      required:
+        - originalFilename
+        - contentType
+        - sizeBytes
+        - domain
+    FileUploadSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        organizationId:
+          type: string
+        storageKey:
+          type: string
+        originalFilename:
+          type: string
+        contentType:
+          type: string
+        sizeBytes:
+          type: integer
+        status:
+          type: string
+        domain:
+          type: string
+        entityType:
+          type: string
+          nullable: true
+        entityId:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - organizationId
+        - storageKey
+        - originalFilename
+        - contentType
+        - sizeBytes
+        - status
+        - domain
+        - createdAt
+    InitiateFileUploadResponse:
+      type: object
+      properties:
+        upload:
+          $ref: "#/components/schemas/FileUploadSummary"
+        uploadUrl:
+          type: string
+        expiresInSeconds:
+          type: integer
+      required:
+        - upload
+        - uploadUrl
+        - expiresInSeconds
+    CompleteFileUploadResponse:
+      type: object
+      properties:
+        upload:
+          $ref: "#/components/schemas/FileUploadSummary"
+      required:
+        - upload
+    FileDownloadGrant:
+      type: object
+      properties:
+        uploadId:
+          type: string
+        downloadUrl:
+          type: string
+        expiresInSeconds:
+          type: integer
+        originalFilename:
+          type: string
+        contentType:
+          type: string
+      required:
+        - uploadId
+        - downloadUrl
+        - expiresInSeconds
+        - originalFilename
+        - contentType
+    LeadListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Lead"
+        hasMore:
+          type: boolean
+        total:
+          type: number
+      required:
+        - items
+        - hasMore
+        - total
+    UpdateLeadStatusRequest:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/LeadStatus"
+        reason:
+          type: string
+          nullable: true
+      required:
+        - status
+    AssignLeadRequest:
+      type: object
+      properties:
+        assigneeUserId:
+          type: string
+        reason:
+          type: string
+          nullable: true
+      required:
+        - assigneeUserId
+    TimelineEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        kind:
+          type: string
+          enum: [activity, status, note]
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        occurredAt:
+          type: string
+          format: date-time
+        actorUserId:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties: true
+      required:
+        - id
+        - kind
+        - title
+        - occurredAt
+    LeadTimelineResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimelineEntry"
+      required:
+        - items
+    AddLeadNoteRequest:
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+        isInternal:
+          type: boolean
+          default: true
+      required:
+        - body
+    DashboardMetrics:
+      type: object
+      properties:
+        newLeads:
+          type: number
+        qualified:
+          type: number
+        won:
+          type: number
+        lost:
+          type: number
+        openLeads:
+          type: number
+        averageResponseMinutes:
+          type: number
+          nullable: true
+      required:
+        - newLeads
+        - qualified
+        - won
+        - lost
+        - openLeads
+    LeadReminder:
+      type: object
+      properties:
+        id:
+          type: string
+        leadId:
+          type: string
+        title:
+          type: string
+        dueAt:
+          type: string
+          format: date-time
+        priority:
+          $ref: "#/components/schemas/LeadPriority"
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        assignedToUserId:
+          type: string
+          nullable: true
+        isRecurring:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - leadId
+        - title
+        - dueAt
+        - priority
+        - isRecurring
+        - createdAt
+    ReminderListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeadReminder"
+      required:
+        - items
+    CreateReminderRequest:
+      type: object
+      properties:
+        leadId:
+          type: string
+        title:
+          type: string
+        dueAt:
+          type: string
+          format: date-time
+        priority:
+          $ref: "#/components/schemas/LeadPriority"
+      required:
+        - leadId
+        - title
+        - dueAt
+    LeadTag:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        color:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+    LeadTagListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeadTag"
+      required:
+        - items
+    CreateLeadTagRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        color:
+          type: string
+          nullable: true
+      required:
+        - name
     FieldError:
       type: object
       description: A single field-level validation failure.
@@ -160,6 +4327,1976 @@ components:
       required:
         - path
         - message
+    PortalDashboardResponse:
+      type: object
+      properties:
+        organizationName:
+          type: string
+        complianceScore:
+          type: number
+          nullable: true
+        healthScore:
+          type: number
+          nullable: true
+        openActions:
+          type: number
+        expiringCertificates:
+          type: number
+        openSupportTickets:
+          type: number
+        upcomingAudits:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        recentDocuments:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        recentActivities:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        activeProjects:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+      required:
+        - organizationName
+        - openActions
+        - expiringCertificates
+        - openSupportTickets
+        - upcomingAudits
+        - recentDocuments
+        - recentActivities
+        - activeProjects
+    PortalOrganisationResponse:
+      type: object
+      additionalProperties: true
+    ComplianceExecutiveDashboard:
+      type: object
+      properties:
+        complianceScore:
+          type: number
+        trendDirection:
+          type: string
+          enum: [up, down, stable]
+        trendDelta:
+          type: number
+        widgets:
+          type: object
+          additionalProperties: true
+        trends:
+          type: object
+          additionalProperties: true
+      required:
+        - complianceScore
+        - trendDirection
+        - trendDelta
+        - widgets
+        - trends
+    PortalComplianceResponse:
+      type: object
+      properties:
+        complianceScore:
+          type: number
+          nullable: true
+        tasks:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        actions:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        workspace:
+          type: object
+          additionalProperties: true
+        analytics:
+          $ref: "#/components/schemas/ComplianceExecutiveDashboard"
+      required:
+        - tasks
+        - actions
+    RegulatoryAlertListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              severity:
+                type: string
+              status:
+                type: string
+              alertType:
+                type: string
+            required:
+              - id
+              - title
+              - severity
+      required:
+        - items
+    PortalMemberListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+      required:
+        - items
+    PortalProjectListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+      required:
+        - items
+    PortalDocumentListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+      required:
+        - items
+    PortalSupportTicket:
+      type: object
+      additionalProperties: true
+    PortalSupportTicketListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PortalSupportTicket"
+      required:
+        - items
+    CreatePortalSupportTicketRequest:
+      type: object
+      properties:
+        subject:
+          type: string
+        category:
+          type: string
+          nullable: true
+        priority:
+          type: string
+      required:
+        - subject
+    PortalActivityListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+      required:
+        - items
+    LearningDashboardResponse:
+      type: object
+      additionalProperties: true
+    LearningCatalogueResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+      required:
+        - items
+    Enrolment:
+      type: object
+      additionalProperties: true
+    EnrolmentListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Enrolment"
+      required:
+        - items
+    CreateEnrolmentRequest:
+      type: object
+      properties:
+        courseCategory:
+          type: string
+        courseSlug:
+          type: string
+        pathwayId:
+          type: string
+          nullable: true
+        isMandatory:
+          type: boolean
+        source:
+          type: string
+      required:
+        - courseCategory
+        - courseSlug
+    LearningCertificateListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+      required:
+        - items
+    LearningAnalyticsResponse:
+      type: object
+      additionalProperties: true
+    AdminDashboardData:
+      type: object
+      properties:
+        organizationCount:
+          type: integer
+        userCount:
+          type: integer
+        activeUserCount:
+          type: integer
+        auditLogCount24h:
+          type: integer
+        openOutboxJobs:
+          type: integer
+      required:
+        - organizationCount
+        - userCount
+        - activeUserCount
+        - auditLogCount24h
+        - openOutboxJobs
+    AdminOrganizationSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - slug
+        - status
+        - type
+        - createdAt
+    AdminOrganizationListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminOrganizationSummary"
+      required:
+        - items
+    AdminUserSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        status:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+        - status
+        - roles
+    AdminUserListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminUserSummary"
+      required:
+        - items
+    AdminRoleSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        isSystem:
+          type: boolean
+      required:
+        - id
+        - key
+        - name
+        - isSystem
+    AdminRoleListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminRoleSummary"
+      required:
+        - items
+    AdminPermissionSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        name:
+          type: string
+        domain:
+          type: string
+      required:
+        - id
+        - key
+        - name
+        - domain
+    AdminPermissionListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminPermissionSummary"
+      required:
+        - items
+    PlatformAuditLogEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        organizationId:
+          type: string
+          nullable: true
+        entity:
+          type: string
+        entityId:
+          type: string
+        action:
+          type: string
+        eventType:
+          type: string
+        severity:
+          type: string
+        actorUserId:
+          type: string
+          nullable: true
+        actorKind:
+          type: string
+        requestId:
+          type: string
+        occurredAt:
+          type: string
+          format: date-time
+        previousValues:
+          nullable: true
+        newValues:
+          nullable: true
+      required:
+        - id
+        - entity
+        - entityId
+        - action
+        - eventType
+        - severity
+        - actorKind
+        - requestId
+        - occurredAt
+    AdminAuditLogListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlatformAuditLogEntry"
+      required:
+        - items
+    AdminFeatureFlagRow:
+      type: object
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        enabled:
+          type: boolean
+        description:
+          type: string
+          nullable: true
+        organizationId:
+          type: string
+          nullable: true
+      required:
+        - id
+        - key
+        - enabled
+    AdminFeatureFlagListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminFeatureFlagRow"
+      required:
+        - items
+    AdminFeatureFlagUpdateRequest:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        description:
+          type: string
+          nullable: true
+      required:
+        - enabled
+    CmsDashboardData:
+      type: object
+      properties:
+        totalEntries:
+          type: integer
+        publishedEntries:
+          type: integer
+        draftEntries:
+          type: integer
+        archivedEntries:
+          type: integer
+        pendingReviewEntries:
+          type: integer
+        pendingClientApprovalEntries:
+          type: integer
+      required:
+        - totalEntries
+        - publishedEntries
+        - draftEntries
+        - archivedEntries
+        - pendingReviewEntries
+        - pendingClientApprovalEntries
+    CmsEntrySummary:
+      type: object
+      properties:
+        id:
+          type: string
+        contentType:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+        title:
+          type: string
+        status:
+          type: string
+        locale:
+          type: string
+        category:
+          type: string
+          nullable: true
+        segment:
+          type: string
+          nullable: true
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+        requiresClientApproval:
+          type: boolean
+        versionNumber:
+          type: integer
+          nullable: true
+      required:
+        - id
+        - contentType
+        - slug
+        - path
+        - title
+        - status
+        - locale
+        - updatedAt
+        - requiresClientApproval
+    CmsEntryListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsEntrySummary"
+      required:
+        - items
+    CmsEntryVersionSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        versionNumber:
+          type: integer
+        changeSummary:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          nullable: true
+        isPublished:
+          type: boolean
+      required:
+        - id
+        - versionNumber
+        - createdAt
+        - isPublished
+    CmsEntryDetail:
+      allOf:
+        - $ref: "#/components/schemas/CmsEntrySummary"
+        - type: object
+          properties:
+            seo:
+              type: object
+              additionalProperties: true
+            reviewDueAt:
+              type: string
+              format: date-time
+              nullable: true
+            scheduledAt:
+              type: string
+              format: date-time
+              nullable: true
+            clientApprovedAt:
+              type: string
+              format: date-time
+              nullable: true
+            currentVersionId:
+              type: string
+              nullable: true
+            publishedVersionId:
+              type: string
+              nullable: true
+            payload:
+              nullable: true
+            versions:
+              type: array
+              items:
+                $ref: "#/components/schemas/CmsEntryVersionSummary"
+          required:
+            - seo
+            - versions
+    CreateCmsEntryRequest:
+      type: object
+      properties:
+        contentType:
+          type: string
+        slug:
+          type: string
+        path:
+          type: string
+        title:
+          type: string
+        locale:
+          type: string
+        category:
+          type: string
+          nullable: true
+        segment:
+          type: string
+          nullable: true
+        seo:
+          type: object
+          additionalProperties: true
+        payload:
+          nullable: false
+        requiresClientApproval:
+          type: boolean
+        changeSummary:
+          type: string
+          nullable: true
+      required:
+        - contentType
+        - slug
+        - path
+        - title
+        - payload
+    UpdateCmsDraftRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        seo:
+          type: object
+          additionalProperties: true
+        payload:
+          nullable: false
+        changeSummary:
+          type: string
+          nullable: true
+      required:
+        - payload
+    CmsRollbackRequest:
+      type: object
+      properties:
+        versionId:
+          type: string
+      required:
+        - versionId
+    CmsImportRequest:
+      type: object
+      properties:
+        skipExisting:
+          type: boolean
+    ScheduleCmsEntryRequest:
+      type: object
+      properties:
+        scheduledAt:
+          type: string
+          format: date-time
+        reviewDueAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - scheduledAt
+    CmsWorkflowRunResult:
+      type: object
+      properties:
+        published:
+          type: integer
+        reviewReminders:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: string
+      required:
+        - published
+        - reviewReminders
+        - errors
+    CmsImportResult:
+      type: object
+      properties:
+        imported:
+          type: integer
+        skipped:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: string
+      required:
+        - imported
+        - skipped
+        - errors
+    PublicContentEntry:
+      type: object
+      properties:
+        path:
+          type: string
+        contentType:
+          type: string
+        slug:
+          type: string
+        title:
+          type: string
+        category:
+          type: string
+          nullable: true
+        segment:
+          type: string
+          nullable: true
+        seo:
+          type: object
+          additionalProperties: true
+        payload: {}
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - path
+        - contentType
+        - slug
+        - title
+        - seo
+        - payload
+    PublicContentListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicContentEntry"
+      required:
+        - items
+    CmsContentSnapshot:
+      type: object
+      properties:
+        generatedAt:
+          type: string
+          format: date-time
+        locale:
+          type: string
+        entries:
+          type: array
+          items:
+            type: object
+            properties:
+              contentType:
+                type: string
+              slug:
+                type: string
+              path:
+                type: string
+              title:
+                type: string
+              category:
+                type: string
+                nullable: true
+              segment:
+                type: string
+                nullable: true
+              seo:
+                type: object
+                additionalProperties: true
+              payload:
+                type: object
+                additionalProperties: true
+            required:
+              - contentType
+              - slug
+              - path
+              - title
+              - seo
+              - payload
+      required:
+        - generatedAt
+        - locale
+        - entries
+    CmsMediaAssetSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        filename:
+          type: string
+        mimeType:
+          type: string
+        sizeBytes:
+          type: integer
+        altText:
+          type: string
+          nullable: true
+        caption:
+          type: string
+          nullable: true
+        publicUrl:
+          type: string
+        usageCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - key
+        - filename
+        - mimeType
+        - sizeBytes
+        - publicUrl
+        - usageCount
+        - createdAt
+    CmsMediaListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsMediaAssetSummary"
+      required:
+        - items
+    CmsMediaUploadRequest:
+      type: object
+      properties:
+        key:
+          type: string
+        filename:
+          type: string
+        mimeType:
+          type: string
+        dataBase64:
+          type: string
+        altText:
+          type: string
+          nullable: true
+        caption:
+          type: string
+          nullable: true
+      required:
+        - key
+        - filename
+        - mimeType
+        - dataBase64
+    CmsSeoEntrySummary:
+      type: object
+      properties:
+        id:
+          type: string
+        path:
+          type: string
+        title:
+          type: string
+        contentType:
+          type: string
+        status:
+          type: string
+        seo:
+          type: object
+          additionalProperties: true
+        publishedAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - id
+        - path
+        - title
+        - contentType
+        - status
+        - seo
+    CmsSeoListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CmsSeoEntrySummary"
+      required:
+        - items
+    CmsSeoUpdateRequest:
+      type: object
+      properties:
+        seo:
+          type: object
+          additionalProperties: true
+      required:
+        - seo
+    ReportingKpiDefinition:
+      type: object
+      properties:
+        key:
+          type: string
+        domain:
+          type: string
+        label:
+          type: string
+        unit:
+          type: string
+        description:
+          type: string
+          nullable: true
+      required:
+        - key
+        - domain
+        - label
+        - unit
+    ReportingKpiDefinitionListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingKpiDefinition"
+      required:
+        - items
+    ReportingKpiSnapshot:
+      type: object
+      properties:
+        snapshotPeriod:
+          type: string
+        domain:
+          type: string
+        key:
+          type: string
+        label:
+          type: string
+        value:
+          type: number
+        unit:
+          type: string
+        trendDirection:
+          type: string
+          enum: [up, down, stable]
+        trendDelta:
+          type: number
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - snapshotPeriod
+        - domain
+        - key
+        - label
+        - value
+        - unit
+        - trendDirection
+        - trendDelta
+        - updatedAt
+    ReportingKpiListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingKpiSnapshot"
+      required:
+        - items
+    ReportingExecutiveSummary:
+      type: object
+      properties:
+        snapshotPeriod:
+          type: string
+        overallScore:
+          type: number
+        trendDirection:
+          type: string
+          enum: [up, down, stable]
+        trendDelta:
+          type: number
+        domains:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+              score:
+                type: number
+              kpiCount:
+                type: integer
+            required:
+              - domain
+              - score
+              - kpiCount
+        highlights:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingKpiSnapshot"
+      required:
+        - snapshotPeriod
+        - overallScore
+        - trendDirection
+        - trendDelta
+        - domains
+        - highlights
+    ReportingViewStatus:
+      type: object
+      properties:
+        viewKey:
+          type: string
+        description:
+          type: string
+          nullable: true
+        lastRefreshedAt:
+          type: string
+          format: date-time
+          nullable: true
+        refreshStatus:
+          type: string
+          enum: [idle, running, failed]
+        rowCount:
+          type: integer
+      required:
+        - viewKey
+        - refreshStatus
+        - rowCount
+    ReportingViewListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingViewStatus"
+      required:
+        - items
+    ReportingDefinitionSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        reportKey:
+          type: string
+        title:
+          type: string
+        domain:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - reportKey
+        - title
+        - domain
+        - updatedAt
+    ReportingDefinitionListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingDefinitionSummary"
+      required:
+        - items
+    ReportingRefreshResult:
+      type: object
+      properties:
+        snapshotPeriod:
+          type: string
+        upserted:
+          type: integer
+        readings:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              domain:
+                type: string
+              label:
+                type: string
+              value:
+                type: number
+              unit:
+                type: string
+            required:
+              - key
+              - domain
+              - label
+              - value
+              - unit
+      required:
+        - snapshotPeriod
+        - upserted
+        - readings
+    ReportingWidgetCatalogEntry:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [metric, trend, table, chart, heatmap, benchmark]
+        label:
+          type: string
+        description:
+          type: string
+      required:
+        - type
+        - label
+        - description
+    ReportingWidgetCatalogResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingWidgetCatalogEntry"
+      required:
+        - items
+    ReportingDashboardSummary:
+      type: object
+      properties:
+        dashboardKey:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        domain:
+          type: string
+          nullable: true
+        isDefault:
+          type: boolean
+      required:
+        - dashboardKey
+        - title
+        - isDefault
+    ReportingDashboardListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingDashboardSummary"
+      required:
+        - items
+    ReportingDashboardLayoutItem:
+      type: object
+      properties:
+        widgetKey:
+          type: string
+        order:
+          type: integer
+        visible:
+          type: boolean
+        colSpan:
+          type: integer
+      required:
+        - widgetKey
+        - order
+        - visible
+        - colSpan
+    ReportingDashboardWidget:
+      type: object
+      properties:
+        widgetKey:
+          type: string
+        widgetType:
+          type: string
+          enum: [metric, trend, table, chart, heatmap, benchmark]
+        title:
+          type: string
+        config:
+          type: object
+          additionalProperties: true
+        defaultOrder:
+          type: integer
+        colSpan:
+          type: integer
+        order:
+          type: integer
+        visible:
+          type: boolean
+        data:
+          nullable: true
+      required:
+        - widgetKey
+        - widgetType
+        - title
+        - config
+        - defaultOrder
+        - colSpan
+        - order
+        - visible
+    ReportingDashboardView:
+      type: object
+      properties:
+        dashboardKey:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        domain:
+          type: string
+          nullable: true
+        snapshotPeriod:
+          type: string
+          nullable: true
+        widgets:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingDashboardWidget"
+        layout:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingDashboardLayoutItem"
+      required:
+        - dashboardKey
+        - title
+        - widgets
+        - layout
+    ReportingDashboardLayout:
+      type: object
+      properties:
+        dashboardKey:
+          type: string
+        layout:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingDashboardLayoutItem"
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - dashboardKey
+        - layout
+        - updatedAt
+    ReportingDashboardLayoutSaveRequest:
+      type: object
+      properties:
+        layout:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingDashboardLayoutItem"
+      required:
+        - layout
+    ReportingReportSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        reportKey:
+          type: string
+        title:
+          type: string
+        domain:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - reportKey
+        - title
+        - domain
+        - updatedAt
+    ReportingReportListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingReportSummary"
+      required:
+        - items
+    ReportingReportDefinitionSpec:
+      type: object
+      properties:
+        sourceType:
+          type: string
+          enum: [kpi, executive]
+        columns:
+          type: array
+          items:
+            type: string
+        filters:
+          type: object
+          additionalProperties: true
+      required:
+        - sourceType
+    ReportingReportDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        reportKey:
+          type: string
+        title:
+          type: string
+        domain:
+          type: string
+        definition:
+          $ref: "#/components/schemas/ReportingReportDefinitionSpec"
+        createdBy:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - reportKey
+        - title
+        - domain
+        - definition
+        - createdAt
+        - updatedAt
+    ReportingReportCreateRequest:
+      type: object
+      properties:
+        reportKey:
+          type: string
+        title:
+          type: string
+        domain:
+          type: string
+        definition:
+          $ref: "#/components/schemas/ReportingReportDefinitionSpec"
+      required:
+        - reportKey
+        - title
+        - domain
+        - definition
+    ReportingReportUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        domain:
+          type: string
+        definition:
+          $ref: "#/components/schemas/ReportingReportDefinitionSpec"
+    ReportingReportExecutionColumn:
+      type: object
+      properties:
+        key:
+          type: string
+        label:
+          type: string
+      required:
+        - key
+        - label
+    ReportingReportExecutionResult:
+      type: object
+      properties:
+        reportKey:
+          type: string
+        title:
+          type: string
+        sourceType:
+          type: string
+          enum: [kpi, executive]
+        snapshotPeriod:
+          type: string
+          nullable: true
+        columns:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingReportExecutionColumn"
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        rowCount:
+          type: integer
+        executedAt:
+          type: string
+          format: date-time
+      required:
+        - reportKey
+        - title
+        - sourceType
+        - columns
+        - rows
+        - rowCount
+        - executedAt
+    ReportingExportJob:
+      type: object
+      properties:
+        id:
+          type: string
+        reportKey:
+          type: string
+        format:
+          type: string
+          enum: [csv, xlsx, pdf]
+        status:
+          type: string
+          enum: [pending, processing, ready, failed]
+        fileKey:
+          type: string
+          nullable: true
+        errorMessage:
+          type: string
+          nullable: true
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - reportKey
+        - format
+        - status
+        - createdAt
+    ReportingExportListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingExportJob"
+      required:
+        - items
+    ReportingExportCreateRequest:
+      type: object
+      properties:
+        format:
+          type: string
+          enum: [csv, xlsx, pdf]
+    ReportingExportDownload:
+      type: object
+      properties:
+        jobId:
+          type: string
+        downloadUrl:
+          type: string
+        expiresInSeconds:
+          type: integer
+        contentType:
+          type: string
+        filename:
+          type: string
+      required:
+        - jobId
+        - downloadUrl
+        - expiresInSeconds
+        - contentType
+        - filename
+    ReportingSchedule:
+      type: object
+      properties:
+        id:
+          type: string
+        scheduleKey:
+          type: string
+        reportKey:
+          type: string
+        title:
+          type: string
+        cadence:
+          type: string
+          enum: [daily, weekly, monthly]
+        timeUtc:
+          type: string
+        format:
+          type: string
+          enum: [csv, xlsx, pdf]
+        recipients:
+          type: array
+          items:
+            type: string
+        enabled:
+          type: boolean
+        lastRunAt:
+          type: string
+          format: date-time
+          nullable: true
+        nextRunAt:
+          type: string
+          format: date-time
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - scheduleKey
+        - reportKey
+        - title
+        - cadence
+        - timeUtc
+        - format
+        - recipients
+        - enabled
+        - updatedAt
+    ReportingScheduleListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportingSchedule"
+      required:
+        - items
+    ReportingScheduleCreateRequest:
+      type: object
+      properties:
+        scheduleKey:
+          type: string
+        reportKey:
+          type: string
+        title:
+          type: string
+        cadence:
+          type: string
+          enum: [daily, weekly, monthly]
+        timeUtc:
+          type: string
+        format:
+          type: string
+          enum: [csv, xlsx, pdf]
+        recipients:
+          type: array
+          items:
+            type: string
+        enabled:
+          type: boolean
+      required:
+        - scheduleKey
+        - reportKey
+        - title
+        - cadence
+        - timeUtc
+        - format
+    ReportingScheduleUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        cadence:
+          type: string
+          enum: [daily, weekly, monthly]
+        timeUtc:
+          type: string
+        format:
+          type: string
+          enum: [csv, xlsx, pdf]
+        recipients:
+          type: array
+          items:
+            type: string
+        enabled:
+          type: boolean
+    ReportingScheduleRunResult:
+      type: object
+      properties:
+        processed:
+          type: integer
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              scheduleKey:
+                type: string
+              exportJobId:
+                type: string
+            required:
+              - scheduleKey
+              - exportJobId
+      required:
+        - processed
+        - results
+    ReportingBiConnection:
+      type: object
+      properties:
+        id:
+          type: string
+        connectionKey:
+          type: string
+        provider:
+          type: string
+        workspaceId:
+          type: string
+        datasetName:
+          type: string
+        datasetKey:
+          type: string
+        enabled:
+          type: boolean
+        lastSyncAt:
+          type: string
+          format: date-time
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - connectionKey
+        - provider
+        - workspaceId
+        - datasetName
+        - datasetKey
+        - enabled
+        - updatedAt
+    ReportingBiConnectionCreateRequest:
+      type: object
+      properties:
+        connectionKey:
+          type: string
+        workspaceId:
+          type: string
+        datasetName:
+          type: string
+        datasetKey:
+          type: string
+        enabled:
+          type: boolean
+        metadata:
+          type: object
+          additionalProperties: true
+      required:
+        - connectionKey
+        - workspaceId
+        - datasetName
+        - datasetKey
+    ReportingBiConnectionUpdateRequest:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        datasetName:
+          type: string
+        datasetKey:
+          type: string
+        enabled:
+          type: boolean
+        metadata:
+          type: object
+          additionalProperties: true
+    ReportingBiExportJob:
+      type: object
+      properties:
+        id:
+          type: string
+        connectionKey:
+          type: string
+        datasetKey:
+          type: string
+        exportType:
+          type: string
+          enum: [full, incremental]
+        status:
+          type: string
+          enum: [pending, processing, ready, failed]
+        fileKey:
+          type: string
+          nullable: true
+        rowCount:
+          type: integer
+        watermark:
+          type: object
+          additionalProperties: true
+        errorMessage:
+          type: string
+          nullable: true
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - connectionKey
+        - datasetKey
+        - exportType
+        - status
+        - rowCount
+        - createdAt
+    ReportingBiExportDownload:
+      type: object
+      properties:
+        exportId:
+          type: string
+        downloadUrl:
+          type: string
+        expiresInSeconds:
+          type: integer
+        contentType:
+          type: string
+        filename:
+          type: string
+      required:
+        - exportId
+        - downloadUrl
+        - expiresInSeconds
+        - contentType
+        - filename
+    ReportingBiIncrementalManifest:
+      type: object
+      properties:
+        connectionKey:
+          type: string
+        datasetKey:
+          type: string
+        refreshMode:
+          type: string
+          enum: [full, incremental]
+        watermark:
+          type: object
+          additionalProperties: true
+        tables:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              primaryKey:
+                type: array
+                items:
+                  type: string
+              incrementalColumn:
+                type: string
+        lastExportAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - connectionKey
+        - datasetKey
+        - refreshMode
+        - watermark
+        - tables
+    ReportingBenchmarkCohort:
+      type: object
+      properties:
+        cohortKey:
+          type: string
+        label:
+          type: string
+        industry:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+      required:
+        - cohortKey
+        - label
+    ReportingBenchmarkComparison:
+      type: object
+      properties:
+        cohortKey:
+          type: string
+        snapshotPeriod:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              kpiKey:
+                type: string
+              domain:
+                type: string
+              label:
+                type: string
+              organizationValue:
+                type: number
+              cohortMedian:
+                type: number
+              percentileRank:
+                type: number
+              gapToMedian:
+                type: number
+              performanceBand:
+                type: string
+                enum: [below, at, above]
+            required:
+              - kpiKey
+              - domain
+              - label
+              - organizationValue
+              - cohortMedian
+              - percentileRank
+              - gapToMedian
+              - performanceBand
+      required:
+        - cohortKey
+        - snapshotPeriod
+        - items
+    ReportingTrendAnalysis:
+      type: object
+      properties:
+        kpiKey:
+          type: string
+        domain:
+          type: string
+        label:
+          type: string
+        seasonalityFlag:
+          type: string
+          enum: [none, possible, likely]
+        trendDirection:
+          type: string
+          enum: [up, down, stable]
+        points:
+          type: array
+          items:
+            type: object
+            properties:
+              snapshotPeriod:
+                type: string
+              value:
+                type: number
+              movingAverage:
+                type: number
+                nullable: true
+            required:
+              - snapshotPeriod
+              - value
+      required:
+        - kpiKey
+        - domain
+        - label
+        - seasonalityFlag
+        - trendDirection
+        - points
+    ReportingForecast:
+      type: object
+      properties:
+        kpiKey:
+          type: string
+        domain:
+          type: string
+        label:
+          type: string
+        snapshotPeriod:
+          type: string
+        forecastPeriod:
+          type: string
+        projectedValue:
+          type: number
+        confidence:
+          type: string
+          enum: [low, medium, high]
+        method:
+          type: string
+        riskOfBreach:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - kpiKey
+        - domain
+        - label
+        - snapshotPeriod
+        - forecastPeriod
+        - projectedValue
+        - confidence
+        - method
+        - riskOfBreach
+        - updatedAt
+    ReportingKpiSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        subscriptionKey:
+          type: string
+        kpiKey:
+          type: string
+        domain:
+          type: string
+        thresholdOperator:
+          type: string
+          enum: [lt, lte, gt, gte]
+        thresholdValue:
+          type: number
+        channel:
+          type: string
+          enum: [email, in_app]
+        enabled:
+          type: boolean
+        lastTriggeredAt:
+          type: string
+          format: date-time
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - subscriptionKey
+        - kpiKey
+        - domain
+        - thresholdOperator
+        - thresholdValue
+        - channel
+        - enabled
+        - updatedAt
+    ReportingKpiSubscriptionCreateRequest:
+      type: object
+      properties:
+        subscriptionKey:
+          type: string
+        kpiKey:
+          type: string
+        domain:
+          type: string
+        thresholdOperator:
+          type: string
+          enum: [lt, lte, gt, gte]
+        thresholdValue:
+          type: number
+        channel:
+          type: string
+          enum: [email, in_app]
+        enabled:
+          type: boolean
+      required:
+        - subscriptionKey
+        - kpiKey
+        - domain
+        - thresholdOperator
+        - thresholdValue
+    ReportingKpiSubscriptionUpdateRequest:
+      type: object
+      properties:
+        thresholdOperator:
+          type: string
+          enum: [lt, lte, gt, gte]
+        thresholdValue:
+          type: number
+        channel:
+          type: string
+          enum: [email, in_app]
+        enabled:
+          type: boolean
+    ReportingSubscriptionEvaluation:
+      type: object
+      properties:
+        evaluated:
+          type: integer
+        triggered:
+          type: integer
+        triggeredKeys:
+          type: array
+          items:
+            type: string
+      required:
+        - evaluated
+        - triggered
+        - triggeredKeys
     ErrorResponse:
       type: object
       description: >

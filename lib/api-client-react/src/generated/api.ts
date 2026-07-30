@@ -6,24 +6,228 @@
  * OpenAPI spec version: 0.1.0
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query';
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query';
 
 import type {
+  AcknowledgeComplianceAnalyticsAlert200,
+  AddLeadNoteRequest,
+  AdminAuditLogListResponse,
+  AdminCmsListEntriesParams,
+  AdminDashboardData,
+  AdminFeatureFlagListResponse,
+  AdminFeatureFlagRow,
+  AdminFeatureFlagUpdateRequest,
+  AdminListUsersParams,
+  AdminOrganizationListResponse,
+  AdminPermissionListResponse,
+  AdminRoleListResponse,
+  AdminSearchAuditLogsParams,
+  AdminSystemHealth200,
+  AdminSystemVersion200,
+  AdminUserListResponse,
+  AssignLeadRequest,
+  AuditCalendar200,
+  AuditDashboard200,
+  AuthSessionResponse,
+  BadRequestResponse,
+  CapaDashboard200,
+  ChangePasswordRequest,
+  CmsContentSnapshot,
+  CmsDashboardData,
+  CmsEntryDetail,
+  CmsEntryListResponse,
+  CmsEntrySummary,
+  CmsImportRequest,
+  CmsImportResult,
+  CmsMediaAssetSummary,
+  CmsMediaListResponse,
+  CmsMediaUploadRequest,
+  CmsRollbackRequest,
+  CmsSeoEntrySummary,
+  CmsSeoListResponse,
+  CmsSeoUpdateRequest,
+  CmsWorkflowRunResult,
+  CompleteFileUploadResponse,
+  ComplianceAnalyticsAlerts200,
+  ComplianceAnalyticsAlertsParams,
+  ComplianceAnalyticsCalendarSync200,
+  ComplianceAnalyticsControls200,
+  ComplianceAnalyticsExports200,
+  ComplianceAnalyticsIso200,
+  ComplianceAnalyticsIsoParams,
+  ComplianceAnalyticsKpis200,
+  ComplianceAnalyticsPerformance200,
+  ComplianceAnalyticsRegulatory200,
+  ComplianceAnalyticsSnapshot201,
+  ComplianceAnalyticsTrends200,
+  ComplianceDashboard200,
+  ComplianceExecutiveDashboard,
+  ComplianceWorkspace200,
+  ConflictResponse,
+  ContactEnquiryResponse,
+  CreateAudit201,
+  CreateAuditBody,
+  CreateCapa201,
+  CreateCapaBody,
+  CreateCmsEntryRequest,
+  CreateComplianceAnalyticsExport201,
+  CreateComplianceAnalyticsExportBody,
+  CreateEnrolmentRequest,
+  CreateInspection201,
+  CreateInspectionBody,
+  CreateLeadTagRequest,
+  CreatePortalSupportTicketRequest,
+  CreateReminderRequest,
+  CreateRiskAssessmentBody,
+  DashboardMetrics,
+  Enrolment,
+  EnrolmentListResponse,
+  FileDownloadGrant,
+  ForbiddenResponse,
+  GetAudit200,
+  GetCapa200,
   HealthStatus,
+  InitiateFileUploadRequest,
+  InitiateFileUploadResponse,
+  InspectionDashboard200,
   InternalErrorResponse,
+  Lead,
+  LeadListResponse,
+  LeadReminder,
+  LeadTag,
+  LeadTagListResponse,
+  LeadTimelineResponse,
+  LearningAnalyticsResponse,
+  LearningCatalogueParams,
+  LearningCatalogueResponse,
+  LearningCertificateListResponse,
+  LearningDashboardResponse,
+  LearningTranscript200,
+  ListAuditTemplates200,
+  ListAudits200,
+  ListCapa200,
+  ListInspections200,
+  ListLeadsParams,
+  ListLegalRegister200,
+  ListRemindersParams,
+  ListRiskAssessments200,
+  LoginRequest,
+  LoginResponse,
+  MessageResponse,
+  NotFoundResponse,
+  PortalActivityListResponse,
+  PortalAuditCalendar200,
+  PortalAuditHistory200,
+  PortalAuditReports200,
+  PortalCapaDashboard200,
+  PortalComplianceAnalyticsRegulatory200,
+  PortalComplianceResponse,
+  PortalDashboardResponse,
+  PortalDocumentListResponse,
+  PortalDocumentsParams,
+  PortalGetAudit200,
+  PortalGetCapa200,
+  PortalGetInspection200,
+  PortalGetRiskAssessment200,
+  PortalInspectionCalendar200,
+  PortalInspectionHistory200,
+  PortalListAudits200,
+  PortalListCapa200,
+  PortalListInspections200,
+  PortalMemberListResponse,
+  PortalOrganisationResponse,
+  PortalProjectListResponse,
+  PortalProjectsParams,
+  PortalRiskHeatMap200,
+  PortalSupportTicket,
+  PortalSupportTicketListResponse,
+  PortalUsersParams,
+  PublicContentByPathParams,
+  PublicContentEntry,
+  PublicContentListEntriesParams,
+  PublicContentListResponse,
+  PublicContentSnapshotParams,
   RateLimitedResponse,
-  ReadinessStatus
+  ReadinessStatus,
+  RegulatoryAlertListResponse,
+  ReminderListResponse,
+  ReportingBenchmarkComparison,
+  ReportingBiConnection,
+  ReportingBiConnectionCreateRequest,
+  ReportingBiConnectionUpdateRequest,
+  ReportingBiExportDownload,
+  ReportingBiExportJob,
+  ReportingBiIncrementalManifest,
+  ReportingCompareBenchmarksParams,
+  ReportingCreateBiExportBody,
+  ReportingDashboardLayout,
+  ReportingDashboardLayoutSaveRequest,
+  ReportingDashboardListResponse,
+  ReportingDashboardView,
+  ReportingDefinitionListResponse,
+  ReportingExecutiveSummary,
+  ReportingExportCreateRequest,
+  ReportingExportDownload,
+  ReportingExportJob,
+  ReportingExportListResponse,
+  ReportingForecast,
+  ReportingKpiDefinitionListResponse,
+  ReportingKpiListResponse,
+  ReportingKpiSubscription,
+  ReportingKpiSubscriptionCreateRequest,
+  ReportingKpiSubscriptionUpdateRequest,
+  ReportingListBenchmarkCohorts200,
+  ReportingListBiConnections200,
+  ReportingListBiExports200,
+  ReportingListForecasts200,
+  ReportingListKpisParams,
+  ReportingListSubscriptions200,
+  ReportingRefreshForecasts202,
+  ReportingRefreshResult,
+  ReportingReportCreateRequest,
+  ReportingReportDetail,
+  ReportingReportExecutionResult,
+  ReportingReportListResponse,
+  ReportingReportUpdateRequest,
+  ReportingSchedule,
+  ReportingScheduleCreateRequest,
+  ReportingScheduleListResponse,
+  ReportingScheduleRunResult,
+  ReportingScheduleUpdateRequest,
+  ReportingSubscriptionEvaluation,
+  ReportingTrendAnalysis,
+  ReportingViewListResponse,
+  ReportingWidgetCatalogResponse,
+  RequestPasswordResetRequest,
+  ResetPasswordRequest,
+  ScheduleCmsEntryRequest,
+  ServiceUnavailableResponse,
+  SubmitContactEnquiryRequest,
+  SystemHealthResponse,
+  SystemVersionResponse,
+  TimelineEntry,
+  TrainerDashboard200,
+  UnauthorizedResponse,
+  UnprocessableEntityResponse,
+  UpdateCapa200,
+  UpdateCapaBody,
+  UpdateCmsDraftRequest,
+  UpdateLeadStatusRequest
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
-import type { ErrorType } from '../custom-fetch';
+import type { ErrorType , BodyType } from '../custom-fetch';
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -204,4 +408,13270 @@ export function useReadinessCheck<TData = Awaited<ReturnType<typeof readinessChe
 
 
 
+
+export const getV1HealthCheckUrl = () => {
+
+
+
+
+  return `/api/v1/health`
+}
+
+/**
+ * Returns ok while the process is running under the `/api/v1` namespace. Does not check downstream dependencies.
+ * @summary Versioned liveness check
+ */
+export const v1HealthCheck = async ( options?: Parameters<typeof customFetch>[1]): Promise<HealthStatus> => {
+
+  return customFetch<HealthStatus>(getV1HealthCheckUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getV1HealthCheckQueryKey = () => {
+    return [
+    `/api/v1/health`
+    ] as const;
+    }
+
+
+export const getV1HealthCheckQueryOptions = <TData = Awaited<ReturnType<typeof v1HealthCheck>>, TError = ErrorType<RateLimitedResponse | InternalErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof v1HealthCheck>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getV1HealthCheckQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof v1HealthCheck>>> = ({ signal }) => v1HealthCheck({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof v1HealthCheck>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type V1HealthCheckQueryResult = NonNullable<Awaited<ReturnType<typeof v1HealthCheck>>>
+export type V1HealthCheckQueryError = ErrorType<RateLimitedResponse | InternalErrorResponse>
+
+
+/**
+ * @summary Versioned liveness check
+ */
+
+export function useV1HealthCheck<TData = Awaited<ReturnType<typeof v1HealthCheck>>, TError = ErrorType<RateLimitedResponse | InternalErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof v1HealthCheck>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getV1HealthCheckQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getSubmitContactEnquiryUrl = () => {
+
+
+
+
+  return `/api/v1/contact`
+}
+
+/**
+ * Accepts a contact form submission from the public website, persists it, records an audit event, and enqueues a notification outbox message.
+ * @summary Submit a public contact enquiry
+ */
+export const submitContactEnquiry = async (submitContactEnquiryRequest: SubmitContactEnquiryRequest, options?: Parameters<typeof customFetch>[1]): Promise<ContactEnquiryResponse> => {
+
+  return customFetch<ContactEnquiryResponse>(getSubmitContactEnquiryUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(submitContactEnquiryRequest)
+  }
+);}
+
+
+
+
+
+export const getSubmitContactEnquiryMutationOptions = <TError = ErrorType<UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitContactEnquiry>>, TError,{data: BodyType<SubmitContactEnquiryRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof submitContactEnquiry>>, TError,{data: BodyType<SubmitContactEnquiryRequest>}, TContext> => {
+
+const mutationKey = ['submitContactEnquiry'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof submitContactEnquiry>>, {data: BodyType<SubmitContactEnquiryRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  submitContactEnquiry(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SubmitContactEnquiryMutationResult = NonNullable<Awaited<ReturnType<typeof submitContactEnquiry>>>
+    export type SubmitContactEnquiryMutationBody = BodyType<SubmitContactEnquiryRequest>
+    export type SubmitContactEnquiryMutationError = ErrorType<UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Submit a public contact enquiry
+ */
+export const useSubmitContactEnquiry = <TError = ErrorType<UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitContactEnquiry>>, TError,{data: BodyType<SubmitContactEnquiryRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof submitContactEnquiry>>,
+        TError,
+        {data: BodyType<SubmitContactEnquiryRequest>},
+        TContext
+      > => {
+      return useMutation(getSubmitContactEnquiryMutationOptions(options));
+    }
+
+export const getSystemHealthUrl = () => {
+
+
+
+
+  return `/api/v1/system/health`
+}
+
+/**
+ * Reports platform health including optional database connectivity when configured. Returns `degraded` when the database is unreachable.
+ * @summary Platform health metadata
+ */
+export const systemHealth = async ( options?: Parameters<typeof customFetch>[1]): Promise<SystemHealthResponse> => {
+
+  return customFetch<SystemHealthResponse>(getSystemHealthUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getSystemHealthQueryKey = () => {
+    return [
+    `/api/v1/system/health`
+    ] as const;
+    }
+
+
+export const getSystemHealthQueryOptions = <TData = Awaited<ReturnType<typeof systemHealth>>, TError = ErrorType<RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof systemHealth>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSystemHealthQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof systemHealth>>> = ({ signal }) => systemHealth({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof systemHealth>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type SystemHealthQueryResult = NonNullable<Awaited<ReturnType<typeof systemHealth>>>
+export type SystemHealthQueryError = ErrorType<RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Platform health metadata
+ */
+
+export function useSystemHealth<TData = Awaited<ReturnType<typeof systemHealth>>, TError = ErrorType<RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof systemHealth>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getSystemHealthQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getSystemVersionUrl = () => {
+
+
+
+
+  return `/api/v1/system/version`
+}
+
+/**
+ * @summary Platform version metadata
+ */
+export const systemVersion = async ( options?: Parameters<typeof customFetch>[1]): Promise<SystemVersionResponse> => {
+
+  return customFetch<SystemVersionResponse>(getSystemVersionUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getSystemVersionQueryKey = () => {
+    return [
+    `/api/v1/system/version`
+    ] as const;
+    }
+
+
+export const getSystemVersionQueryOptions = <TData = Awaited<ReturnType<typeof systemVersion>>, TError = ErrorType<RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof systemVersion>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSystemVersionQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof systemVersion>>> = ({ signal }) => systemVersion({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof systemVersion>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type SystemVersionQueryResult = NonNullable<Awaited<ReturnType<typeof systemVersion>>>
+export type SystemVersionQueryError = ErrorType<RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Platform version metadata
+ */
+
+export function useSystemVersion<TData = Awaited<ReturnType<typeof systemVersion>>, TError = ErrorType<RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof systemVersion>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getSystemVersionQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getLoginUrl = () => {
+
+
+
+
+  return `/api/v1/auth/login`
+}
+
+/**
+ * @summary Authenticate with email and password
+ */
+export const login = async (loginRequest: LoginRequest, options?: Parameters<typeof customFetch>[1]): Promise<LoginResponse> => {
+
+  return customFetch<LoginResponse>(getLoginUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(loginRequest)
+  }
+);}
+
+
+
+
+
+export const getLoginMutationOptions = <TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginRequest>}, TContext> => {
+
+const mutationKey = ['login'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, {data: BodyType<LoginRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  login(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
+    export type LoginMutationBody = BodyType<LoginRequest>
+    export type LoginMutationError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>
+
+    /**
+ * @summary Authenticate with email and password
+ */
+export const useLogin = <TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: BodyType<LoginRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof login>>,
+        TError,
+        {data: BodyType<LoginRequest>},
+        TContext
+      > => {
+      return useMutation(getLoginMutationOptions(options));
+    }
+
+export const getLogoutUrl = () => {
+
+
+
+
+  return `/api/v1/auth/logout`
+}
+
+/**
+ * @summary End the current session
+ */
+export const logout = async ( options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getLogoutUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getLogoutMutationOptions = <TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext> => {
+
+const mutationKey = ['logout'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof logout>>, void> = () => {
+
+
+          return  logout(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LogoutMutationResult = NonNullable<Awaited<ReturnType<typeof logout>>>
+
+    export type LogoutMutationError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>
+
+    /**
+ * @summary End the current session
+ */
+export const useLogout = <TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof logout>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getLogoutMutationOptions(options));
+    }
+
+export const getRefreshSessionUrl = () => {
+
+
+
+
+  return `/api/v1/auth/refresh`
+}
+
+/**
+ * @summary Refresh session activity window
+ */
+export const refreshSession = async ( options?: Parameters<typeof customFetch>[1]): Promise<AuthSessionResponse> => {
+
+  return customFetch<AuthSessionResponse>(getRefreshSessionUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getRefreshSessionMutationOptions = <TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshSession>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof refreshSession>>, TError,void, TContext> => {
+
+const mutationKey = ['refreshSession'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof refreshSession>>, void> = () => {
+
+
+          return  refreshSession(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RefreshSessionMutationResult = NonNullable<Awaited<ReturnType<typeof refreshSession>>>
+
+    export type RefreshSessionMutationError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>
+
+    /**
+ * @summary Refresh session activity window
+ */
+export const useRefreshSession = <TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshSession>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof refreshSession>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getRefreshSessionMutationOptions(options));
+    }
+
+export const getChangePasswordUrl = () => {
+
+
+
+
+  return `/api/v1/auth/change-password`
+}
+
+/**
+ * @summary Change password for the current user
+ */
+export const changePassword = async (changePasswordRequest: ChangePasswordRequest, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getChangePasswordUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(changePasswordRequest)
+  }
+);}
+
+
+
+
+
+export const getChangePasswordMutationOptions = <TError = ErrorType<UnauthorizedResponse | UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changePassword>>, TError,{data: BodyType<ChangePasswordRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof changePassword>>, TError,{data: BodyType<ChangePasswordRequest>}, TContext> => {
+
+const mutationKey = ['changePassword'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof changePassword>>, {data: BodyType<ChangePasswordRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  changePassword(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ChangePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof changePassword>>>
+    export type ChangePasswordMutationBody = BodyType<ChangePasswordRequest>
+    export type ChangePasswordMutationError = ErrorType<UnauthorizedResponse | UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse>
+
+    /**
+ * @summary Change password for the current user
+ */
+export const useChangePassword = <TError = ErrorType<UnauthorizedResponse | UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changePassword>>, TError,{data: BodyType<ChangePasswordRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof changePassword>>,
+        TError,
+        {data: BodyType<ChangePasswordRequest>},
+        TContext
+      > => {
+      return useMutation(getChangePasswordMutationOptions(options));
+    }
+
+export const getRequestPasswordResetUrl = () => {
+
+
+
+
+  return `/api/v1/auth/request-password-reset`
+}
+
+/**
+ * @summary Request a password reset token
+ */
+export const requestPasswordReset = async (requestPasswordResetRequest: RequestPasswordResetRequest, options?: Parameters<typeof customFetch>[1]): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getRequestPasswordResetUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(requestPasswordResetRequest)
+  }
+);}
+
+
+
+
+
+export const getRequestPasswordResetMutationOptions = <TError = ErrorType<RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError,{data: BodyType<RequestPasswordResetRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError,{data: BodyType<RequestPasswordResetRequest>}, TContext> => {
+
+const mutationKey = ['requestPasswordReset'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof requestPasswordReset>>, {data: BodyType<RequestPasswordResetRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  requestPasswordReset(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RequestPasswordResetMutationResult = NonNullable<Awaited<ReturnType<typeof requestPasswordReset>>>
+    export type RequestPasswordResetMutationBody = BodyType<RequestPasswordResetRequest>
+    export type RequestPasswordResetMutationError = ErrorType<RateLimitedResponse | InternalErrorResponse>
+
+    /**
+ * @summary Request a password reset token
+ */
+export const useRequestPasswordReset = <TError = ErrorType<RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestPasswordReset>>, TError,{data: BodyType<RequestPasswordResetRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof requestPasswordReset>>,
+        TError,
+        {data: BodyType<RequestPasswordResetRequest>},
+        TContext
+      > => {
+      return useMutation(getRequestPasswordResetMutationOptions(options));
+    }
+
+export const getResetPasswordUrl = () => {
+
+
+
+
+  return `/api/v1/auth/reset-password`
+}
+
+/**
+ * @summary Reset password using a token
+ */
+export const resetPassword = async (resetPasswordRequest: ResetPasswordRequest, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getResetPasswordUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(resetPasswordRequest)
+  }
+);}
+
+
+
+
+
+export const getResetPasswordMutationOptions = <TError = ErrorType<BadRequestResponse | UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordRequest>}, TContext> => {
+
+const mutationKey = ['resetPassword'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetPassword>>, {data: BodyType<ResetPasswordRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  resetPassword(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResetPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof resetPassword>>>
+    export type ResetPasswordMutationBody = BodyType<ResetPasswordRequest>
+    export type ResetPasswordMutationError = ErrorType<BadRequestResponse | UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse>
+
+    /**
+ * @summary Reset password using a token
+ */
+export const useResetPassword = <TError = ErrorType<BadRequestResponse | UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof resetPassword>>,
+        TError,
+        {data: BodyType<ResetPasswordRequest>},
+        TContext
+      > => {
+      return useMutation(getResetPasswordMutationOptions(options));
+    }
+
+export const getAuthSessionUrl = () => {
+
+
+
+
+  return `/api/v1/auth/session`
+}
+
+/**
+ * Returns the authenticated staff session. In development, identity is resolved from trusted `x-dev-*` headers until real login lands in M2.3.
+ * @summary Current session
+ */
+export const authSession = async ( options?: Parameters<typeof customFetch>[1]): Promise<AuthSessionResponse> => {
+
+  return customFetch<AuthSessionResponse>(getAuthSessionUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAuthSessionQueryKey = () => {
+    return [
+    `/api/v1/auth/session`
+    ] as const;
+    }
+
+
+export const getAuthSessionQueryOptions = <TData = Awaited<ReturnType<typeof authSession>>, TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof authSession>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAuthSessionQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authSession>>> = ({ signal }) => authSession({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof authSession>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AuthSessionQueryResult = NonNullable<Awaited<ReturnType<typeof authSession>>>
+export type AuthSessionQueryError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>
+
+
+/**
+ * @summary Current session
+ */
+
+export function useAuthSession<TData = Awaited<ReturnType<typeof authSession>>, TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof authSession>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAuthSessionQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCurrentUserUrl = () => {
+
+
+
+
+  return `/api/v1/users/me`
+}
+
+/**
+ * Returns the authenticated user's profile, organization scope, roles, and resolved permissions. Requires an active session.
+ * @summary Current authenticated user profile
+ */
+export const currentUser = async ( options?: Parameters<typeof customFetch>[1]): Promise<LoginResponse> => {
+
+  return customFetch<LoginResponse>(getCurrentUserUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getCurrentUserQueryKey = () => {
+    return [
+    `/api/v1/users/me`
+    ] as const;
+    }
+
+
+export const getCurrentUserQueryOptions = <TData = Awaited<ReturnType<typeof currentUser>>, TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof currentUser>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCurrentUserQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof currentUser>>> = ({ signal }) => currentUser({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof currentUser>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type CurrentUserQueryResult = NonNullable<Awaited<ReturnType<typeof currentUser>>>
+export type CurrentUserQueryError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Current authenticated user profile
+ */
+
+export function useCurrentUser<TData = Awaited<ReturnType<typeof currentUser>>, TError = ErrorType<UnauthorizedResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof currentUser>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getCurrentUserQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getInitiateFileUploadUrl = () => {
+
+
+
+
+  return `/api/v1/files`
+}
+
+/**
+ * @summary Initiate a direct-to-storage file upload
+ */
+export const initiateFileUpload = async (initiateFileUploadRequest: InitiateFileUploadRequest, options?: Parameters<typeof customFetch>[1]): Promise<InitiateFileUploadResponse> => {
+
+  return customFetch<InitiateFileUploadResponse>(getInitiateFileUploadUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(initiateFileUploadRequest)
+  }
+);}
+
+
+
+
+
+export const getInitiateFileUploadMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | UnprocessableEntityResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof initiateFileUpload>>, TError,{data: BodyType<InitiateFileUploadRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof initiateFileUpload>>, TError,{data: BodyType<InitiateFileUploadRequest>}, TContext> => {
+
+const mutationKey = ['initiateFileUpload'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof initiateFileUpload>>, {data: BodyType<InitiateFileUploadRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  initiateFileUpload(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type InitiateFileUploadMutationResult = NonNullable<Awaited<ReturnType<typeof initiateFileUpload>>>
+    export type InitiateFileUploadMutationBody = BodyType<InitiateFileUploadRequest>
+    export type InitiateFileUploadMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | UnprocessableEntityResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Initiate a direct-to-storage file upload
+ */
+export const useInitiateFileUpload = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | UnprocessableEntityResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof initiateFileUpload>>, TError,{data: BodyType<InitiateFileUploadRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof initiateFileUpload>>,
+        TError,
+        {data: BodyType<InitiateFileUploadRequest>},
+        TContext
+      > => {
+      return useMutation(getInitiateFileUploadMutationOptions(options));
+    }
+
+export const getCompleteFileUploadUrl = (uploadId: string,) => {
+
+
+
+
+  return `/api/v1/files/${uploadId}/complete`
+}
+
+/**
+ * @summary Confirm a completed direct upload
+ */
+export const completeFileUpload = async (uploadId: string, options?: Parameters<typeof customFetch>[1]): Promise<CompleteFileUploadResponse> => {
+
+  return customFetch<CompleteFileUploadResponse>(getCompleteFileUploadUrl(uploadId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getCompleteFileUploadMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeFileUpload>>, TError,{uploadId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof completeFileUpload>>, TError,{uploadId: string}, TContext> => {
+
+const mutationKey = ['completeFileUpload'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof completeFileUpload>>, {uploadId: string}> = (props) => {
+          const {uploadId} = props ?? {};
+
+          return  completeFileUpload(uploadId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CompleteFileUploadMutationResult = NonNullable<Awaited<ReturnType<typeof completeFileUpload>>>
+
+    export type CompleteFileUploadMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Confirm a completed direct upload
+ */
+export const useCompleteFileUpload = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeFileUpload>>, TError,{uploadId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof completeFileUpload>>,
+        TError,
+        {uploadId: string},
+        TContext
+      > => {
+      return useMutation(getCompleteFileUploadMutationOptions(options));
+    }
+
+export const getGetFileDownloadGrantUrl = (uploadId: string,) => {
+
+
+
+
+  return `/api/v1/files/${uploadId}/download`
+}
+
+/**
+ * @summary Issue a short-lived download URL for an uploaded file
+ */
+export const getFileDownloadGrant = async (uploadId: string, options?: Parameters<typeof customFetch>[1]): Promise<FileDownloadGrant> => {
+
+  return customFetch<FileDownloadGrant>(getGetFileDownloadGrantUrl(uploadId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetFileDownloadGrantQueryKey = (uploadId: string,) => {
+    return [
+    `/api/v1/files/${uploadId}/download`
+    ] as const;
+    }
+
+
+export const getGetFileDownloadGrantQueryOptions = <TData = Awaited<ReturnType<typeof getFileDownloadGrant>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ServiceUnavailableResponse>>(uploadId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFileDownloadGrant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFileDownloadGrantQueryKey(uploadId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFileDownloadGrant>>> = ({ signal }) => getFileDownloadGrant(uploadId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: uploadId !== null && uploadId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFileDownloadGrant>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetFileDownloadGrantQueryResult = NonNullable<Awaited<ReturnType<typeof getFileDownloadGrant>>>
+export type GetFileDownloadGrantQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Issue a short-lived download URL for an uploaded file
+ */
+
+export function useGetFileDownloadGrant<TData = Awaited<ReturnType<typeof getFileDownloadGrant>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse | ServiceUnavailableResponse>>(
+ uploadId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFileDownloadGrant>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetFileDownloadGrantQueryOptions(uploadId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListLeadsUrl = (params?: ListLeadsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/leads?${stringifiedParams}` : `/api/v1/leads`
+}
+
+/**
+ * @summary Search and list leads
+ */
+export const listLeads = async (params?: ListLeadsParams, options?: Parameters<typeof customFetch>[1]): Promise<LeadListResponse> => {
+
+  return customFetch<LeadListResponse>(getListLeadsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListLeadsQueryKey = (params?: ListLeadsParams,) => {
+    return [
+    `/api/v1/leads`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListLeadsQueryOptions = <TData = Awaited<ReturnType<typeof listLeads>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(params?: ListLeadsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLeads>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListLeadsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listLeads>>> = ({ signal }) => listLeads(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listLeads>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListLeadsQueryResult = NonNullable<Awaited<ReturnType<typeof listLeads>>>
+export type ListLeadsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Search and list leads
+ */
+
+export function useListLeads<TData = Awaited<ReturnType<typeof listLeads>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ params?: ListLeadsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLeads>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListLeadsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetLeadUrl = (id: string,) => {
+
+
+
+
+  return `/api/v1/leads/${id}`
+}
+
+/**
+ * @summary Get lead by id
+ */
+export const getLead = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<Lead> => {
+
+  return customFetch<Lead>(getGetLeadUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLeadQueryKey = (id: string,) => {
+    return [
+    `/api/v1/leads/${id}`
+    ] as const;
+    }
+
+
+export const getGetLeadQueryOptions = <TData = Awaited<ReturnType<typeof getLead>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLead>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLeadQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLead>>> = ({ signal }) => getLead(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLead>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLeadQueryResult = NonNullable<Awaited<ReturnType<typeof getLead>>>
+export type GetLeadQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Get lead by id
+ */
+
+export function useGetLead<TData = Awaited<ReturnType<typeof getLead>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLead>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLeadQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateLeadStatusUrl = (id: string,) => {
+
+
+
+
+  return `/api/v1/leads/${id}/status`
+}
+
+/**
+ * @summary Transition lead status
+ */
+export const updateLeadStatus = async (id: string,
+    updateLeadStatusRequest: UpdateLeadStatusRequest, options?: Parameters<typeof customFetch>[1]): Promise<Lead> => {
+
+  return customFetch<Lead>(getUpdateLeadStatusUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(updateLeadStatusRequest)
+  }
+);}
+
+
+
+
+
+export const getUpdateLeadStatusMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateLeadStatus>>, TError,{id: string;data: BodyType<UpdateLeadStatusRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateLeadStatus>>, TError,{id: string;data: BodyType<UpdateLeadStatusRequest>}, TContext> => {
+
+const mutationKey = ['updateLeadStatus'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateLeadStatus>>, {id: string;data: BodyType<UpdateLeadStatusRequest>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateLeadStatus(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateLeadStatusMutationResult = NonNullable<Awaited<ReturnType<typeof updateLeadStatus>>>
+    export type UpdateLeadStatusMutationBody = BodyType<UpdateLeadStatusRequest>
+    export type UpdateLeadStatusMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Transition lead status
+ */
+export const useUpdateLeadStatus = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | UnprocessableEntityResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateLeadStatus>>, TError,{id: string;data: BodyType<UpdateLeadStatusRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateLeadStatus>>,
+        TError,
+        {id: string;data: BodyType<UpdateLeadStatusRequest>},
+        TContext
+      > => {
+      return useMutation(getUpdateLeadStatusMutationOptions(options));
+    }
+
+export const getAssignLeadUrl = (id: string,) => {
+
+
+
+
+  return `/api/v1/leads/${id}/assign`
+}
+
+/**
+ * @summary Assign lead to staff member
+ */
+export const assignLead = async (id: string,
+    assignLeadRequest: AssignLeadRequest, options?: Parameters<typeof customFetch>[1]): Promise<Lead> => {
+
+  return customFetch<Lead>(getAssignLeadUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(assignLeadRequest)
+  }
+);}
+
+
+
+
+
+export const getAssignLeadMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignLead>>, TError,{id: string;data: BodyType<AssignLeadRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof assignLead>>, TError,{id: string;data: BodyType<AssignLeadRequest>}, TContext> => {
+
+const mutationKey = ['assignLead'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof assignLead>>, {id: string;data: BodyType<AssignLeadRequest>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  assignLead(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AssignLeadMutationResult = NonNullable<Awaited<ReturnType<typeof assignLead>>>
+    export type AssignLeadMutationBody = BodyType<AssignLeadRequest>
+    export type AssignLeadMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Assign lead to staff member
+ */
+export const useAssignLead = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignLead>>, TError,{id: string;data: BodyType<AssignLeadRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof assignLead>>,
+        TError,
+        {id: string;data: BodyType<AssignLeadRequest>},
+        TContext
+      > => {
+      return useMutation(getAssignLeadMutationOptions(options));
+    }
+
+export const getGetLeadTimelineUrl = (id: string,) => {
+
+
+
+
+  return `/api/v1/leads/${id}/timeline`
+}
+
+/**
+ * @summary Lead activity timeline
+ */
+export const getLeadTimeline = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<LeadTimelineResponse> => {
+
+  return customFetch<LeadTimelineResponse>(getGetLeadTimelineUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLeadTimelineQueryKey = (id: string,) => {
+    return [
+    `/api/v1/leads/${id}/timeline`
+    ] as const;
+    }
+
+
+export const getGetLeadTimelineQueryOptions = <TData = Awaited<ReturnType<typeof getLeadTimeline>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeadTimeline>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLeadTimelineQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLeadTimeline>>> = ({ signal }) => getLeadTimeline(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLeadTimeline>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLeadTimelineQueryResult = NonNullable<Awaited<ReturnType<typeof getLeadTimeline>>>
+export type GetLeadTimelineQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Lead activity timeline
+ */
+
+export function useGetLeadTimeline<TData = Awaited<ReturnType<typeof getLeadTimeline>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeadTimeline>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLeadTimelineQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAddLeadNoteUrl = (id: string,) => {
+
+
+
+
+  return `/api/v1/leads/${id}/notes`
+}
+
+/**
+ * @summary Add internal or external note
+ */
+export const addLeadNote = async (id: string,
+    addLeadNoteRequest: AddLeadNoteRequest, options?: Parameters<typeof customFetch>[1]): Promise<TimelineEntry> => {
+
+  return customFetch<TimelineEntry>(getAddLeadNoteUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(addLeadNoteRequest)
+  }
+);}
+
+
+
+
+
+export const getAddLeadNoteMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addLeadNote>>, TError,{id: string;data: BodyType<AddLeadNoteRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof addLeadNote>>, TError,{id: string;data: BodyType<AddLeadNoteRequest>}, TContext> => {
+
+const mutationKey = ['addLeadNote'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addLeadNote>>, {id: string;data: BodyType<AddLeadNoteRequest>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  addLeadNote(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AddLeadNoteMutationResult = NonNullable<Awaited<ReturnType<typeof addLeadNote>>>
+    export type AddLeadNoteMutationBody = BodyType<AddLeadNoteRequest>
+    export type AddLeadNoteMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Add internal or external note
+ */
+export const useAddLeadNote = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof addLeadNote>>, TError,{id: string;data: BodyType<AddLeadNoteRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof addLeadNote>>,
+        TError,
+        {id: string;data: BodyType<AddLeadNoteRequest>},
+        TContext
+      > => {
+      return useMutation(getAddLeadNoteMutationOptions(options));
+    }
+
+export const getGetDashboardMetricsUrl = () => {
+
+
+
+
+  return `/api/v1/dashboard`
+}
+
+/**
+ * @summary CRM dashboard metrics
+ */
+export const getDashboardMetrics = async ( options?: Parameters<typeof customFetch>[1]): Promise<DashboardMetrics> => {
+
+  return customFetch<DashboardMetrics>(getGetDashboardMetricsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDashboardMetricsQueryKey = () => {
+    return [
+    `/api/v1/dashboard`
+    ] as const;
+    }
+
+
+export const getGetDashboardMetricsQueryOptions = <TData = Awaited<ReturnType<typeof getDashboardMetrics>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDashboardMetrics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDashboardMetricsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDashboardMetrics>>> = ({ signal }) => getDashboardMetrics({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDashboardMetrics>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDashboardMetricsQueryResult = NonNullable<Awaited<ReturnType<typeof getDashboardMetrics>>>
+export type GetDashboardMetricsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary CRM dashboard metrics
+ */
+
+export function useGetDashboardMetrics<TData = Awaited<ReturnType<typeof getDashboardMetrics>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDashboardMetrics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDashboardMetricsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListRemindersUrl = (params: ListRemindersParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/reminders?${stringifiedParams}` : `/api/v1/reminders`
+}
+
+/**
+ * @summary List reminders for a lead
+ */
+export const listReminders = async (params: ListRemindersParams, options?: Parameters<typeof customFetch>[1]): Promise<ReminderListResponse> => {
+
+  return customFetch<ReminderListResponse>(getListRemindersUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListRemindersQueryKey = (params?: ListRemindersParams,) => {
+    return [
+    `/api/v1/reminders`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListRemindersQueryOptions = <TData = Awaited<ReturnType<typeof listReminders>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(params: ListRemindersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listReminders>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListRemindersQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listReminders>>> = ({ signal }) => listReminders(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listReminders>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListRemindersQueryResult = NonNullable<Awaited<ReturnType<typeof listReminders>>>
+export type ListRemindersQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary List reminders for a lead
+ */
+
+export function useListReminders<TData = Awaited<ReturnType<typeof listReminders>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+ params: ListRemindersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listReminders>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListRemindersQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateReminderUrl = () => {
+
+
+
+
+  return `/api/v1/reminders`
+}
+
+/**
+ * @summary Create follow-up reminder
+ */
+export const createReminder = async (createReminderRequest: CreateReminderRequest, options?: Parameters<typeof customFetch>[1]): Promise<LeadReminder> => {
+
+  return customFetch<LeadReminder>(getCreateReminderUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createReminderRequest)
+  }
+);}
+
+
+
+
+
+export const getCreateReminderMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createReminder>>, TError,{data: BodyType<CreateReminderRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createReminder>>, TError,{data: BodyType<CreateReminderRequest>}, TContext> => {
+
+const mutationKey = ['createReminder'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createReminder>>, {data: BodyType<CreateReminderRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createReminder(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateReminderMutationResult = NonNullable<Awaited<ReturnType<typeof createReminder>>>
+    export type CreateReminderMutationBody = BodyType<CreateReminderRequest>
+    export type CreateReminderMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Create follow-up reminder
+ */
+export const useCreateReminder = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createReminder>>, TError,{data: BodyType<CreateReminderRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createReminder>>,
+        TError,
+        {data: BodyType<CreateReminderRequest>},
+        TContext
+      > => {
+      return useMutation(getCreateReminderMutationOptions(options));
+    }
+
+export const getCompleteReminderUrl = (id: string,) => {
+
+
+
+
+  return `/api/v1/reminders/${id}/complete`
+}
+
+/**
+ * @summary Mark reminder complete
+ */
+export const completeReminder = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getCompleteReminderUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getCompleteReminderMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeReminder>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof completeReminder>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['completeReminder'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof completeReminder>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  completeReminder(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CompleteReminderMutationResult = NonNullable<Awaited<ReturnType<typeof completeReminder>>>
+
+    export type CompleteReminderMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Mark reminder complete
+ */
+export const useCompleteReminder = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeReminder>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof completeReminder>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getCompleteReminderMutationOptions(options));
+    }
+
+export const getListLeadTagsUrl = () => {
+
+
+
+
+  return `/api/v1/tags`
+}
+
+/**
+ * @summary List lead tags
+ */
+export const listLeadTags = async ( options?: Parameters<typeof customFetch>[1]): Promise<LeadTagListResponse> => {
+
+  return customFetch<LeadTagListResponse>(getListLeadTagsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListLeadTagsQueryKey = () => {
+    return [
+    `/api/v1/tags`
+    ] as const;
+    }
+
+
+export const getListLeadTagsQueryOptions = <TData = Awaited<ReturnType<typeof listLeadTags>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLeadTags>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListLeadTagsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listLeadTags>>> = ({ signal }) => listLeadTags({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listLeadTags>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListLeadTagsQueryResult = NonNullable<Awaited<ReturnType<typeof listLeadTags>>>
+export type ListLeadTagsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary List lead tags
+ */
+
+export function useListLeadTags<TData = Awaited<ReturnType<typeof listLeadTags>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLeadTags>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListLeadTagsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateLeadTagUrl = () => {
+
+
+
+
+  return `/api/v1/tags`
+}
+
+/**
+ * @summary Create lead tag
+ */
+export const createLeadTag = async (createLeadTagRequest: CreateLeadTagRequest, options?: Parameters<typeof customFetch>[1]): Promise<LeadTag> => {
+
+  return customFetch<LeadTag>(getCreateLeadTagUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createLeadTagRequest)
+  }
+);}
+
+
+
+
+
+export const getCreateLeadTagMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createLeadTag>>, TError,{data: BodyType<CreateLeadTagRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createLeadTag>>, TError,{data: BodyType<CreateLeadTagRequest>}, TContext> => {
+
+const mutationKey = ['createLeadTag'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createLeadTag>>, {data: BodyType<CreateLeadTagRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createLeadTag(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateLeadTagMutationResult = NonNullable<Awaited<ReturnType<typeof createLeadTag>>>
+    export type CreateLeadTagMutationBody = BodyType<CreateLeadTagRequest>
+    export type CreateLeadTagMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Create lead tag
+ */
+export const useCreateLeadTag = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | RateLimitedResponse | InternalErrorResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createLeadTag>>, TError,{data: BodyType<CreateLeadTagRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createLeadTag>>,
+        TError,
+        {data: BodyType<CreateLeadTagRequest>},
+        TContext
+      > => {
+      return useMutation(getCreateLeadTagMutationOptions(options));
+    }
+
+export const getPortalDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/portal/dashboard`
+}
+
+/**
+ * @summary Client portal executive dashboard
+ */
+export const portalDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalDashboardResponse> => {
+
+  return customFetch<PortalDashboardResponse>(getPortalDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalDashboardQueryKey = () => {
+    return [
+    `/api/v1/portal/dashboard`
+    ] as const;
+    }
+
+
+export const getPortalDashboardQueryOptions = <TData = Awaited<ReturnType<typeof portalDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalDashboard>>> = ({ signal }) => portalDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof portalDashboard>>>
+export type PortalDashboardQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Client portal executive dashboard
+ */
+
+export function usePortalDashboard<TData = Awaited<ReturnType<typeof portalDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalOrganisationUrl = () => {
+
+
+
+
+  return `/api/v1/portal/organisation`
+}
+
+/**
+ * @summary Organization workspace profile
+ */
+export const portalOrganisation = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalOrganisationResponse> => {
+
+  return customFetch<PortalOrganisationResponse>(getPortalOrganisationUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalOrganisationQueryKey = () => {
+    return [
+    `/api/v1/portal/organisation`
+    ] as const;
+    }
+
+
+export const getPortalOrganisationQueryOptions = <TData = Awaited<ReturnType<typeof portalOrganisation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalOrganisation>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalOrganisationQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalOrganisation>>> = ({ signal }) => portalOrganisation({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalOrganisation>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalOrganisationQueryResult = NonNullable<Awaited<ReturnType<typeof portalOrganisation>>>
+export type PortalOrganisationQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Organization workspace profile
+ */
+
+export function usePortalOrganisation<TData = Awaited<ReturnType<typeof portalOrganisation>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalOrganisation>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalOrganisationQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalUsersUrl = (params?: PortalUsersParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/portal/users?${stringifiedParams}` : `/api/v1/portal/users`
+}
+
+/**
+ * @summary Organization members
+ */
+export const portalUsers = async (params?: PortalUsersParams, options?: Parameters<typeof customFetch>[1]): Promise<PortalMemberListResponse> => {
+
+  return customFetch<PortalMemberListResponse>(getPortalUsersUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalUsersQueryKey = (params?: PortalUsersParams,) => {
+    return [
+    `/api/v1/portal/users`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getPortalUsersQueryOptions = <TData = Awaited<ReturnType<typeof portalUsers>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(params?: PortalUsersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalUsers>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalUsersQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalUsers>>> = ({ signal }) => portalUsers(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalUsers>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalUsersQueryResult = NonNullable<Awaited<ReturnType<typeof portalUsers>>>
+export type PortalUsersQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Organization members
+ */
+
+export function usePortalUsers<TData = Awaited<ReturnType<typeof portalUsers>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(
+ params?: PortalUsersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalUsers>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalUsersQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalProjectsUrl = (params?: PortalProjectsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/portal/projects?${stringifiedParams}` : `/api/v1/portal/projects`
+}
+
+/**
+ * @summary Organization projects
+ */
+export const portalProjects = async (params?: PortalProjectsParams, options?: Parameters<typeof customFetch>[1]): Promise<PortalProjectListResponse> => {
+
+  return customFetch<PortalProjectListResponse>(getPortalProjectsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalProjectsQueryKey = (params?: PortalProjectsParams,) => {
+    return [
+    `/api/v1/portal/projects`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getPortalProjectsQueryOptions = <TData = Awaited<ReturnType<typeof portalProjects>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(params?: PortalProjectsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalProjects>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalProjectsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalProjects>>> = ({ signal }) => portalProjects(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalProjects>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalProjectsQueryResult = NonNullable<Awaited<ReturnType<typeof portalProjects>>>
+export type PortalProjectsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Organization projects
+ */
+
+export function usePortalProjects<TData = Awaited<ReturnType<typeof portalProjects>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(
+ params?: PortalProjectsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalProjects>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalProjectsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalDocumentsUrl = (params?: PortalDocumentsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/portal/documents?${stringifiedParams}` : `/api/v1/portal/documents`
+}
+
+/**
+ * @summary Organization documents
+ */
+export const portalDocuments = async (params?: PortalDocumentsParams, options?: Parameters<typeof customFetch>[1]): Promise<PortalDocumentListResponse> => {
+
+  return customFetch<PortalDocumentListResponse>(getPortalDocumentsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalDocumentsQueryKey = (params?: PortalDocumentsParams,) => {
+    return [
+    `/api/v1/portal/documents`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getPortalDocumentsQueryOptions = <TData = Awaited<ReturnType<typeof portalDocuments>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(params?: PortalDocumentsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalDocuments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalDocumentsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalDocuments>>> = ({ signal }) => portalDocuments(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalDocuments>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalDocumentsQueryResult = NonNullable<Awaited<ReturnType<typeof portalDocuments>>>
+export type PortalDocumentsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Organization documents
+ */
+
+export function usePortalDocuments<TData = Awaited<ReturnType<typeof portalDocuments>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(
+ params?: PortalDocumentsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalDocuments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalDocumentsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalSupportTicketsUrl = () => {
+
+
+
+
+  return `/api/v1/portal/support`
+}
+
+/**
+ * @summary Support tickets
+ */
+export const portalSupportTickets = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalSupportTicketListResponse> => {
+
+  return customFetch<PortalSupportTicketListResponse>(getPortalSupportTicketsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalSupportTicketsQueryKey = () => {
+    return [
+    `/api/v1/portal/support`
+    ] as const;
+    }
+
+
+export const getPortalSupportTicketsQueryOptions = <TData = Awaited<ReturnType<typeof portalSupportTickets>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalSupportTickets>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalSupportTicketsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalSupportTickets>>> = ({ signal }) => portalSupportTickets({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalSupportTickets>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalSupportTicketsQueryResult = NonNullable<Awaited<ReturnType<typeof portalSupportTickets>>>
+export type PortalSupportTicketsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Support tickets
+ */
+
+export function usePortalSupportTickets<TData = Awaited<ReturnType<typeof portalSupportTickets>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalSupportTickets>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalSupportTicketsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreatePortalSupportTicketUrl = () => {
+
+
+
+
+  return `/api/v1/portal/support`
+}
+
+/**
+ * @summary Create support ticket
+ */
+export const createPortalSupportTicket = async (createPortalSupportTicketRequest: CreatePortalSupportTicketRequest, options?: Parameters<typeof customFetch>[1]): Promise<PortalSupportTicket> => {
+
+  return customFetch<PortalSupportTicket>(getCreatePortalSupportTicketUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createPortalSupportTicketRequest)
+  }
+);}
+
+
+
+
+
+export const getCreatePortalSupportTicketMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPortalSupportTicket>>, TError,{data: BodyType<CreatePortalSupportTicketRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createPortalSupportTicket>>, TError,{data: BodyType<CreatePortalSupportTicketRequest>}, TContext> => {
+
+const mutationKey = ['createPortalSupportTicket'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createPortalSupportTicket>>, {data: BodyType<CreatePortalSupportTicketRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createPortalSupportTicket(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreatePortalSupportTicketMutationResult = NonNullable<Awaited<ReturnType<typeof createPortalSupportTicket>>>
+    export type CreatePortalSupportTicketMutationBody = BodyType<CreatePortalSupportTicketRequest>
+    export type CreatePortalSupportTicketMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>
+
+    /**
+ * @summary Create support ticket
+ */
+export const useCreatePortalSupportTicket = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPortalSupportTicket>>, TError,{data: BodyType<CreatePortalSupportTicketRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createPortalSupportTicket>>,
+        TError,
+        {data: BodyType<CreatePortalSupportTicketRequest>},
+        TContext
+      > => {
+      return useMutation(getCreatePortalSupportTicketMutationOptions(options));
+    }
+
+export const getPortalActivityUrl = () => {
+
+
+
+
+  return `/api/v1/portal/activity`
+}
+
+/**
+ * @summary Unified activity timeline
+ */
+export const portalActivity = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalActivityListResponse> => {
+
+  return customFetch<PortalActivityListResponse>(getPortalActivityUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalActivityQueryKey = () => {
+    return [
+    `/api/v1/portal/activity`
+    ] as const;
+    }
+
+
+export const getPortalActivityQueryOptions = <TData = Awaited<ReturnType<typeof portalActivity>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalActivity>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalActivityQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalActivity>>> = ({ signal }) => portalActivity({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalActivity>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalActivityQueryResult = NonNullable<Awaited<ReturnType<typeof portalActivity>>>
+export type PortalActivityQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Unified activity timeline
+ */
+
+export function usePortalActivity<TData = Awaited<ReturnType<typeof portalActivity>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalActivity>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalActivityQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getLearningDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/learning/dashboard`
+}
+
+/**
+ * @summary Learning dashboard metrics
+ */
+export const learningDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<LearningDashboardResponse> => {
+
+  return customFetch<LearningDashboardResponse>(getLearningDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getLearningDashboardQueryKey = () => {
+    return [
+    `/api/v1/learning/dashboard`
+    ] as const;
+    }
+
+
+export const getLearningDashboardQueryOptions = <TData = Awaited<ReturnType<typeof learningDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof learningDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getLearningDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof learningDashboard>>> = ({ signal }) => learningDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof learningDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type LearningDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof learningDashboard>>>
+export type LearningDashboardQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>
+
+
+/**
+ * @summary Learning dashboard metrics
+ */
+
+export function useLearningDashboard<TData = Awaited<ReturnType<typeof learningDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ServiceUnavailableResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof learningDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getLearningDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getLearningCatalogueUrl = (params?: LearningCatalogueParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/learning/catalogue?${stringifiedParams}` : `/api/v1/learning/catalogue`
+}
+
+/**
+ * @summary Training catalogue (M1 content)
+ */
+export const learningCatalogue = async (params?: LearningCatalogueParams, options?: Parameters<typeof customFetch>[1]): Promise<LearningCatalogueResponse> => {
+
+  return customFetch<LearningCatalogueResponse>(getLearningCatalogueUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getLearningCatalogueQueryKey = (params?: LearningCatalogueParams,) => {
+    return [
+    `/api/v1/learning/catalogue`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getLearningCatalogueQueryOptions = <TData = Awaited<ReturnType<typeof learningCatalogue>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(params?: LearningCatalogueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof learningCatalogue>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getLearningCatalogueQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof learningCatalogue>>> = ({ signal }) => learningCatalogue(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof learningCatalogue>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type LearningCatalogueQueryResult = NonNullable<Awaited<ReturnType<typeof learningCatalogue>>>
+export type LearningCatalogueQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary Training catalogue (M1 content)
+ */
+
+export function useLearningCatalogue<TData = Awaited<ReturnType<typeof learningCatalogue>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+ params?: LearningCatalogueParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof learningCatalogue>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getLearningCatalogueQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListEnrolmentsUrl = () => {
+
+
+
+
+  return `/api/v1/learning/enrolments`
+}
+
+/**
+ * @summary List enrolments
+ */
+export const listEnrolments = async ( options?: Parameters<typeof customFetch>[1]): Promise<EnrolmentListResponse> => {
+
+  return customFetch<EnrolmentListResponse>(getListEnrolmentsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListEnrolmentsQueryKey = () => {
+    return [
+    `/api/v1/learning/enrolments`
+    ] as const;
+    }
+
+
+export const getListEnrolmentsQueryOptions = <TData = Awaited<ReturnType<typeof listEnrolments>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listEnrolments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListEnrolmentsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listEnrolments>>> = ({ signal }) => listEnrolments({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listEnrolments>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListEnrolmentsQueryResult = NonNullable<Awaited<ReturnType<typeof listEnrolments>>>
+export type ListEnrolmentsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List enrolments
+ */
+
+export function useListEnrolments<TData = Awaited<ReturnType<typeof listEnrolments>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listEnrolments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListEnrolmentsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateEnrolmentUrl = () => {
+
+
+
+
+  return `/api/v1/learning/enrolments`
+}
+
+/**
+ * @summary Create enrolment
+ */
+export const createEnrolment = async (createEnrolmentRequest: CreateEnrolmentRequest, options?: Parameters<typeof customFetch>[1]): Promise<Enrolment> => {
+
+  return customFetch<Enrolment>(getCreateEnrolmentUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createEnrolmentRequest)
+  }
+);}
+
+
+
+
+
+export const getCreateEnrolmentMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createEnrolment>>, TError,{data: BodyType<CreateEnrolmentRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createEnrolment>>, TError,{data: BodyType<CreateEnrolmentRequest>}, TContext> => {
+
+const mutationKey = ['createEnrolment'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createEnrolment>>, {data: BodyType<CreateEnrolmentRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createEnrolment(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateEnrolmentMutationResult = NonNullable<Awaited<ReturnType<typeof createEnrolment>>>
+    export type CreateEnrolmentMutationBody = BodyType<CreateEnrolmentRequest>
+    export type CreateEnrolmentMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Create enrolment
+ */
+export const useCreateEnrolment = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createEnrolment>>, TError,{data: BodyType<CreateEnrolmentRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createEnrolment>>,
+        TError,
+        {data: BodyType<CreateEnrolmentRequest>},
+        TContext
+      > => {
+      return useMutation(getCreateEnrolmentMutationOptions(options));
+    }
+
+export const getLearningTranscriptUrl = () => {
+
+
+
+
+  return `/api/v1/learning/transcript`
+}
+
+/**
+ * @summary Learning transcript
+ */
+export const learningTranscript = async ( options?: Parameters<typeof customFetch>[1]): Promise<LearningTranscript200> => {
+
+  return customFetch<LearningTranscript200>(getLearningTranscriptUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getLearningTranscriptQueryKey = () => {
+    return [
+    `/api/v1/learning/transcript`
+    ] as const;
+    }
+
+
+export const getLearningTranscriptQueryOptions = <TData = Awaited<ReturnType<typeof learningTranscript>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof learningTranscript>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getLearningTranscriptQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof learningTranscript>>> = ({ signal }) => learningTranscript({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof learningTranscript>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type LearningTranscriptQueryResult = NonNullable<Awaited<ReturnType<typeof learningTranscript>>>
+export type LearningTranscriptQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Learning transcript
+ */
+
+export function useLearningTranscript<TData = Awaited<ReturnType<typeof learningTranscript>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof learningTranscript>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getLearningTranscriptQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListLearningCertificatesUrl = () => {
+
+
+
+
+  return `/api/v1/learning/certificates`
+}
+
+/**
+ * @summary List course certificates
+ */
+export const listLearningCertificates = async ( options?: Parameters<typeof customFetch>[1]): Promise<LearningCertificateListResponse> => {
+
+  return customFetch<LearningCertificateListResponse>(getListLearningCertificatesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListLearningCertificatesQueryKey = () => {
+    return [
+    `/api/v1/learning/certificates`
+    ] as const;
+    }
+
+
+export const getListLearningCertificatesQueryOptions = <TData = Awaited<ReturnType<typeof listLearningCertificates>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLearningCertificates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListLearningCertificatesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listLearningCertificates>>> = ({ signal }) => listLearningCertificates({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listLearningCertificates>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListLearningCertificatesQueryResult = NonNullable<Awaited<ReturnType<typeof listLearningCertificates>>>
+export type ListLearningCertificatesQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List course certificates
+ */
+
+export function useListLearningCertificates<TData = Awaited<ReturnType<typeof listLearningCertificates>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLearningCertificates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListLearningCertificatesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getLearningAnalyticsUrl = () => {
+
+
+
+
+  return `/api/v1/learning/analytics`
+}
+
+/**
+ * @summary Learning analytics
+ */
+export const learningAnalytics = async ( options?: Parameters<typeof customFetch>[1]): Promise<LearningAnalyticsResponse> => {
+
+  return customFetch<LearningAnalyticsResponse>(getLearningAnalyticsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getLearningAnalyticsQueryKey = () => {
+    return [
+    `/api/v1/learning/analytics`
+    ] as const;
+    }
+
+
+export const getLearningAnalyticsQueryOptions = <TData = Awaited<ReturnType<typeof learningAnalytics>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof learningAnalytics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getLearningAnalyticsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof learningAnalytics>>> = ({ signal }) => learningAnalytics({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof learningAnalytics>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type LearningAnalyticsQueryResult = NonNullable<Awaited<ReturnType<typeof learningAnalytics>>>
+export type LearningAnalyticsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Learning analytics
+ */
+
+export function useLearningAnalytics<TData = Awaited<ReturnType<typeof learningAnalytics>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof learningAnalytics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getLearningAnalyticsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getTrainerDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/learning/trainer/dashboard`
+}
+
+/**
+ * @summary Trainer workspace dashboard
+ */
+export const trainerDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<TrainerDashboard200> => {
+
+  return customFetch<TrainerDashboard200>(getTrainerDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getTrainerDashboardQueryKey = () => {
+    return [
+    `/api/v1/learning/trainer/dashboard`
+    ] as const;
+    }
+
+
+export const getTrainerDashboardQueryOptions = <TData = Awaited<ReturnType<typeof trainerDashboard>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof trainerDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getTrainerDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof trainerDashboard>>> = ({ signal }) => trainerDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof trainerDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type TrainerDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof trainerDashboard>>>
+export type TrainerDashboardQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Trainer workspace dashboard
+ */
+
+export function useTrainerDashboard<TData = Awaited<ReturnType<typeof trainerDashboard>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof trainerDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getTrainerDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAuditDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/audits/dashboard`
+}
+
+/**
+ * @summary Audit executive dashboard
+ */
+export const auditDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<AuditDashboard200> => {
+
+  return customFetch<AuditDashboard200>(getAuditDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAuditDashboardQueryKey = () => {
+    return [
+    `/api/v1/audits/dashboard`
+    ] as const;
+    }
+
+
+export const getAuditDashboardQueryOptions = <TData = Awaited<ReturnType<typeof auditDashboard>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof auditDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAuditDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof auditDashboard>>> = ({ signal }) => auditDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof auditDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AuditDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof auditDashboard>>>
+export type AuditDashboardQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Audit executive dashboard
+ */
+
+export function useAuditDashboard<TData = Awaited<ReturnType<typeof auditDashboard>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof auditDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAuditDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListAuditsUrl = () => {
+
+
+
+
+  return `/api/v1/audits`
+}
+
+/**
+ * @summary List compliance audits
+ */
+export const listAudits = async ( options?: Parameters<typeof customFetch>[1]): Promise<ListAudits200> => {
+
+  return customFetch<ListAudits200>(getListAuditsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAuditsQueryKey = () => {
+    return [
+    `/api/v1/audits`
+    ] as const;
+    }
+
+
+export const getListAuditsQueryOptions = <TData = Awaited<ReturnType<typeof listAudits>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAudits>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAuditsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAudits>>> = ({ signal }) => listAudits({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAudits>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListAuditsQueryResult = NonNullable<Awaited<ReturnType<typeof listAudits>>>
+export type ListAuditsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List compliance audits
+ */
+
+export function useListAudits<TData = Awaited<ReturnType<typeof listAudits>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAudits>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListAuditsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateAuditUrl = () => {
+
+
+
+
+  return `/api/v1/audits`
+}
+
+/**
+ * @summary Create audit plan
+ */
+export const createAudit = async (createAuditBody: CreateAuditBody, options?: Parameters<typeof customFetch>[1]): Promise<CreateAudit201> => {
+
+  return customFetch<CreateAudit201>(getCreateAuditUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createAuditBody)
+  }
+);}
+
+
+
+
+
+export const getCreateAuditMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAudit>>, TError,{data: BodyType<CreateAuditBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAudit>>, TError,{data: BodyType<CreateAuditBody>}, TContext> => {
+
+const mutationKey = ['createAudit'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAudit>>, {data: BodyType<CreateAuditBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAudit(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAuditMutationResult = NonNullable<Awaited<ReturnType<typeof createAudit>>>
+    export type CreateAuditMutationBody = BodyType<CreateAuditBody>
+    export type CreateAuditMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Create audit plan
+ */
+export const useCreateAudit = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAudit>>, TError,{data: BodyType<CreateAuditBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAudit>>,
+        TError,
+        {data: BodyType<CreateAuditBody>},
+        TContext
+      > => {
+      return useMutation(getCreateAuditMutationOptions(options));
+    }
+
+export const getGetAuditUrl = (auditId: string,) => {
+
+
+
+
+  return `/api/v1/audits/${auditId}`
+}
+
+/**
+ * @summary Audit detail
+ */
+export const getAudit = async (auditId: string, options?: Parameters<typeof customFetch>[1]): Promise<GetAudit200> => {
+
+  return customFetch<GetAudit200>(getGetAuditUrl(auditId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAuditQueryKey = (auditId: string,) => {
+    return [
+    `/api/v1/audits/${auditId}`
+    ] as const;
+    }
+
+
+export const getGetAuditQueryOptions = <TData = Awaited<ReturnType<typeof getAudit>>, TError = ErrorType<UnauthorizedResponse>>(auditId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAudit>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAuditQueryKey(auditId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAudit>>> = ({ signal }) => getAudit(auditId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: auditId !== null && auditId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAudit>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAuditQueryResult = NonNullable<Awaited<ReturnType<typeof getAudit>>>
+export type GetAuditQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Audit detail
+ */
+
+export function useGetAudit<TData = Awaited<ReturnType<typeof getAudit>>, TError = ErrorType<UnauthorizedResponse>>(
+ auditId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAudit>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAuditQueryOptions(auditId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListAuditTemplatesUrl = () => {
+
+
+
+
+  return `/api/v1/audits/templates`
+}
+
+/**
+ * @summary List audit templates
+ */
+export const listAuditTemplates = async ( options?: Parameters<typeof customFetch>[1]): Promise<ListAuditTemplates200> => {
+
+  return customFetch<ListAuditTemplates200>(getListAuditTemplatesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListAuditTemplatesQueryKey = () => {
+    return [
+    `/api/v1/audits/templates`
+    ] as const;
+    }
+
+
+export const getListAuditTemplatesQueryOptions = <TData = Awaited<ReturnType<typeof listAuditTemplates>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAuditTemplates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListAuditTemplatesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listAuditTemplates>>> = ({ signal }) => listAuditTemplates({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listAuditTemplates>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListAuditTemplatesQueryResult = NonNullable<Awaited<ReturnType<typeof listAuditTemplates>>>
+export type ListAuditTemplatesQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List audit templates
+ */
+
+export function useListAuditTemplates<TData = Awaited<ReturnType<typeof listAuditTemplates>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listAuditTemplates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListAuditTemplatesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAuditCalendarUrl = () => {
+
+
+
+
+  return `/api/v1/audits/calendar`
+}
+
+/**
+ * @summary Audit calendar events
+ */
+export const auditCalendar = async ( options?: Parameters<typeof customFetch>[1]): Promise<AuditCalendar200> => {
+
+  return customFetch<AuditCalendar200>(getAuditCalendarUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAuditCalendarQueryKey = () => {
+    return [
+    `/api/v1/audits/calendar`
+    ] as const;
+    }
+
+
+export const getAuditCalendarQueryOptions = <TData = Awaited<ReturnType<typeof auditCalendar>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof auditCalendar>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAuditCalendarQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof auditCalendar>>> = ({ signal }) => auditCalendar({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof auditCalendar>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AuditCalendarQueryResult = NonNullable<Awaited<ReturnType<typeof auditCalendar>>>
+export type AuditCalendarQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Audit calendar events
+ */
+
+export function useAuditCalendar<TData = Awaited<ReturnType<typeof auditCalendar>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof auditCalendar>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAuditCalendarQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/dashboard`
+}
+
+/**
+ * @summary Compliance dashboard widgets
+ */
+export const complianceDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceDashboard200> => {
+
+  return customFetch<ComplianceDashboard200>(getComplianceDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceDashboardQueryKey = () => {
+    return [
+    `/api/v1/compliance/dashboard`
+    ] as const;
+    }
+
+
+export const getComplianceDashboardQueryOptions = <TData = Awaited<ReturnType<typeof complianceDashboard>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceDashboard>>> = ({ signal }) => complianceDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof complianceDashboard>>>
+export type ComplianceDashboardQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Compliance dashboard widgets
+ */
+
+export function useComplianceDashboard<TData = Awaited<ReturnType<typeof complianceDashboard>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceWorkspaceUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/workspace`
+}
+
+/**
+ * @summary Compliance workspace aggregate
+ */
+export const complianceWorkspace = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceWorkspace200> => {
+
+  return customFetch<ComplianceWorkspace200>(getComplianceWorkspaceUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceWorkspaceQueryKey = () => {
+    return [
+    `/api/v1/compliance/workspace`
+    ] as const;
+    }
+
+
+export const getComplianceWorkspaceQueryOptions = <TData = Awaited<ReturnType<typeof complianceWorkspace>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceWorkspace>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceWorkspaceQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceWorkspace>>> = ({ signal }) => complianceWorkspace({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceWorkspace>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceWorkspaceQueryResult = NonNullable<Awaited<ReturnType<typeof complianceWorkspace>>>
+export type ComplianceWorkspaceQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Compliance workspace aggregate
+ */
+
+export function useComplianceWorkspace<TData = Awaited<ReturnType<typeof complianceWorkspace>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceWorkspace>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceWorkspaceQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListLegalRegisterUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/legal-register`
+}
+
+/**
+ * @summary Legal register entries
+ */
+export const listLegalRegister = async ( options?: Parameters<typeof customFetch>[1]): Promise<ListLegalRegister200> => {
+
+  return customFetch<ListLegalRegister200>(getListLegalRegisterUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListLegalRegisterQueryKey = () => {
+    return [
+    `/api/v1/compliance/legal-register`
+    ] as const;
+    }
+
+
+export const getListLegalRegisterQueryOptions = <TData = Awaited<ReturnType<typeof listLegalRegister>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLegalRegister>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListLegalRegisterQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listLegalRegister>>> = ({ signal }) => listLegalRegister({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listLegalRegister>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListLegalRegisterQueryResult = NonNullable<Awaited<ReturnType<typeof listLegalRegister>>>
+export type ListLegalRegisterQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Legal register entries
+ */
+
+export function useListLegalRegister<TData = Awaited<ReturnType<typeof listLegalRegister>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listLegalRegister>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListLegalRegisterQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceAnalyticsExecutiveUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/executive`
+}
+
+/**
+ * @summary Executive compliance analytics dashboard
+ */
+export const complianceAnalyticsExecutive = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceExecutiveDashboard> => {
+
+  return customFetch<ComplianceExecutiveDashboard>(getComplianceAnalyticsExecutiveUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsExecutiveQueryKey = () => {
+    return [
+    `/api/v1/compliance/analytics/executive`
+    ] as const;
+    }
+
+
+export const getComplianceAnalyticsExecutiveQueryOptions = <TData = Awaited<ReturnType<typeof complianceAnalyticsExecutive>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsExecutive>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceAnalyticsExecutiveQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceAnalyticsExecutive>>> = ({ signal }) => complianceAnalyticsExecutive({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsExecutive>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceAnalyticsExecutiveQueryResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsExecutive>>>
+export type ComplianceAnalyticsExecutiveQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Executive compliance analytics dashboard
+ */
+
+export function useComplianceAnalyticsExecutive<TData = Awaited<ReturnType<typeof complianceAnalyticsExecutive>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsExecutive>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceAnalyticsExecutiveQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceAnalyticsKpisUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/kpis`
+}
+
+/**
+ * @summary Compliance KPI engine snapshot
+ */
+export const complianceAnalyticsKpis = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsKpis200> => {
+
+  return customFetch<ComplianceAnalyticsKpis200>(getComplianceAnalyticsKpisUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsKpisQueryKey = () => {
+    return [
+    `/api/v1/compliance/analytics/kpis`
+    ] as const;
+    }
+
+
+export const getComplianceAnalyticsKpisQueryOptions = <TData = Awaited<ReturnType<typeof complianceAnalyticsKpis>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceAnalyticsKpisQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceAnalyticsKpis>>> = ({ signal }) => complianceAnalyticsKpis({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsKpis>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceAnalyticsKpisQueryResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsKpis>>>
+export type ComplianceAnalyticsKpisQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Compliance KPI engine snapshot
+ */
+
+export function useComplianceAnalyticsKpis<TData = Awaited<ReturnType<typeof complianceAnalyticsKpis>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceAnalyticsKpisQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceAnalyticsTrendsUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/trends`
+}
+
+/**
+ * @summary Compliance trend history
+ */
+export const complianceAnalyticsTrends = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsTrends200> => {
+
+  return customFetch<ComplianceAnalyticsTrends200>(getComplianceAnalyticsTrendsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsTrendsQueryKey = () => {
+    return [
+    `/api/v1/compliance/analytics/trends`
+    ] as const;
+    }
+
+
+export const getComplianceAnalyticsTrendsQueryOptions = <TData = Awaited<ReturnType<typeof complianceAnalyticsTrends>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsTrends>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceAnalyticsTrendsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceAnalyticsTrends>>> = ({ signal }) => complianceAnalyticsTrends({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsTrends>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceAnalyticsTrendsQueryResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsTrends>>>
+export type ComplianceAnalyticsTrendsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Compliance trend history
+ */
+
+export function useComplianceAnalyticsTrends<TData = Awaited<ReturnType<typeof complianceAnalyticsTrends>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsTrends>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceAnalyticsTrendsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceAnalyticsRegulatoryUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/regulatory`
+}
+
+/**
+ * @summary Regulatory monitoring and alerts
+ */
+export const complianceAnalyticsRegulatory = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsRegulatory200> => {
+
+  return customFetch<ComplianceAnalyticsRegulatory200>(getComplianceAnalyticsRegulatoryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsRegulatoryQueryKey = () => {
+    return [
+    `/api/v1/compliance/analytics/regulatory`
+    ] as const;
+    }
+
+
+export const getComplianceAnalyticsRegulatoryQueryOptions = <TData = Awaited<ReturnType<typeof complianceAnalyticsRegulatory>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsRegulatory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceAnalyticsRegulatoryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceAnalyticsRegulatory>>> = ({ signal }) => complianceAnalyticsRegulatory({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsRegulatory>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceAnalyticsRegulatoryQueryResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsRegulatory>>>
+export type ComplianceAnalyticsRegulatoryQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Regulatory monitoring and alerts
+ */
+
+export function useComplianceAnalyticsRegulatory<TData = Awaited<ReturnType<typeof complianceAnalyticsRegulatory>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsRegulatory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceAnalyticsRegulatoryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceAnalyticsIsoUrl = (params?: ComplianceAnalyticsIsoParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/compliance/analytics/iso?${stringifiedParams}` : `/api/v1/compliance/analytics/iso`
+}
+
+/**
+ * @summary ISO framework coverage dashboard
+ */
+export const complianceAnalyticsIso = async (params?: ComplianceAnalyticsIsoParams, options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsIso200> => {
+
+  return customFetch<ComplianceAnalyticsIso200>(getComplianceAnalyticsIsoUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsIsoQueryKey = (params?: ComplianceAnalyticsIsoParams,) => {
+    return [
+    `/api/v1/compliance/analytics/iso`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getComplianceAnalyticsIsoQueryOptions = <TData = Awaited<ReturnType<typeof complianceAnalyticsIso>>, TError = ErrorType<UnauthorizedResponse>>(params?: ComplianceAnalyticsIsoParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsIso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceAnalyticsIsoQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceAnalyticsIso>>> = ({ signal }) => complianceAnalyticsIso(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsIso>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceAnalyticsIsoQueryResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsIso>>>
+export type ComplianceAnalyticsIsoQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary ISO framework coverage dashboard
+ */
+
+export function useComplianceAnalyticsIso<TData = Awaited<ReturnType<typeof complianceAnalyticsIso>>, TError = ErrorType<UnauthorizedResponse>>(
+ params?: ComplianceAnalyticsIsoParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsIso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceAnalyticsIsoQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceAnalyticsControlsUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/controls`
+}
+
+/**
+ * @summary Control effectiveness analytics
+ */
+export const complianceAnalyticsControls = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsControls200> => {
+
+  return customFetch<ComplianceAnalyticsControls200>(getComplianceAnalyticsControlsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsControlsQueryKey = () => {
+    return [
+    `/api/v1/compliance/analytics/controls`
+    ] as const;
+    }
+
+
+export const getComplianceAnalyticsControlsQueryOptions = <TData = Awaited<ReturnType<typeof complianceAnalyticsControls>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsControls>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceAnalyticsControlsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceAnalyticsControls>>> = ({ signal }) => complianceAnalyticsControls({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsControls>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceAnalyticsControlsQueryResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsControls>>>
+export type ComplianceAnalyticsControlsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Control effectiveness analytics
+ */
+
+export function useComplianceAnalyticsControls<TData = Awaited<ReturnType<typeof complianceAnalyticsControls>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsControls>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceAnalyticsControlsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceAnalyticsPerformanceUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/performance`
+}
+
+/**
+ * @summary Cross-domain performance analytics
+ */
+export const complianceAnalyticsPerformance = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsPerformance200> => {
+
+  return customFetch<ComplianceAnalyticsPerformance200>(getComplianceAnalyticsPerformanceUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsPerformanceQueryKey = () => {
+    return [
+    `/api/v1/compliance/analytics/performance`
+    ] as const;
+    }
+
+
+export const getComplianceAnalyticsPerformanceQueryOptions = <TData = Awaited<ReturnType<typeof complianceAnalyticsPerformance>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsPerformance>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceAnalyticsPerformanceQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceAnalyticsPerformance>>> = ({ signal }) => complianceAnalyticsPerformance({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsPerformance>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceAnalyticsPerformanceQueryResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsPerformance>>>
+export type ComplianceAnalyticsPerformanceQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Cross-domain performance analytics
+ */
+
+export function useComplianceAnalyticsPerformance<TData = Awaited<ReturnType<typeof complianceAnalyticsPerformance>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsPerformance>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceAnalyticsPerformanceQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getComplianceAnalyticsAlertsUrl = (params?: ComplianceAnalyticsAlertsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/compliance/analytics/alerts?${stringifiedParams}` : `/api/v1/compliance/analytics/alerts`
+}
+
+/**
+ * @summary Regulatory alert inbox
+ */
+export const complianceAnalyticsAlerts = async (params?: ComplianceAnalyticsAlertsParams, options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsAlerts200> => {
+
+  return customFetch<ComplianceAnalyticsAlerts200>(getComplianceAnalyticsAlertsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsAlertsQueryKey = (params?: ComplianceAnalyticsAlertsParams,) => {
+    return [
+    `/api/v1/compliance/analytics/alerts`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getComplianceAnalyticsAlertsQueryOptions = <TData = Awaited<ReturnType<typeof complianceAnalyticsAlerts>>, TError = ErrorType<UnauthorizedResponse>>(params?: ComplianceAnalyticsAlertsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsAlerts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceAnalyticsAlertsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceAnalyticsAlerts>>> = ({ signal }) => complianceAnalyticsAlerts(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsAlerts>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceAnalyticsAlertsQueryResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsAlerts>>>
+export type ComplianceAnalyticsAlertsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Regulatory alert inbox
+ */
+
+export function useComplianceAnalyticsAlerts<TData = Awaited<ReturnType<typeof complianceAnalyticsAlerts>>, TError = ErrorType<UnauthorizedResponse>>(
+ params?: ComplianceAnalyticsAlertsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsAlerts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceAnalyticsAlertsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAcknowledgeComplianceAnalyticsAlertUrl = (alertId: string,) => {
+
+
+
+
+  return `/api/v1/compliance/analytics/alerts/${alertId}/acknowledge`
+}
+
+/**
+ * @summary Acknowledge a regulatory alert
+ */
+export const acknowledgeComplianceAnalyticsAlert = async (alertId: string, options?: Parameters<typeof customFetch>[1]): Promise<AcknowledgeComplianceAnalyticsAlert200> => {
+
+  return customFetch<AcknowledgeComplianceAnalyticsAlert200>(getAcknowledgeComplianceAnalyticsAlertUrl(alertId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getAcknowledgeComplianceAnalyticsAlertMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acknowledgeComplianceAnalyticsAlert>>, TError,{alertId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof acknowledgeComplianceAnalyticsAlert>>, TError,{alertId: string}, TContext> => {
+
+const mutationKey = ['acknowledgeComplianceAnalyticsAlert'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof acknowledgeComplianceAnalyticsAlert>>, {alertId: string}> = (props) => {
+          const {alertId} = props ?? {};
+
+          return  acknowledgeComplianceAnalyticsAlert(alertId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AcknowledgeComplianceAnalyticsAlertMutationResult = NonNullable<Awaited<ReturnType<typeof acknowledgeComplianceAnalyticsAlert>>>
+
+    export type AcknowledgeComplianceAnalyticsAlertMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Acknowledge a regulatory alert
+ */
+export const useAcknowledgeComplianceAnalyticsAlert = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof acknowledgeComplianceAnalyticsAlert>>, TError,{alertId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof acknowledgeComplianceAnalyticsAlert>>,
+        TError,
+        {alertId: string},
+        TContext
+      > => {
+      return useMutation(getAcknowledgeComplianceAnalyticsAlertMutationOptions(options));
+    }
+
+export const getComplianceAnalyticsExportsUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/exports`
+}
+
+/**
+ * @summary List BI export jobs
+ */
+export const complianceAnalyticsExports = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsExports200> => {
+
+  return customFetch<ComplianceAnalyticsExports200>(getComplianceAnalyticsExportsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsExportsQueryKey = () => {
+    return [
+    `/api/v1/compliance/analytics/exports`
+    ] as const;
+    }
+
+
+export const getComplianceAnalyticsExportsQueryOptions = <TData = Awaited<ReturnType<typeof complianceAnalyticsExports>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsExports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getComplianceAnalyticsExportsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof complianceAnalyticsExports>>> = ({ signal }) => complianceAnalyticsExports({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsExports>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ComplianceAnalyticsExportsQueryResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsExports>>>
+export type ComplianceAnalyticsExportsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List BI export jobs
+ */
+
+export function useComplianceAnalyticsExports<TData = Awaited<ReturnType<typeof complianceAnalyticsExports>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof complianceAnalyticsExports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getComplianceAnalyticsExportsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateComplianceAnalyticsExportUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/exports`
+}
+
+/**
+ * @summary Create BI export job
+ */
+export const createComplianceAnalyticsExport = async (createComplianceAnalyticsExportBody: CreateComplianceAnalyticsExportBody, options?: Parameters<typeof customFetch>[1]): Promise<CreateComplianceAnalyticsExport201> => {
+
+  return customFetch<CreateComplianceAnalyticsExport201>(getCreateComplianceAnalyticsExportUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createComplianceAnalyticsExportBody)
+  }
+);}
+
+
+
+
+
+export const getCreateComplianceAnalyticsExportMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createComplianceAnalyticsExport>>, TError,{data: BodyType<CreateComplianceAnalyticsExportBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createComplianceAnalyticsExport>>, TError,{data: BodyType<CreateComplianceAnalyticsExportBody>}, TContext> => {
+
+const mutationKey = ['createComplianceAnalyticsExport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createComplianceAnalyticsExport>>, {data: BodyType<CreateComplianceAnalyticsExportBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createComplianceAnalyticsExport(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateComplianceAnalyticsExportMutationResult = NonNullable<Awaited<ReturnType<typeof createComplianceAnalyticsExport>>>
+    export type CreateComplianceAnalyticsExportMutationBody = BodyType<CreateComplianceAnalyticsExportBody>
+    export type CreateComplianceAnalyticsExportMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Create BI export job
+ */
+export const useCreateComplianceAnalyticsExport = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createComplianceAnalyticsExport>>, TError,{data: BodyType<CreateComplianceAnalyticsExportBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createComplianceAnalyticsExport>>,
+        TError,
+        {data: BodyType<CreateComplianceAnalyticsExportBody>},
+        TContext
+      > => {
+      return useMutation(getCreateComplianceAnalyticsExportMutationOptions(options));
+    }
+
+export const getComplianceAnalyticsCalendarSyncUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/calendar/sync`
+}
+
+/**
+ * @summary Sync compliance calendar from legal register
+ */
+export const complianceAnalyticsCalendarSync = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsCalendarSync200> => {
+
+  return customFetch<ComplianceAnalyticsCalendarSync200>(getComplianceAnalyticsCalendarSyncUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsCalendarSyncMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof complianceAnalyticsCalendarSync>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof complianceAnalyticsCalendarSync>>, TError,void, TContext> => {
+
+const mutationKey = ['complianceAnalyticsCalendarSync'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof complianceAnalyticsCalendarSync>>, void> = () => {
+
+
+          return  complianceAnalyticsCalendarSync(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ComplianceAnalyticsCalendarSyncMutationResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsCalendarSync>>>
+
+    export type ComplianceAnalyticsCalendarSyncMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Sync compliance calendar from legal register
+ */
+export const useComplianceAnalyticsCalendarSync = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof complianceAnalyticsCalendarSync>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof complianceAnalyticsCalendarSync>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getComplianceAnalyticsCalendarSyncMutationOptions(options));
+    }
+
+export const getComplianceAnalyticsSnapshotUrl = () => {
+
+
+
+
+  return `/api/v1/compliance/analytics/snapshot`
+}
+
+/**
+ * @summary Record current-month KPI snapshot
+ */
+export const complianceAnalyticsSnapshot = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceAnalyticsSnapshot201> => {
+
+  return customFetch<ComplianceAnalyticsSnapshot201>(getComplianceAnalyticsSnapshotUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getComplianceAnalyticsSnapshotMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof complianceAnalyticsSnapshot>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof complianceAnalyticsSnapshot>>, TError,void, TContext> => {
+
+const mutationKey = ['complianceAnalyticsSnapshot'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof complianceAnalyticsSnapshot>>, void> = () => {
+
+
+          return  complianceAnalyticsSnapshot(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ComplianceAnalyticsSnapshotMutationResult = NonNullable<Awaited<ReturnType<typeof complianceAnalyticsSnapshot>>>
+
+    export type ComplianceAnalyticsSnapshotMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Record current-month KPI snapshot
+ */
+export const useComplianceAnalyticsSnapshot = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof complianceAnalyticsSnapshot>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof complianceAnalyticsSnapshot>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getComplianceAnalyticsSnapshotMutationOptions(options));
+    }
+
+export const getListInspectionsUrl = () => {
+
+
+
+
+  return `/api/v1/inspections`
+}
+
+/**
+ * @summary List inspections
+ */
+export const listInspections = async ( options?: Parameters<typeof customFetch>[1]): Promise<ListInspections200> => {
+
+  return customFetch<ListInspections200>(getListInspectionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListInspectionsQueryKey = () => {
+    return [
+    `/api/v1/inspections`
+    ] as const;
+    }
+
+
+export const getListInspectionsQueryOptions = <TData = Awaited<ReturnType<typeof listInspections>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listInspections>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListInspectionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listInspections>>> = ({ signal }) => listInspections({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listInspections>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListInspectionsQueryResult = NonNullable<Awaited<ReturnType<typeof listInspections>>>
+export type ListInspectionsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List inspections
+ */
+
+export function useListInspections<TData = Awaited<ReturnType<typeof listInspections>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listInspections>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListInspectionsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateInspectionUrl = () => {
+
+
+
+
+  return `/api/v1/inspections`
+}
+
+/**
+ * @summary Create inspection
+ */
+export const createInspection = async (createInspectionBody: CreateInspectionBody, options?: Parameters<typeof customFetch>[1]): Promise<CreateInspection201> => {
+
+  return customFetch<CreateInspection201>(getCreateInspectionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createInspectionBody)
+  }
+);}
+
+
+
+
+
+export const getCreateInspectionMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createInspection>>, TError,{data: BodyType<CreateInspectionBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createInspection>>, TError,{data: BodyType<CreateInspectionBody>}, TContext> => {
+
+const mutationKey = ['createInspection'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createInspection>>, {data: BodyType<CreateInspectionBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createInspection(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateInspectionMutationResult = NonNullable<Awaited<ReturnType<typeof createInspection>>>
+    export type CreateInspectionMutationBody = BodyType<CreateInspectionBody>
+    export type CreateInspectionMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Create inspection
+ */
+export const useCreateInspection = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createInspection>>, TError,{data: BodyType<CreateInspectionBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createInspection>>,
+        TError,
+        {data: BodyType<CreateInspectionBody>},
+        TContext
+      > => {
+      return useMutation(getCreateInspectionMutationOptions(options));
+    }
+
+export const getInspectionDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/inspections/dashboard`
+}
+
+/**
+ * @summary Inspection dashboard
+ */
+export const inspectionDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<InspectionDashboard200> => {
+
+  return customFetch<InspectionDashboard200>(getInspectionDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getInspectionDashboardQueryKey = () => {
+    return [
+    `/api/v1/inspections/dashboard`
+    ] as const;
+    }
+
+
+export const getInspectionDashboardQueryOptions = <TData = Awaited<ReturnType<typeof inspectionDashboard>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof inspectionDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getInspectionDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof inspectionDashboard>>> = ({ signal }) => inspectionDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof inspectionDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type InspectionDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof inspectionDashboard>>>
+export type InspectionDashboardQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Inspection dashboard
+ */
+
+export function useInspectionDashboard<TData = Awaited<ReturnType<typeof inspectionDashboard>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof inspectionDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getInspectionDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListCapaUrl = () => {
+
+
+
+
+  return `/api/v1/capa`
+}
+
+/**
+ * @summary List CAPA records
+ */
+export const listCapa = async ( options?: Parameters<typeof customFetch>[1]): Promise<ListCapa200> => {
+
+  return customFetch<ListCapa200>(getListCapaUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListCapaQueryKey = () => {
+    return [
+    `/api/v1/capa`
+    ] as const;
+    }
+
+
+export const getListCapaQueryOptions = <TData = Awaited<ReturnType<typeof listCapa>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listCapa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListCapaQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listCapa>>> = ({ signal }) => listCapa({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listCapa>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListCapaQueryResult = NonNullable<Awaited<ReturnType<typeof listCapa>>>
+export type ListCapaQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List CAPA records
+ */
+
+export function useListCapa<TData = Awaited<ReturnType<typeof listCapa>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listCapa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListCapaQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateCapaUrl = () => {
+
+
+
+
+  return `/api/v1/capa`
+}
+
+/**
+ * @summary Create CAPA record
+ */
+export const createCapa = async (createCapaBody: CreateCapaBody, options?: Parameters<typeof customFetch>[1]): Promise<CreateCapa201> => {
+
+  return customFetch<CreateCapa201>(getCreateCapaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createCapaBody)
+  }
+);}
+
+
+
+
+
+export const getCreateCapaMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createCapa>>, TError,{data: BodyType<CreateCapaBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createCapa>>, TError,{data: BodyType<CreateCapaBody>}, TContext> => {
+
+const mutationKey = ['createCapa'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createCapa>>, {data: BodyType<CreateCapaBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createCapa(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateCapaMutationResult = NonNullable<Awaited<ReturnType<typeof createCapa>>>
+    export type CreateCapaMutationBody = BodyType<CreateCapaBody>
+    export type CreateCapaMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Create CAPA record
+ */
+export const useCreateCapa = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createCapa>>, TError,{data: BodyType<CreateCapaBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createCapa>>,
+        TError,
+        {data: BodyType<CreateCapaBody>},
+        TContext
+      > => {
+      return useMutation(getCreateCapaMutationOptions(options));
+    }
+
+export const getCapaDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/capa/dashboard`
+}
+
+/**
+ * @summary CAPA dashboard metrics
+ */
+export const capaDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<CapaDashboard200> => {
+
+  return customFetch<CapaDashboard200>(getCapaDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getCapaDashboardQueryKey = () => {
+    return [
+    `/api/v1/capa/dashboard`
+    ] as const;
+    }
+
+
+export const getCapaDashboardQueryOptions = <TData = Awaited<ReturnType<typeof capaDashboard>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof capaDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getCapaDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof capaDashboard>>> = ({ signal }) => capaDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof capaDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type CapaDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof capaDashboard>>>
+export type CapaDashboardQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary CAPA dashboard metrics
+ */
+
+export function useCapaDashboard<TData = Awaited<ReturnType<typeof capaDashboard>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof capaDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getCapaDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetCapaUrl = (capaId: string,) => {
+
+
+
+
+  return `/api/v1/capa/${capaId}`
+}
+
+/**
+ * @summary Get CAPA detail
+ */
+export const getCapa = async (capaId: string, options?: Parameters<typeof customFetch>[1]): Promise<GetCapa200> => {
+
+  return customFetch<GetCapa200>(getGetCapaUrl(capaId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCapaQueryKey = (capaId: string,) => {
+    return [
+    `/api/v1/capa/${capaId}`
+    ] as const;
+    }
+
+
+export const getGetCapaQueryOptions = <TData = Awaited<ReturnType<typeof getCapa>>, TError = ErrorType<UnauthorizedResponse>>(capaId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCapa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCapaQueryKey(capaId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCapa>>> = ({ signal }) => getCapa(capaId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: capaId !== null && capaId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCapa>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCapaQueryResult = NonNullable<Awaited<ReturnType<typeof getCapa>>>
+export type GetCapaQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Get CAPA detail
+ */
+
+export function useGetCapa<TData = Awaited<ReturnType<typeof getCapa>>, TError = ErrorType<UnauthorizedResponse>>(
+ capaId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCapa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCapaQueryOptions(capaId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateCapaUrl = (capaId: string,) => {
+
+
+
+
+  return `/api/v1/capa/${capaId}`
+}
+
+/**
+ * @summary Update CAPA record
+ */
+export const updateCapa = async (capaId: string,
+    updateCapaBody: UpdateCapaBody, options?: Parameters<typeof customFetch>[1]): Promise<UpdateCapa200> => {
+
+  return customFetch<UpdateCapa200>(getUpdateCapaUrl(capaId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(updateCapaBody)
+  }
+);}
+
+
+
+
+
+export const getUpdateCapaMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCapa>>, TError,{capaId: string;data: BodyType<UpdateCapaBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateCapa>>, TError,{capaId: string;data: BodyType<UpdateCapaBody>}, TContext> => {
+
+const mutationKey = ['updateCapa'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCapa>>, {capaId: string;data: BodyType<UpdateCapaBody>}> = (props) => {
+          const {capaId,data} = props ?? {};
+
+          return  updateCapa(capaId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateCapaMutationResult = NonNullable<Awaited<ReturnType<typeof updateCapa>>>
+    export type UpdateCapaMutationBody = BodyType<UpdateCapaBody>
+    export type UpdateCapaMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Update CAPA record
+ */
+export const useUpdateCapa = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCapa>>, TError,{capaId: string;data: BodyType<UpdateCapaBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateCapa>>,
+        TError,
+        {capaId: string;data: BodyType<UpdateCapaBody>},
+        TContext
+      > => {
+      return useMutation(getUpdateCapaMutationOptions(options));
+    }
+
+export const getPortalListCapaUrl = () => {
+
+
+
+
+  return `/api/v1/portal/capa`
+}
+
+/**
+ * @summary List CAPA records for client portal
+ */
+export const portalListCapa = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalListCapa200> => {
+
+  return customFetch<PortalListCapa200>(getPortalListCapaUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalListCapaQueryKey = () => {
+    return [
+    `/api/v1/portal/capa`
+    ] as const;
+    }
+
+
+export const getPortalListCapaQueryOptions = <TData = Awaited<ReturnType<typeof portalListCapa>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalListCapa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalListCapaQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalListCapa>>> = ({ signal }) => portalListCapa({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalListCapa>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalListCapaQueryResult = NonNullable<Awaited<ReturnType<typeof portalListCapa>>>
+export type PortalListCapaQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List CAPA records for client portal
+ */
+
+export function usePortalListCapa<TData = Awaited<ReturnType<typeof portalListCapa>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalListCapa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalListCapaQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalCapaDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/portal/capa/dashboard`
+}
+
+/**
+ * @summary CAPA dashboard for client portal
+ */
+export const portalCapaDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalCapaDashboard200> => {
+
+  return customFetch<PortalCapaDashboard200>(getPortalCapaDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalCapaDashboardQueryKey = () => {
+    return [
+    `/api/v1/portal/capa/dashboard`
+    ] as const;
+    }
+
+
+export const getPortalCapaDashboardQueryOptions = <TData = Awaited<ReturnType<typeof portalCapaDashboard>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalCapaDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalCapaDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalCapaDashboard>>> = ({ signal }) => portalCapaDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalCapaDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalCapaDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof portalCapaDashboard>>>
+export type PortalCapaDashboardQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary CAPA dashboard for client portal
+ */
+
+export function usePortalCapaDashboard<TData = Awaited<ReturnType<typeof portalCapaDashboard>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalCapaDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalCapaDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getListRiskAssessmentsUrl = () => {
+
+
+
+
+  return `/api/v1/risk-assessments`
+}
+
+/**
+ * @summary List risk assessments
+ */
+export const listRiskAssessments = async ( options?: Parameters<typeof customFetch>[1]): Promise<ListRiskAssessments200> => {
+
+  return customFetch<ListRiskAssessments200>(getListRiskAssessmentsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListRiskAssessmentsQueryKey = () => {
+    return [
+    `/api/v1/risk-assessments`
+    ] as const;
+    }
+
+
+export const getListRiskAssessmentsQueryOptions = <TData = Awaited<ReturnType<typeof listRiskAssessments>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRiskAssessments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListRiskAssessmentsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listRiskAssessments>>> = ({ signal }) => listRiskAssessments({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listRiskAssessments>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListRiskAssessmentsQueryResult = NonNullable<Awaited<ReturnType<typeof listRiskAssessments>>>
+export type ListRiskAssessmentsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List risk assessments
+ */
+
+export function useListRiskAssessments<TData = Awaited<ReturnType<typeof listRiskAssessments>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listRiskAssessments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListRiskAssessmentsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateRiskAssessmentUrl = () => {
+
+
+
+
+  return `/api/v1/risk-assessments`
+}
+
+/**
+ * @summary Create risk assessment
+ */
+export const createRiskAssessment = async (createRiskAssessmentBody: CreateRiskAssessmentBody, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getCreateRiskAssessmentUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createRiskAssessmentBody)
+  }
+);}
+
+
+
+
+
+export const getCreateRiskAssessmentMutationOptions = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createRiskAssessment>>, TError,{data: BodyType<CreateRiskAssessmentBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createRiskAssessment>>, TError,{data: BodyType<CreateRiskAssessmentBody>}, TContext> => {
+
+const mutationKey = ['createRiskAssessment'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createRiskAssessment>>, {data: BodyType<CreateRiskAssessmentBody>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createRiskAssessment(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateRiskAssessmentMutationResult = NonNullable<Awaited<ReturnType<typeof createRiskAssessment>>>
+    export type CreateRiskAssessmentMutationBody = BodyType<CreateRiskAssessmentBody>
+    export type CreateRiskAssessmentMutationError = ErrorType<UnauthorizedResponse>
+
+    /**
+ * @summary Create risk assessment
+ */
+export const useCreateRiskAssessment = <TError = ErrorType<UnauthorizedResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createRiskAssessment>>, TError,{data: BodyType<CreateRiskAssessmentBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createRiskAssessment>>,
+        TError,
+        {data: BodyType<CreateRiskAssessmentBody>},
+        TContext
+      > => {
+      return useMutation(getCreateRiskAssessmentMutationOptions(options));
+    }
+
+export const getRiskAssessmentDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/risk-assessments/dashboard`
+}
+
+/**
+ * @summary Risk dashboard metrics
+ */
+export const riskAssessmentDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getRiskAssessmentDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getRiskAssessmentDashboardQueryKey = () => {
+    return [
+    `/api/v1/risk-assessments/dashboard`
+    ] as const;
+    }
+
+
+export const getRiskAssessmentDashboardQueryOptions = <TData = Awaited<ReturnType<typeof riskAssessmentDashboard>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof riskAssessmentDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRiskAssessmentDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof riskAssessmentDashboard>>> = ({ signal }) => riskAssessmentDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof riskAssessmentDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type RiskAssessmentDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof riskAssessmentDashboard>>>
+export type RiskAssessmentDashboardQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Risk dashboard metrics
+ */
+
+export function useRiskAssessmentDashboard<TData = Awaited<ReturnType<typeof riskAssessmentDashboard>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof riskAssessmentDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getRiskAssessmentDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getRiskHeatMapUrl = () => {
+
+
+
+
+  return `/api/v1/risk-assessments/heatmap`
+}
+
+/**
+ * @summary Risk heat map data
+ */
+export const riskHeatMap = async ( options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getRiskHeatMapUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getRiskHeatMapQueryKey = () => {
+    return [
+    `/api/v1/risk-assessments/heatmap`
+    ] as const;
+    }
+
+
+export const getRiskHeatMapQueryOptions = <TData = Awaited<ReturnType<typeof riskHeatMap>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof riskHeatMap>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getRiskHeatMapQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof riskHeatMap>>> = ({ signal }) => riskHeatMap({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof riskHeatMap>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type RiskHeatMapQueryResult = NonNullable<Awaited<ReturnType<typeof riskHeatMap>>>
+export type RiskHeatMapQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Risk heat map data
+ */
+
+export function useRiskHeatMap<TData = Awaited<ReturnType<typeof riskHeatMap>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof riskHeatMap>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getRiskHeatMapQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalListRiskAssessmentsUrl = () => {
+
+
+
+
+  return `/api/v1/portal/risk-assessments`
+}
+
+/**
+ * @summary List risk assessments for client portal
+ */
+export const portalListRiskAssessments = async ( options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getPortalListRiskAssessmentsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalListRiskAssessmentsQueryKey = () => {
+    return [
+    `/api/v1/portal/risk-assessments`
+    ] as const;
+    }
+
+
+export const getPortalListRiskAssessmentsQueryOptions = <TData = Awaited<ReturnType<typeof portalListRiskAssessments>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalListRiskAssessments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalListRiskAssessmentsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalListRiskAssessments>>> = ({ signal }) => portalListRiskAssessments({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalListRiskAssessments>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalListRiskAssessmentsQueryResult = NonNullable<Awaited<ReturnType<typeof portalListRiskAssessments>>>
+export type PortalListRiskAssessmentsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List risk assessments for client portal
+ */
+
+export function usePortalListRiskAssessments<TData = Awaited<ReturnType<typeof portalListRiskAssessments>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalListRiskAssessments>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalListRiskAssessmentsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalRiskDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/portal/risk-assessments/dashboard`
+}
+
+/**
+ * @summary Risk dashboard for client portal
+ */
+export const portalRiskDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getPortalRiskDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalRiskDashboardQueryKey = () => {
+    return [
+    `/api/v1/portal/risk-assessments/dashboard`
+    ] as const;
+    }
+
+
+export const getPortalRiskDashboardQueryOptions = <TData = Awaited<ReturnType<typeof portalRiskDashboard>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalRiskDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalRiskDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalRiskDashboard>>> = ({ signal }) => portalRiskDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalRiskDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalRiskDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof portalRiskDashboard>>>
+export type PortalRiskDashboardQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Risk dashboard for client portal
+ */
+
+export function usePortalRiskDashboard<TData = Awaited<ReturnType<typeof portalRiskDashboard>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalRiskDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalRiskDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalComplianceUrl = () => {
+
+
+
+
+  return `/api/v1/portal/compliance`
+}
+
+/**
+ * @summary Client compliance workspace aggregate
+ */
+export const portalCompliance = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalComplianceResponse> => {
+
+  return customFetch<PortalComplianceResponse>(getPortalComplianceUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalComplianceQueryKey = () => {
+    return [
+    `/api/v1/portal/compliance`
+    ] as const;
+    }
+
+
+export const getPortalComplianceQueryOptions = <TData = Awaited<ReturnType<typeof portalCompliance>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalCompliance>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalComplianceQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalCompliance>>> = ({ signal }) => portalCompliance({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalCompliance>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalComplianceQueryResult = NonNullable<Awaited<ReturnType<typeof portalCompliance>>>
+export type PortalComplianceQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Client compliance workspace aggregate
+ */
+
+export function usePortalCompliance<TData = Awaited<ReturnType<typeof portalCompliance>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalCompliance>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalComplianceQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalComplianceAnalyticsExecutiveUrl = () => {
+
+
+
+
+  return `/api/v1/portal/compliance/analytics/executive`
+}
+
+/**
+ * @summary Client executive compliance analytics
+ */
+export const portalComplianceAnalyticsExecutive = async ( options?: Parameters<typeof customFetch>[1]): Promise<ComplianceExecutiveDashboard> => {
+
+  return customFetch<ComplianceExecutiveDashboard>(getPortalComplianceAnalyticsExecutiveUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalComplianceAnalyticsExecutiveQueryKey = () => {
+    return [
+    `/api/v1/portal/compliance/analytics/executive`
+    ] as const;
+    }
+
+
+export const getPortalComplianceAnalyticsExecutiveQueryOptions = <TData = Awaited<ReturnType<typeof portalComplianceAnalyticsExecutive>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalComplianceAnalyticsExecutive>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalComplianceAnalyticsExecutiveQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalComplianceAnalyticsExecutive>>> = ({ signal }) => portalComplianceAnalyticsExecutive({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalComplianceAnalyticsExecutive>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalComplianceAnalyticsExecutiveQueryResult = NonNullable<Awaited<ReturnType<typeof portalComplianceAnalyticsExecutive>>>
+export type PortalComplianceAnalyticsExecutiveQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Client executive compliance analytics
+ */
+
+export function usePortalComplianceAnalyticsExecutive<TData = Awaited<ReturnType<typeof portalComplianceAnalyticsExecutive>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalComplianceAnalyticsExecutive>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalComplianceAnalyticsExecutiveQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalComplianceAnalyticsRegulatoryUrl = () => {
+
+
+
+
+  return `/api/v1/portal/compliance/analytics/regulatory`
+}
+
+/**
+ * @summary Client regulatory monitoring view
+ */
+export const portalComplianceAnalyticsRegulatory = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalComplianceAnalyticsRegulatory200> => {
+
+  return customFetch<PortalComplianceAnalyticsRegulatory200>(getPortalComplianceAnalyticsRegulatoryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalComplianceAnalyticsRegulatoryQueryKey = () => {
+    return [
+    `/api/v1/portal/compliance/analytics/regulatory`
+    ] as const;
+    }
+
+
+export const getPortalComplianceAnalyticsRegulatoryQueryOptions = <TData = Awaited<ReturnType<typeof portalComplianceAnalyticsRegulatory>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalComplianceAnalyticsRegulatory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalComplianceAnalyticsRegulatoryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalComplianceAnalyticsRegulatory>>> = ({ signal }) => portalComplianceAnalyticsRegulatory({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalComplianceAnalyticsRegulatory>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalComplianceAnalyticsRegulatoryQueryResult = NonNullable<Awaited<ReturnType<typeof portalComplianceAnalyticsRegulatory>>>
+export type PortalComplianceAnalyticsRegulatoryQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Client regulatory monitoring view
+ */
+
+export function usePortalComplianceAnalyticsRegulatory<TData = Awaited<ReturnType<typeof portalComplianceAnalyticsRegulatory>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalComplianceAnalyticsRegulatory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalComplianceAnalyticsRegulatoryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalComplianceAnalyticsAlertsUrl = () => {
+
+
+
+
+  return `/api/v1/portal/compliance/analytics/alerts`
+}
+
+/**
+ * @summary Client open regulatory alerts
+ */
+export const portalComplianceAnalyticsAlerts = async ( options?: Parameters<typeof customFetch>[1]): Promise<RegulatoryAlertListResponse> => {
+
+  return customFetch<RegulatoryAlertListResponse>(getPortalComplianceAnalyticsAlertsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalComplianceAnalyticsAlertsQueryKey = () => {
+    return [
+    `/api/v1/portal/compliance/analytics/alerts`
+    ] as const;
+    }
+
+
+export const getPortalComplianceAnalyticsAlertsQueryOptions = <TData = Awaited<ReturnType<typeof portalComplianceAnalyticsAlerts>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalComplianceAnalyticsAlerts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalComplianceAnalyticsAlertsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalComplianceAnalyticsAlerts>>> = ({ signal }) => portalComplianceAnalyticsAlerts({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalComplianceAnalyticsAlerts>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalComplianceAnalyticsAlertsQueryResult = NonNullable<Awaited<ReturnType<typeof portalComplianceAnalyticsAlerts>>>
+export type PortalComplianceAnalyticsAlertsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Client open regulatory alerts
+ */
+
+export function usePortalComplianceAnalyticsAlerts<TData = Awaited<ReturnType<typeof portalComplianceAnalyticsAlerts>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalComplianceAnalyticsAlerts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalComplianceAnalyticsAlertsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalGetCapaUrl = (capaId: string,) => {
+
+
+
+
+  return `/api/v1/portal/capa/${capaId}`
+}
+
+/**
+ * @summary CAPA detail for client portal
+ */
+export const portalGetCapa = async (capaId: string, options?: Parameters<typeof customFetch>[1]): Promise<PortalGetCapa200> => {
+
+  return customFetch<PortalGetCapa200>(getPortalGetCapaUrl(capaId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalGetCapaQueryKey = (capaId: string,) => {
+    return [
+    `/api/v1/portal/capa/${capaId}`
+    ] as const;
+    }
+
+
+export const getPortalGetCapaQueryOptions = <TData = Awaited<ReturnType<typeof portalGetCapa>>, TError = ErrorType<UnauthorizedResponse>>(capaId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalGetCapa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalGetCapaQueryKey(capaId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalGetCapa>>> = ({ signal }) => portalGetCapa(capaId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: capaId !== null && capaId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalGetCapa>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalGetCapaQueryResult = NonNullable<Awaited<ReturnType<typeof portalGetCapa>>>
+export type PortalGetCapaQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary CAPA detail for client portal
+ */
+
+export function usePortalGetCapa<TData = Awaited<ReturnType<typeof portalGetCapa>>, TError = ErrorType<UnauthorizedResponse>>(
+ capaId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalGetCapa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalGetCapaQueryOptions(capaId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalRiskHeatMapUrl = () => {
+
+
+
+
+  return `/api/v1/portal/risk-assessments/heatmap`
+}
+
+/**
+ * @summary Risk heat map for client portal
+ */
+export const portalRiskHeatMap = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalRiskHeatMap200> => {
+
+  return customFetch<PortalRiskHeatMap200>(getPortalRiskHeatMapUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalRiskHeatMapQueryKey = () => {
+    return [
+    `/api/v1/portal/risk-assessments/heatmap`
+    ] as const;
+    }
+
+
+export const getPortalRiskHeatMapQueryOptions = <TData = Awaited<ReturnType<typeof portalRiskHeatMap>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalRiskHeatMap>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalRiskHeatMapQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalRiskHeatMap>>> = ({ signal }) => portalRiskHeatMap({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalRiskHeatMap>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalRiskHeatMapQueryResult = NonNullable<Awaited<ReturnType<typeof portalRiskHeatMap>>>
+export type PortalRiskHeatMapQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Risk heat map for client portal
+ */
+
+export function usePortalRiskHeatMap<TData = Awaited<ReturnType<typeof portalRiskHeatMap>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalRiskHeatMap>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalRiskHeatMapQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalGetRiskAssessmentUrl = (assessmentId: string,) => {
+
+
+
+
+  return `/api/v1/portal/risk-assessments/${assessmentId}`
+}
+
+/**
+ * @summary Risk assessment detail for client portal
+ */
+export const portalGetRiskAssessment = async (assessmentId: string, options?: Parameters<typeof customFetch>[1]): Promise<PortalGetRiskAssessment200> => {
+
+  return customFetch<PortalGetRiskAssessment200>(getPortalGetRiskAssessmentUrl(assessmentId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalGetRiskAssessmentQueryKey = (assessmentId: string,) => {
+    return [
+    `/api/v1/portal/risk-assessments/${assessmentId}`
+    ] as const;
+    }
+
+
+export const getPortalGetRiskAssessmentQueryOptions = <TData = Awaited<ReturnType<typeof portalGetRiskAssessment>>, TError = ErrorType<UnauthorizedResponse>>(assessmentId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalGetRiskAssessment>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalGetRiskAssessmentQueryKey(assessmentId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalGetRiskAssessment>>> = ({ signal }) => portalGetRiskAssessment(assessmentId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: assessmentId !== null && assessmentId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalGetRiskAssessment>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalGetRiskAssessmentQueryResult = NonNullable<Awaited<ReturnType<typeof portalGetRiskAssessment>>>
+export type PortalGetRiskAssessmentQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Risk assessment detail for client portal
+ */
+
+export function usePortalGetRiskAssessment<TData = Awaited<ReturnType<typeof portalGetRiskAssessment>>, TError = ErrorType<UnauthorizedResponse>>(
+ assessmentId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalGetRiskAssessment>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalGetRiskAssessmentQueryOptions(assessmentId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalListAuditsUrl = () => {
+
+
+
+
+  return `/api/v1/portal/audits`
+}
+
+/**
+ * @summary List audits for client portal
+ */
+export const portalListAudits = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalListAudits200> => {
+
+  return customFetch<PortalListAudits200>(getPortalListAuditsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalListAuditsQueryKey = () => {
+    return [
+    `/api/v1/portal/audits`
+    ] as const;
+    }
+
+
+export const getPortalListAuditsQueryOptions = <TData = Awaited<ReturnType<typeof portalListAudits>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalListAudits>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalListAuditsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalListAudits>>> = ({ signal }) => portalListAudits({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalListAudits>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalListAuditsQueryResult = NonNullable<Awaited<ReturnType<typeof portalListAudits>>>
+export type PortalListAuditsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List audits for client portal
+ */
+
+export function usePortalListAudits<TData = Awaited<ReturnType<typeof portalListAudits>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalListAudits>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalListAuditsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalAuditCalendarUrl = () => {
+
+
+
+
+  return `/api/v1/portal/audits/calendar`
+}
+
+/**
+ * @summary Upcoming audit calendar for client portal
+ */
+export const portalAuditCalendar = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalAuditCalendar200> => {
+
+  return customFetch<PortalAuditCalendar200>(getPortalAuditCalendarUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalAuditCalendarQueryKey = () => {
+    return [
+    `/api/v1/portal/audits/calendar`
+    ] as const;
+    }
+
+
+export const getPortalAuditCalendarQueryOptions = <TData = Awaited<ReturnType<typeof portalAuditCalendar>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalAuditCalendar>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalAuditCalendarQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalAuditCalendar>>> = ({ signal }) => portalAuditCalendar({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalAuditCalendar>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalAuditCalendarQueryResult = NonNullable<Awaited<ReturnType<typeof portalAuditCalendar>>>
+export type PortalAuditCalendarQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Upcoming audit calendar for client portal
+ */
+
+export function usePortalAuditCalendar<TData = Awaited<ReturnType<typeof portalAuditCalendar>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalAuditCalendar>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalAuditCalendarQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalAuditHistoryUrl = () => {
+
+
+
+
+  return `/api/v1/portal/audits/history`
+}
+
+/**
+ * @summary Closed audit history for client portal
+ */
+export const portalAuditHistory = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalAuditHistory200> => {
+
+  return customFetch<PortalAuditHistory200>(getPortalAuditHistoryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalAuditHistoryQueryKey = () => {
+    return [
+    `/api/v1/portal/audits/history`
+    ] as const;
+    }
+
+
+export const getPortalAuditHistoryQueryOptions = <TData = Awaited<ReturnType<typeof portalAuditHistory>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalAuditHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalAuditHistoryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalAuditHistory>>> = ({ signal }) => portalAuditHistory({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalAuditHistory>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalAuditHistoryQueryResult = NonNullable<Awaited<ReturnType<typeof portalAuditHistory>>>
+export type PortalAuditHistoryQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Closed audit history for client portal
+ */
+
+export function usePortalAuditHistory<TData = Awaited<ReturnType<typeof portalAuditHistory>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalAuditHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalAuditHistoryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalAuditReportsUrl = () => {
+
+
+
+
+  return `/api/v1/portal/audits/reports`
+}
+
+/**
+ * @summary Published audit reports for client portal
+ */
+export const portalAuditReports = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalAuditReports200> => {
+
+  return customFetch<PortalAuditReports200>(getPortalAuditReportsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalAuditReportsQueryKey = () => {
+    return [
+    `/api/v1/portal/audits/reports`
+    ] as const;
+    }
+
+
+export const getPortalAuditReportsQueryOptions = <TData = Awaited<ReturnType<typeof portalAuditReports>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalAuditReports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalAuditReportsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalAuditReports>>> = ({ signal }) => portalAuditReports({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalAuditReports>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalAuditReportsQueryResult = NonNullable<Awaited<ReturnType<typeof portalAuditReports>>>
+export type PortalAuditReportsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Published audit reports for client portal
+ */
+
+export function usePortalAuditReports<TData = Awaited<ReturnType<typeof portalAuditReports>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalAuditReports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalAuditReportsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalGetAuditUrl = (auditId: string,) => {
+
+
+
+
+  return `/api/v1/portal/audits/${auditId}`
+}
+
+/**
+ * @summary Audit detail for client portal
+ */
+export const portalGetAudit = async (auditId: string, options?: Parameters<typeof customFetch>[1]): Promise<PortalGetAudit200> => {
+
+  return customFetch<PortalGetAudit200>(getPortalGetAuditUrl(auditId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalGetAuditQueryKey = (auditId: string,) => {
+    return [
+    `/api/v1/portal/audits/${auditId}`
+    ] as const;
+    }
+
+
+export const getPortalGetAuditQueryOptions = <TData = Awaited<ReturnType<typeof portalGetAudit>>, TError = ErrorType<UnauthorizedResponse>>(auditId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalGetAudit>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalGetAuditQueryKey(auditId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalGetAudit>>> = ({ signal }) => portalGetAudit(auditId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: auditId !== null && auditId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalGetAudit>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalGetAuditQueryResult = NonNullable<Awaited<ReturnType<typeof portalGetAudit>>>
+export type PortalGetAuditQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Audit detail for client portal
+ */
+
+export function usePortalGetAudit<TData = Awaited<ReturnType<typeof portalGetAudit>>, TError = ErrorType<UnauthorizedResponse>>(
+ auditId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalGetAudit>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalGetAuditQueryOptions(auditId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalListInspectionsUrl = () => {
+
+
+
+
+  return `/api/v1/portal/inspections`
+}
+
+/**
+ * @summary List inspections for client portal
+ */
+export const portalListInspections = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalListInspections200> => {
+
+  return customFetch<PortalListInspections200>(getPortalListInspectionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalListInspectionsQueryKey = () => {
+    return [
+    `/api/v1/portal/inspections`
+    ] as const;
+    }
+
+
+export const getPortalListInspectionsQueryOptions = <TData = Awaited<ReturnType<typeof portalListInspections>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalListInspections>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalListInspectionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalListInspections>>> = ({ signal }) => portalListInspections({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalListInspections>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalListInspectionsQueryResult = NonNullable<Awaited<ReturnType<typeof portalListInspections>>>
+export type PortalListInspectionsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List inspections for client portal
+ */
+
+export function usePortalListInspections<TData = Awaited<ReturnType<typeof portalListInspections>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalListInspections>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalListInspectionsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalInspectionCalendarUrl = () => {
+
+
+
+
+  return `/api/v1/portal/inspections/calendar`
+}
+
+/**
+ * @summary Upcoming inspection calendar for client portal
+ */
+export const portalInspectionCalendar = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalInspectionCalendar200> => {
+
+  return customFetch<PortalInspectionCalendar200>(getPortalInspectionCalendarUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalInspectionCalendarQueryKey = () => {
+    return [
+    `/api/v1/portal/inspections/calendar`
+    ] as const;
+    }
+
+
+export const getPortalInspectionCalendarQueryOptions = <TData = Awaited<ReturnType<typeof portalInspectionCalendar>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalInspectionCalendar>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalInspectionCalendarQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalInspectionCalendar>>> = ({ signal }) => portalInspectionCalendar({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalInspectionCalendar>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalInspectionCalendarQueryResult = NonNullable<Awaited<ReturnType<typeof portalInspectionCalendar>>>
+export type PortalInspectionCalendarQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Upcoming inspection calendar for client portal
+ */
+
+export function usePortalInspectionCalendar<TData = Awaited<ReturnType<typeof portalInspectionCalendar>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalInspectionCalendar>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalInspectionCalendarQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalInspectionHistoryUrl = () => {
+
+
+
+
+  return `/api/v1/portal/inspections/history`
+}
+
+/**
+ * @summary Completed inspection history for client portal
+ */
+export const portalInspectionHistory = async ( options?: Parameters<typeof customFetch>[1]): Promise<PortalInspectionHistory200> => {
+
+  return customFetch<PortalInspectionHistory200>(getPortalInspectionHistoryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalInspectionHistoryQueryKey = () => {
+    return [
+    `/api/v1/portal/inspections/history`
+    ] as const;
+    }
+
+
+export const getPortalInspectionHistoryQueryOptions = <TData = Awaited<ReturnType<typeof portalInspectionHistory>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalInspectionHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalInspectionHistoryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalInspectionHistory>>> = ({ signal }) => portalInspectionHistory({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalInspectionHistory>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalInspectionHistoryQueryResult = NonNullable<Awaited<ReturnType<typeof portalInspectionHistory>>>
+export type PortalInspectionHistoryQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Completed inspection history for client portal
+ */
+
+export function usePortalInspectionHistory<TData = Awaited<ReturnType<typeof portalInspectionHistory>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalInspectionHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalInspectionHistoryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPortalGetInspectionUrl = (inspectionId: string,) => {
+
+
+
+
+  return `/api/v1/portal/inspections/${inspectionId}`
+}
+
+/**
+ * @summary Inspection detail for client portal
+ */
+export const portalGetInspection = async (inspectionId: string, options?: Parameters<typeof customFetch>[1]): Promise<PortalGetInspection200> => {
+
+  return customFetch<PortalGetInspection200>(getPortalGetInspectionUrl(inspectionId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPortalGetInspectionQueryKey = (inspectionId: string,) => {
+    return [
+    `/api/v1/portal/inspections/${inspectionId}`
+    ] as const;
+    }
+
+
+export const getPortalGetInspectionQueryOptions = <TData = Awaited<ReturnType<typeof portalGetInspection>>, TError = ErrorType<UnauthorizedResponse>>(inspectionId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalGetInspection>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPortalGetInspectionQueryKey(inspectionId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof portalGetInspection>>> = ({ signal }) => portalGetInspection(inspectionId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: inspectionId !== null && inspectionId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof portalGetInspection>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PortalGetInspectionQueryResult = NonNullable<Awaited<ReturnType<typeof portalGetInspection>>>
+export type PortalGetInspectionQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary Inspection detail for client portal
+ */
+
+export function usePortalGetInspection<TData = Awaited<ReturnType<typeof portalGetInspection>>, TError = ErrorType<UnauthorizedResponse>>(
+ inspectionId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof portalGetInspection>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPortalGetInspectionQueryOptions(inspectionId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/admin/dashboard`
+}
+
+/**
+ * @summary Platform admin dashboard metrics
+ */
+export const adminDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminDashboardData> => {
+
+  return customFetch<AdminDashboardData>(getAdminDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminDashboardQueryKey = () => {
+    return [
+    `/api/v1/admin/dashboard`
+    ] as const;
+    }
+
+
+export const getAdminDashboardQueryOptions = <TData = Awaited<ReturnType<typeof adminDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminDashboard>>> = ({ signal }) => adminDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof adminDashboard>>>
+export type AdminDashboardQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary Platform admin dashboard metrics
+ */
+
+export function useAdminDashboard<TData = Awaited<ReturnType<typeof adminDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminListOrganizationsUrl = () => {
+
+
+
+
+  return `/api/v1/admin/organizations`
+}
+
+/**
+ * @summary List all organizations
+ */
+export const adminListOrganizations = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminOrganizationListResponse> => {
+
+  return customFetch<AdminOrganizationListResponse>(getAdminListOrganizationsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminListOrganizationsQueryKey = () => {
+    return [
+    `/api/v1/admin/organizations`
+    ] as const;
+    }
+
+
+export const getAdminListOrganizationsQueryOptions = <TData = Awaited<ReturnType<typeof adminListOrganizations>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListOrganizations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminListOrganizationsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminListOrganizations>>> = ({ signal }) => adminListOrganizations({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminListOrganizations>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminListOrganizationsQueryResult = NonNullable<Awaited<ReturnType<typeof adminListOrganizations>>>
+export type AdminListOrganizationsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List all organizations
+ */
+
+export function useAdminListOrganizations<TData = Awaited<ReturnType<typeof adminListOrganizations>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListOrganizations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminListOrganizationsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminListUsersUrl = (params?: AdminListUsersParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/users?${stringifiedParams}` : `/api/v1/admin/users`
+}
+
+/**
+ * @summary Search platform users
+ */
+export const adminListUsers = async (params?: AdminListUsersParams, options?: Parameters<typeof customFetch>[1]): Promise<AdminUserListResponse> => {
+
+  return customFetch<AdminUserListResponse>(getAdminListUsersUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminListUsersQueryKey = (params?: AdminListUsersParams,) => {
+    return [
+    `/api/v1/admin/users`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getAdminListUsersQueryOptions = <TData = Awaited<ReturnType<typeof adminListUsers>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(params?: AdminListUsersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListUsers>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminListUsersQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminListUsers>>> = ({ signal }) => adminListUsers(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminListUsers>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminListUsersQueryResult = NonNullable<Awaited<ReturnType<typeof adminListUsers>>>
+export type AdminListUsersQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary Search platform users
+ */
+
+export function useAdminListUsers<TData = Awaited<ReturnType<typeof adminListUsers>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+ params?: AdminListUsersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListUsers>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminListUsersQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminListRolesUrl = () => {
+
+
+
+
+  return `/api/v1/admin/roles`
+}
+
+/**
+ * @summary List platform roles
+ */
+export const adminListRoles = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminRoleListResponse> => {
+
+  return customFetch<AdminRoleListResponse>(getAdminListRolesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminListRolesQueryKey = () => {
+    return [
+    `/api/v1/admin/roles`
+    ] as const;
+    }
+
+
+export const getAdminListRolesQueryOptions = <TData = Awaited<ReturnType<typeof adminListRoles>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListRoles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminListRolesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminListRoles>>> = ({ signal }) => adminListRoles({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminListRoles>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminListRolesQueryResult = NonNullable<Awaited<ReturnType<typeof adminListRoles>>>
+export type AdminListRolesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List platform roles
+ */
+
+export function useAdminListRoles<TData = Awaited<ReturnType<typeof adminListRoles>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListRoles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminListRolesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminListPermissionsUrl = () => {
+
+
+
+
+  return `/api/v1/admin/permissions`
+}
+
+/**
+ * @summary List platform permissions
+ */
+export const adminListPermissions = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminPermissionListResponse> => {
+
+  return customFetch<AdminPermissionListResponse>(getAdminListPermissionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminListPermissionsQueryKey = () => {
+    return [
+    `/api/v1/admin/permissions`
+    ] as const;
+    }
+
+
+export const getAdminListPermissionsQueryOptions = <TData = Awaited<ReturnType<typeof adminListPermissions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListPermissions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminListPermissionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminListPermissions>>> = ({ signal }) => adminListPermissions({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminListPermissions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminListPermissionsQueryResult = NonNullable<Awaited<ReturnType<typeof adminListPermissions>>>
+export type AdminListPermissionsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List platform permissions
+ */
+
+export function useAdminListPermissions<TData = Awaited<ReturnType<typeof adminListPermissions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListPermissions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminListPermissionsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminSearchAuditLogsUrl = (params?: AdminSearchAuditLogsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/audit-logs?${stringifiedParams}` : `/api/v1/admin/audit-logs`
+}
+
+/**
+ * @summary Search platform audit logs
+ */
+export const adminSearchAuditLogs = async (params?: AdminSearchAuditLogsParams, options?: Parameters<typeof customFetch>[1]): Promise<AdminAuditLogListResponse> => {
+
+  return customFetch<AdminAuditLogListResponse>(getAdminSearchAuditLogsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminSearchAuditLogsQueryKey = (params?: AdminSearchAuditLogsParams,) => {
+    return [
+    `/api/v1/admin/audit-logs`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getAdminSearchAuditLogsQueryOptions = <TData = Awaited<ReturnType<typeof adminSearchAuditLogs>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(params?: AdminSearchAuditLogsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminSearchAuditLogs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminSearchAuditLogsQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminSearchAuditLogs>>> = ({ signal }) => adminSearchAuditLogs(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminSearchAuditLogs>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminSearchAuditLogsQueryResult = NonNullable<Awaited<ReturnType<typeof adminSearchAuditLogs>>>
+export type AdminSearchAuditLogsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary Search platform audit logs
+ */
+
+export function useAdminSearchAuditLogs<TData = Awaited<ReturnType<typeof adminSearchAuditLogs>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+ params?: AdminSearchAuditLogsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminSearchAuditLogs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminSearchAuditLogsQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminListFeatureFlagsUrl = () => {
+
+
+
+
+  return `/api/v1/admin/feature-flags`
+}
+
+/**
+ * @summary List feature flags
+ */
+export const adminListFeatureFlags = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminFeatureFlagListResponse> => {
+
+  return customFetch<AdminFeatureFlagListResponse>(getAdminListFeatureFlagsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminListFeatureFlagsQueryKey = () => {
+    return [
+    `/api/v1/admin/feature-flags`
+    ] as const;
+    }
+
+
+export const getAdminListFeatureFlagsQueryOptions = <TData = Awaited<ReturnType<typeof adminListFeatureFlags>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListFeatureFlags>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminListFeatureFlagsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminListFeatureFlags>>> = ({ signal }) => adminListFeatureFlags({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminListFeatureFlags>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminListFeatureFlagsQueryResult = NonNullable<Awaited<ReturnType<typeof adminListFeatureFlags>>>
+export type AdminListFeatureFlagsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List feature flags
+ */
+
+export function useAdminListFeatureFlags<TData = Awaited<ReturnType<typeof adminListFeatureFlags>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListFeatureFlags>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminListFeatureFlagsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminUpdateFeatureFlagUrl = (key: string,) => {
+
+
+
+
+  return `/api/v1/admin/feature-flags/${key}`
+}
+
+/**
+ * @summary Update a global feature flag
+ */
+export const adminUpdateFeatureFlag = async (key: string,
+    adminFeatureFlagUpdateRequest: AdminFeatureFlagUpdateRequest, options?: Parameters<typeof customFetch>[1]): Promise<AdminFeatureFlagRow> => {
+
+  return customFetch<AdminFeatureFlagRow>(getAdminUpdateFeatureFlagUrl(key),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(adminFeatureFlagUpdateRequest)
+  }
+);}
+
+
+
+
+
+export const getAdminUpdateFeatureFlagMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateFeatureFlag>>, TError,{key: string;data: BodyType<AdminFeatureFlagUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminUpdateFeatureFlag>>, TError,{key: string;data: BodyType<AdminFeatureFlagUpdateRequest>}, TContext> => {
+
+const mutationKey = ['adminUpdateFeatureFlag'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminUpdateFeatureFlag>>, {key: string;data: BodyType<AdminFeatureFlagUpdateRequest>}> = (props) => {
+          const {key,data} = props ?? {};
+
+          return  adminUpdateFeatureFlag(key,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminUpdateFeatureFlagMutationResult = NonNullable<Awaited<ReturnType<typeof adminUpdateFeatureFlag>>>
+    export type AdminUpdateFeatureFlagMutationBody = BodyType<AdminFeatureFlagUpdateRequest>
+    export type AdminUpdateFeatureFlagMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Update a global feature flag
+ */
+export const useAdminUpdateFeatureFlag = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateFeatureFlag>>, TError,{key: string;data: BodyType<AdminFeatureFlagUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminUpdateFeatureFlag>>,
+        TError,
+        {key: string;data: BodyType<AdminFeatureFlagUpdateRequest>},
+        TContext
+      > => {
+      return useMutation(getAdminUpdateFeatureFlagMutationOptions(options));
+    }
+
+export const getAdminSystemHealthUrl = () => {
+
+
+
+
+  return `/api/v1/admin/system/health`
+}
+
+/**
+ * @summary Authenticated system health snapshot
+ */
+export const adminSystemHealth = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminSystemHealth200> => {
+
+  return customFetch<AdminSystemHealth200>(getAdminSystemHealthUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminSystemHealthQueryKey = () => {
+    return [
+    `/api/v1/admin/system/health`
+    ] as const;
+    }
+
+
+export const getAdminSystemHealthQueryOptions = <TData = Awaited<ReturnType<typeof adminSystemHealth>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminSystemHealth>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminSystemHealthQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminSystemHealth>>> = ({ signal }) => adminSystemHealth({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminSystemHealth>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminSystemHealthQueryResult = NonNullable<Awaited<ReturnType<typeof adminSystemHealth>>>
+export type AdminSystemHealthQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary Authenticated system health snapshot
+ */
+
+export function useAdminSystemHealth<TData = Awaited<ReturnType<typeof adminSystemHealth>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminSystemHealth>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminSystemHealthQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminSystemVersionUrl = () => {
+
+
+
+
+  return `/api/v1/admin/system/version`
+}
+
+/**
+ * @summary Authenticated build and version metadata
+ */
+export const adminSystemVersion = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminSystemVersion200> => {
+
+  return customFetch<AdminSystemVersion200>(getAdminSystemVersionUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminSystemVersionQueryKey = () => {
+    return [
+    `/api/v1/admin/system/version`
+    ] as const;
+    }
+
+
+export const getAdminSystemVersionQueryOptions = <TData = Awaited<ReturnType<typeof adminSystemVersion>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminSystemVersion>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminSystemVersionQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminSystemVersion>>> = ({ signal }) => adminSystemVersion({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminSystemVersion>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminSystemVersionQueryResult = NonNullable<Awaited<ReturnType<typeof adminSystemVersion>>>
+export type AdminSystemVersionQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary Authenticated build and version metadata
+ */
+
+export function useAdminSystemVersion<TData = Awaited<ReturnType<typeof adminSystemVersion>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminSystemVersion>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminSystemVersionQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminCmsDashboardUrl = () => {
+
+
+
+
+  return `/api/v1/admin/cms/dashboard`
+}
+
+/**
+ * @summary CMS workspace dashboard metrics
+ */
+export const adminCmsDashboard = async ( options?: Parameters<typeof customFetch>[1]): Promise<CmsDashboardData> => {
+
+  return customFetch<CmsDashboardData>(getAdminCmsDashboardUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsDashboardQueryKey = () => {
+    return [
+    `/api/v1/admin/cms/dashboard`
+    ] as const;
+    }
+
+
+export const getAdminCmsDashboardQueryOptions = <TData = Awaited<ReturnType<typeof adminCmsDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminCmsDashboardQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminCmsDashboard>>> = ({ signal }) => adminCmsDashboard({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminCmsDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminCmsDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof adminCmsDashboard>>>
+export type AdminCmsDashboardQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary CMS workspace dashboard metrics
+ */
+
+export function useAdminCmsDashboard<TData = Awaited<ReturnType<typeof adminCmsDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminCmsDashboardQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminCmsListEntriesUrl = (params?: AdminCmsListEntriesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/admin/cms/entries?${stringifiedParams}` : `/api/v1/admin/cms/entries`
+}
+
+/**
+ * @summary List CMS content entries
+ */
+export const adminCmsListEntries = async (params?: AdminCmsListEntriesParams, options?: Parameters<typeof customFetch>[1]): Promise<CmsEntryListResponse> => {
+
+  return customFetch<CmsEntryListResponse>(getAdminCmsListEntriesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsListEntriesQueryKey = (params?: AdminCmsListEntriesParams,) => {
+    return [
+    `/api/v1/admin/cms/entries`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getAdminCmsListEntriesQueryOptions = <TData = Awaited<ReturnType<typeof adminCmsListEntries>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(params?: AdminCmsListEntriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsListEntries>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminCmsListEntriesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminCmsListEntries>>> = ({ signal }) => adminCmsListEntries(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminCmsListEntries>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminCmsListEntriesQueryResult = NonNullable<Awaited<ReturnType<typeof adminCmsListEntries>>>
+export type AdminCmsListEntriesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List CMS content entries
+ */
+
+export function useAdminCmsListEntries<TData = Awaited<ReturnType<typeof adminCmsListEntries>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+ params?: AdminCmsListEntriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsListEntries>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminCmsListEntriesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminCmsCreateEntryUrl = () => {
+
+
+
+
+  return `/api/v1/admin/cms/entries`
+}
+
+/**
+ * @summary Create a CMS content entry
+ */
+export const adminCmsCreateEntry = async (createCmsEntryRequest: CreateCmsEntryRequest, options?: Parameters<typeof customFetch>[1]): Promise<CmsEntrySummary> => {
+
+  return customFetch<CmsEntrySummary>(getAdminCmsCreateEntryUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createCmsEntryRequest)
+  }
+);}
+
+
+
+
+
+export const getAdminCmsCreateEntryMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsCreateEntry>>, TError,{data: BodyType<CreateCmsEntryRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsCreateEntry>>, TError,{data: BodyType<CreateCmsEntryRequest>}, TContext> => {
+
+const mutationKey = ['adminCmsCreateEntry'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsCreateEntry>>, {data: BodyType<CreateCmsEntryRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  adminCmsCreateEntry(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsCreateEntryMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsCreateEntry>>>
+    export type AdminCmsCreateEntryMutationBody = BodyType<CreateCmsEntryRequest>
+    export type AdminCmsCreateEntryMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ConflictResponse>
+
+    /**
+ * @summary Create a CMS content entry
+ */
+export const useAdminCmsCreateEntry = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsCreateEntry>>, TError,{data: BodyType<CreateCmsEntryRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsCreateEntry>>,
+        TError,
+        {data: BodyType<CreateCmsEntryRequest>},
+        TContext
+      > => {
+      return useMutation(getAdminCmsCreateEntryMutationOptions(options));
+    }
+
+export const getAdminCmsGetEntryUrl = (entryId: string,) => {
+
+
+
+
+  return `/api/v1/admin/cms/entries/${entryId}`
+}
+
+/**
+ * @summary Get CMS entry detail with versions
+ */
+export const adminCmsGetEntry = async (entryId: string, options?: Parameters<typeof customFetch>[1]): Promise<CmsEntryDetail> => {
+
+  return customFetch<CmsEntryDetail>(getAdminCmsGetEntryUrl(entryId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsGetEntryQueryKey = (entryId: string,) => {
+    return [
+    `/api/v1/admin/cms/entries/${entryId}`
+    ] as const;
+    }
+
+
+export const getAdminCmsGetEntryQueryOptions = <TData = Awaited<ReturnType<typeof adminCmsGetEntry>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(entryId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsGetEntry>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminCmsGetEntryQueryKey(entryId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminCmsGetEntry>>> = ({ signal }) => adminCmsGetEntry(entryId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: entryId !== null && entryId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminCmsGetEntry>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminCmsGetEntryQueryResult = NonNullable<Awaited<ReturnType<typeof adminCmsGetEntry>>>
+export type AdminCmsGetEntryQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get CMS entry detail with versions
+ */
+
+export function useAdminCmsGetEntry<TData = Awaited<ReturnType<typeof adminCmsGetEntry>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(
+ entryId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsGetEntry>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminCmsGetEntryQueryOptions(entryId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminCmsUpdateDraftUrl = (entryId: string,) => {
+
+
+
+
+  return `/api/v1/admin/cms/entries/${entryId}/draft`
+}
+
+/**
+ * @summary Save a new draft version
+ */
+export const adminCmsUpdateDraft = async (entryId: string,
+    updateCmsDraftRequest: UpdateCmsDraftRequest, options?: Parameters<typeof customFetch>[1]): Promise<CmsEntrySummary> => {
+
+  return customFetch<CmsEntrySummary>(getAdminCmsUpdateDraftUrl(entryId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(updateCmsDraftRequest)
+  }
+);}
+
+
+
+
+
+export const getAdminCmsUpdateDraftMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsUpdateDraft>>, TError,{entryId: string;data: BodyType<UpdateCmsDraftRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsUpdateDraft>>, TError,{entryId: string;data: BodyType<UpdateCmsDraftRequest>}, TContext> => {
+
+const mutationKey = ['adminCmsUpdateDraft'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsUpdateDraft>>, {entryId: string;data: BodyType<UpdateCmsDraftRequest>}> = (props) => {
+          const {entryId,data} = props ?? {};
+
+          return  adminCmsUpdateDraft(entryId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsUpdateDraftMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsUpdateDraft>>>
+    export type AdminCmsUpdateDraftMutationBody = BodyType<UpdateCmsDraftRequest>
+    export type AdminCmsUpdateDraftMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Save a new draft version
+ */
+export const useAdminCmsUpdateDraft = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsUpdateDraft>>, TError,{entryId: string;data: BodyType<UpdateCmsDraftRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsUpdateDraft>>,
+        TError,
+        {entryId: string;data: BodyType<UpdateCmsDraftRequest>},
+        TContext
+      > => {
+      return useMutation(getAdminCmsUpdateDraftMutationOptions(options));
+    }
+
+export const getAdminCmsPublishEntryUrl = (entryId: string,) => {
+
+
+
+
+  return `/api/v1/admin/cms/entries/${entryId}/publish`
+}
+
+/**
+ * @summary Publish the current draft version
+ */
+export const adminCmsPublishEntry = async (entryId: string, options?: Parameters<typeof customFetch>[1]): Promise<CmsEntrySummary> => {
+
+  return customFetch<CmsEntrySummary>(getAdminCmsPublishEntryUrl(entryId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsPublishEntryMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsPublishEntry>>, TError,{entryId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsPublishEntry>>, TError,{entryId: string}, TContext> => {
+
+const mutationKey = ['adminCmsPublishEntry'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsPublishEntry>>, {entryId: string}> = (props) => {
+          const {entryId} = props ?? {};
+
+          return  adminCmsPublishEntry(entryId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsPublishEntryMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsPublishEntry>>>
+
+    export type AdminCmsPublishEntryMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>
+
+    /**
+ * @summary Publish the current draft version
+ */
+export const useAdminCmsPublishEntry = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsPublishEntry>>, TError,{entryId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsPublishEntry>>,
+        TError,
+        {entryId: string},
+        TContext
+      > => {
+      return useMutation(getAdminCmsPublishEntryMutationOptions(options));
+    }
+
+export const getAdminCmsApproveClientEntryUrl = (entryId: string,) => {
+
+
+
+
+  return `/api/v1/admin/cms/entries/${entryId}/approve-client`
+}
+
+/**
+ * @summary Record client approval for a CMS entry
+ */
+export const adminCmsApproveClientEntry = async (entryId: string, options?: Parameters<typeof customFetch>[1]): Promise<CmsEntrySummary> => {
+
+  return customFetch<CmsEntrySummary>(getAdminCmsApproveClientEntryUrl(entryId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsApproveClientEntryMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsApproveClientEntry>>, TError,{entryId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsApproveClientEntry>>, TError,{entryId: string}, TContext> => {
+
+const mutationKey = ['adminCmsApproveClientEntry'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsApproveClientEntry>>, {entryId: string}> = (props) => {
+          const {entryId} = props ?? {};
+
+          return  adminCmsApproveClientEntry(entryId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsApproveClientEntryMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsApproveClientEntry>>>
+
+    export type AdminCmsApproveClientEntryMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>
+
+    /**
+ * @summary Record client approval for a CMS entry
+ */
+export const useAdminCmsApproveClientEntry = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsApproveClientEntry>>, TError,{entryId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsApproveClientEntry>>,
+        TError,
+        {entryId: string},
+        TContext
+      > => {
+      return useMutation(getAdminCmsApproveClientEntryMutationOptions(options));
+    }
+
+export const getAdminCmsScheduleEntryUrl = (entryId: string,) => {
+
+
+
+
+  return `/api/v1/admin/cms/entries/${entryId}/schedule`
+}
+
+/**
+ * @summary Schedule a CMS entry for future publish
+ */
+export const adminCmsScheduleEntry = async (entryId: string,
+    scheduleCmsEntryRequest: ScheduleCmsEntryRequest, options?: Parameters<typeof customFetch>[1]): Promise<CmsEntrySummary> => {
+
+  return customFetch<CmsEntrySummary>(getAdminCmsScheduleEntryUrl(entryId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(scheduleCmsEntryRequest)
+  }
+);}
+
+
+
+
+
+export const getAdminCmsScheduleEntryMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsScheduleEntry>>, TError,{entryId: string;data: BodyType<ScheduleCmsEntryRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsScheduleEntry>>, TError,{entryId: string;data: BodyType<ScheduleCmsEntryRequest>}, TContext> => {
+
+const mutationKey = ['adminCmsScheduleEntry'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsScheduleEntry>>, {entryId: string;data: BodyType<ScheduleCmsEntryRequest>}> = (props) => {
+          const {entryId,data} = props ?? {};
+
+          return  adminCmsScheduleEntry(entryId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsScheduleEntryMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsScheduleEntry>>>
+    export type AdminCmsScheduleEntryMutationBody = BodyType<ScheduleCmsEntryRequest>
+    export type AdminCmsScheduleEntryMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Schedule a CMS entry for future publish
+ */
+export const useAdminCmsScheduleEntry = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsScheduleEntry>>, TError,{entryId: string;data: BodyType<ScheduleCmsEntryRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsScheduleEntry>>,
+        TError,
+        {entryId: string;data: BodyType<ScheduleCmsEntryRequest>},
+        TContext
+      > => {
+      return useMutation(getAdminCmsScheduleEntryMutationOptions(options));
+    }
+
+export const getAdminCmsListPendingApprovalsUrl = () => {
+
+
+
+
+  return `/api/v1/admin/cms/approvals/pending`
+}
+
+/**
+ * @summary List entries awaiting client approval
+ */
+export const adminCmsListPendingApprovals = async ( options?: Parameters<typeof customFetch>[1]): Promise<CmsEntryListResponse> => {
+
+  return customFetch<CmsEntryListResponse>(getAdminCmsListPendingApprovalsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsListPendingApprovalsQueryKey = () => {
+    return [
+    `/api/v1/admin/cms/approvals/pending`
+    ] as const;
+    }
+
+
+export const getAdminCmsListPendingApprovalsQueryOptions = <TData = Awaited<ReturnType<typeof adminCmsListPendingApprovals>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsListPendingApprovals>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminCmsListPendingApprovalsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminCmsListPendingApprovals>>> = ({ signal }) => adminCmsListPendingApprovals({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminCmsListPendingApprovals>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminCmsListPendingApprovalsQueryResult = NonNullable<Awaited<ReturnType<typeof adminCmsListPendingApprovals>>>
+export type AdminCmsListPendingApprovalsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List entries awaiting client approval
+ */
+
+export function useAdminCmsListPendingApprovals<TData = Awaited<ReturnType<typeof adminCmsListPendingApprovals>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsListPendingApprovals>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminCmsListPendingApprovalsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminCmsRunDueWorkflowUrl = () => {
+
+
+
+
+  return `/api/v1/admin/cms/workflow/run-due`
+}
+
+/**
+ * @summary Publish due scheduled entries and count review reminders
+ */
+export const adminCmsRunDueWorkflow = async ( options?: Parameters<typeof customFetch>[1]): Promise<CmsWorkflowRunResult> => {
+
+  return customFetch<CmsWorkflowRunResult>(getAdminCmsRunDueWorkflowUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsRunDueWorkflowMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsRunDueWorkflow>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsRunDueWorkflow>>, TError,void, TContext> => {
+
+const mutationKey = ['adminCmsRunDueWorkflow'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsRunDueWorkflow>>, void> = () => {
+
+
+          return  adminCmsRunDueWorkflow(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsRunDueWorkflowMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsRunDueWorkflow>>>
+
+    export type AdminCmsRunDueWorkflowMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Publish due scheduled entries and count review reminders
+ */
+export const useAdminCmsRunDueWorkflow = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsRunDueWorkflow>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsRunDueWorkflow>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getAdminCmsRunDueWorkflowMutationOptions(options));
+    }
+
+export const getAdminCmsArchiveEntryUrl = (entryId: string,) => {
+
+
+
+
+  return `/api/v1/admin/cms/entries/${entryId}/archive`
+}
+
+/**
+ * @summary Archive a CMS entry
+ */
+export const adminCmsArchiveEntry = async (entryId: string, options?: Parameters<typeof customFetch>[1]): Promise<CmsEntrySummary> => {
+
+  return customFetch<CmsEntrySummary>(getAdminCmsArchiveEntryUrl(entryId),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsArchiveEntryMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsArchiveEntry>>, TError,{entryId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsArchiveEntry>>, TError,{entryId: string}, TContext> => {
+
+const mutationKey = ['adminCmsArchiveEntry'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsArchiveEntry>>, {entryId: string}> = (props) => {
+          const {entryId} = props ?? {};
+
+          return  adminCmsArchiveEntry(entryId,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsArchiveEntryMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsArchiveEntry>>>
+
+    export type AdminCmsArchiveEntryMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Archive a CMS entry
+ */
+export const useAdminCmsArchiveEntry = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsArchiveEntry>>, TError,{entryId: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsArchiveEntry>>,
+        TError,
+        {entryId: string},
+        TContext
+      > => {
+      return useMutation(getAdminCmsArchiveEntryMutationOptions(options));
+    }
+
+export const getAdminCmsRollbackEntryUrl = (entryId: string,) => {
+
+
+
+
+  return `/api/v1/admin/cms/entries/${entryId}/rollback`
+}
+
+/**
+ * @summary Roll back to a prior version (creates new draft)
+ */
+export const adminCmsRollbackEntry = async (entryId: string,
+    cmsRollbackRequest: CmsRollbackRequest, options?: Parameters<typeof customFetch>[1]): Promise<CmsEntrySummary> => {
+
+  return customFetch<CmsEntrySummary>(getAdminCmsRollbackEntryUrl(entryId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(cmsRollbackRequest)
+  }
+);}
+
+
+
+
+
+export const getAdminCmsRollbackEntryMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsRollbackEntry>>, TError,{entryId: string;data: BodyType<CmsRollbackRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsRollbackEntry>>, TError,{entryId: string;data: BodyType<CmsRollbackRequest>}, TContext> => {
+
+const mutationKey = ['adminCmsRollbackEntry'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsRollbackEntry>>, {entryId: string;data: BodyType<CmsRollbackRequest>}> = (props) => {
+          const {entryId,data} = props ?? {};
+
+          return  adminCmsRollbackEntry(entryId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsRollbackEntryMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsRollbackEntry>>>
+    export type AdminCmsRollbackEntryMutationBody = BodyType<CmsRollbackRequest>
+    export type AdminCmsRollbackEntryMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Roll back to a prior version (creates new draft)
+ */
+export const useAdminCmsRollbackEntry = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsRollbackEntry>>, TError,{entryId: string;data: BodyType<CmsRollbackRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsRollbackEntry>>,
+        TError,
+        {entryId: string;data: BodyType<CmsRollbackRequest>},
+        TContext
+      > => {
+      return useMutation(getAdminCmsRollbackEntryMutationOptions(options));
+    }
+
+export const getAdminCmsImportFromFilesUrl = () => {
+
+
+
+
+  return `/api/v1/admin/cms/import-from-files`
+}
+
+/**
+ * @summary Import published content from lib/content files
+ */
+export const adminCmsImportFromFiles = async (cmsImportRequest?: CmsImportRequest, options?: Parameters<typeof customFetch>[1]): Promise<CmsImportResult> => {
+
+  return customFetch<CmsImportResult>(getAdminCmsImportFromFilesUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(cmsImportRequest)
+  }
+);}
+
+
+
+
+
+export const getAdminCmsImportFromFilesMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsImportFromFiles>>, TError,{data?: BodyType<CmsImportRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsImportFromFiles>>, TError,{data?: BodyType<CmsImportRequest>}, TContext> => {
+
+const mutationKey = ['adminCmsImportFromFiles'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsImportFromFiles>>, {data?: BodyType<CmsImportRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  adminCmsImportFromFiles(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsImportFromFilesMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsImportFromFiles>>>
+    export type AdminCmsImportFromFilesMutationBody = BodyType<CmsImportRequest> | undefined
+    export type AdminCmsImportFromFilesMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Import published content from lib/content files
+ */
+export const useAdminCmsImportFromFiles = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsImportFromFiles>>, TError,{data?: BodyType<CmsImportRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsImportFromFiles>>,
+        TError,
+        {data?: BodyType<CmsImportRequest>},
+        TContext
+      > => {
+      return useMutation(getAdminCmsImportFromFilesMutationOptions(options));
+    }
+
+export const getPublicContentListEntriesUrl = (params?: PublicContentListEntriesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/content/entries?${stringifiedParams}` : `/api/v1/content/entries`
+}
+
+/**
+ * @summary List published CMS content entries
+ */
+export const publicContentListEntries = async (params?: PublicContentListEntriesParams, options?: Parameters<typeof customFetch>[1]): Promise<PublicContentListResponse> => {
+
+  return customFetch<PublicContentListResponse>(getPublicContentListEntriesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPublicContentListEntriesQueryKey = (params?: PublicContentListEntriesParams,) => {
+    return [
+    `/api/v1/content/entries`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getPublicContentListEntriesQueryOptions = <TData = Awaited<ReturnType<typeof publicContentListEntries>>, TError = ErrorType<NotFoundResponse>>(params?: PublicContentListEntriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof publicContentListEntries>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPublicContentListEntriesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicContentListEntries>>> = ({ signal }) => publicContentListEntries(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof publicContentListEntries>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PublicContentListEntriesQueryResult = NonNullable<Awaited<ReturnType<typeof publicContentListEntries>>>
+export type PublicContentListEntriesQueryError = ErrorType<NotFoundResponse>
+
+
+/**
+ * @summary List published CMS content entries
+ */
+
+export function usePublicContentListEntries<TData = Awaited<ReturnType<typeof publicContentListEntries>>, TError = ErrorType<NotFoundResponse>>(
+ params?: PublicContentListEntriesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof publicContentListEntries>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPublicContentListEntriesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPublicContentSnapshotUrl = (params?: PublicContentSnapshotParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/content/snapshot?${stringifiedParams}` : `/api/v1/content/snapshot`
+}
+
+/**
+ * @summary Export published CMS content as a build snapshot
+ */
+export const publicContentSnapshot = async (params?: PublicContentSnapshotParams, options?: Parameters<typeof customFetch>[1]): Promise<CmsContentSnapshot> => {
+
+  return customFetch<CmsContentSnapshot>(getPublicContentSnapshotUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPublicContentSnapshotQueryKey = (params?: PublicContentSnapshotParams,) => {
+    return [
+    `/api/v1/content/snapshot`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getPublicContentSnapshotQueryOptions = <TData = Awaited<ReturnType<typeof publicContentSnapshot>>, TError = ErrorType<unknown>>(params?: PublicContentSnapshotParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof publicContentSnapshot>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPublicContentSnapshotQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicContentSnapshot>>> = ({ signal }) => publicContentSnapshot(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof publicContentSnapshot>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PublicContentSnapshotQueryResult = NonNullable<Awaited<ReturnType<typeof publicContentSnapshot>>>
+export type PublicContentSnapshotQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Export published CMS content as a build snapshot
+ */
+
+export function usePublicContentSnapshot<TData = Awaited<ReturnType<typeof publicContentSnapshot>>, TError = ErrorType<unknown>>(
+ params?: PublicContentSnapshotParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof publicContentSnapshot>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPublicContentSnapshotQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getPublicContentByPathUrl = (params: PublicContentByPathParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/content/by-path?${stringifiedParams}` : `/api/v1/content/by-path`
+}
+
+/**
+ * @summary Get a published CMS entry by path
+ */
+export const publicContentByPath = async (params: PublicContentByPathParams, options?: Parameters<typeof customFetch>[1]): Promise<PublicContentEntry> => {
+
+  return customFetch<PublicContentEntry>(getPublicContentByPathUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getPublicContentByPathQueryKey = (params?: PublicContentByPathParams,) => {
+    return [
+    `/api/v1/content/by-path`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getPublicContentByPathQueryOptions = <TData = Awaited<ReturnType<typeof publicContentByPath>>, TError = ErrorType<BadRequestResponse | NotFoundResponse>>(params: PublicContentByPathParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof publicContentByPath>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getPublicContentByPathQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof publicContentByPath>>> = ({ signal }) => publicContentByPath(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof publicContentByPath>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type PublicContentByPathQueryResult = NonNullable<Awaited<ReturnType<typeof publicContentByPath>>>
+export type PublicContentByPathQueryError = ErrorType<BadRequestResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get a published CMS entry by path
+ */
+
+export function usePublicContentByPath<TData = Awaited<ReturnType<typeof publicContentByPath>>, TError = ErrorType<BadRequestResponse | NotFoundResponse>>(
+ params: PublicContentByPathParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof publicContentByPath>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getPublicContentByPathQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminCmsListMediaUrl = () => {
+
+
+
+
+  return `/api/v1/admin/cms/media`
+}
+
+/**
+ * @summary List CMS media assets
+ */
+export const adminCmsListMedia = async ( options?: Parameters<typeof customFetch>[1]): Promise<CmsMediaListResponse> => {
+
+  return customFetch<CmsMediaListResponse>(getAdminCmsListMediaUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsListMediaQueryKey = () => {
+    return [
+    `/api/v1/admin/cms/media`
+    ] as const;
+    }
+
+
+export const getAdminCmsListMediaQueryOptions = <TData = Awaited<ReturnType<typeof adminCmsListMedia>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsListMedia>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminCmsListMediaQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminCmsListMedia>>> = ({ signal }) => adminCmsListMedia({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminCmsListMedia>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminCmsListMediaQueryResult = NonNullable<Awaited<ReturnType<typeof adminCmsListMedia>>>
+export type AdminCmsListMediaQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List CMS media assets
+ */
+
+export function useAdminCmsListMedia<TData = Awaited<ReturnType<typeof adminCmsListMedia>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsListMedia>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminCmsListMediaQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminCmsUploadMediaUrl = () => {
+
+
+
+
+  return `/api/v1/admin/cms/media`
+}
+
+/**
+ * @summary Upload a CMS media asset
+ */
+export const adminCmsUploadMedia = async (cmsMediaUploadRequest: CmsMediaUploadRequest, options?: Parameters<typeof customFetch>[1]): Promise<CmsMediaAssetSummary> => {
+
+  return customFetch<CmsMediaAssetSummary>(getAdminCmsUploadMediaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(cmsMediaUploadRequest)
+  }
+);}
+
+
+
+
+
+export const getAdminCmsUploadMediaMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsUploadMedia>>, TError,{data: BodyType<CmsMediaUploadRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsUploadMedia>>, TError,{data: BodyType<CmsMediaUploadRequest>}, TContext> => {
+
+const mutationKey = ['adminCmsUploadMedia'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsUploadMedia>>, {data: BodyType<CmsMediaUploadRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  adminCmsUploadMedia(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsUploadMediaMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsUploadMedia>>>
+    export type AdminCmsUploadMediaMutationBody = BodyType<CmsMediaUploadRequest>
+    export type AdminCmsUploadMediaMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Upload a CMS media asset
+ */
+export const useAdminCmsUploadMedia = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsUploadMedia>>, TError,{data: BodyType<CmsMediaUploadRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsUploadMedia>>,
+        TError,
+        {data: BodyType<CmsMediaUploadRequest>},
+        TContext
+      > => {
+      return useMutation(getAdminCmsUploadMediaMutationOptions(options));
+    }
+
+export const getAdminCmsListSeoUrl = () => {
+
+
+
+
+  return `/api/v1/admin/cms/seo`
+}
+
+/**
+ * @summary List CMS entries with SEO metadata
+ */
+export const adminCmsListSeo = async ( options?: Parameters<typeof customFetch>[1]): Promise<CmsSeoListResponse> => {
+
+  return customFetch<CmsSeoListResponse>(getAdminCmsListSeoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminCmsListSeoQueryKey = () => {
+    return [
+    `/api/v1/admin/cms/seo`
+    ] as const;
+    }
+
+
+export const getAdminCmsListSeoQueryOptions = <TData = Awaited<ReturnType<typeof adminCmsListSeo>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsListSeo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminCmsListSeoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminCmsListSeo>>> = ({ signal }) => adminCmsListSeo({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminCmsListSeo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminCmsListSeoQueryResult = NonNullable<Awaited<ReturnType<typeof adminCmsListSeo>>>
+export type AdminCmsListSeoQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List CMS entries with SEO metadata
+ */
+
+export function useAdminCmsListSeo<TData = Awaited<ReturnType<typeof adminCmsListSeo>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminCmsListSeo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminCmsListSeoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminCmsUpdateSeoUrl = (entryId: string,) => {
+
+
+
+
+  return `/api/v1/admin/cms/seo/${entryId}`
+}
+
+/**
+ * @summary Update SEO metadata for a CMS entry
+ */
+export const adminCmsUpdateSeo = async (entryId: string,
+    cmsSeoUpdateRequest: CmsSeoUpdateRequest, options?: Parameters<typeof customFetch>[1]): Promise<CmsSeoEntrySummary> => {
+
+  return customFetch<CmsSeoEntrySummary>(getAdminCmsUpdateSeoUrl(entryId),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(cmsSeoUpdateRequest)
+  }
+);}
+
+
+
+
+
+export const getAdminCmsUpdateSeoMutationOptions = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsUpdateSeo>>, TError,{entryId: string;data: BodyType<CmsSeoUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCmsUpdateSeo>>, TError,{entryId: string;data: BodyType<CmsSeoUpdateRequest>}, TContext> => {
+
+const mutationKey = ['adminCmsUpdateSeo'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCmsUpdateSeo>>, {entryId: string;data: BodyType<CmsSeoUpdateRequest>}> = (props) => {
+          const {entryId,data} = props ?? {};
+
+          return  adminCmsUpdateSeo(entryId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCmsUpdateSeoMutationResult = NonNullable<Awaited<ReturnType<typeof adminCmsUpdateSeo>>>
+    export type AdminCmsUpdateSeoMutationBody = BodyType<CmsSeoUpdateRequest>
+    export type AdminCmsUpdateSeoMutationError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Update SEO metadata for a CMS entry
+ */
+export const useAdminCmsUpdateSeo = <TError = ErrorType<BadRequestResponse | UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCmsUpdateSeo>>, TError,{entryId: string;data: BodyType<CmsSeoUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCmsUpdateSeo>>,
+        TError,
+        {entryId: string;data: BodyType<CmsSeoUpdateRequest>},
+        TContext
+      > => {
+      return useMutation(getAdminCmsUpdateSeoMutationOptions(options));
+    }
+
+export const getReportingListKpiDefinitionsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/kpi-definitions`
+}
+
+/**
+ * @summary List registered KPI definitions
+ */
+export const reportingListKpiDefinitions = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingKpiDefinitionListResponse> => {
+
+  return customFetch<ReportingKpiDefinitionListResponse>(getReportingListKpiDefinitionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListKpiDefinitionsQueryKey = () => {
+    return [
+    `/api/v1/reporting/kpi-definitions`
+    ] as const;
+    }
+
+
+export const getReportingListKpiDefinitionsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListKpiDefinitions>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListKpiDefinitions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListKpiDefinitionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListKpiDefinitions>>> = ({ signal }) => reportingListKpiDefinitions({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListKpiDefinitions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListKpiDefinitionsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListKpiDefinitions>>>
+export type ReportingListKpiDefinitionsQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary List registered KPI definitions
+ */
+
+export function useReportingListKpiDefinitions<TData = Awaited<ReturnType<typeof reportingListKpiDefinitions>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListKpiDefinitions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListKpiDefinitionsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingListKpisUrl = (params?: ReportingListKpisParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/reporting/kpis?${stringifiedParams}` : `/api/v1/reporting/kpis`
+}
+
+/**
+ * @summary List KPI snapshots for the current or specified period
+ */
+export const reportingListKpis = async (params?: ReportingListKpisParams, options?: Parameters<typeof customFetch>[1]): Promise<ReportingKpiListResponse> => {
+
+  return customFetch<ReportingKpiListResponse>(getReportingListKpisUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListKpisQueryKey = (params?: ReportingListKpisParams,) => {
+    return [
+    `/api/v1/reporting/kpis`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getReportingListKpisQueryOptions = <TData = Awaited<ReturnType<typeof reportingListKpis>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(params?: ReportingListKpisParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListKpisQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListKpis>>> = ({ signal }) => reportingListKpis(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListKpis>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListKpisQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListKpis>>>
+export type ReportingListKpisQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List KPI snapshots for the current or specified period
+ */
+
+export function useReportingListKpis<TData = Awaited<ReturnType<typeof reportingListKpis>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+ params?: ReportingListKpisParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListKpis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListKpisQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingExecutiveSummaryUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/executive-summary`
+}
+
+/**
+ * @summary Cross-domain executive summary
+ */
+export const reportingExecutiveSummary = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingExecutiveSummary> => {
+
+  return customFetch<ReportingExecutiveSummary>(getReportingExecutiveSummaryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingExecutiveSummaryQueryKey = () => {
+    return [
+    `/api/v1/reporting/executive-summary`
+    ] as const;
+    }
+
+
+export const getReportingExecutiveSummaryQueryOptions = <TData = Awaited<ReturnType<typeof reportingExecutiveSummary>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingExecutiveSummary>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingExecutiveSummaryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingExecutiveSummary>>> = ({ signal }) => reportingExecutiveSummary({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingExecutiveSummary>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingExecutiveSummaryQueryResult = NonNullable<Awaited<ReturnType<typeof reportingExecutiveSummary>>>
+export type ReportingExecutiveSummaryQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary Cross-domain executive summary
+ */
+
+export function useReportingExecutiveSummary<TData = Awaited<ReturnType<typeof reportingExecutiveSummary>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingExecutiveSummary>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingExecutiveSummaryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingListViewsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/views`
+}
+
+/**
+ * @summary Materialized view registry status
+ */
+export const reportingListViews = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingViewListResponse> => {
+
+  return customFetch<ReportingViewListResponse>(getReportingListViewsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListViewsQueryKey = () => {
+    return [
+    `/api/v1/reporting/views`
+    ] as const;
+    }
+
+
+export const getReportingListViewsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListViews>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListViews>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListViewsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListViews>>> = ({ signal }) => reportingListViews({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListViews>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListViewsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListViews>>>
+export type ReportingListViewsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary Materialized view registry status
+ */
+
+export function useReportingListViews<TData = Awaited<ReturnType<typeof reportingListViews>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListViews>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListViewsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingListDefinitionsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/definitions`
+}
+
+/**
+ * @summary Saved report definitions for the organisation
+ */
+export const reportingListDefinitions = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingDefinitionListResponse> => {
+
+  return customFetch<ReportingDefinitionListResponse>(getReportingListDefinitionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListDefinitionsQueryKey = () => {
+    return [
+    `/api/v1/reporting/definitions`
+    ] as const;
+    }
+
+
+export const getReportingListDefinitionsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListDefinitions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListDefinitions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListDefinitionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListDefinitions>>> = ({ signal }) => reportingListDefinitions({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListDefinitions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListDefinitionsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListDefinitions>>>
+export type ReportingListDefinitionsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary Saved report definitions for the organisation
+ */
+
+export function useReportingListDefinitions<TData = Awaited<ReturnType<typeof reportingListDefinitions>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListDefinitions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListDefinitionsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingRefreshSnapshotsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/refresh`
+}
+
+/**
+ * @summary Refresh KPI snapshots from domain providers
+ */
+export const reportingRefreshSnapshots = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingRefreshResult> => {
+
+  return customFetch<ReportingRefreshResult>(getReportingRefreshSnapshotsUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingRefreshSnapshotsMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingRefreshSnapshots>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingRefreshSnapshots>>, TError,void, TContext> => {
+
+const mutationKey = ['reportingRefreshSnapshots'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingRefreshSnapshots>>, void> = () => {
+
+
+          return  reportingRefreshSnapshots(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingRefreshSnapshotsMutationResult = NonNullable<Awaited<ReturnType<typeof reportingRefreshSnapshots>>>
+
+    export type ReportingRefreshSnapshotsMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Refresh KPI snapshots from domain providers
+ */
+export const useReportingRefreshSnapshots = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingRefreshSnapshots>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingRefreshSnapshots>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getReportingRefreshSnapshotsMutationOptions(options));
+    }
+
+export const getReportingListWidgetCatalogUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/widgets/catalog`
+}
+
+/**
+ * @summary Dashboard widget type catalogue
+ */
+export const reportingListWidgetCatalog = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingWidgetCatalogResponse> => {
+
+  return customFetch<ReportingWidgetCatalogResponse>(getReportingListWidgetCatalogUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListWidgetCatalogQueryKey = () => {
+    return [
+    `/api/v1/reporting/widgets/catalog`
+    ] as const;
+    }
+
+
+export const getReportingListWidgetCatalogQueryOptions = <TData = Awaited<ReturnType<typeof reportingListWidgetCatalog>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListWidgetCatalog>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListWidgetCatalogQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListWidgetCatalog>>> = ({ signal }) => reportingListWidgetCatalog({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListWidgetCatalog>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListWidgetCatalogQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListWidgetCatalog>>>
+export type ReportingListWidgetCatalogQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary Dashboard widget type catalogue
+ */
+
+export function useReportingListWidgetCatalog<TData = Awaited<ReturnType<typeof reportingListWidgetCatalog>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListWidgetCatalog>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListWidgetCatalogQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingListDashboardsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/dashboards`
+}
+
+/**
+ * @summary List available dashboards
+ */
+export const reportingListDashboards = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingDashboardListResponse> => {
+
+  return customFetch<ReportingDashboardListResponse>(getReportingListDashboardsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListDashboardsQueryKey = () => {
+    return [
+    `/api/v1/reporting/dashboards`
+    ] as const;
+    }
+
+
+export const getReportingListDashboardsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListDashboards>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListDashboards>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListDashboardsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListDashboards>>> = ({ signal }) => reportingListDashboards({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListDashboards>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListDashboardsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListDashboards>>>
+export type ReportingListDashboardsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List available dashboards
+ */
+
+export function useReportingListDashboards<TData = Awaited<ReturnType<typeof reportingListDashboards>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListDashboards>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListDashboardsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingGetDashboardUrl = (dashboardKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/dashboards/${dashboardKey}`
+}
+
+/**
+ * @summary Get dashboard with resolved widget data
+ */
+export const reportingGetDashboard = async (dashboardKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingDashboardView> => {
+
+  return customFetch<ReportingDashboardView>(getReportingGetDashboardUrl(dashboardKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetDashboardQueryKey = (dashboardKey: string,) => {
+    return [
+    `/api/v1/reporting/dashboards/${dashboardKey}`
+    ] as const;
+    }
+
+
+export const getReportingGetDashboardQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(dashboardKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetDashboardQueryKey(dashboardKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetDashboard>>> = ({ signal }) => reportingGetDashboard(dashboardKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: dashboardKey !== null && dashboardKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetDashboard>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetDashboard>>>
+export type ReportingGetDashboardQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get dashboard with resolved widget data
+ */
+
+export function useReportingGetDashboard<TData = Awaited<ReturnType<typeof reportingGetDashboard>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(
+ dashboardKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetDashboard>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetDashboardQueryOptions(dashboardKey,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingGetDashboardLayoutUrl = (dashboardKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/dashboards/${dashboardKey}/layout`
+}
+
+/**
+ * @summary Get user dashboard layout
+ */
+export const reportingGetDashboardLayout = async (dashboardKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingDashboardLayout> => {
+
+  return customFetch<ReportingDashboardLayout>(getReportingGetDashboardLayoutUrl(dashboardKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetDashboardLayoutQueryKey = (dashboardKey: string,) => {
+    return [
+    `/api/v1/reporting/dashboards/${dashboardKey}/layout`
+    ] as const;
+    }
+
+
+export const getReportingGetDashboardLayoutQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetDashboardLayout>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(dashboardKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetDashboardLayout>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetDashboardLayoutQueryKey(dashboardKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetDashboardLayout>>> = ({ signal }) => reportingGetDashboardLayout(dashboardKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: dashboardKey !== null && dashboardKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetDashboardLayout>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetDashboardLayoutQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetDashboardLayout>>>
+export type ReportingGetDashboardLayoutQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get user dashboard layout
+ */
+
+export function useReportingGetDashboardLayout<TData = Awaited<ReturnType<typeof reportingGetDashboardLayout>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(
+ dashboardKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetDashboardLayout>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetDashboardLayoutQueryOptions(dashboardKey,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingSaveDashboardLayoutUrl = (dashboardKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/dashboards/${dashboardKey}/layout`
+}
+
+/**
+ * @summary Save personalized dashboard layout
+ */
+export const reportingSaveDashboardLayout = async (dashboardKey: string,
+    reportingDashboardLayoutSaveRequest: ReportingDashboardLayoutSaveRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingDashboardLayout> => {
+
+  return customFetch<ReportingDashboardLayout>(getReportingSaveDashboardLayoutUrl(dashboardKey),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingDashboardLayoutSaveRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingSaveDashboardLayoutMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingSaveDashboardLayout>>, TError,{dashboardKey: string;data: BodyType<ReportingDashboardLayoutSaveRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingSaveDashboardLayout>>, TError,{dashboardKey: string;data: BodyType<ReportingDashboardLayoutSaveRequest>}, TContext> => {
+
+const mutationKey = ['reportingSaveDashboardLayout'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingSaveDashboardLayout>>, {dashboardKey: string;data: BodyType<ReportingDashboardLayoutSaveRequest>}> = (props) => {
+          const {dashboardKey,data} = props ?? {};
+
+          return  reportingSaveDashboardLayout(dashboardKey,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingSaveDashboardLayoutMutationResult = NonNullable<Awaited<ReturnType<typeof reportingSaveDashboardLayout>>>
+    export type ReportingSaveDashboardLayoutMutationBody = BodyType<ReportingDashboardLayoutSaveRequest>
+    export type ReportingSaveDashboardLayoutMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Save personalized dashboard layout
+ */
+export const useReportingSaveDashboardLayout = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingSaveDashboardLayout>>, TError,{dashboardKey: string;data: BodyType<ReportingDashboardLayoutSaveRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingSaveDashboardLayout>>,
+        TError,
+        {dashboardKey: string;data: BodyType<ReportingDashboardLayoutSaveRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingSaveDashboardLayoutMutationOptions(options));
+    }
+
+export const getReportingListReportsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/reports`
+}
+
+/**
+ * @summary List saved report definitions
+ */
+export const reportingListReports = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingReportListResponse> => {
+
+  return customFetch<ReportingReportListResponse>(getReportingListReportsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListReportsQueryKey = () => {
+    return [
+    `/api/v1/reporting/reports`
+    ] as const;
+    }
+
+
+export const getReportingListReportsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListReports>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListReports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListReportsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListReports>>> = ({ signal }) => reportingListReports({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListReports>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListReportsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListReports>>>
+export type ReportingListReportsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List saved report definitions
+ */
+
+export function useReportingListReports<TData = Awaited<ReturnType<typeof reportingListReports>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListReports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListReportsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingCreateReportUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/reports`
+}
+
+/**
+ * @summary Create a saved report definition
+ */
+export const reportingCreateReport = async (reportingReportCreateRequest: ReportingReportCreateRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingReportDetail> => {
+
+  return customFetch<ReportingReportDetail>(getReportingCreateReportUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingReportCreateRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingCreateReportMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateReport>>, TError,{data: BodyType<ReportingReportCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingCreateReport>>, TError,{data: BodyType<ReportingReportCreateRequest>}, TContext> => {
+
+const mutationKey = ['reportingCreateReport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingCreateReport>>, {data: BodyType<ReportingReportCreateRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  reportingCreateReport(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingCreateReportMutationResult = NonNullable<Awaited<ReturnType<typeof reportingCreateReport>>>
+    export type ReportingCreateReportMutationBody = BodyType<ReportingReportCreateRequest>
+    export type ReportingCreateReportMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ConflictResponse>
+
+    /**
+ * @summary Create a saved report definition
+ */
+export const useReportingCreateReport = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateReport>>, TError,{data: BodyType<ReportingReportCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingCreateReport>>,
+        TError,
+        {data: BodyType<ReportingReportCreateRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingCreateReportMutationOptions(options));
+    }
+
+export const getReportingGetReportUrl = (reportKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/reports/${reportKey}`
+}
+
+/**
+ * @summary Get a saved report definition
+ */
+export const reportingGetReport = async (reportKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingReportDetail> => {
+
+  return customFetch<ReportingReportDetail>(getReportingGetReportUrl(reportKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetReportQueryKey = (reportKey: string,) => {
+    return [
+    `/api/v1/reporting/reports/${reportKey}`
+    ] as const;
+    }
+
+
+export const getReportingGetReportQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetReport>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(reportKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetReport>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetReportQueryKey(reportKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetReport>>> = ({ signal }) => reportingGetReport(reportKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: reportKey !== null && reportKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetReport>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetReportQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetReport>>>
+export type ReportingGetReportQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get a saved report definition
+ */
+
+export function useReportingGetReport<TData = Awaited<ReturnType<typeof reportingGetReport>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(
+ reportKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetReport>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetReportQueryOptions(reportKey,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingUpdateReportUrl = (reportKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/reports/${reportKey}`
+}
+
+/**
+ * @summary Update a saved report definition
+ */
+export const reportingUpdateReport = async (reportKey: string,
+    reportingReportUpdateRequest: ReportingReportUpdateRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingReportDetail> => {
+
+  return customFetch<ReportingReportDetail>(getReportingUpdateReportUrl(reportKey),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingReportUpdateRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingUpdateReportMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateReport>>, TError,{reportKey: string;data: BodyType<ReportingReportUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateReport>>, TError,{reportKey: string;data: BodyType<ReportingReportUpdateRequest>}, TContext> => {
+
+const mutationKey = ['reportingUpdateReport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingUpdateReport>>, {reportKey: string;data: BodyType<ReportingReportUpdateRequest>}> = (props) => {
+          const {reportKey,data} = props ?? {};
+
+          return  reportingUpdateReport(reportKey,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingUpdateReportMutationResult = NonNullable<Awaited<ReturnType<typeof reportingUpdateReport>>>
+    export type ReportingUpdateReportMutationBody = BodyType<ReportingReportUpdateRequest>
+    export type ReportingUpdateReportMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Update a saved report definition
+ */
+export const useReportingUpdateReport = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateReport>>, TError,{reportKey: string;data: BodyType<ReportingReportUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingUpdateReport>>,
+        TError,
+        {reportKey: string;data: BodyType<ReportingReportUpdateRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingUpdateReportMutationOptions(options));
+    }
+
+export const getReportingDeleteReportUrl = (reportKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/reports/${reportKey}`
+}
+
+/**
+ * @summary Delete a saved report definition
+ */
+export const reportingDeleteReport = async (reportKey: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getReportingDeleteReportUrl(reportKey),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingDeleteReportMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingDeleteReport>>, TError,{reportKey: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingDeleteReport>>, TError,{reportKey: string}, TContext> => {
+
+const mutationKey = ['reportingDeleteReport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingDeleteReport>>, {reportKey: string}> = (props) => {
+          const {reportKey} = props ?? {};
+
+          return  reportingDeleteReport(reportKey,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingDeleteReportMutationResult = NonNullable<Awaited<ReturnType<typeof reportingDeleteReport>>>
+
+    export type ReportingDeleteReportMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Delete a saved report definition
+ */
+export const useReportingDeleteReport = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingDeleteReport>>, TError,{reportKey: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingDeleteReport>>,
+        TError,
+        {reportKey: string},
+        TContext
+      > => {
+      return useMutation(getReportingDeleteReportMutationOptions(options));
+    }
+
+export const getReportingRunReportUrl = (reportKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/reports/${reportKey}/run`
+}
+
+/**
+ * @summary Execute a saved report and return tabular results
+ */
+export const reportingRunReport = async (reportKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingReportExecutionResult> => {
+
+  return customFetch<ReportingReportExecutionResult>(getReportingRunReportUrl(reportKey),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingRunReportMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingRunReport>>, TError,{reportKey: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingRunReport>>, TError,{reportKey: string}, TContext> => {
+
+const mutationKey = ['reportingRunReport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingRunReport>>, {reportKey: string}> = (props) => {
+          const {reportKey} = props ?? {};
+
+          return  reportingRunReport(reportKey,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingRunReportMutationResult = NonNullable<Awaited<ReturnType<typeof reportingRunReport>>>
+
+    export type ReportingRunReportMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Execute a saved report and return tabular results
+ */
+export const useReportingRunReport = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingRunReport>>, TError,{reportKey: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingRunReport>>,
+        TError,
+        {reportKey: string},
+        TContext
+      > => {
+      return useMutation(getReportingRunReportMutationOptions(options));
+    }
+
+export const getReportingListExportsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/exports`
+}
+
+/**
+ * @summary List report export jobs
+ */
+export const reportingListExports = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingExportListResponse> => {
+
+  return customFetch<ReportingExportListResponse>(getReportingListExportsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListExportsQueryKey = () => {
+    return [
+    `/api/v1/reporting/exports`
+    ] as const;
+    }
+
+
+export const getReportingListExportsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListExports>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListExports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListExportsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListExports>>> = ({ signal }) => reportingListExports({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListExports>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListExportsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListExports>>>
+export type ReportingListExportsQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List report export jobs
+ */
+
+export function useReportingListExports<TData = Awaited<ReturnType<typeof reportingListExports>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListExports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListExportsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingCreateExportUrl = (reportKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/reports/${reportKey}/export`
+}
+
+/**
+ * @summary Export a report to CSV, XLSX, or PDF
+ */
+export const reportingCreateExport = async (reportKey: string,
+    reportingExportCreateRequest?: ReportingExportCreateRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingExportJob> => {
+
+  return customFetch<ReportingExportJob>(getReportingCreateExportUrl(reportKey),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingExportCreateRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingCreateExportMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateExport>>, TError,{reportKey: string;data?: BodyType<ReportingExportCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingCreateExport>>, TError,{reportKey: string;data?: BodyType<ReportingExportCreateRequest>}, TContext> => {
+
+const mutationKey = ['reportingCreateExport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingCreateExport>>, {reportKey: string;data?: BodyType<ReportingExportCreateRequest>}> = (props) => {
+          const {reportKey,data} = props ?? {};
+
+          return  reportingCreateExport(reportKey,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingCreateExportMutationResult = NonNullable<Awaited<ReturnType<typeof reportingCreateExport>>>
+    export type ReportingCreateExportMutationBody = BodyType<ReportingExportCreateRequest> | undefined
+    export type ReportingCreateExportMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Export a report to CSV, XLSX, or PDF
+ */
+export const useReportingCreateExport = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateExport>>, TError,{reportKey: string;data?: BodyType<ReportingExportCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingCreateExport>>,
+        TError,
+        {reportKey: string;data?: BodyType<ReportingExportCreateRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingCreateExportMutationOptions(options));
+    }
+
+export const getReportingGetExportUrl = (jobId: string,) => {
+
+
+
+
+  return `/api/v1/reporting/exports/${jobId}`
+}
+
+/**
+ * @summary Get export job status
+ */
+export const reportingGetExport = async (jobId: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingExportJob> => {
+
+  return customFetch<ReportingExportJob>(getReportingGetExportUrl(jobId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetExportQueryKey = (jobId: string,) => {
+    return [
+    `/api/v1/reporting/exports/${jobId}`
+    ] as const;
+    }
+
+
+export const getReportingGetExportQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetExport>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(jobId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetExport>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetExportQueryKey(jobId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetExport>>> = ({ signal }) => reportingGetExport(jobId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: jobId !== null && jobId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetExport>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetExportQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetExport>>>
+export type ReportingGetExportQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get export job status
+ */
+
+export function useReportingGetExport<TData = Awaited<ReturnType<typeof reportingGetExport>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(
+ jobId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetExport>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetExportQueryOptions(jobId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingGetExportDownloadUrl = (jobId: string,) => {
+
+
+
+
+  return `/api/v1/reporting/exports/${jobId}/download`
+}
+
+/**
+ * @summary Get signed download URL for a completed export
+ */
+export const reportingGetExportDownload = async (jobId: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingExportDownload> => {
+
+  return customFetch<ReportingExportDownload>(getReportingGetExportDownloadUrl(jobId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetExportDownloadQueryKey = (jobId: string,) => {
+    return [
+    `/api/v1/reporting/exports/${jobId}/download`
+    ] as const;
+    }
+
+
+export const getReportingGetExportDownloadQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetExportDownload>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>>(jobId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetExportDownload>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetExportDownloadQueryKey(jobId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetExportDownload>>> = ({ signal }) => reportingGetExportDownload(jobId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: jobId !== null && jobId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetExportDownload>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetExportDownloadQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetExportDownload>>>
+export type ReportingGetExportDownloadQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>
+
+
+/**
+ * @summary Get signed download URL for a completed export
+ */
+
+export function useReportingGetExportDownload<TData = Awaited<ReturnType<typeof reportingGetExportDownload>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse | ConflictResponse>>(
+ jobId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetExportDownload>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetExportDownloadQueryOptions(jobId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingListSchedulesUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/schedules`
+}
+
+/**
+ * @summary List report delivery schedules
+ */
+export const reportingListSchedules = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingScheduleListResponse> => {
+
+  return customFetch<ReportingScheduleListResponse>(getReportingListSchedulesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListSchedulesQueryKey = () => {
+    return [
+    `/api/v1/reporting/schedules`
+    ] as const;
+    }
+
+
+export const getReportingListSchedulesQueryOptions = <TData = Awaited<ReturnType<typeof reportingListSchedules>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListSchedules>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListSchedulesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListSchedules>>> = ({ signal }) => reportingListSchedules({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListSchedules>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListSchedulesQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListSchedules>>>
+export type ReportingListSchedulesQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+
+/**
+ * @summary List report delivery schedules
+ */
+
+export function useReportingListSchedules<TData = Awaited<ReturnType<typeof reportingListSchedules>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListSchedules>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListSchedulesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingCreateScheduleUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/schedules`
+}
+
+/**
+ * @summary Create a report delivery schedule
+ */
+export const reportingCreateSchedule = async (reportingScheduleCreateRequest: ReportingScheduleCreateRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingSchedule> => {
+
+  return customFetch<ReportingSchedule>(getReportingCreateScheduleUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingScheduleCreateRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingCreateScheduleMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateSchedule>>, TError,{data: BodyType<ReportingScheduleCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingCreateSchedule>>, TError,{data: BodyType<ReportingScheduleCreateRequest>}, TContext> => {
+
+const mutationKey = ['reportingCreateSchedule'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingCreateSchedule>>, {data: BodyType<ReportingScheduleCreateRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  reportingCreateSchedule(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingCreateScheduleMutationResult = NonNullable<Awaited<ReturnType<typeof reportingCreateSchedule>>>
+    export type ReportingCreateScheduleMutationBody = BodyType<ReportingScheduleCreateRequest>
+    export type ReportingCreateScheduleMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ConflictResponse>
+
+    /**
+ * @summary Create a report delivery schedule
+ */
+export const useReportingCreateSchedule = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | ConflictResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateSchedule>>, TError,{data: BodyType<ReportingScheduleCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingCreateSchedule>>,
+        TError,
+        {data: BodyType<ReportingScheduleCreateRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingCreateScheduleMutationOptions(options));
+    }
+
+export const getReportingRunDueSchedulesUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/schedules/run-due`
+}
+
+/**
+ * @summary Process due schedules for the organisation
+ */
+export const reportingRunDueSchedules = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingScheduleRunResult> => {
+
+  return customFetch<ReportingScheduleRunResult>(getReportingRunDueSchedulesUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingRunDueSchedulesMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingRunDueSchedules>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingRunDueSchedules>>, TError,void, TContext> => {
+
+const mutationKey = ['reportingRunDueSchedules'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingRunDueSchedules>>, void> = () => {
+
+
+          return  reportingRunDueSchedules(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingRunDueSchedulesMutationResult = NonNullable<Awaited<ReturnType<typeof reportingRunDueSchedules>>>
+
+    export type ReportingRunDueSchedulesMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Process due schedules for the organisation
+ */
+export const useReportingRunDueSchedules = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingRunDueSchedules>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingRunDueSchedules>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getReportingRunDueSchedulesMutationOptions(options));
+    }
+
+export const getReportingGetScheduleUrl = (scheduleKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/schedules/${scheduleKey}`
+}
+
+/**
+ * @summary Get a report schedule
+ */
+export const reportingGetSchedule = async (scheduleKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingSchedule> => {
+
+  return customFetch<ReportingSchedule>(getReportingGetScheduleUrl(scheduleKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetScheduleQueryKey = (scheduleKey: string,) => {
+    return [
+    `/api/v1/reporting/schedules/${scheduleKey}`
+    ] as const;
+    }
+
+
+export const getReportingGetScheduleQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetSchedule>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(scheduleKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetSchedule>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetScheduleQueryKey(scheduleKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetSchedule>>> = ({ signal }) => reportingGetSchedule(scheduleKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: scheduleKey !== null && scheduleKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetSchedule>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetScheduleQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetSchedule>>>
+export type ReportingGetScheduleQueryError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get a report schedule
+ */
+
+export function useReportingGetSchedule<TData = Awaited<ReturnType<typeof reportingGetSchedule>>, TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>>(
+ scheduleKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetSchedule>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetScheduleQueryOptions(scheduleKey,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingUpdateScheduleUrl = (scheduleKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/schedules/${scheduleKey}`
+}
+
+/**
+ * @summary Update a report schedule
+ */
+export const reportingUpdateSchedule = async (scheduleKey: string,
+    reportingScheduleUpdateRequest: ReportingScheduleUpdateRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingSchedule> => {
+
+  return customFetch<ReportingSchedule>(getReportingUpdateScheduleUrl(scheduleKey),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingScheduleUpdateRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingUpdateScheduleMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateSchedule>>, TError,{scheduleKey: string;data: BodyType<ReportingScheduleUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateSchedule>>, TError,{scheduleKey: string;data: BodyType<ReportingScheduleUpdateRequest>}, TContext> => {
+
+const mutationKey = ['reportingUpdateSchedule'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingUpdateSchedule>>, {scheduleKey: string;data: BodyType<ReportingScheduleUpdateRequest>}> = (props) => {
+          const {scheduleKey,data} = props ?? {};
+
+          return  reportingUpdateSchedule(scheduleKey,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingUpdateScheduleMutationResult = NonNullable<Awaited<ReturnType<typeof reportingUpdateSchedule>>>
+    export type ReportingUpdateScheduleMutationBody = BodyType<ReportingScheduleUpdateRequest>
+    export type ReportingUpdateScheduleMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Update a report schedule
+ */
+export const useReportingUpdateSchedule = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateSchedule>>, TError,{scheduleKey: string;data: BodyType<ReportingScheduleUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingUpdateSchedule>>,
+        TError,
+        {scheduleKey: string;data: BodyType<ReportingScheduleUpdateRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingUpdateScheduleMutationOptions(options));
+    }
+
+export const getReportingDeleteScheduleUrl = (scheduleKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/schedules/${scheduleKey}`
+}
+
+/**
+ * @summary Delete a report schedule
+ */
+export const reportingDeleteSchedule = async (scheduleKey: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getReportingDeleteScheduleUrl(scheduleKey),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingDeleteScheduleMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingDeleteSchedule>>, TError,{scheduleKey: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingDeleteSchedule>>, TError,{scheduleKey: string}, TContext> => {
+
+const mutationKey = ['reportingDeleteSchedule'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingDeleteSchedule>>, {scheduleKey: string}> = (props) => {
+          const {scheduleKey} = props ?? {};
+
+          return  reportingDeleteSchedule(scheduleKey,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingDeleteScheduleMutationResult = NonNullable<Awaited<ReturnType<typeof reportingDeleteSchedule>>>
+
+    export type ReportingDeleteScheduleMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>
+
+    /**
+ * @summary Delete a report schedule
+ */
+export const useReportingDeleteSchedule = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingDeleteSchedule>>, TError,{scheduleKey: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingDeleteSchedule>>,
+        TError,
+        {scheduleKey: string},
+        TContext
+      > => {
+      return useMutation(getReportingDeleteScheduleMutationOptions(options));
+    }
+
+export const getReportingListBiConnectionsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/bi/connections`
+}
+
+/**
+ * @summary List Power BI connections
+ */
+export const reportingListBiConnections = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingListBiConnections200> => {
+
+  return customFetch<ReportingListBiConnections200>(getReportingListBiConnectionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListBiConnectionsQueryKey = () => {
+    return [
+    `/api/v1/reporting/bi/connections`
+    ] as const;
+    }
+
+
+export const getReportingListBiConnectionsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListBiConnections>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListBiConnections>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListBiConnectionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListBiConnections>>> = ({ signal }) => reportingListBiConnections({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListBiConnections>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListBiConnectionsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListBiConnections>>>
+export type ReportingListBiConnectionsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List Power BI connections
+ */
+
+export function useReportingListBiConnections<TData = Awaited<ReturnType<typeof reportingListBiConnections>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListBiConnections>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListBiConnectionsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingCreateBiConnectionUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/bi/connections`
+}
+
+/**
+ * @summary Create Power BI connection
+ */
+export const reportingCreateBiConnection = async (reportingBiConnectionCreateRequest: ReportingBiConnectionCreateRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingBiConnection> => {
+
+  return customFetch<ReportingBiConnection>(getReportingCreateBiConnectionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingBiConnectionCreateRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingCreateBiConnectionMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateBiConnection>>, TError,{data: BodyType<ReportingBiConnectionCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingCreateBiConnection>>, TError,{data: BodyType<ReportingBiConnectionCreateRequest>}, TContext> => {
+
+const mutationKey = ['reportingCreateBiConnection'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingCreateBiConnection>>, {data: BodyType<ReportingBiConnectionCreateRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  reportingCreateBiConnection(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingCreateBiConnectionMutationResult = NonNullable<Awaited<ReturnType<typeof reportingCreateBiConnection>>>
+    export type ReportingCreateBiConnectionMutationBody = BodyType<ReportingBiConnectionCreateRequest>
+    export type ReportingCreateBiConnectionMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Create Power BI connection
+ */
+export const useReportingCreateBiConnection = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateBiConnection>>, TError,{data: BodyType<ReportingBiConnectionCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingCreateBiConnection>>,
+        TError,
+        {data: BodyType<ReportingBiConnectionCreateRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingCreateBiConnectionMutationOptions(options));
+    }
+
+export const getReportingGetBiConnectionUrl = (connectionKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/bi/connections/${connectionKey}`
+}
+
+/**
+ * @summary Get Power BI connection
+ */
+export const reportingGetBiConnection = async (connectionKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingBiConnection> => {
+
+  return customFetch<ReportingBiConnection>(getReportingGetBiConnectionUrl(connectionKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetBiConnectionQueryKey = (connectionKey: string,) => {
+    return [
+    `/api/v1/reporting/bi/connections/${connectionKey}`
+    ] as const;
+    }
+
+
+export const getReportingGetBiConnectionQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetBiConnection>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(connectionKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiConnection>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetBiConnectionQueryKey(connectionKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetBiConnection>>> = ({ signal }) => reportingGetBiConnection(connectionKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: connectionKey !== null && connectionKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiConnection>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetBiConnectionQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetBiConnection>>>
+export type ReportingGetBiConnectionQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get Power BI connection
+ */
+
+export function useReportingGetBiConnection<TData = Awaited<ReturnType<typeof reportingGetBiConnection>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+ connectionKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiConnection>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetBiConnectionQueryOptions(connectionKey,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingUpdateBiConnectionUrl = (connectionKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/bi/connections/${connectionKey}`
+}
+
+/**
+ * @summary Update Power BI connection
+ */
+export const reportingUpdateBiConnection = async (connectionKey: string,
+    reportingBiConnectionUpdateRequest: ReportingBiConnectionUpdateRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingBiConnection> => {
+
+  return customFetch<ReportingBiConnection>(getReportingUpdateBiConnectionUrl(connectionKey),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingBiConnectionUpdateRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingUpdateBiConnectionMutationOptions = <TError = ErrorType<UnauthorizedResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateBiConnection>>, TError,{connectionKey: string;data: BodyType<ReportingBiConnectionUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateBiConnection>>, TError,{connectionKey: string;data: BodyType<ReportingBiConnectionUpdateRequest>}, TContext> => {
+
+const mutationKey = ['reportingUpdateBiConnection'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingUpdateBiConnection>>, {connectionKey: string;data: BodyType<ReportingBiConnectionUpdateRequest>}> = (props) => {
+          const {connectionKey,data} = props ?? {};
+
+          return  reportingUpdateBiConnection(connectionKey,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingUpdateBiConnectionMutationResult = NonNullable<Awaited<ReturnType<typeof reportingUpdateBiConnection>>>
+    export type ReportingUpdateBiConnectionMutationBody = BodyType<ReportingBiConnectionUpdateRequest>
+    export type ReportingUpdateBiConnectionMutationError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+    /**
+ * @summary Update Power BI connection
+ */
+export const useReportingUpdateBiConnection = <TError = ErrorType<UnauthorizedResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateBiConnection>>, TError,{connectionKey: string;data: BodyType<ReportingBiConnectionUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingUpdateBiConnection>>,
+        TError,
+        {connectionKey: string;data: BodyType<ReportingBiConnectionUpdateRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingUpdateBiConnectionMutationOptions(options));
+    }
+
+export const getReportingGetBiManifestUrl = (connectionKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/bi/connections/${connectionKey}/manifest`
+}
+
+/**
+ * @summary Get incremental refresh manifest for Power BI
+ */
+export const reportingGetBiManifest = async (connectionKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingBiIncrementalManifest> => {
+
+  return customFetch<ReportingBiIncrementalManifest>(getReportingGetBiManifestUrl(connectionKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetBiManifestQueryKey = (connectionKey: string,) => {
+    return [
+    `/api/v1/reporting/bi/connections/${connectionKey}/manifest`
+    ] as const;
+    }
+
+
+export const getReportingGetBiManifestQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetBiManifest>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(connectionKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiManifest>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetBiManifestQueryKey(connectionKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetBiManifest>>> = ({ signal }) => reportingGetBiManifest(connectionKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: connectionKey !== null && connectionKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiManifest>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetBiManifestQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetBiManifest>>>
+export type ReportingGetBiManifestQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get incremental refresh manifest for Power BI
+ */
+
+export function useReportingGetBiManifest<TData = Awaited<ReturnType<typeof reportingGetBiManifest>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+ connectionKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiManifest>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetBiManifestQueryOptions(connectionKey,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingListBiExportsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/bi/exports`
+}
+
+/**
+ * @summary List BI dataset export jobs
+ */
+export const reportingListBiExports = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingListBiExports200> => {
+
+  return customFetch<ReportingListBiExports200>(getReportingListBiExportsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListBiExportsQueryKey = () => {
+    return [
+    `/api/v1/reporting/bi/exports`
+    ] as const;
+    }
+
+
+export const getReportingListBiExportsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListBiExports>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListBiExports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListBiExportsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListBiExports>>> = ({ signal }) => reportingListBiExports({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListBiExports>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListBiExportsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListBiExports>>>
+export type ReportingListBiExportsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List BI dataset export jobs
+ */
+
+export function useReportingListBiExports<TData = Awaited<ReturnType<typeof reportingListBiExports>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListBiExports>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListBiExportsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingCreateBiExportUrl = (connectionKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/bi/connections/${connectionKey}/export`
+}
+
+/**
+ * @summary Export dataset for Power BI consumption
+ */
+export const reportingCreateBiExport = async (connectionKey: string,
+    reportingCreateBiExportBody?: ReportingCreateBiExportBody, options?: Parameters<typeof customFetch>[1]): Promise<ReportingBiExportJob> => {
+
+  return customFetch<ReportingBiExportJob>(getReportingCreateBiExportUrl(connectionKey),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingCreateBiExportBody)
+  }
+);}
+
+
+
+
+
+export const getReportingCreateBiExportMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateBiExport>>, TError,{connectionKey: string;data?: BodyType<ReportingCreateBiExportBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingCreateBiExport>>, TError,{connectionKey: string;data?: BodyType<ReportingCreateBiExportBody>}, TContext> => {
+
+const mutationKey = ['reportingCreateBiExport'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingCreateBiExport>>, {connectionKey: string;data?: BodyType<ReportingCreateBiExportBody>}> = (props) => {
+          const {connectionKey,data} = props ?? {};
+
+          return  reportingCreateBiExport(connectionKey,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingCreateBiExportMutationResult = NonNullable<Awaited<ReturnType<typeof reportingCreateBiExport>>>
+    export type ReportingCreateBiExportMutationBody = BodyType<ReportingCreateBiExportBody> | undefined
+    export type ReportingCreateBiExportMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Export dataset for Power BI consumption
+ */
+export const useReportingCreateBiExport = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateBiExport>>, TError,{connectionKey: string;data?: BodyType<ReportingCreateBiExportBody>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingCreateBiExport>>,
+        TError,
+        {connectionKey: string;data?: BodyType<ReportingCreateBiExportBody>},
+        TContext
+      > => {
+      return useMutation(getReportingCreateBiExportMutationOptions(options));
+    }
+
+export const getReportingGetBiExportUrl = (exportId: string,) => {
+
+
+
+
+  return `/api/v1/reporting/bi/exports/${exportId}`
+}
+
+/**
+ * @summary Get BI export job
+ */
+export const reportingGetBiExport = async (exportId: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingBiExportJob> => {
+
+  return customFetch<ReportingBiExportJob>(getReportingGetBiExportUrl(exportId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetBiExportQueryKey = (exportId: string,) => {
+    return [
+    `/api/v1/reporting/bi/exports/${exportId}`
+    ] as const;
+    }
+
+
+export const getReportingGetBiExportQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetBiExport>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(exportId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiExport>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetBiExportQueryKey(exportId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetBiExport>>> = ({ signal }) => reportingGetBiExport(exportId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: exportId !== null && exportId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiExport>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetBiExportQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetBiExport>>>
+export type ReportingGetBiExportQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get BI export job
+ */
+
+export function useReportingGetBiExport<TData = Awaited<ReturnType<typeof reportingGetBiExport>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+ exportId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiExport>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetBiExportQueryOptions(exportId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingGetBiExportDownloadUrl = (exportId: string,) => {
+
+
+
+
+  return `/api/v1/reporting/bi/exports/${exportId}/download`
+}
+
+/**
+ * @summary Get signed download URL for BI export
+ */
+export const reportingGetBiExportDownload = async (exportId: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingBiExportDownload> => {
+
+  return customFetch<ReportingBiExportDownload>(getReportingGetBiExportDownloadUrl(exportId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetBiExportDownloadQueryKey = (exportId: string,) => {
+    return [
+    `/api/v1/reporting/bi/exports/${exportId}/download`
+    ] as const;
+    }
+
+
+export const getReportingGetBiExportDownloadQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetBiExportDownload>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(exportId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiExportDownload>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetBiExportDownloadQueryKey(exportId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetBiExportDownload>>> = ({ signal }) => reportingGetBiExportDownload(exportId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: exportId !== null && exportId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiExportDownload>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetBiExportDownloadQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetBiExportDownload>>>
+export type ReportingGetBiExportDownloadQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get signed download URL for BI export
+ */
+
+export function useReportingGetBiExportDownload<TData = Awaited<ReturnType<typeof reportingGetBiExportDownload>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+ exportId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetBiExportDownload>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetBiExportDownloadQueryOptions(exportId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingListBenchmarkCohortsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/benchmarks/cohorts`
+}
+
+/**
+ * @summary List benchmark cohorts
+ */
+export const reportingListBenchmarkCohorts = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingListBenchmarkCohorts200> => {
+
+  return customFetch<ReportingListBenchmarkCohorts200>(getReportingListBenchmarkCohortsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListBenchmarkCohortsQueryKey = () => {
+    return [
+    `/api/v1/reporting/benchmarks/cohorts`
+    ] as const;
+    }
+
+
+export const getReportingListBenchmarkCohortsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListBenchmarkCohorts>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListBenchmarkCohorts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListBenchmarkCohortsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListBenchmarkCohorts>>> = ({ signal }) => reportingListBenchmarkCohorts({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListBenchmarkCohorts>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListBenchmarkCohortsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListBenchmarkCohorts>>>
+export type ReportingListBenchmarkCohortsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List benchmark cohorts
+ */
+
+export function useReportingListBenchmarkCohorts<TData = Awaited<ReturnType<typeof reportingListBenchmarkCohorts>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListBenchmarkCohorts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListBenchmarkCohortsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingCompareBenchmarksUrl = (params?: ReportingCompareBenchmarksParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/v1/reporting/benchmarks/compare?${stringifiedParams}` : `/api/v1/reporting/benchmarks/compare`
+}
+
+/**
+ * @summary Compare organization KPIs to benchmark cohort
+ */
+export const reportingCompareBenchmarks = async (params?: ReportingCompareBenchmarksParams, options?: Parameters<typeof customFetch>[1]): Promise<ReportingBenchmarkComparison> => {
+
+  return customFetch<ReportingBenchmarkComparison>(getReportingCompareBenchmarksUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingCompareBenchmarksQueryKey = (params?: ReportingCompareBenchmarksParams,) => {
+    return [
+    `/api/v1/reporting/benchmarks/compare`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getReportingCompareBenchmarksQueryOptions = <TData = Awaited<ReturnType<typeof reportingCompareBenchmarks>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(params?: ReportingCompareBenchmarksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingCompareBenchmarks>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingCompareBenchmarksQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingCompareBenchmarks>>> = ({ signal }) => reportingCompareBenchmarks(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingCompareBenchmarks>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingCompareBenchmarksQueryResult = NonNullable<Awaited<ReturnType<typeof reportingCompareBenchmarks>>>
+export type ReportingCompareBenchmarksQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary Compare organization KPIs to benchmark cohort
+ */
+
+export function useReportingCompareBenchmarks<TData = Awaited<ReturnType<typeof reportingCompareBenchmarks>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+ params?: ReportingCompareBenchmarksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingCompareBenchmarks>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingCompareBenchmarksQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingGetTrendAnalysisUrl = (kpiKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/trends/${kpiKey}`
+}
+
+/**
+ * @summary Trend analysis for a KPI
+ */
+export const reportingGetTrendAnalysis = async (kpiKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingTrendAnalysis> => {
+
+  return customFetch<ReportingTrendAnalysis>(getReportingGetTrendAnalysisUrl(kpiKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetTrendAnalysisQueryKey = (kpiKey: string,) => {
+    return [
+    `/api/v1/reporting/trends/${kpiKey}`
+    ] as const;
+    }
+
+
+export const getReportingGetTrendAnalysisQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetTrendAnalysis>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(kpiKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetTrendAnalysis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetTrendAnalysisQueryKey(kpiKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetTrendAnalysis>>> = ({ signal }) => reportingGetTrendAnalysis(kpiKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: kpiKey !== null && kpiKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetTrendAnalysis>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetTrendAnalysisQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetTrendAnalysis>>>
+export type ReportingGetTrendAnalysisQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary Trend analysis for a KPI
+ */
+
+export function useReportingGetTrendAnalysis<TData = Awaited<ReturnType<typeof reportingGetTrendAnalysis>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+ kpiKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetTrendAnalysis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetTrendAnalysisQueryOptions(kpiKey,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingListForecastsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/forecasts`
+}
+
+/**
+ * @summary List predictive forecast stubs
+ */
+export const reportingListForecasts = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingListForecasts200> => {
+
+  return customFetch<ReportingListForecasts200>(getReportingListForecastsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListForecastsQueryKey = () => {
+    return [
+    `/api/v1/reporting/forecasts`
+    ] as const;
+    }
+
+
+export const getReportingListForecastsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListForecasts>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListForecasts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListForecastsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListForecasts>>> = ({ signal }) => reportingListForecasts({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListForecasts>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListForecastsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListForecasts>>>
+export type ReportingListForecastsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List predictive forecast stubs
+ */
+
+export function useReportingListForecasts<TData = Awaited<ReturnType<typeof reportingListForecasts>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListForecasts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListForecastsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingRefreshForecastsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/forecasts/refresh`
+}
+
+/**
+ * @summary Refresh predictive forecast stubs
+ */
+export const reportingRefreshForecasts = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingRefreshForecasts202> => {
+
+  return customFetch<ReportingRefreshForecasts202>(getReportingRefreshForecastsUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingRefreshForecastsMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingRefreshForecasts>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingRefreshForecasts>>, TError,void, TContext> => {
+
+const mutationKey = ['reportingRefreshForecasts'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingRefreshForecasts>>, void> = () => {
+
+
+          return  reportingRefreshForecasts(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingRefreshForecastsMutationResult = NonNullable<Awaited<ReturnType<typeof reportingRefreshForecasts>>>
+
+    export type ReportingRefreshForecastsMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Refresh predictive forecast stubs
+ */
+export const useReportingRefreshForecasts = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingRefreshForecasts>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingRefreshForecasts>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getReportingRefreshForecastsMutationOptions(options));
+    }
+
+export const getReportingGetForecastUrl = (kpiKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/forecasts/${kpiKey}`
+}
+
+/**
+ * @summary Get forecast for a KPI
+ */
+export const reportingGetForecast = async (kpiKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingForecast> => {
+
+  return customFetch<ReportingForecast>(getReportingGetForecastUrl(kpiKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetForecastQueryKey = (kpiKey: string,) => {
+    return [
+    `/api/v1/reporting/forecasts/${kpiKey}`
+    ] as const;
+    }
+
+
+export const getReportingGetForecastQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetForecast>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(kpiKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetForecast>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetForecastQueryKey(kpiKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetForecast>>> = ({ signal }) => reportingGetForecast(kpiKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: kpiKey !== null && kpiKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetForecast>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetForecastQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetForecast>>>
+export type ReportingGetForecastQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get forecast for a KPI
+ */
+
+export function useReportingGetForecast<TData = Awaited<ReturnType<typeof reportingGetForecast>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+ kpiKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetForecast>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetForecastQueryOptions(kpiKey,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingListSubscriptionsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/subscriptions`
+}
+
+/**
+ * @summary List KPI threshold subscriptions
+ */
+export const reportingListSubscriptions = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingListSubscriptions200> => {
+
+  return customFetch<ReportingListSubscriptions200>(getReportingListSubscriptionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingListSubscriptionsQueryKey = () => {
+    return [
+    `/api/v1/reporting/subscriptions`
+    ] as const;
+    }
+
+
+export const getReportingListSubscriptionsQueryOptions = <TData = Awaited<ReturnType<typeof reportingListSubscriptions>>, TError = ErrorType<UnauthorizedResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListSubscriptions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingListSubscriptionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingListSubscriptions>>> = ({ signal }) => reportingListSubscriptions({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingListSubscriptions>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingListSubscriptionsQueryResult = NonNullable<Awaited<ReturnType<typeof reportingListSubscriptions>>>
+export type ReportingListSubscriptionsQueryError = ErrorType<UnauthorizedResponse>
+
+
+/**
+ * @summary List KPI threshold subscriptions
+ */
+
+export function useReportingListSubscriptions<TData = Awaited<ReturnType<typeof reportingListSubscriptions>>, TError = ErrorType<UnauthorizedResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingListSubscriptions>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingListSubscriptionsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingCreateSubscriptionUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/subscriptions`
+}
+
+/**
+ * @summary Create KPI threshold subscription
+ */
+export const reportingCreateSubscription = async (reportingKpiSubscriptionCreateRequest: ReportingKpiSubscriptionCreateRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingKpiSubscription> => {
+
+  return customFetch<ReportingKpiSubscription>(getReportingCreateSubscriptionUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingKpiSubscriptionCreateRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingCreateSubscriptionMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateSubscription>>, TError,{data: BodyType<ReportingKpiSubscriptionCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingCreateSubscription>>, TError,{data: BodyType<ReportingKpiSubscriptionCreateRequest>}, TContext> => {
+
+const mutationKey = ['reportingCreateSubscription'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingCreateSubscription>>, {data: BodyType<ReportingKpiSubscriptionCreateRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  reportingCreateSubscription(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingCreateSubscriptionMutationResult = NonNullable<Awaited<ReturnType<typeof reportingCreateSubscription>>>
+    export type ReportingCreateSubscriptionMutationBody = BodyType<ReportingKpiSubscriptionCreateRequest>
+    export type ReportingCreateSubscriptionMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Create KPI threshold subscription
+ */
+export const useReportingCreateSubscription = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingCreateSubscription>>, TError,{data: BodyType<ReportingKpiSubscriptionCreateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingCreateSubscription>>,
+        TError,
+        {data: BodyType<ReportingKpiSubscriptionCreateRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingCreateSubscriptionMutationOptions(options));
+    }
+
+export const getReportingEvaluateSubscriptionsUrl = () => {
+
+
+
+
+  return `/api/v1/reporting/subscriptions/evaluate`
+}
+
+/**
+ * @summary Evaluate KPI threshold subscriptions
+ */
+export const reportingEvaluateSubscriptions = async ( options?: Parameters<typeof customFetch>[1]): Promise<ReportingSubscriptionEvaluation> => {
+
+  return customFetch<ReportingSubscriptionEvaluation>(getReportingEvaluateSubscriptionsUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingEvaluateSubscriptionsMutationOptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingEvaluateSubscriptions>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingEvaluateSubscriptions>>, TError,void, TContext> => {
+
+const mutationKey = ['reportingEvaluateSubscriptions'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingEvaluateSubscriptions>>, void> = () => {
+
+
+          return  reportingEvaluateSubscriptions(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingEvaluateSubscriptionsMutationResult = NonNullable<Awaited<ReturnType<typeof reportingEvaluateSubscriptions>>>
+
+    export type ReportingEvaluateSubscriptionsMutationError = ErrorType<UnauthorizedResponse | ForbiddenResponse>
+
+    /**
+ * @summary Evaluate KPI threshold subscriptions
+ */
+export const useReportingEvaluateSubscriptions = <TError = ErrorType<UnauthorizedResponse | ForbiddenResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingEvaluateSubscriptions>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingEvaluateSubscriptions>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getReportingEvaluateSubscriptionsMutationOptions(options));
+    }
+
+export const getReportingGetSubscriptionUrl = (subscriptionKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/subscriptions/${subscriptionKey}`
+}
+
+/**
+ * @summary Get KPI subscription
+ */
+export const reportingGetSubscription = async (subscriptionKey: string, options?: Parameters<typeof customFetch>[1]): Promise<ReportingKpiSubscription> => {
+
+  return customFetch<ReportingKpiSubscription>(getReportingGetSubscriptionUrl(subscriptionKey),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingGetSubscriptionQueryKey = (subscriptionKey: string,) => {
+    return [
+    `/api/v1/reporting/subscriptions/${subscriptionKey}`
+    ] as const;
+    }
+
+
+export const getReportingGetSubscriptionQueryOptions = <TData = Awaited<ReturnType<typeof reportingGetSubscription>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(subscriptionKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetSubscription>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getReportingGetSubscriptionQueryKey(subscriptionKey);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof reportingGetSubscription>>> = ({ signal }) => reportingGetSubscription(subscriptionKey, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: subscriptionKey !== null && subscriptionKey !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof reportingGetSubscription>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReportingGetSubscriptionQueryResult = NonNullable<Awaited<ReturnType<typeof reportingGetSubscription>>>
+export type ReportingGetSubscriptionQueryError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+
+/**
+ * @summary Get KPI subscription
+ */
+
+export function useReportingGetSubscription<TData = Awaited<ReturnType<typeof reportingGetSubscription>>, TError = ErrorType<UnauthorizedResponse | NotFoundResponse>>(
+ subscriptionKey: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof reportingGetSubscription>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getReportingGetSubscriptionQueryOptions(subscriptionKey,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getReportingUpdateSubscriptionUrl = (subscriptionKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/subscriptions/${subscriptionKey}`
+}
+
+/**
+ * @summary Update KPI subscription
+ */
+export const reportingUpdateSubscription = async (subscriptionKey: string,
+    reportingKpiSubscriptionUpdateRequest: ReportingKpiSubscriptionUpdateRequest, options?: Parameters<typeof customFetch>[1]): Promise<ReportingKpiSubscription> => {
+
+  return customFetch<ReportingKpiSubscription>(getReportingUpdateSubscriptionUrl(subscriptionKey),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(reportingKpiSubscriptionUpdateRequest)
+  }
+);}
+
+
+
+
+
+export const getReportingUpdateSubscriptionMutationOptions = <TError = ErrorType<UnauthorizedResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateSubscription>>, TError,{subscriptionKey: string;data: BodyType<ReportingKpiSubscriptionUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateSubscription>>, TError,{subscriptionKey: string;data: BodyType<ReportingKpiSubscriptionUpdateRequest>}, TContext> => {
+
+const mutationKey = ['reportingUpdateSubscription'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingUpdateSubscription>>, {subscriptionKey: string;data: BodyType<ReportingKpiSubscriptionUpdateRequest>}> = (props) => {
+          const {subscriptionKey,data} = props ?? {};
+
+          return  reportingUpdateSubscription(subscriptionKey,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingUpdateSubscriptionMutationResult = NonNullable<Awaited<ReturnType<typeof reportingUpdateSubscription>>>
+    export type ReportingUpdateSubscriptionMutationBody = BodyType<ReportingKpiSubscriptionUpdateRequest>
+    export type ReportingUpdateSubscriptionMutationError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+    /**
+ * @summary Update KPI subscription
+ */
+export const useReportingUpdateSubscription = <TError = ErrorType<UnauthorizedResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingUpdateSubscription>>, TError,{subscriptionKey: string;data: BodyType<ReportingKpiSubscriptionUpdateRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingUpdateSubscription>>,
+        TError,
+        {subscriptionKey: string;data: BodyType<ReportingKpiSubscriptionUpdateRequest>},
+        TContext
+      > => {
+      return useMutation(getReportingUpdateSubscriptionMutationOptions(options));
+    }
+
+export const getReportingDeleteSubscriptionUrl = (subscriptionKey: string,) => {
+
+
+
+
+  return `/api/v1/reporting/subscriptions/${subscriptionKey}`
+}
+
+/**
+ * @summary Delete KPI subscription
+ */
+export const reportingDeleteSubscription = async (subscriptionKey: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getReportingDeleteSubscriptionUrl(subscriptionKey),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getReportingDeleteSubscriptionMutationOptions = <TError = ErrorType<UnauthorizedResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingDeleteSubscription>>, TError,{subscriptionKey: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportingDeleteSubscription>>, TError,{subscriptionKey: string}, TContext> => {
+
+const mutationKey = ['reportingDeleteSubscription'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportingDeleteSubscription>>, {subscriptionKey: string}> = (props) => {
+          const {subscriptionKey} = props ?? {};
+
+          return  reportingDeleteSubscription(subscriptionKey,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportingDeleteSubscriptionMutationResult = NonNullable<Awaited<ReturnType<typeof reportingDeleteSubscription>>>
+
+    export type ReportingDeleteSubscriptionMutationError = ErrorType<UnauthorizedResponse | NotFoundResponse>
+
+    /**
+ * @summary Delete KPI subscription
+ */
+export const useReportingDeleteSubscription = <TError = ErrorType<UnauthorizedResponse | NotFoundResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportingDeleteSubscription>>, TError,{subscriptionKey: string}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reportingDeleteSubscription>>,
+        TError,
+        {subscriptionKey: string},
+        TContext
+      > => {
+      return useMutation(getReportingDeleteSubscriptionMutationOptions(options));
+    }
 

@@ -41,6 +41,11 @@ jobs:
       - name: Test
         run: pnpm run test
 
+      - name: Dependency security audit
+        run: pnpm audit --audit-level=high
+        env:
+          SECURITY_AUDIT_SKIP_ENV: '1'
+
       - name: Build
         run: pnpm -r --if-present run build
 
@@ -54,3 +59,31 @@ jobs:
             git --no-pager diff
             exit 1
           fi
+
+  e2e-smoke:
+    name: Playwright API smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: verify
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright
+        run: pnpm --filter @workspace/e2e exec playwright install --with-deps chromium
+
+      - name: Run smoke tests
+        run: pnpm run test:e2e
+        env:
+          CI: 'true'
+          PORT: '5000'

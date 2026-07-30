@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { submitContactEnquiry } from '@workspace/api-client-react';
 import { Button } from '@workspace/ui/components/button';
 import { Input } from '@workspace/ui/components/input';
 import { Textarea } from '@workspace/ui/components/textarea';
@@ -13,47 +14,103 @@ import {
   SelectValue,
 } from '@workspace/ui/components/select';
 import { SectionReveal } from '@/components/section-reveal';
+import { PageShell } from '@/components/page-shell';
+import { PageContainer } from '@/components/page-container';
+import { contentLoader } from '@/lib/content';
+
+interface ContactFormState {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  company: string;
+  serviceInterest: string;
+  message: string;
+}
+
+const initialFormState: ContactFormState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  company: '',
+  serviceInterest: '',
+  message: '',
+};
 
 export default function Contact() {
+  const content = contentLoader.getContactPage();
+  const siteConfig = contentLoader.getSiteConfig();
+  const [form, setForm] = useState<ContactFormState>(initialFormState);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const updateField =
+    (field: keyof ContactFormState) =>
+    (value: string) => {
+      setForm((current) => ({ ...current, [field]: value }));
+    };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
+    setSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      await submitContactEnquiry({
+        firstName: form.firstName,
+        lastName: form.lastName,
+        email: form.email,
+        ...(form.phone ? { phone: form.phone } : {}),
+        ...(form.company ? { company: form.company } : {}),
+        serviceInterest: form.serviceInterest,
+        message: form.message,
+      });
+
+      setSubmitted(true);
+      setForm(initialFormState);
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch {
+      setErrorMessage(
+        'We could not send your enquiry. Please try again or contact us by phone or email.',
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero */}
+    <PageShell seo={content.seo} path="/contact">
       <section className="bg-gradient-to-br from-secondary via-secondary/95 to-secondary/90 text-secondary-foreground py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PageContainer>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] as const }}
             className="max-w-4xl"
           >
-            <h1 className="font-display font-bold text-5xl md:text-6xl mb-6">
-              Get in Touch
+            <h1
+              id="page-title"
+              tabIndex={-1}
+              className="font-display font-bold text-5xl md:text-6xl mb-6 outline-none"
+            >
+              {content.hero.title}
             </h1>
             <p className="text-xl opacity-90 leading-relaxed">
-              Book a free consultation, discuss your HSEQ needs, or enquire
-              about our services. We're here to help.
+              {content.hero.description}
             </p>
           </motion.div>
-        </div>
+        </PageContainer>
       </section>
 
-      {/* Contact Section */}
       <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PageContainer>
           <div className="grid lg:grid-cols-5 gap-12">
-            {/* Contact Info */}
             <div className="lg:col-span-2">
               <SectionReveal>
                 <h2 className="font-display font-bold text-3xl text-foreground mb-6">
-                  Contact Information
+                  {content.contactHeading}
                 </h2>
 
                 <div className="space-y-6 mb-10">
@@ -66,11 +123,11 @@ export default function Contact() {
                         Phone
                       </h3>
                       <a
-                        href="tel:+442012345678"
+                        href={siteConfig.contact.phoneHref}
                         className="text-muted-foreground hover:text-primary transition-colors"
                         data-testid="link-phone-contact"
                       >
-                        +44 20 1234 5678
+                        {siteConfig.contact.phone}
                       </a>
                     </div>
                   </div>
@@ -84,11 +141,11 @@ export default function Contact() {
                         Email
                       </h3>
                       <a
-                        href="mailto:info@ckbhse.co.uk"
+                        href={`mailto:${siteConfig.contact.email}`}
                         className="text-muted-foreground hover:text-primary transition-colors"
                         data-testid="link-email-contact"
                       >
-                        info@ckbhse.co.uk
+                        {siteConfig.contact.email}
                       </a>
                     </div>
                   </div>
@@ -102,59 +159,45 @@ export default function Contact() {
                         Office
                       </h3>
                       <p className="text-muted-foreground">
-                        CKBHSE Limited
-                        <br />
-                        123 Business Park
-                        <br />
-                        London, EC1A 1BB
-                        <br />
-                        United Kingdom
+                        {content.office.lines.map((line, index) => (
+                          <span key={index}>
+                            {line}
+                            {index < content.office.lines.length - 1 && <br />}
+                          </span>
+                        ))}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Office Hours */}
                 <div className="bg-muted/50 rounded-xl p-6">
                   <h3 className="font-display font-semibold text-lg text-foreground mb-4">
-                    Office Hours
+                    {content.officeHours.title}
                   </h3>
                   <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">
-                        Monday - Friday
-                      </span>
-                      <span className="font-medium text-foreground">
-                        8:00 AM - 6:00 PM
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Saturday</span>
-                      <span className="font-medium text-foreground">
-                        9:00 AM - 1:00 PM
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Sunday</span>
-                      <span className="font-medium text-foreground">
-                        Closed
-                      </span>
-                    </div>
+                    {content.officeHours.schedule.map((entry, index) => (
+                      <div key={index} className="flex justify-between">
+                        <span className="text-muted-foreground">
+                          {entry.days}
+                        </span>
+                        <span className="font-medium text-foreground">
+                          {entry.hours}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </SectionReveal>
             </div>
 
-            {/* Contact Form */}
             <div className="lg:col-span-3">
               <SectionReveal delay={0.2}>
                 <div className="bg-card border border-card-border rounded-2xl p-8">
                   <h2 className="font-display font-bold text-3xl text-foreground mb-2">
-                    Book a Free Consultation
+                    {content.form.title}
                   </h2>
                   <p className="text-muted-foreground mb-8">
-                    Fill in the form below and we'll get back to you within 24
-                    hours.
+                    {content.form.description}
                   </p>
 
                   {submitted ? (
@@ -165,15 +208,24 @@ export default function Contact() {
                     >
                       <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-4" />
                       <h3 className="font-display font-bold text-2xl text-foreground mb-2">
-                        Thank You!
+                        {content.form.successTitle}
                       </h3>
                       <p className="text-muted-foreground">
-                        We've received your enquiry and will be in touch within
-                        24 hours.
+                        {content.form.successMessage}
                       </p>
                     </motion.div>
                   ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
+                      {errorMessage !== null && (
+                        <div
+                          className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 flex gap-3 text-sm text-destructive"
+                          role="alert"
+                        >
+                          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                          <p>{errorMessage}</p>
+                        </div>
+                      )}
+
                       <div className="grid sm:grid-cols-2 gap-6">
                         <div>
                           <Label htmlFor="firstName">First Name *</Label>
@@ -181,6 +233,10 @@ export default function Contact() {
                             id="firstName"
                             type="text"
                             required
+                            value={form.firstName}
+                            onChange={(event) =>
+                              updateField('firstName')(event.target.value)
+                            }
                             className="mt-2"
                             data-testid="input-first-name"
                           />
@@ -191,6 +247,10 @@ export default function Contact() {
                             id="lastName"
                             type="text"
                             required
+                            value={form.lastName}
+                            onChange={(event) =>
+                              updateField('lastName')(event.target.value)
+                            }
                             className="mt-2"
                             data-testid="input-last-name"
                           />
@@ -204,6 +264,10 @@ export default function Contact() {
                             id="email"
                             type="email"
                             required
+                            value={form.email}
+                            onChange={(event) =>
+                              updateField('email')(event.target.value)
+                            }
                             className="mt-2"
                             data-testid="input-email"
                           />
@@ -213,6 +277,10 @@ export default function Contact() {
                           <Input
                             id="phone"
                             type="tel"
+                            value={form.phone}
+                            onChange={(event) =>
+                              updateField('phone')(event.target.value)
+                            }
                             className="mt-2"
                             data-testid="input-phone"
                           />
@@ -224,6 +292,10 @@ export default function Contact() {
                         <Input
                           id="company"
                           type="text"
+                          value={form.company}
+                          onChange={(event) =>
+                            updateField('company')(event.target.value)
+                          }
                           className="mt-2"
                           data-testid="input-company"
                         />
@@ -231,7 +303,11 @@ export default function Contact() {
 
                       <div>
                         <Label htmlFor="service">Service Interest *</Label>
-                        <Select required>
+                        <Select
+                          required
+                          value={form.serviceInterest}
+                          onValueChange={updateField('serviceInterest')}
+                        >
                           <SelectTrigger
                             className="mt-2"
                             data-testid="select-service"
@@ -276,6 +352,10 @@ export default function Contact() {
                           id="message"
                           required
                           rows={5}
+                          value={form.message}
+                          onChange={(event) =>
+                            updateField('message')(event.target.value)
+                          }
                           className="mt-2"
                           placeholder="Tell us about your HSEQ requirements..."
                           data-testid="textarea-message"
@@ -286,16 +366,15 @@ export default function Contact() {
                         type="submit"
                         size="lg"
                         className="w-full font-semibold group"
+                        disabled={submitting}
                         data-testid="button-submit-enquiry"
                       >
-                        Send Enquiry
+                        {submitting ? 'Sending…' : 'Send Enquiry'}
                         <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                       </Button>
 
                       <p className="text-xs text-muted-foreground text-center">
-                        By submitting this form, you agree to our Privacy
-                        Policy. We'll use your information to respond to your
-                        enquiry.
+                        {content.form.disclaimer}
                       </p>
                     </form>
                   )}
@@ -303,27 +382,26 @@ export default function Contact() {
               </SectionReveal>
             </div>
           </div>
-        </div>
+        </PageContainer>
       </section>
 
-      {/* Map Section */}
       <SectionReveal className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <PageContainer>
           <div className="bg-card border border-card-border rounded-2xl overflow-hidden">
             <div className="aspect-video bg-muted flex items-center justify-center">
               <div className="text-center">
                 <MapPin className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                 <p className="text-lg font-semibold text-foreground mb-2">
-                  Office Location
+                  {content.office.mapLabel}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  123 Business Park, London, EC1A 1BB
+                  {content.office.mapAddress}
                 </p>
               </div>
             </div>
           </div>
-        </div>
+        </PageContainer>
       </SectionReveal>
-    </div>
+    </PageShell>
   );
 }

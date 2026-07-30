@@ -8,47 +8,28 @@ import {
   Twitter,
   Facebook,
 } from 'lucide-react';
+import { contentLoader } from '@/lib/content';
+import { SkipNavLink } from '@/components/skip-link';
 
-const serviceLinks = [
-  { href: '/services#health-safety-audits', label: 'Health & Safety Audits' },
-  { href: '/services#risk-assessments', label: 'Risk Assessments' },
-  { href: '/services#iso-compliance', label: 'ISO Compliance' },
-  { href: '/services#fire-safety', label: 'Fire Safety' },
-  { href: '/services#environmental', label: 'Environmental Management' },
-];
-
-const industryLinks = [
-  { href: '/industries#construction', label: 'Construction' },
-  { href: '/industries#manufacturing', label: 'Manufacturing' },
-  { href: '/industries#logistics', label: 'Logistics & Transport' },
-  { href: '/industries#oil-gas', label: 'Oil & Gas' },
-  { href: '/industries#healthcare', label: 'Healthcare' },
-];
-
-const companyLinks = [
-  { href: '/knowledge', label: 'Knowledge Hub' },
-  { href: '/case-studies', label: 'Case Studies' },
-  { href: '/careers', label: 'Careers' },
-  { href: '/contact', label: 'Contact Us' },
-];
-
-const legalLinks = [
-  { href: '/privacy-policy', label: 'Privacy Policy' },
-  { href: '/terms-conditions', label: 'Terms & Conditions' },
-  { href: '/cookie-policy', label: 'Cookie Policy' },
-];
+const socialIcons = {
+  linkedin: Linkedin,
+  twitter: Twitter,
+  facebook: Facebook,
+} as const;
 
 export function Footer() {
+  const site = contentLoader.getSiteConfig();
+  const { brand, contact, footer } = site;
+
   return (
     <footer className="bg-secondary text-secondary-foreground pt-16 pb-8">
+      <SkipNavLink />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pb-12 border-b border-secondary-foreground/10">
-          {/* Brand Column */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-10 pb-12 border-b border-secondary-foreground/10">
           <div className="lg:col-span-2">
             <Link
               href="/"
-              className="flex items-center gap-2 group mb-6"
+              className="flex items-center gap-2 group mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
               data-testid="link-footer-logo"
             >
               <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
@@ -64,151 +45,151 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-sm text-secondary-foreground/80 mb-6 max-w-sm">
-              The HSEQ consultancy for organisations that take safety seriously.
-              Expert consulting, accredited training, and modern compliance
-              solutions.
+              {brand.tagline} {brand.description}
             </p>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm">
-                <Mail className="w-4 h-4 text-primary" />
+                <Mail className="w-4 h-4 text-primary" aria-hidden="true" />
                 <a
-                  href="mailto:info@ckbhse.co.uk"
-                  className="hover:text-primary transition-colors"
+                  href={`mailto:${contact.email}`}
+                  className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
                   data-testid="link-email"
                 >
-                  info@ckbhse.co.uk
+                  {contact.email}
                 </a>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <Phone className="w-4 h-4 text-primary" />
+                <Phone className="w-4 h-4 text-primary" aria-hidden="true" />
                 <a
-                  href="tel:+442012345678"
-                  className="hover:text-primary transition-colors"
+                  href={contact.phoneHref}
+                  className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
                   data-testid="link-phone"
                 >
-                  +44 20 1234 5678
+                  {contact.phone}
                 </a>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <MapPin className="w-4 h-4 text-primary" />
+                <MapPin className="w-4 h-4 text-primary" aria-hidden="true" />
                 <span className="text-secondary-foreground/80">
-                  London, United Kingdom
+                  {contact.location}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Services Column */}
-          <div>
-            <h3 className="font-display font-semibold text-base mb-4">
-              Services
-            </h3>
-            <ul className="space-y-2">
-              {serviceLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-secondary-foreground/80 hover:text-primary transition-colors"
-                    data-testid={`link-footer-service-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {footer.sections.map((section) => (
+            <div key={section.id}>
+              <h3 className="font-display font-semibold text-base mb-4">
+                {section.title}
+              </h3>
+              <ul className="space-y-2">
+                {section.links.map((link) => (
+                  <li key={link.href + link.label}>
+                    {link.available ? (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-secondary-foreground/80 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+                        data-testid={`link-footer-${section.id}-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <span
+                        className="text-sm text-secondary-foreground/40"
+                        aria-disabled="true"
+                      >
+                        {link.label}
+                        <span className="sr-only"> (coming soon)</span>
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
 
-          {/* Industries Column */}
-          <div>
-            <h3 className="font-display font-semibold text-base mb-4">
-              Industries
-            </h3>
-            <ul className="space-y-2">
-              {industryLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-secondary-foreground/80 hover:text-primary transition-colors"
-                    data-testid={`link-footer-industry-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Column */}
-          <div>
-            <h3 className="font-display font-semibold text-base mb-4">
-              Company
-            </h3>
-            <ul className="space-y-2">
-              {companyLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-secondary-foreground/80 hover:text-primary transition-colors"
-                    data-testid={`link-footer-company-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+        <div className="py-8 border-b border-secondary-foreground/10">
+          <h3 className="font-display font-semibold text-sm mb-4 text-secondary-foreground/80">
+            Accreditations
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            {footer.accreditations.map((item) => (
+              <span
+                key={item.label}
+                className={`rounded-lg border px-4 py-2 text-xs ${
+                  item.available
+                    ? 'border-secondary-foreground/20 text-secondary-foreground/70'
+                    : 'border-dashed border-secondary-foreground/20 text-secondary-foreground/40'
+                }`}
+                aria-disabled={!item.available}
+              >
+                {item.label}
+                {!item.available && (
+                  <span className="sr-only"> (coming soon)</span>
+                )}
+              </span>
+            ))}
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex flex-wrap items-center gap-4 text-xs text-secondary-foreground/60">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-secondary-foreground/60">
             <p>
               &copy; {new Date().getFullYear()} CKBHSE Limited. All rights
               reserved.
             </p>
-            {legalLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="hover:text-primary transition-colors"
-                data-testid={`link-footer-legal-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {footer.legal.map((link) =>
+              link.available ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+                  data-testid={`link-footer-legal-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <span
+                  key={link.label}
+                  className="text-secondary-foreground/40"
+                  aria-disabled="true"
+                >
+                  {link.label}
+                </span>
+              ),
+            )}
+            {footer.utility.map((link) =>
+              link.available ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+                  data-testid={`link-footer-utility-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {link.label}
+                </Link>
+              ) : null,
+            )}
           </div>
 
           <div className="flex items-center gap-4">
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-lg bg-secondary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors group"
-              aria-label="LinkedIn"
-              data-testid="link-social-linkedin"
-            >
-              <Linkedin className="w-4 h-4 group-hover:text-primary-foreground transition-colors" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-lg bg-secondary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors group"
-              aria-label="Twitter"
-              data-testid="link-social-twitter"
-            >
-              <Twitter className="w-4 h-4 group-hover:text-primary-foreground transition-colors" />
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-lg bg-secondary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors group"
-              aria-label="Facebook"
-              data-testid="link-social-facebook"
-            >
-              <Facebook className="w-4 h-4 group-hover:text-primary-foreground transition-colors" />
-            </a>
+            {footer.social.map((social) => {
+              const Icon = socialIcons[social.platform];
+              return (
+                <a
+                  key={social.platform}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-11 h-11 rounded-lg bg-secondary-foreground/10 hover:bg-primary flex items-center justify-center transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  aria-label={social.label}
+                  data-testid={`link-social-${social.platform}`}
+                >
+                  <Icon className="w-4 h-4 group-hover:text-primary-foreground transition-colors" />
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

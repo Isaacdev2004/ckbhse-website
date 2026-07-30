@@ -10,6 +10,18 @@
       "path": "./lib/db"
     },
     {
+      "path": "./lib/domain"
+    },
+    {
+      "path": "./lib/data"
+    },
+    {
+      "path": "./lib/auth"
+    },
+    {
+      "path": "./lib/services"
+    },
+    {
       "path": "./lib/ui"
     },
     {
@@ -17,6 +29,18 @@
     },
     {
       "path": "./lib/api-zod"
+    },
+    {
+      "path": "./lib/content"
+    },
+    {
+      "path": "./lib/seo"
+    },
+    {
+      "path": "./lib/workers"
+    },
+    {
+      "path": "./lib/email-templates"
     }
   ]
 }

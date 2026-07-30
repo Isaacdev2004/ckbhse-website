@@ -15,10 +15,324 @@ export type ReadinessStatusStatus = typeof ReadinessStatusStatus[keyof typeof Re
 export const ReadinessStatusStatus = {
   ready: 'ready',
   shutting_down: 'shutting_down',
+  not_ready: 'not_ready',
 } as const;
 
 export interface ReadinessStatus {
   status: ReadinessStatusStatus;
+}
+
+export interface SubmitContactEnquiryRequest {
+  /** @minLength 1 */
+  firstName: string;
+  /** @minLength 1 */
+  lastName: string;
+  /** @minLength 3 */
+  email: string;
+  phone?: string | null;
+  company?: string | null;
+  /** @minLength 1 */
+  serviceInterest: string;
+  /** @minLength 10 */
+  message: string;
+}
+
+export type ContactEnquiryResponseStatus = typeof ContactEnquiryResponseStatus[keyof typeof ContactEnquiryResponseStatus];
+
+
+export const ContactEnquiryResponseStatus = {
+  received: 'received',
+} as const;
+
+export interface ContactEnquiryResponse {
+  /**
+     * @minLength 36
+     * @maxLength 36
+     */
+  id: string;
+  status: ContactEnquiryResponseStatus;
+  message: string;
+}
+
+export type SystemHealthResponseStatus = typeof SystemHealthResponseStatus[keyof typeof SystemHealthResponseStatus];
+
+
+export const SystemHealthResponseStatus = {
+  healthy: 'healthy',
+  degraded: 'degraded',
+  unhealthy: 'unhealthy',
+} as const;
+
+export type SystemHealthResponseChecksDatabase = typeof SystemHealthResponseChecksDatabase[keyof typeof SystemHealthResponseChecksDatabase];
+
+
+export const SystemHealthResponseChecksDatabase = {
+  ok: 'ok',
+  unavailable: 'unavailable',
+} as const;
+
+export type SystemHealthResponseChecks = {
+  database: SystemHealthResponseChecksDatabase;
+};
+
+export interface SystemHealthResponse {
+  status: SystemHealthResponseStatus;
+  timestamp: string;
+  version: string;
+  environment: string;
+  /** @minimum 0 */
+  uptimeSeconds: number;
+  service: string;
+  checks: SystemHealthResponseChecks;
+}
+
+export interface SystemVersionResponse {
+  version: string;
+  environment: string;
+  buildSha: string | null;
+  buildTime: string | null;
+  nodeVersion: string;
+}
+
+export interface AuthSessionResponse {
+  userId: string;
+  organizationId: string;
+  roles: string[];
+  permissions: string[];
+}
+
+export interface LoginRequest {
+  /** @minLength 3 */
+  email: string;
+  /** @minLength 1 */
+  password: string;
+  rememberMe?: boolean;
+  organizationId?: string;
+}
+
+export interface AuthUserSummary {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
+export type LoginResponse = AuthSessionResponse & {
+  user: AuthUserSummary;
+};
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface RequestPasswordResetRequest {
+  /** @minLength 3 */
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+}
+
+export interface MessageResponse {
+  message: string;
+}
+
+export type LeadStatus = typeof LeadStatus[keyof typeof LeadStatus];
+
+
+export const LeadStatus = {
+  new: 'new',
+  acknowledged: 'acknowledged',
+  qualified: 'qualified',
+  proposal_sent: 'proposal_sent',
+  negotiation: 'negotiation',
+  won: 'won',
+  lost: 'lost',
+  archived: 'archived',
+} as const;
+
+export type LeadPriority = typeof LeadPriority[keyof typeof LeadPriority];
+
+
+export const LeadPriority = {
+  low: 'low',
+  normal: 'normal',
+  high: 'high',
+  urgent: 'urgent',
+} as const;
+
+export type LeadSource = typeof LeadSource[keyof typeof LeadSource];
+
+
+export const LeadSource = {
+  website: 'website',
+  referral: 'referral',
+  phone: 'phone',
+  email: 'email',
+  event: 'event',
+  partner: 'partner',
+  other: 'other',
+} as const;
+
+export interface Lead {
+  id: string;
+  organizationId: string;
+  contactRequestId?: string | null;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  company?: string | null;
+  serviceInterest: string;
+  industry?: string | null;
+  trainingInterest?: string | null;
+  message?: string | null;
+  status: LeadStatus;
+  priority: LeadPriority;
+  source: LeadSource;
+  assignedToUserId?: string | null;
+  score?: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface InitiateFileUploadRequest {
+  originalFilename: string;
+  contentType: string;
+  sizeBytes: number;
+  domain: string;
+  entityType?: string | null;
+  entityId?: string | null;
+}
+
+export interface FileUploadSummary {
+  id: string;
+  organizationId: string;
+  storageKey: string;
+  originalFilename: string;
+  contentType: string;
+  sizeBytes: number;
+  status: string;
+  domain: string;
+  entityType?: string | null;
+  entityId?: string | null;
+  createdAt: string;
+}
+
+export interface InitiateFileUploadResponse {
+  upload: FileUploadSummary;
+  uploadUrl: string;
+  expiresInSeconds: number;
+}
+
+export interface CompleteFileUploadResponse {
+  upload: FileUploadSummary;
+}
+
+export interface FileDownloadGrant {
+  uploadId: string;
+  downloadUrl: string;
+  expiresInSeconds: number;
+  originalFilename: string;
+  contentType: string;
+}
+
+export interface LeadListResponse {
+  items: Lead[];
+  hasMore: boolean;
+  total: number;
+}
+
+export interface UpdateLeadStatusRequest {
+  status: LeadStatus;
+  reason?: string | null;
+}
+
+export interface AssignLeadRequest {
+  assigneeUserId: string;
+  reason?: string | null;
+}
+
+export type TimelineEntryKind = typeof TimelineEntryKind[keyof typeof TimelineEntryKind];
+
+
+export const TimelineEntryKind = {
+  activity: 'activity',
+  status: 'status',
+  note: 'note',
+} as const;
+
+export type TimelineEntryMetadata = { [key: string]: unknown } | null;
+
+export interface TimelineEntry {
+  id: string;
+  kind: TimelineEntryKind;
+  title: string;
+  description?: string | null;
+  occurredAt: string;
+  actorUserId?: string | null;
+  metadata?: TimelineEntryMetadata;
+}
+
+export interface LeadTimelineResponse {
+  items: TimelineEntry[];
+}
+
+export interface AddLeadNoteRequest {
+  /** @minLength 1 */
+  body: string;
+  isInternal?: boolean;
+}
+
+export interface DashboardMetrics {
+  newLeads: number;
+  qualified: number;
+  won: number;
+  lost: number;
+  openLeads: number;
+  averageResponseMinutes?: number | null;
+}
+
+export interface LeadReminder {
+  id: string;
+  leadId: string;
+  title: string;
+  dueAt: string;
+  priority: LeadPriority;
+  completedAt?: string | null;
+  assignedToUserId?: string | null;
+  isRecurring: boolean;
+  createdAt: string;
+}
+
+export interface ReminderListResponse {
+  items: LeadReminder[];
+}
+
+export interface CreateReminderRequest {
+  leadId: string;
+  title: string;
+  dueAt: string;
+  priority?: LeadPriority;
+}
+
+export interface LeadTag {
+  id: string;
+  name: string;
+  color?: string | null;
+}
+
+export interface LeadTagListResponse {
+  items: LeadTag[];
+}
+
+export interface CreateLeadTagRequest {
+  /** @minLength 1 */
+  name: string;
+  color?: string | null;
 }
 
 /**
@@ -28,6 +342,1133 @@ export interface FieldError {
   /** Dotted path to the offending field, e.g. `contact.email`. */
   path: string;
   message: string;
+}
+
+export type PortalDashboardResponseUpcomingAuditsItem = { [key: string]: unknown };
+
+export type PortalDashboardResponseRecentDocumentsItem = { [key: string]: unknown };
+
+export type PortalDashboardResponseRecentActivitiesItem = { [key: string]: unknown };
+
+export type PortalDashboardResponseActiveProjectsItem = { [key: string]: unknown };
+
+export interface PortalDashboardResponse {
+  organizationName: string;
+  complianceScore?: number | null;
+  healthScore?: number | null;
+  openActions: number;
+  expiringCertificates: number;
+  openSupportTickets: number;
+  upcomingAudits: PortalDashboardResponseUpcomingAuditsItem[];
+  recentDocuments: PortalDashboardResponseRecentDocumentsItem[];
+  recentActivities: PortalDashboardResponseRecentActivitiesItem[];
+  activeProjects: PortalDashboardResponseActiveProjectsItem[];
+}
+
+export interface PortalOrganisationResponse { [key: string]: unknown }
+
+export type ComplianceExecutiveDashboardTrendDirection = typeof ComplianceExecutiveDashboardTrendDirection[keyof typeof ComplianceExecutiveDashboardTrendDirection];
+
+
+export const ComplianceExecutiveDashboardTrendDirection = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export type ComplianceExecutiveDashboardWidgets = { [key: string]: unknown };
+
+export type ComplianceExecutiveDashboardTrends = { [key: string]: unknown };
+
+export interface ComplianceExecutiveDashboard {
+  complianceScore: number;
+  trendDirection: ComplianceExecutiveDashboardTrendDirection;
+  trendDelta: number;
+  widgets: ComplianceExecutiveDashboardWidgets;
+  trends: ComplianceExecutiveDashboardTrends;
+}
+
+export type PortalComplianceResponseTasksItem = { [key: string]: unknown };
+
+export type PortalComplianceResponseActionsItem = { [key: string]: unknown };
+
+export type PortalComplianceResponseWorkspace = { [key: string]: unknown };
+
+export interface PortalComplianceResponse {
+  complianceScore?: number | null;
+  tasks: PortalComplianceResponseTasksItem[];
+  actions: PortalComplianceResponseActionsItem[];
+  workspace?: PortalComplianceResponseWorkspace;
+  analytics?: ComplianceExecutiveDashboard;
+}
+
+export type RegulatoryAlertListResponseItemsItem = {
+  id: string;
+  title: string;
+  severity: string;
+  status?: string;
+  alertType?: string;
+};
+
+export interface RegulatoryAlertListResponse {
+  items: RegulatoryAlertListResponseItemsItem[];
+}
+
+export type PortalMemberListResponseItemsItem = { [key: string]: unknown };
+
+export interface PortalMemberListResponse {
+  items: PortalMemberListResponseItemsItem[];
+}
+
+export type PortalProjectListResponseItemsItem = { [key: string]: unknown };
+
+export interface PortalProjectListResponse {
+  items: PortalProjectListResponseItemsItem[];
+}
+
+export type PortalDocumentListResponseItemsItem = { [key: string]: unknown };
+
+export interface PortalDocumentListResponse {
+  items: PortalDocumentListResponseItemsItem[];
+}
+
+export interface PortalSupportTicket { [key: string]: unknown }
+
+export interface PortalSupportTicketListResponse {
+  items: PortalSupportTicket[];
+}
+
+export interface CreatePortalSupportTicketRequest {
+  subject: string;
+  category?: string | null;
+  priority?: string;
+}
+
+export type PortalActivityListResponseItemsItem = { [key: string]: unknown };
+
+export interface PortalActivityListResponse {
+  items: PortalActivityListResponseItemsItem[];
+}
+
+export interface LearningDashboardResponse { [key: string]: unknown }
+
+export type LearningCatalogueResponseItemsItem = { [key: string]: unknown };
+
+export interface LearningCatalogueResponse {
+  items: LearningCatalogueResponseItemsItem[];
+}
+
+export interface Enrolment { [key: string]: unknown }
+
+export interface EnrolmentListResponse {
+  items: Enrolment[];
+}
+
+export interface CreateEnrolmentRequest {
+  courseCategory: string;
+  courseSlug: string;
+  pathwayId?: string | null;
+  isMandatory?: boolean;
+  source?: string;
+}
+
+export type LearningCertificateListResponseItemsItem = { [key: string]: unknown };
+
+export interface LearningCertificateListResponse {
+  items: LearningCertificateListResponseItemsItem[];
+}
+
+export interface LearningAnalyticsResponse { [key: string]: unknown }
+
+export interface AdminDashboardData {
+  organizationCount: number;
+  userCount: number;
+  activeUserCount: number;
+  auditLogCount24h: number;
+  openOutboxJobs: number;
+}
+
+export interface AdminOrganizationSummary {
+  id: string;
+  name: string;
+  slug: string;
+  status: string;
+  type: string;
+  createdAt: string;
+}
+
+export interface AdminOrganizationListResponse {
+  items: AdminOrganizationSummary[];
+}
+
+export interface AdminUserSummary {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  status: string;
+  roles: string[];
+}
+
+export interface AdminUserListResponse {
+  items: AdminUserSummary[];
+}
+
+export interface AdminRoleSummary {
+  id: string;
+  key: string;
+  name: string;
+  description?: string | null;
+  isSystem: boolean;
+}
+
+export interface AdminRoleListResponse {
+  items: AdminRoleSummary[];
+}
+
+export interface AdminPermissionSummary {
+  id: string;
+  key: string;
+  name: string;
+  domain: string;
+}
+
+export interface AdminPermissionListResponse {
+  items: AdminPermissionSummary[];
+}
+
+export interface PlatformAuditLogEntry {
+  id: string;
+  organizationId?: string | null;
+  entity: string;
+  entityId: string;
+  action: string;
+  eventType: string;
+  severity: string;
+  actorUserId?: string | null;
+  actorKind: string;
+  requestId: string;
+  occurredAt: string;
+  previousValues?: unknown | null;
+  newValues?: unknown | null;
+}
+
+export interface AdminAuditLogListResponse {
+  items: PlatformAuditLogEntry[];
+}
+
+export interface AdminFeatureFlagRow {
+  id: string;
+  key: string;
+  enabled: boolean;
+  description?: string | null;
+  organizationId?: string | null;
+}
+
+export interface AdminFeatureFlagListResponse {
+  items: AdminFeatureFlagRow[];
+}
+
+export interface AdminFeatureFlagUpdateRequest {
+  enabled: boolean;
+  description?: string | null;
+}
+
+export interface CmsDashboardData {
+  totalEntries: number;
+  publishedEntries: number;
+  draftEntries: number;
+  archivedEntries: number;
+  pendingReviewEntries: number;
+  pendingClientApprovalEntries: number;
+}
+
+export interface CmsEntrySummary {
+  id: string;
+  contentType: string;
+  slug: string;
+  path: string;
+  title: string;
+  status: string;
+  locale: string;
+  category?: string | null;
+  segment?: string | null;
+  publishedAt?: string | null;
+  updatedAt: string;
+  requiresClientApproval: boolean;
+  versionNumber?: number | null;
+}
+
+export interface CmsEntryListResponse {
+  items: CmsEntrySummary[];
+}
+
+export interface CmsEntryVersionSummary {
+  id: string;
+  versionNumber: number;
+  changeSummary?: string | null;
+  createdAt: string;
+  createdBy?: string | null;
+  isPublished: boolean;
+}
+
+export type CmsEntryDetailSeo = { [key: string]: unknown };
+
+export type CmsEntryDetail = CmsEntrySummary & ({
+  seo: CmsEntryDetailSeo;
+  reviewDueAt?: string | null;
+  scheduledAt?: string | null;
+  clientApprovedAt?: string | null;
+  currentVersionId?: string | null;
+  publishedVersionId?: string | null;
+  payload?: unknown | null;
+  versions: CmsEntryVersionSummary[];
+});
+
+export type CreateCmsEntryRequestSeo = { [key: string]: unknown };
+
+export interface CreateCmsEntryRequest {
+  contentType: string;
+  slug: string;
+  path: string;
+  title: string;
+  locale?: string;
+  category?: string | null;
+  segment?: string | null;
+  seo?: CreateCmsEntryRequestSeo;
+  payload: unknown;
+  requiresClientApproval?: boolean;
+  changeSummary?: string | null;
+}
+
+export type UpdateCmsDraftRequestSeo = { [key: string]: unknown };
+
+export interface UpdateCmsDraftRequest {
+  title?: string;
+  seo?: UpdateCmsDraftRequestSeo;
+  payload: unknown;
+  changeSummary?: string | null;
+}
+
+export interface CmsRollbackRequest {
+  versionId: string;
+}
+
+export interface CmsImportRequest {
+  skipExisting?: boolean;
+}
+
+export interface ScheduleCmsEntryRequest {
+  scheduledAt: string;
+  reviewDueAt?: string | null;
+}
+
+export interface CmsWorkflowRunResult {
+  published: number;
+  reviewReminders: number;
+  errors: string[];
+}
+
+export interface CmsImportResult {
+  imported: number;
+  skipped: number;
+  errors: string[];
+}
+
+export type PublicContentEntrySeo = { [key: string]: unknown };
+
+export interface PublicContentEntry {
+  path: string;
+  contentType: string;
+  slug: string;
+  title: string;
+  category?: string | null;
+  segment?: string | null;
+  seo: PublicContentEntrySeo;
+  payload: unknown;
+  publishedAt?: string | null;
+}
+
+export interface PublicContentListResponse {
+  items: PublicContentEntry[];
+}
+
+export type CmsContentSnapshotEntriesItemSeo = { [key: string]: unknown };
+
+export type CmsContentSnapshotEntriesItemPayload = { [key: string]: unknown };
+
+export type CmsContentSnapshotEntriesItem = {
+  contentType: string;
+  slug: string;
+  path: string;
+  title: string;
+  category?: string | null;
+  segment?: string | null;
+  seo: CmsContentSnapshotEntriesItemSeo;
+  payload: CmsContentSnapshotEntriesItemPayload;
+};
+
+export interface CmsContentSnapshot {
+  generatedAt: string;
+  locale: string;
+  entries: CmsContentSnapshotEntriesItem[];
+}
+
+export interface CmsMediaAssetSummary {
+  id: string;
+  key: string;
+  filename: string;
+  mimeType: string;
+  sizeBytes: number;
+  altText?: string | null;
+  caption?: string | null;
+  publicUrl: string;
+  usageCount: number;
+  createdAt: string;
+}
+
+export interface CmsMediaListResponse {
+  items: CmsMediaAssetSummary[];
+}
+
+export interface CmsMediaUploadRequest {
+  key: string;
+  filename: string;
+  mimeType: string;
+  dataBase64: string;
+  altText?: string | null;
+  caption?: string | null;
+}
+
+export type CmsSeoEntrySummarySeo = { [key: string]: unknown };
+
+export interface CmsSeoEntrySummary {
+  id: string;
+  path: string;
+  title: string;
+  contentType: string;
+  status: string;
+  seo: CmsSeoEntrySummarySeo;
+  publishedAt?: string | null;
+}
+
+export interface CmsSeoListResponse {
+  items: CmsSeoEntrySummary[];
+}
+
+export type CmsSeoUpdateRequestSeo = { [key: string]: unknown };
+
+export interface CmsSeoUpdateRequest {
+  seo: CmsSeoUpdateRequestSeo;
+}
+
+export interface ReportingKpiDefinition {
+  key: string;
+  domain: string;
+  label: string;
+  unit: string;
+  description?: string | null;
+}
+
+export interface ReportingKpiDefinitionListResponse {
+  items: ReportingKpiDefinition[];
+}
+
+export type ReportingKpiSnapshotTrendDirection = typeof ReportingKpiSnapshotTrendDirection[keyof typeof ReportingKpiSnapshotTrendDirection];
+
+
+export const ReportingKpiSnapshotTrendDirection = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export interface ReportingKpiSnapshot {
+  snapshotPeriod: string;
+  domain: string;
+  key: string;
+  label: string;
+  value: number;
+  unit: string;
+  trendDirection: ReportingKpiSnapshotTrendDirection;
+  trendDelta: number;
+  updatedAt: string;
+}
+
+export interface ReportingKpiListResponse {
+  items: ReportingKpiSnapshot[];
+}
+
+export type ReportingExecutiveSummaryTrendDirection = typeof ReportingExecutiveSummaryTrendDirection[keyof typeof ReportingExecutiveSummaryTrendDirection];
+
+
+export const ReportingExecutiveSummaryTrendDirection = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export type ReportingExecutiveSummaryDomainsItem = {
+  domain: string;
+  score: number;
+  kpiCount: number;
+};
+
+export interface ReportingExecutiveSummary {
+  snapshotPeriod: string;
+  overallScore: number;
+  trendDirection: ReportingExecutiveSummaryTrendDirection;
+  trendDelta: number;
+  domains: ReportingExecutiveSummaryDomainsItem[];
+  highlights: ReportingKpiSnapshot[];
+}
+
+export type ReportingViewStatusRefreshStatus = typeof ReportingViewStatusRefreshStatus[keyof typeof ReportingViewStatusRefreshStatus];
+
+
+export const ReportingViewStatusRefreshStatus = {
+  idle: 'idle',
+  running: 'running',
+  failed: 'failed',
+} as const;
+
+export interface ReportingViewStatus {
+  viewKey: string;
+  description?: string | null;
+  lastRefreshedAt?: string | null;
+  refreshStatus: ReportingViewStatusRefreshStatus;
+  rowCount: number;
+}
+
+export interface ReportingViewListResponse {
+  items: ReportingViewStatus[];
+}
+
+export interface ReportingDefinitionSummary {
+  id: string;
+  reportKey: string;
+  title: string;
+  domain: string;
+  updatedAt: string;
+}
+
+export interface ReportingDefinitionListResponse {
+  items: ReportingDefinitionSummary[];
+}
+
+export type ReportingRefreshResultReadingsItem = {
+  key: string;
+  domain: string;
+  label: string;
+  value: number;
+  unit: string;
+};
+
+export interface ReportingRefreshResult {
+  snapshotPeriod: string;
+  upserted: number;
+  readings: ReportingRefreshResultReadingsItem[];
+}
+
+export type ReportingWidgetCatalogEntryType = typeof ReportingWidgetCatalogEntryType[keyof typeof ReportingWidgetCatalogEntryType];
+
+
+export const ReportingWidgetCatalogEntryType = {
+  metric: 'metric',
+  trend: 'trend',
+  table: 'table',
+  chart: 'chart',
+  heatmap: 'heatmap',
+  benchmark: 'benchmark',
+} as const;
+
+export interface ReportingWidgetCatalogEntry {
+  type: ReportingWidgetCatalogEntryType;
+  label: string;
+  description: string;
+}
+
+export interface ReportingWidgetCatalogResponse {
+  items: ReportingWidgetCatalogEntry[];
+}
+
+export interface ReportingDashboardSummary {
+  dashboardKey: string;
+  title: string;
+  description?: string | null;
+  domain?: string | null;
+  isDefault: boolean;
+}
+
+export interface ReportingDashboardListResponse {
+  items: ReportingDashboardSummary[];
+}
+
+export interface ReportingDashboardLayoutItem {
+  widgetKey: string;
+  order: number;
+  visible: boolean;
+  colSpan: number;
+}
+
+export type ReportingDashboardWidgetWidgetType = typeof ReportingDashboardWidgetWidgetType[keyof typeof ReportingDashboardWidgetWidgetType];
+
+
+export const ReportingDashboardWidgetWidgetType = {
+  metric: 'metric',
+  trend: 'trend',
+  table: 'table',
+  chart: 'chart',
+  heatmap: 'heatmap',
+  benchmark: 'benchmark',
+} as const;
+
+export type ReportingDashboardWidgetConfig = { [key: string]: unknown };
+
+export interface ReportingDashboardWidget {
+  widgetKey: string;
+  widgetType: ReportingDashboardWidgetWidgetType;
+  title: string;
+  config: ReportingDashboardWidgetConfig;
+  defaultOrder: number;
+  colSpan: number;
+  order: number;
+  visible: boolean;
+  data?: unknown | null;
+}
+
+export interface ReportingDashboardView {
+  dashboardKey: string;
+  title: string;
+  description?: string | null;
+  domain?: string | null;
+  snapshotPeriod?: string | null;
+  widgets: ReportingDashboardWidget[];
+  layout: ReportingDashboardLayoutItem[];
+}
+
+export interface ReportingDashboardLayout {
+  dashboardKey: string;
+  layout: ReportingDashboardLayoutItem[];
+  updatedAt: string;
+}
+
+export interface ReportingDashboardLayoutSaveRequest {
+  layout: ReportingDashboardLayoutItem[];
+}
+
+export interface ReportingReportSummary {
+  id: string;
+  reportKey: string;
+  title: string;
+  domain: string;
+  updatedAt: string;
+}
+
+export interface ReportingReportListResponse {
+  items: ReportingReportSummary[];
+}
+
+export type ReportingReportDefinitionSpecSourceType = typeof ReportingReportDefinitionSpecSourceType[keyof typeof ReportingReportDefinitionSpecSourceType];
+
+
+export const ReportingReportDefinitionSpecSourceType = {
+  kpi: 'kpi',
+  executive: 'executive',
+} as const;
+
+export type ReportingReportDefinitionSpecFilters = { [key: string]: unknown };
+
+export interface ReportingReportDefinitionSpec {
+  sourceType: ReportingReportDefinitionSpecSourceType;
+  columns?: string[];
+  filters?: ReportingReportDefinitionSpecFilters;
+}
+
+export interface ReportingReportDetail {
+  id: string;
+  reportKey: string;
+  title: string;
+  domain: string;
+  definition: ReportingReportDefinitionSpec;
+  createdBy?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReportingReportCreateRequest {
+  reportKey: string;
+  title: string;
+  domain: string;
+  definition: ReportingReportDefinitionSpec;
+}
+
+export interface ReportingReportUpdateRequest {
+  title?: string;
+  domain?: string;
+  definition?: ReportingReportDefinitionSpec;
+}
+
+export interface ReportingReportExecutionColumn {
+  key: string;
+  label: string;
+}
+
+export type ReportingReportExecutionResultSourceType = typeof ReportingReportExecutionResultSourceType[keyof typeof ReportingReportExecutionResultSourceType];
+
+
+export const ReportingReportExecutionResultSourceType = {
+  kpi: 'kpi',
+  executive: 'executive',
+} as const;
+
+export type ReportingReportExecutionResultRowsItem = { [key: string]: unknown };
+
+export interface ReportingReportExecutionResult {
+  reportKey: string;
+  title: string;
+  sourceType: ReportingReportExecutionResultSourceType;
+  snapshotPeriod?: string | null;
+  columns: ReportingReportExecutionColumn[];
+  rows: ReportingReportExecutionResultRowsItem[];
+  rowCount: number;
+  executedAt: string;
+}
+
+export type ReportingExportJobFormat = typeof ReportingExportJobFormat[keyof typeof ReportingExportJobFormat];
+
+
+export const ReportingExportJobFormat = {
+  csv: 'csv',
+  xlsx: 'xlsx',
+  pdf: 'pdf',
+} as const;
+
+export type ReportingExportJobStatus = typeof ReportingExportJobStatus[keyof typeof ReportingExportJobStatus];
+
+
+export const ReportingExportJobStatus = {
+  pending: 'pending',
+  processing: 'processing',
+  ready: 'ready',
+  failed: 'failed',
+} as const;
+
+export interface ReportingExportJob {
+  id: string;
+  reportKey: string;
+  format: ReportingExportJobFormat;
+  status: ReportingExportJobStatus;
+  fileKey?: string | null;
+  errorMessage?: string | null;
+  completedAt?: string | null;
+  createdAt: string;
+}
+
+export interface ReportingExportListResponse {
+  items: ReportingExportJob[];
+}
+
+export type ReportingExportCreateRequestFormat = typeof ReportingExportCreateRequestFormat[keyof typeof ReportingExportCreateRequestFormat];
+
+
+export const ReportingExportCreateRequestFormat = {
+  csv: 'csv',
+  xlsx: 'xlsx',
+  pdf: 'pdf',
+} as const;
+
+export interface ReportingExportCreateRequest {
+  format?: ReportingExportCreateRequestFormat;
+}
+
+export interface ReportingExportDownload {
+  jobId: string;
+  downloadUrl: string;
+  expiresInSeconds: number;
+  contentType: string;
+  filename: string;
+}
+
+export type ReportingScheduleCadence = typeof ReportingScheduleCadence[keyof typeof ReportingScheduleCadence];
+
+
+export const ReportingScheduleCadence = {
+  daily: 'daily',
+  weekly: 'weekly',
+  monthly: 'monthly',
+} as const;
+
+export type ReportingScheduleFormat = typeof ReportingScheduleFormat[keyof typeof ReportingScheduleFormat];
+
+
+export const ReportingScheduleFormat = {
+  csv: 'csv',
+  xlsx: 'xlsx',
+  pdf: 'pdf',
+} as const;
+
+export interface ReportingSchedule {
+  id: string;
+  scheduleKey: string;
+  reportKey: string;
+  title: string;
+  cadence: ReportingScheduleCadence;
+  timeUtc: string;
+  format: ReportingScheduleFormat;
+  recipients: string[];
+  enabled: boolean;
+  lastRunAt?: string | null;
+  nextRunAt?: string | null;
+  updatedAt: string;
+}
+
+export interface ReportingScheduleListResponse {
+  items: ReportingSchedule[];
+}
+
+export type ReportingScheduleCreateRequestCadence = typeof ReportingScheduleCreateRequestCadence[keyof typeof ReportingScheduleCreateRequestCadence];
+
+
+export const ReportingScheduleCreateRequestCadence = {
+  daily: 'daily',
+  weekly: 'weekly',
+  monthly: 'monthly',
+} as const;
+
+export type ReportingScheduleCreateRequestFormat = typeof ReportingScheduleCreateRequestFormat[keyof typeof ReportingScheduleCreateRequestFormat];
+
+
+export const ReportingScheduleCreateRequestFormat = {
+  csv: 'csv',
+  xlsx: 'xlsx',
+  pdf: 'pdf',
+} as const;
+
+export interface ReportingScheduleCreateRequest {
+  scheduleKey: string;
+  reportKey: string;
+  title: string;
+  cadence: ReportingScheduleCreateRequestCadence;
+  timeUtc: string;
+  format: ReportingScheduleCreateRequestFormat;
+  recipients?: string[];
+  enabled?: boolean;
+}
+
+export type ReportingScheduleUpdateRequestCadence = typeof ReportingScheduleUpdateRequestCadence[keyof typeof ReportingScheduleUpdateRequestCadence];
+
+
+export const ReportingScheduleUpdateRequestCadence = {
+  daily: 'daily',
+  weekly: 'weekly',
+  monthly: 'monthly',
+} as const;
+
+export type ReportingScheduleUpdateRequestFormat = typeof ReportingScheduleUpdateRequestFormat[keyof typeof ReportingScheduleUpdateRequestFormat];
+
+
+export const ReportingScheduleUpdateRequestFormat = {
+  csv: 'csv',
+  xlsx: 'xlsx',
+  pdf: 'pdf',
+} as const;
+
+export interface ReportingScheduleUpdateRequest {
+  title?: string;
+  cadence?: ReportingScheduleUpdateRequestCadence;
+  timeUtc?: string;
+  format?: ReportingScheduleUpdateRequestFormat;
+  recipients?: string[];
+  enabled?: boolean;
+}
+
+export type ReportingScheduleRunResultResultsItem = {
+  scheduleKey: string;
+  exportJobId: string;
+};
+
+export interface ReportingScheduleRunResult {
+  processed: number;
+  results: ReportingScheduleRunResultResultsItem[];
+}
+
+export interface ReportingBiConnection {
+  id: string;
+  connectionKey: string;
+  provider: string;
+  workspaceId: string;
+  datasetName: string;
+  datasetKey: string;
+  enabled: boolean;
+  lastSyncAt?: string | null;
+  updatedAt: string;
+}
+
+export type ReportingBiConnectionCreateRequestMetadata = { [key: string]: unknown };
+
+export interface ReportingBiConnectionCreateRequest {
+  connectionKey: string;
+  workspaceId: string;
+  datasetName: string;
+  datasetKey: string;
+  enabled?: boolean;
+  metadata?: ReportingBiConnectionCreateRequestMetadata;
+}
+
+export type ReportingBiConnectionUpdateRequestMetadata = { [key: string]: unknown };
+
+export interface ReportingBiConnectionUpdateRequest {
+  workspaceId?: string;
+  datasetName?: string;
+  datasetKey?: string;
+  enabled?: boolean;
+  metadata?: ReportingBiConnectionUpdateRequestMetadata;
+}
+
+export type ReportingBiExportJobExportType = typeof ReportingBiExportJobExportType[keyof typeof ReportingBiExportJobExportType];
+
+
+export const ReportingBiExportJobExportType = {
+  full: 'full',
+  incremental: 'incremental',
+} as const;
+
+export type ReportingBiExportJobStatus = typeof ReportingBiExportJobStatus[keyof typeof ReportingBiExportJobStatus];
+
+
+export const ReportingBiExportJobStatus = {
+  pending: 'pending',
+  processing: 'processing',
+  ready: 'ready',
+  failed: 'failed',
+} as const;
+
+export type ReportingBiExportJobWatermark = { [key: string]: unknown };
+
+export interface ReportingBiExportJob {
+  id: string;
+  connectionKey: string;
+  datasetKey: string;
+  exportType: ReportingBiExportJobExportType;
+  status: ReportingBiExportJobStatus;
+  fileKey?: string | null;
+  rowCount: number;
+  watermark?: ReportingBiExportJobWatermark;
+  errorMessage?: string | null;
+  completedAt?: string | null;
+  createdAt: string;
+}
+
+export interface ReportingBiExportDownload {
+  exportId: string;
+  downloadUrl: string;
+  expiresInSeconds: number;
+  contentType: string;
+  filename: string;
+}
+
+export type ReportingBiIncrementalManifestRefreshMode = typeof ReportingBiIncrementalManifestRefreshMode[keyof typeof ReportingBiIncrementalManifestRefreshMode];
+
+
+export const ReportingBiIncrementalManifestRefreshMode = {
+  full: 'full',
+  incremental: 'incremental',
+} as const;
+
+export type ReportingBiIncrementalManifestWatermark = { [key: string]: unknown };
+
+export type ReportingBiIncrementalManifestTablesItem = {
+  name?: string;
+  primaryKey?: string[];
+  incrementalColumn?: string;
+};
+
+export interface ReportingBiIncrementalManifest {
+  connectionKey: string;
+  datasetKey: string;
+  refreshMode: ReportingBiIncrementalManifestRefreshMode;
+  watermark: ReportingBiIncrementalManifestWatermark;
+  tables: ReportingBiIncrementalManifestTablesItem[];
+  lastExportAt?: string | null;
+}
+
+export interface ReportingBenchmarkCohort {
+  cohortKey: string;
+  label: string;
+  industry?: string | null;
+  description?: string | null;
+}
+
+export type ReportingBenchmarkComparisonItemsItemPerformanceBand = typeof ReportingBenchmarkComparisonItemsItemPerformanceBand[keyof typeof ReportingBenchmarkComparisonItemsItemPerformanceBand];
+
+
+export const ReportingBenchmarkComparisonItemsItemPerformanceBand = {
+  below: 'below',
+  at: 'at',
+  above: 'above',
+} as const;
+
+export type ReportingBenchmarkComparisonItemsItem = {
+  kpiKey: string;
+  domain: string;
+  label: string;
+  organizationValue: number;
+  cohortMedian: number;
+  percentileRank: number;
+  gapToMedian: number;
+  performanceBand: ReportingBenchmarkComparisonItemsItemPerformanceBand;
+};
+
+export interface ReportingBenchmarkComparison {
+  cohortKey: string;
+  snapshotPeriod: string;
+  items: ReportingBenchmarkComparisonItemsItem[];
+}
+
+export type ReportingTrendAnalysisSeasonalityFlag = typeof ReportingTrendAnalysisSeasonalityFlag[keyof typeof ReportingTrendAnalysisSeasonalityFlag];
+
+
+export const ReportingTrendAnalysisSeasonalityFlag = {
+  none: 'none',
+  possible: 'possible',
+  likely: 'likely',
+} as const;
+
+export type ReportingTrendAnalysisTrendDirection = typeof ReportingTrendAnalysisTrendDirection[keyof typeof ReportingTrendAnalysisTrendDirection];
+
+
+export const ReportingTrendAnalysisTrendDirection = {
+  up: 'up',
+  down: 'down',
+  stable: 'stable',
+} as const;
+
+export type ReportingTrendAnalysisPointsItem = {
+  snapshotPeriod: string;
+  value: number;
+  movingAverage?: number | null;
+};
+
+export interface ReportingTrendAnalysis {
+  kpiKey: string;
+  domain: string;
+  label: string;
+  seasonalityFlag: ReportingTrendAnalysisSeasonalityFlag;
+  trendDirection: ReportingTrendAnalysisTrendDirection;
+  points: ReportingTrendAnalysisPointsItem[];
+}
+
+export type ReportingForecastConfidence = typeof ReportingForecastConfidence[keyof typeof ReportingForecastConfidence];
+
+
+export const ReportingForecastConfidence = {
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+} as const;
+
+export interface ReportingForecast {
+  kpiKey: string;
+  domain: string;
+  label: string;
+  snapshotPeriod: string;
+  forecastPeriod: string;
+  projectedValue: number;
+  confidence: ReportingForecastConfidence;
+  method: string;
+  riskOfBreach: boolean;
+  updatedAt: string;
+}
+
+export type ReportingKpiSubscriptionThresholdOperator = typeof ReportingKpiSubscriptionThresholdOperator[keyof typeof ReportingKpiSubscriptionThresholdOperator];
+
+
+export const ReportingKpiSubscriptionThresholdOperator = {
+  lt: 'lt',
+  lte: 'lte',
+  gt: 'gt',
+  gte: 'gte',
+} as const;
+
+export type ReportingKpiSubscriptionChannel = typeof ReportingKpiSubscriptionChannel[keyof typeof ReportingKpiSubscriptionChannel];
+
+
+export const ReportingKpiSubscriptionChannel = {
+  email: 'email',
+  in_app: 'in_app',
+} as const;
+
+export interface ReportingKpiSubscription {
+  id: string;
+  subscriptionKey: string;
+  kpiKey: string;
+  domain: string;
+  thresholdOperator: ReportingKpiSubscriptionThresholdOperator;
+  thresholdValue: number;
+  channel: ReportingKpiSubscriptionChannel;
+  enabled: boolean;
+  lastTriggeredAt?: string | null;
+  updatedAt: string;
+}
+
+export type ReportingKpiSubscriptionCreateRequestThresholdOperator = typeof ReportingKpiSubscriptionCreateRequestThresholdOperator[keyof typeof ReportingKpiSubscriptionCreateRequestThresholdOperator];
+
+
+export const ReportingKpiSubscriptionCreateRequestThresholdOperator = {
+  lt: 'lt',
+  lte: 'lte',
+  gt: 'gt',
+  gte: 'gte',
+} as const;
+
+export type ReportingKpiSubscriptionCreateRequestChannel = typeof ReportingKpiSubscriptionCreateRequestChannel[keyof typeof ReportingKpiSubscriptionCreateRequestChannel];
+
+
+export const ReportingKpiSubscriptionCreateRequestChannel = {
+  email: 'email',
+  in_app: 'in_app',
+} as const;
+
+export interface ReportingKpiSubscriptionCreateRequest {
+  subscriptionKey: string;
+  kpiKey: string;
+  domain: string;
+  thresholdOperator: ReportingKpiSubscriptionCreateRequestThresholdOperator;
+  thresholdValue: number;
+  channel?: ReportingKpiSubscriptionCreateRequestChannel;
+  enabled?: boolean;
+}
+
+export type ReportingKpiSubscriptionUpdateRequestThresholdOperator = typeof ReportingKpiSubscriptionUpdateRequestThresholdOperator[keyof typeof ReportingKpiSubscriptionUpdateRequestThresholdOperator];
+
+
+export const ReportingKpiSubscriptionUpdateRequestThresholdOperator = {
+  lt: 'lt',
+  lte: 'lte',
+  gt: 'gt',
+  gte: 'gte',
+} as const;
+
+export type ReportingKpiSubscriptionUpdateRequestChannel = typeof ReportingKpiSubscriptionUpdateRequestChannel[keyof typeof ReportingKpiSubscriptionUpdateRequestChannel];
+
+
+export const ReportingKpiSubscriptionUpdateRequestChannel = {
+  email: 'email',
+  in_app: 'in_app',
+} as const;
+
+export interface ReportingKpiSubscriptionUpdateRequest {
+  thresholdOperator?: ReportingKpiSubscriptionUpdateRequestThresholdOperator;
+  thresholdValue?: number;
+  channel?: ReportingKpiSubscriptionUpdateRequestChannel;
+  enabled?: boolean;
+}
+
+export interface ReportingSubscriptionEvaluation {
+  evaluated: number;
+  triggered: number;
+  triggeredKeys: string[];
 }
 
 /**
@@ -124,4 +1565,258 @@ export type InternalErrorResponse = ErrorResponse;
  * The service is temporarily unable to handle the request.
  */
 export type ServiceUnavailableResponse = ErrorResponse;
+
+export type ListLeadsParams = {
+q?: string;
+status?: LeadStatus;
+priority?: LeadPriority;
+assignee?: string;
+/**
+ * @minimum 0
+ */
+offset?: number;
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+limit?: number;
+};
+
+export type ListRemindersParams = {
+leadId: string;
+};
+
+export type PortalUsersParams = {
+q?: string;
+};
+
+export type PortalProjectsParams = {
+status?: string;
+};
+
+export type PortalDocumentsParams = {
+q?: string;
+};
+
+export type LearningCatalogueParams = {
+q?: string;
+category?: string;
+};
+
+export type LearningTranscript200 = { [key: string]: unknown };
+
+export type TrainerDashboard200 = { [key: string]: unknown };
+
+export type AuditDashboard200 = { [key: string]: unknown };
+
+export type ListAudits200 = { [key: string]: unknown };
+
+export type CreateAuditBody = {
+  name: string;
+};
+
+export type CreateAudit201 = { [key: string]: unknown };
+
+export type GetAudit200 = { [key: string]: unknown };
+
+export type ListAuditTemplates200 = { [key: string]: unknown };
+
+export type AuditCalendar200 = { [key: string]: unknown };
+
+export type ComplianceDashboard200 = { [key: string]: unknown };
+
+export type ComplianceWorkspace200 = { [key: string]: unknown };
+
+export type ListLegalRegister200 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsKpis200 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsTrends200 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsRegulatory200 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsIsoParams = {
+frameworkId?: string;
+};
+
+export type ComplianceAnalyticsIso200 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsControls200 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsPerformance200 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsAlertsParams = {
+status?: string;
+};
+
+export type ComplianceAnalyticsAlerts200 = { [key: string]: unknown };
+
+export type AcknowledgeComplianceAnalyticsAlert200 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsExports200 = { [key: string]: unknown };
+
+export type CreateComplianceAnalyticsExportBody = {
+  exportType: string;
+  format?: string;
+};
+
+export type CreateComplianceAnalyticsExport201 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsCalendarSync200 = { [key: string]: unknown };
+
+export type ComplianceAnalyticsSnapshot201 = { [key: string]: unknown };
+
+export type ListInspections200 = { [key: string]: unknown };
+
+export type CreateInspectionBody = {
+  name: string;
+};
+
+export type CreateInspection201 = { [key: string]: unknown };
+
+export type InspectionDashboard200 = { [key: string]: unknown };
+
+export type ListCapa200 = { [key: string]: unknown };
+
+export type CreateCapaBodyCapaType = typeof CreateCapaBodyCapaType[keyof typeof CreateCapaBodyCapaType];
+
+
+export const CreateCapaBodyCapaType = {
+  corrective: 'corrective',
+  preventive: 'preventive',
+} as const;
+
+export type CreateCapaBody = {
+  title: string;
+  capaType: CreateCapaBodyCapaType;
+};
+
+export type CreateCapa201 = { [key: string]: unknown };
+
+export type CapaDashboard200 = { [key: string]: unknown };
+
+export type GetCapa200 = { [key: string]: unknown };
+
+export type UpdateCapaBody = { [key: string]: unknown };
+
+export type UpdateCapa200 = { [key: string]: unknown };
+
+export type PortalListCapa200 = { [key: string]: unknown };
+
+export type PortalCapaDashboard200 = { [key: string]: unknown };
+
+export type ListRiskAssessments200 = { [key: string]: unknown };
+
+export type CreateRiskAssessmentBody = {
+  title: string;
+};
+
+export type PortalComplianceAnalyticsRegulatory200 = { [key: string]: unknown };
+
+export type PortalGetCapa200 = { [key: string]: unknown };
+
+export type PortalRiskHeatMap200 = { [key: string]: unknown };
+
+export type PortalGetRiskAssessment200 = { [key: string]: unknown };
+
+export type PortalListAudits200 = { [key: string]: unknown };
+
+export type PortalAuditCalendar200 = { [key: string]: unknown };
+
+export type PortalAuditHistory200 = { [key: string]: unknown };
+
+export type PortalAuditReports200 = { [key: string]: unknown };
+
+export type PortalGetAudit200 = { [key: string]: unknown };
+
+export type PortalListInspections200 = { [key: string]: unknown };
+
+export type PortalInspectionCalendar200 = { [key: string]: unknown };
+
+export type PortalInspectionHistory200 = { [key: string]: unknown };
+
+export type PortalGetInspection200 = { [key: string]: unknown };
+
+export type AdminListUsersParams = {
+keyword?: string;
+};
+
+export type AdminSearchAuditLogsParams = {
+organizationId?: string;
+entity?: string;
+entityId?: string;
+actorUserId?: string;
+requestId?: string;
+action?: string;
+limit?: number;
+};
+
+export type AdminSystemHealth200 = { [key: string]: unknown };
+
+export type AdminSystemVersion200 = { [key: string]: unknown };
+
+export type AdminCmsListEntriesParams = {
+contentType?: string;
+status?: string;
+keyword?: string;
+pendingClientApproval?: boolean;
+};
+
+export type PublicContentListEntriesParams = {
+locale?: string;
+};
+
+export type PublicContentSnapshotParams = {
+locale?: string;
+};
+
+export type PublicContentByPathParams = {
+path: string;
+locale?: string;
+};
+
+export type ReportingListKpisParams = {
+snapshotPeriod?: string;
+};
+
+export type ReportingListBiConnections200 = {
+  items?: ReportingBiConnection[];
+};
+
+export type ReportingListBiExports200 = {
+  items?: ReportingBiExportJob[];
+};
+
+export type ReportingCreateBiExportBodyExportType = typeof ReportingCreateBiExportBodyExportType[keyof typeof ReportingCreateBiExportBodyExportType];
+
+
+export const ReportingCreateBiExportBodyExportType = {
+  full: 'full',
+  incremental: 'incremental',
+} as const;
+
+export type ReportingCreateBiExportBody = {
+  exportType?: ReportingCreateBiExportBodyExportType;
+};
+
+export type ReportingListBenchmarkCohorts200 = {
+  items?: ReportingBenchmarkCohort[];
+};
+
+export type ReportingCompareBenchmarksParams = {
+cohortKey?: string;
+snapshotPeriod?: string;
+};
+
+export type ReportingListForecasts200 = {
+  items?: ReportingForecast[];
+};
+
+export type ReportingRefreshForecasts202 = {
+  items?: ReportingForecast[];
+};
+
+export type ReportingListSubscriptions200 = {
+  items?: ReportingKpiSubscription[];
+};
 

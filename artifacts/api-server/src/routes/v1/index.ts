@@ -1,0 +1,46 @@
+import { Router, type IRouter } from 'express';
+import authRouter from './auth';
+import contactRouter from './contact';
+import dashboardRouter from './dashboard';
+import filesRouter from './files';
+import healthRouter from './health';
+import leadsRouter from './leads';
+import remindersRouter from './reminders';
+import systemRouter from './system';
+import tagsRouter from './tags';
+import portalRouter from './portal';
+import learningRouter from './learning';
+import auditsRouter from './audits';
+import complianceRouter from './compliance';
+import inspectionsRouter from './inspections';
+import capaRouter from './capa';
+import riskAssessmentsRouter from './risk-assessments';
+import adminRouter from './admin';
+import contentRouter from './content';
+import reportingRouter from './reporting';
+import usersRouter from './users';
+
+const router: IRouter = Router();
+
+router.use('/health', healthRouter);
+router.use('/contact', contactRouter);
+router.use('/content', contentRouter);
+router.use('/reporting', reportingRouter);
+router.use('/system', systemRouter);
+router.use('/auth', authRouter);
+router.use('/users', usersRouter);
+router.use('/files', filesRouter);
+router.use('/leads', leadsRouter);
+router.use('/dashboard', dashboardRouter);
+router.use('/reminders', remindersRouter);
+router.use('/tags', tagsRouter);
+router.use('/portal', portalRouter);
+router.use('/learning', learningRouter);
+router.use('/audits', auditsRouter);
+router.use('/compliance', complianceRouter);
+router.use('/inspections', inspectionsRouter);
+router.use('/capa', capaRouter);
+router.use('/risk-assessments', riskAssessmentsRouter);
+router.use('/admin', adminRouter);
+
+export default router;

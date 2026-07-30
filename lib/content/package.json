@@ -1,0 +1,32 @@
+{
+  "name": "@workspace/content",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./schemas": "./src/schemas/index.ts",
+    "./loader": "./src/loader/index.ts",
+    "./loader/bootstrap": "./src/loader/bootstrap.ts",
+    "./snapshot": "./src/snapshot/index.ts",
+    "./services/catalog": "./src/services/catalog.ts",
+    "./industries/catalog": "./src/industries/catalog.ts",
+    "./training/catalog": "./src/training/catalog.ts",
+    "./resources/catalog": "./src/resources/catalog.ts",
+    "./case-studies/catalog": "./src/case-studies/catalog.ts",
+    "./testimonials/catalog": "./src/testimonials/catalog.ts",
+    "./client-success/catalog": "./src/client-success/catalog.ts",
+    "./data/*": "./src/data/*.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vitest": "^4.1.10"
+  }
+}

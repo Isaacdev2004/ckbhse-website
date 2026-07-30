@@ -1,0 +1,30 @@
+{
+  "name": "@workspace/domain",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./shared": "./src/shared/index.ts",
+    "./crm": "./src/crm/index.ts",
+    "./auth": "./src/auth/index.ts",
+    "./organisations": "./src/organisations/index.ts",
+    "./audit": "./src/audit/index.ts",
+    "./risk": "./src/risk/index.ts",
+    "./compliance-analytics": "./src/compliance-analytics/index.ts",
+    "./outbox": "./src/outbox/index.ts",
+    "./notifications": "./src/notifications/index.ts",
+    "./admin": "./src/admin/index.ts",
+    "./cms": "./src/cms/index.ts",
+    "./reporting": "./src/reporting/index.ts",
+    "./files": "./src/files/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vitest": "^4.1.10"
+  }
+}

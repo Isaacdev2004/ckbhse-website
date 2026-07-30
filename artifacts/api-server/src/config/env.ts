@@ -80,9 +80,40 @@ const envSchema = z
     /**
      * Postgres connection string. Optional in this phase because no route reads
      * the database yet; `lib/db` fails on its own if a query is attempted
-     * without it.
+     * without it. For Supabase, set SUPABASE_URL + SUPABASE_DB_PASSWORD instead.
      */
     DATABASE_URL: z.string().url().optional(),
+
+    /** Supabase project URL — alternative to DATABASE_URL. */
+    SUPABASE_URL: z.string().url().optional(),
+
+    /** Supabase database password — used with SUPABASE_URL to build connection strings. */
+    SUPABASE_DB_PASSWORD: z.string().optional(),
+
+    /** Direct Postgres URL for migrations when it differs from DATABASE_URL. */
+    DATABASE_MIGRATE_URL: z.string().url().optional(),
+
+    /**
+     * UUID of the platform operator organisation that receives public website
+     * contact enquiries. Required whenever `DATABASE_URL` is set.
+     */
+    PLATFORM_ORGANIZATION_ID: z.string().uuid().optional(),
+
+    /** Application version surfaced by `/api/v1/system/version`. */
+    APP_VERSION: z.string().default('0.0.0'),
+
+    /** Optional build metadata for diagnostics. */
+    BUILD_SHA: z.string().optional(),
+    BUILD_TIME: z.coerce.date().optional(),
+
+    CRM_SUPPORT_EMAIL: z.string().email().optional(),
+    EMAIL_FROM: z.string().email().optional(),
+    EMAIL_FROM_NAME: z.string().default('CKBHSE'),
+    SMTP_HOST: z.string().optional(),
+    SMTP_PORT: z.coerce.number().int().positive().default(587),
+    SMTP_SECURE: booleanFromString('false'),
+    SMTP_USER: z.string().optional(),
+    SMTP_PASS: z.string().optional(),
   })
   .superRefine((value, ctx) => {
     // Production has stricter requirements than the shape alone can express.
@@ -105,6 +136,33 @@ const envSchema = z
         path: ['TRUST_PROXY'],
         message:
           'TRUST_PROXY must be enabled in production, which runs behind a proxy',
+      });
+    }
+
+    if (
+      (value.DATABASE_URL !== undefined ||
+        (value.SUPABASE_URL !== undefined && value.SUPABASE_DB_PASSWORD !== undefined)) &&
+      value.PLATFORM_ORGANIZATION_ID === undefined
+    ) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['PLATFORM_ORGANIZATION_ID'],
+        message:
+          'PLATFORM_ORGANIZATION_ID is required when the database is configured',
+      });
+    }
+  })
+  .superRefine((value, ctx) => {
+    const databaseConfigured =
+      value.DATABASE_URL !== undefined ||
+      (value.SUPABASE_URL !== undefined && value.SUPABASE_DB_PASSWORD !== undefined);
+
+    if (databaseConfigured && value.PLATFORM_ORGANIZATION_ID === undefined) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['PLATFORM_ORGANIZATION_ID'],
+        message:
+          'PLATFORM_ORGANIZATION_ID is required when the database is configured',
       });
     }
   });

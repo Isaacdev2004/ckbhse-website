@@ -106,11 +106,37 @@ describe('the composition root', () => {
     expect(key.startsWith('org/org-1/')).toBe(true);
   });
 
-  it('reports no notification channels until providers are registered', async () => {
+  it('registers default notification channels', () => {
     const container = createContainer();
 
-    expect(container.notifications.registeredChannels).toEqual([]);
+    expect(container.notifications.registeredChannels.sort()).toEqual([
+      'email',
+      'in_app',
+    ]);
+  });
 
+  it('delivers email notifications through the configured provider', async () => {
+    const container = createContainer();
+
+    const results = await container.notifications.dispatch(
+      context,
+      {
+        type: 'test.event',
+        recipient: { userId: 'user-1', organizationId: 'org-1' },
+        priority: 'normal',
+        subject: 'Test',
+        body: 'Test notification',
+        data: { recipientEmail: 'client@example.com' },
+      },
+      ['email'],
+    );
+
+    expect(results[0]).toMatchObject({ channel: 'email', delivered: true });
+    expect((container.email as InMemoryEmailProvider).sent).toHaveLength(1);
+  });
+
+  it('reports no notification delivery for unregistered channels when providers omitted', async () => {
+    const container = createContainer();
     const results = await container.notifications.dispatch(
       context,
       {
@@ -120,13 +146,11 @@ describe('the composition root', () => {
         subject: 'Test',
         body: 'Test',
       },
-      ['email'],
+      ['sms'],
     );
 
-    // An unconfigured channel reports itself rather than throwing, so a missing
-    // provider degrades delivery instead of failing the caller.
     expect(results[0]).toMatchObject({
-      channel: 'email',
+      channel: 'sms',
       delivered: false,
       reason: 'no provider registered',
     });

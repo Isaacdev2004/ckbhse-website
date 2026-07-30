@@ -38,6 +38,8 @@ export const PERMISSIONS = {
   CLIENT_MANAGE: 'crm.client.manage',
   ENQUIRY_READ: 'crm.enquiry.view',
   ENQUIRY_MANAGE: 'crm.enquiry.manage',
+  LEAD_READ: 'crm.lead.view',
+  LEAD_MANAGE: 'crm.lead.manage',
 
   // --- Project delivery ----------------------------------------------------
   PROJECT_READ: 'delivery.project.read',
@@ -47,10 +49,39 @@ export const PERMISSIONS = {
 
   // --- Consultancy ---------------------------------------------------------
   AUDIT_READ: 'consultancy.audit.read',
+  AUDIT_CREATE: 'consultancy.audit.create',
+  AUDIT_UPDATE: 'consultancy.audit.update',
+  AUDIT_DELETE: 'consultancy.audit.delete',
+  AUDIT_ASSIGN: 'consultancy.audit.assign',
+  AUDIT_APPROVE: 'consultancy.audit.approve',
+  AUDIT_CLOSE: 'consultancy.audit.close',
+  AUDIT_EXPORT: 'consultancy.audit.export',
+  AUDIT_TEMPLATE_MANAGE: 'consultancy.audit-template.manage',
+  CHECKLIST_MANAGE: 'consultancy.checklist.manage',
+  EVIDENCE_UPLOAD: 'consultancy.evidence.upload',
   AUDIT_CONDUCT: 'consultancy.audit.conduct',
   /** Issuance is separate from drafting: an issued report is immutable. */
   AUDIT_ISSUE: 'consultancy.audit.issue',
   INSPECTION_CONDUCT: 'consultancy.inspection.conduct',
+  INSPECTION_READ: 'consultancy.inspection.read',
+  INSPECTION_CREATE: 'consultancy.inspection.create',
+  INSPECTION_UPDATE: 'consultancy.inspection.update',
+  COMPLIANCE_READ: 'consultancy.compliance.read',
+  COMPLIANCE_MANAGE: 'consultancy.compliance.manage',
+  LEGAL_REGISTER_READ: 'consultancy.legal-register.read',
+  LEGAL_REGISTER_MANAGE: 'consultancy.legal-register.manage',
+  REGULATORY_READ: 'consultancy.regulatory.read',
+  REGULATORY_MANAGE: 'consultancy.regulatory.manage',
+  CONTROL_READ: 'consultancy.control.read',
+  CONTROL_MANAGE: 'consultancy.control.manage',
+  CAPA_READ: 'consultancy.capa.read',
+  CAPA_CREATE: 'consultancy.capa.create',
+  CAPA_UPDATE: 'consultancy.capa.update',
+  CAPA_ASSIGN: 'consultancy.capa.assign',
+  CAPA_APPROVE: 'consultancy.capa.approve',
+  CAPA_VERIFY: 'consultancy.capa.verify',
+  CAPA_CLOSE: 'consultancy.capa.close',
+  CAPA_ESCALATE: 'consultancy.capa.escalate',
   RISK_ASSESSMENT_READ: 'consultancy.risk-assessment.read',
   RISK_ASSESSMENT_MANAGE: 'consultancy.risk-assessment.manage',
   INCIDENT_READ: 'consultancy.incident.read',
@@ -97,6 +128,12 @@ export const PERMISSIONS = {
   INTEGRATION_MANAGE: 'platform.integration.manage',
   FEATURE_FLAG_MANAGE: 'platform.feature-flag.manage',
   SYSTEM_READ: 'platform.system.read',
+
+  // --- Reporting & analytics -----------------------------------------------
+  REPORT_READ: 'reporting.report.read',
+  REPORT_MANAGE: 'reporting.report.manage',
+  REPORT_EXPORT: 'reporting.report.export',
+  DASHBOARD_PERSONALIZE: 'reporting.dashboard.personalize',
 } as const;
 
 export type PermissionKey = keyof typeof PERMISSIONS;

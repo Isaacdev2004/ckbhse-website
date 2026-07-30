@@ -13,16 +13,22 @@
     "./email": "./src/email/index.ts",
     "./storage": "./src/storage/index.ts",
     "./notifications": "./src/notifications/index.ts",
+    "./notifications/providers": "./src/notifications/providers/index.ts",
     "./jobs": "./src/jobs/index.ts",
     "./flags": "./src/flags/index.ts",
-    "./logging": "./src/logging/index.ts"
+    "./logging": "./src/logging/index.ts",
+    "./files/scan": "./src/files/scan-provider.ts"
   },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "dependencies": {
+    "nodemailer": "^7.0.5"
+  },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.17",
     "@types/node": "catalog:",
     "vitest": "^4.1.10"
   }

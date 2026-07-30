@@ -1,0 +1,42 @@
+{
+  "name": "@workspace/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./session/session-store.interface": "./src/session/session-store.interface.ts",
+    "./session/session.interface": "./src/session/session.interface.ts",
+    "./jwt/jwt.interface": "./src/jwt/jwt.interface.ts",
+    "./password/password-hasher.interface": "./src/password/password-hasher.interface.ts",
+    "./password/password-policy.interface": "./src/password/password-policy.interface.ts",
+    "./mfa/mfa-provider.interface": "./src/mfa/mfa-provider.interface.ts",
+    "./roles/role-resolver.interface": "./src/roles/role-resolver.interface.ts",
+    "./permissions/permission-resolver.interface": "./src/permissions/permission-resolver.interface.ts",
+    "./middleware/auth-middleware.contract": "./src/middleware/auth-middleware.contract.ts",
+    "./current-user/current-user-provider.interface": "./src/current-user/current-user-provider.interface.ts",
+    "./cookies/session-cookie.interface": "./src/cookies/session-cookie.interface.ts",
+    "./sso/oidc-provider.interface": "./src/sso/oidc-provider.interface.ts",
+    "./sso/saml-provider.interface": "./src/sso/saml-provider.interface.ts",
+    "./sso/entra-id-provider.interface": "./src/sso/entra-id-provider.interface.ts",
+    "./sso/google-workspace-provider.interface": "./src/sso/google-workspace-provider.interface.ts",
+    "./oauth/oauth-provider.interface": "./src/oauth/oauth-provider.interface.ts",
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@workspace/data": "workspace:*",
+    "@workspace/db": "workspace:*",
+    "@workspace/domain": "workspace:*",
+    "@workspace/platform": "workspace:*",
+    "argon2": "^0.45.1",
+    "drizzle-orm": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vitest": "^4.1.10"
+  }
+}

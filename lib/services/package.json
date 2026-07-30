@@ -1,0 +1,36 @@
+{
+  "name": "@workspace/services",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./contact/contact-request.service": "./src/contact/contact-request.service.ts",
+    "./system/system.service": "./src/system/system.service.ts",
+    "./system/system-settings.service": "./src/system/system-settings.service.ts",
+    "./flags/feature-flag.service": "./src/flags/feature-flag.service.ts",
+    "./reporting/jobs": "./src/reporting/jobs.ts",
+    "./cms": "./src/cms/index.ts",
+    "./files": "./src/files/index.ts",
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@workspace/auth": "workspace:*",
+    "@workspace/content": "workspace:*",
+    "@workspace/data": "workspace:*",
+    "@workspace/db": "workspace:*",
+    "@workspace/domain": "workspace:*",
+    "@workspace/email-templates": "workspace:*",
+    "@workspace/integrations-power-bi": "workspace:*",
+    "@workspace/platform": "workspace:*",
+    "drizzle-orm": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vitest": "^4.1.10"
+  }
+}

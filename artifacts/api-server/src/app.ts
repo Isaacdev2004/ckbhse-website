@@ -10,6 +10,8 @@ import {
   securityHeaders,
 } from './middleware/security';
 import { requestContext } from './middleware/request-context';
+import { sessionAuth } from './middleware/session-auth';
+import { devAuth } from './middleware/dev-auth';
 import { issueCsrfToken, verifyCsrfToken } from './middleware/csrf';
 import { errorHandler, notFoundHandler } from './middleware/error';
 
@@ -59,6 +61,8 @@ app.use(cookieParser(cookieConfig.secret));
 // router, so a state-changing route is protected by default rather than by the
 // author remembering to opt in.
 app.use(requestContext);
+app.use(sessionAuth);
+app.use(devAuth);
 app.use(issueCsrfToken);
 app.use(verifyCsrfToken);
 

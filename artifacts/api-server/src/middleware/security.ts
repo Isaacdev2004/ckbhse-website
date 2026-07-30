@@ -4,7 +4,7 @@ import rateLimit, { type RateLimitRequestHandler } from 'express-rate-limit';
 import type { RequestHandler } from 'express';
 import { AppError } from '@workspace/platform/errors';
 import { recordSecurityEvent } from '@workspace/platform/logging';
-import { corsConfig, isProduction, isTest, rateLimitConfig } from '../config';
+import { corsConfig, isDevelopment, isProduction, isTest, rateLimitConfig } from '../config';
 import { securityLogger } from '../lib/logger';
 
 export const securityHeaders: RequestHandler = helmet({
@@ -25,6 +25,18 @@ export const securityHeaders: RequestHandler = helmet({
 
 const allowlist = new Set(corsConfig.allowedOrigins);
 
+function isLocalDevOrigin(origin: string): boolean {
+  if (!isDevelopment) {
+    return false;
+  }
+  try {
+    const { hostname } = new URL(origin);
+    return hostname === 'localhost' || hostname === '127.0.0.1';
+  } catch {
+    return false;
+  }
+}
+
 export const corsPolicy: RequestHandler = cors({
   origin(origin, callback) {
     // Same-origin and non-browser callers (curl, server-to-server, health
@@ -34,7 +46,7 @@ export const corsPolicy: RequestHandler = cors({
       return;
     }
 
-    if (allowlist.has(origin)) {
+    if (allowlist.has(origin) || isLocalDevOrigin(origin)) {
       callback(null, true);
       return;
     }
@@ -104,6 +116,19 @@ export const authRateLimiter: RateLimitRequestHandler = rateLimit({
   standardHeaders: 'draft-8',
   legacyHeaders: false,
   skipSuccessfulRequests: true,
+  skip: () => isTest,
+  handler: onRateLimited('credential'),
+});
+
+/**
+ * Public contact form budget — tighter than the global limiter to reduce spam
+ * without affecting read-heavy traffic.
+ */
+export const contactRateLimiter: RateLimitRequestHandler = rateLimit({
+  windowMs: 15 * 60_000,
+  limit: 20,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
   skip: () => isTest,
   handler: onRateLimited('credential'),
 });
