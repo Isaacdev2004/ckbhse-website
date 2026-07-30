@@ -11,12 +11,14 @@ services:
     plan: starter
     region: frankfurt
     buildCommand: >-
-      corepack enable &&
+      npm install -g pnpm@10.28.2 &&
       pnpm install --frozen-lockfile &&
       pnpm --filter @workspace/api-server run build
     startCommand: node --enable-source-maps artifacts/api-server/dist/index.mjs
     healthCheckPath: /api/readyz
     envVars:
+      - key: NODE_VERSION
+        value: '24'
       - key: NODE_ENV
         value: production
       - key: APP_ENV

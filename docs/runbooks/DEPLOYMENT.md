@@ -45,7 +45,7 @@ pnpm --filter @workspace/db run migrate
 
 1. New **Web Service** → connect GitHub repo.
 2. Use **`render.yaml`** at repo root (Blueprint) **or** set manually:
-   - **Build:** `pnpm install --frozen-lockfile && pnpm run build:api`
+   - **Build:** `npm install -g pnpm@10.28.2 && pnpm install --frozen-lockfile && pnpm run build:api`
    - **Start:** `node artifacts/api-server/dist/index.cjs`
    - **Health check path:** `/api/readyz`
 3. **Environment** (required):
