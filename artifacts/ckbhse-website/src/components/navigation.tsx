@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Menu, X, Shield, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
+import { BrandLogo } from '@/components/brand-logo';
 import { Button } from '@workspace/ui/components/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { contentLoader } from '@/lib/content';
@@ -267,24 +268,13 @@ export function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link
+          <BrandLogo
             href="/"
-            className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
+            size="md"
+            variant="mark"
             data-testid="link-home-logo"
             aria-current={location === '/' ? 'page' : undefined}
-          >
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Shield className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-display font-bold text-lg leading-none text-foreground">
-                CKBHSE
-              </span>
-              <span className="text-xs text-muted-foreground font-medium">
-                Limited
-              </span>
-            </div>
-          </Link>
+          />
 
           <div className="hidden lg:flex items-center gap-6">
             {site.navigation.map((group) => (

@@ -1,6 +1,5 @@
 import { Link } from 'wouter';
 import {
-  Shield,
   Mail,
   Phone,
   MapPin,
@@ -10,6 +9,7 @@ import {
 } from 'lucide-react';
 import { contentLoader } from '@/lib/content';
 import { SkipNavLink } from '@/components/skip-link';
+import { BrandLogo } from '@/components/brand-logo';
 
 const socialIcons = {
   linkedin: Linkedin,
@@ -27,23 +27,14 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-10 pb-12 border-b border-secondary-foreground/10">
           <div className="lg:col-span-2">
-            <Link
-              href="/"
-              className="flex items-center gap-2 group mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
-              data-testid="link-footer-logo"
-            >
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Shield className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-display font-bold text-lg leading-none">
-                  CKBHSE
-                </span>
-                <span className="text-xs text-secondary-foreground/70 font-medium">
-                  Limited
-                </span>
-              </div>
-            </Link>
+            <div className="mb-6 inline-flex rounded-xl bg-white p-2 shadow-sm">
+              <BrandLogo
+                href="/"
+                size="lg"
+                variant="full"
+                data-testid="link-footer-logo"
+              />
+            </div>
             <p className="text-sm text-secondary-foreground/80 mb-6 max-w-sm">
               {brand.tagline} {brand.description}
             </p>

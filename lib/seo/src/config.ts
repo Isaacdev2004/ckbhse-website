@@ -46,7 +46,7 @@ export function resolveSeoSiteConfig(
     locale: resolvedEnv.SITE_LOCALE ?? 'en-GB',
     language: resolvedEnv.SITE_LANGUAGE ?? 'en',
     themeColor: resolvedEnv.THEME_COLOR ?? '#0ea5c4',
-    defaultOgImage: resolvedEnv.OG_DEFAULT_IMAGE ?? `${siteUrl}/og-default.svg`,
+    defaultOgImage: resolvedEnv.OG_DEFAULT_IMAGE ?? `${siteUrl}/og-default.png`,
     twitterHandle: resolvedEnv.TWITTER_HANDLE,
   });
 }

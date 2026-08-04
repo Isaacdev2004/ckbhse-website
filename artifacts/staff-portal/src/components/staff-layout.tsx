@@ -23,7 +23,14 @@ export function StaffLayout({ children }: { children: React.ReactNode }) {
       <header className="border-b bg-card">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-6">
-            <span className="text-sm font-semibold tracking-wide text-primary">
+            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-primary">
+              <img
+                src={`${import.meta.env.BASE_URL}brand/ckbhse-icon.png`}
+                alt=""
+                className="h-8 w-8 object-contain"
+                width={32}
+                height={32}
+              />
               CKBHSE Staff
             </span>
             <nav className="hidden items-center gap-1 sm:flex">

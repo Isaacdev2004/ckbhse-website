@@ -23,7 +23,14 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
       <div className="w-full max-w-md rounded-xl border border-border bg-card p-8 shadow-sm">
-        <div className="mb-8 space-y-2 text-center">
+        <div className="mb-8 space-y-3 text-center">
+          <img
+            src={`${import.meta.env.BASE_URL}brand/ckbhse-logo-mark.png`}
+            alt="CKBHSE Limited"
+            className="mx-auto h-16 w-auto object-contain"
+            width={180}
+            height={104}
+          />
           <h1 className="text-2xl font-semibold tracking-tight">CKBHSE Admin Portal</h1>
           <p className="text-sm text-muted-foreground">
             Platform administration and governance

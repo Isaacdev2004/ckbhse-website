@@ -29,7 +29,7 @@ beforeEach(() => {
     locale: 'en-GB',
     language: 'en',
     themeColor: '#0ea5c4',
-    defaultOgImage: 'https://www.ckbhse.co.uk/og-default.svg',
+    defaultOgImage: 'https://www.ckbhse.co.uk/og-default.png',
   });
 });
 

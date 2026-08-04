@@ -33,7 +33,14 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[240px_1fr]">
       <aside className="border-b border-border bg-card lg:border-b-0 lg:border-r">
-        <div className="flex h-14 items-center border-b border-border px-4">
+        <div className="flex h-14 items-center gap-2 border-b border-border px-4">
+          <img
+            src={`${import.meta.env.BASE_URL}brand/ckbhse-icon.png`}
+            alt=""
+            className="h-8 w-8 object-contain"
+            width={32}
+            height={32}
+          />
           <span className="text-sm font-semibold tracking-wide text-primary">
             CKBHSE Admin
           </span>
