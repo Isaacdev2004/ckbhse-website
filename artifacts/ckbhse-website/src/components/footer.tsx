@@ -27,7 +27,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-10 pb-12 border-b border-secondary-foreground/10">
           <div className="lg:col-span-2">
-            <div className="mb-6 inline-flex rounded-xl bg-white p-2 shadow-sm">
+            <div className="mb-6 inline-flex rounded-xl bg-white p-3 shadow-sm">
               <BrandLogo
                 href="/"
                 size="lg"

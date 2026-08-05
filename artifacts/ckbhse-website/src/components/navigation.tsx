@@ -267,11 +267,11 @@ export function Navigation() {
       aria-label="Primary"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between min-h-20 py-2">
           <BrandLogo
             href="/"
             size="md"
-            variant="mark"
+            variant="header"
             data-testid="link-home-logo"
             aria-current={location === '/' ? 'page' : undefined}
           />
