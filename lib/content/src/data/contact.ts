@@ -25,12 +25,14 @@ export const contactPageData = {
   office: {
     lines: [
       'CKBHSE Limited',
-      '123 Business Park',
-      'London, EC1A 1BB',
-      'United Kingdom',
+      'Company No. 17378677',
+      '11 Henley Street',
+      'Mataab Business Centre',
+      'Birmingham, England, B11 1JB',
     ],
     mapLabel: 'Office Location',
-    mapAddress: '123 Business Park, London, EC1A 1BB',
+    mapAddress:
+      '11 Henley Street, Mataab Business Centre, Birmingham, England, B11 1JB',
   },
   officeHours: {
     title: 'Office Hours',

@@ -15,7 +15,7 @@ export const privacyPolicyData = {
       title: 'Who we are',
       paragraphs: [
         'CKBHSE Limited is a health, safety, environment, and quality (HSEQ) consultancy registered in England and Wales. We provide consultancy, training, and compliance support to organisations across the United Kingdom.',
-        'For data protection purposes, CKBHSE Limited is the data controller. You can contact us at info@ckbhse.co.uk or by post at our registered office in London, United Kingdom.',
+        'For data protection purposes, CKBHSE Limited (Company No. 17378677) is the data controller. You can contact us at info@ckbhse.co.uk or by post at our registered office: 11 Henley Street, Mataab Business Centre, Birmingham, England, B11 1JB.',
       ],
     },
     {

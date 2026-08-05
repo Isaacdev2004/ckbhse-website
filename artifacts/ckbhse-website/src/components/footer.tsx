@@ -59,8 +59,8 @@ export function Footer() {
                   {contact.phone}
                 </a>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin className="w-4 h-4 text-primary" aria-hidden="true" />
+              <div className="flex items-start gap-2 text-sm">
+                <MapPin className="w-4 h-4 text-primary mt-0.5 shrink-0" aria-hidden="true" />
                 <span className="text-secondary-foreground/80">
                   {contact.location}
                 </span>

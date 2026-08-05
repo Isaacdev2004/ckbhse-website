@@ -67,7 +67,7 @@ export const accessibilityStatementData = {
       items: [
         'Email: info@ckbhse.co.uk',
         'Phone: +44 20 1234 5678',
-        'Post: CKBHSE Limited, London, United Kingdom',
+        'Post: CKBHSE Limited, 11 Henley Street, Mataab Business Centre, Birmingham, England, B11 1JB',
       ],
     },
     {
