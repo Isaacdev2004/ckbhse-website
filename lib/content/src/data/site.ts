@@ -10,8 +10,8 @@ export const siteConfigData = {
   },
   contact: {
     email: 'info@ckbhse.co.uk',
-    phone: '+44 20 1234 5678',
-    phoneHref: 'tel:+442012345678',
+    phone: '01902 908593',
+    phoneHref: 'tel:+441902908593',
     location:
       '11 Henley Street, Mataab Business Centre, Birmingham, England, B11 1JB',
   },
