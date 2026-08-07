@@ -39,7 +39,7 @@ export const environmentalCourses = [
       outline('Legislation Overview', [
         'Environmental Protection Act',
         'Waste regulations',
-        'Water and air quality',
+        'Water and air emissions',
       ]),
       outline('Practical Actions', [
         'Resource efficiency',
@@ -90,7 +90,7 @@ export const environmentalCourses = [
     ],
     targetAudience: [
       'Environmental managers',
-      'Quality and compliance teams',
+      'Compliance teams',
       'Directors pursuing ISO certification',
     ],
     courseOutline: [

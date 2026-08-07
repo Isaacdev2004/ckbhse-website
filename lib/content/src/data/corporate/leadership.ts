@@ -11,7 +11,7 @@ export const leadershipPageData = {
   seo: {
     title: 'Leadership Team | CKBHSE Limited',
     description:
-      'Meet the CKBHSE Limited leadership team — experienced HSEQ directors, consultants, and advisors serving UK organisations.',
+      'Meet the CKBHSE Limited leadership team — experienced HSE directors, consultants, and advisors serving UK organisations.',
   },
   hero: {
     badge: 'Leadership',
@@ -28,14 +28,14 @@ export const leadershipPageData = {
       type: 'leadership',
       title: 'Executive Team',
       description:
-        'Senior leaders responsible for strategy, quality, and client delivery.',
+        'Senior leaders responsible for strategy and client delivery.',
       members: [
         {
           slug: 'sarah-mitchell',
           name: 'Sarah Mitchell',
           role: 'Chief Executive Officer',
           group: 'executive',
-          bio: 'Chartered safety professional with 20+ years leading HSEQ transformation programmes across construction and manufacturing sectors.',
+          bio: 'Chartered safety professional with 20+ years leading HSE transformation programmes across construction and manufacturing sectors.',
         },
         {
           slug: 'james-chen',
@@ -121,7 +121,7 @@ export const leadershipPageData = {
           name: 'Andrew Patel',
           role: 'Technology Advisor',
           group: 'advisors',
-          bio: 'Digital compliance strategist guiding platform selection and data integration for HSEQ assurance.',
+          bio: 'Digital compliance strategist guiding platform selection and data integration for HSE assurance.',
         },
       ],
     },
@@ -129,7 +129,7 @@ export const leadershipPageData = {
   cta: {
     title: 'Work with our leadership team',
     description:
-      'Book a consultation to discuss your HSEQ requirements with a senior consultant.',
+      'Book a consultation to discuss your HSE requirements with a senior consultant.',
     buttonLabel: 'Book Consultation',
     buttonHref: '/contact',
   },

@@ -6,7 +6,6 @@ import { valuesPageData } from './values.js';
 import { leadershipPageData } from './leadership.js';
 import { whyChooseUsPageData } from './why-choose-us.js';
 import { governancePageData } from './governance.js';
-import { qualityPageData } from './quality.js';
 import { sustainabilityPageData } from './sustainability.js';
 import { healthSafetyCommitmentPageData } from './health-safety-commitment.js';
 import { accreditationsPageData } from './accreditations.js';
@@ -21,7 +20,6 @@ export const corporatePageRegistry: CorporatePageContent[] = [
   leadershipPageData,
   whyChooseUsPageData,
   governancePageData,
-  qualityPageData,
   sustainabilityPageData,
   healthSafetyCommitmentPageData,
   accreditationsPageData,

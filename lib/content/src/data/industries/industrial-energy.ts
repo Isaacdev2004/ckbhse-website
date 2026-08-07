@@ -328,7 +328,7 @@ export const foodBeverageIndustry = defineIndustry({
   ],
   topics: ['HACCP', 'Food Safety', 'Hygiene', 'Environmental Compliance'],
   challenges: [
-    'Integrating HACCP with wider HSEQ management',
+    'Integrating HACCP with wider HSE management',
     'Slips, trips, and falls in wet processing areas',
     'Machinery safety on production lines',
     'Environmental permitting for effluent and waste',

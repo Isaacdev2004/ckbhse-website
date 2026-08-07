@@ -51,7 +51,7 @@ export const testimonialsHubPageData = {
     'Measurable outcomes referenced',
     'Cross-linked to published case studies',
     '94% client retention rate',
-    '15+ years UK HSEQ consultancy experience',
+    '15+ years UK HSE consultancy experience',
   ],
   faqs: [
     {

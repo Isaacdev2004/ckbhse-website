@@ -27,7 +27,7 @@ export const webinarResources = [
       h2('Topics covered'),
       ul([
         'Client duty focus',
-        'Pre-construction information quality',
+        'Pre-construction information standards',
         'Construction phase plan reviews',
         'HSE inspection outcomes',
       ]),
@@ -214,36 +214,36 @@ export const newsResources = [
 
 export const publicationResources = [
   defineResource({
-    slug: 'hseq-maturity-white-paper',
+    slug: 'hse-maturity-white-paper',
     type: 'publications',
-    title: 'HSEQ Maturity Model White Paper',
-    subtitle: 'CKBHSE framework for assessing and improving HSEQ maturity.',
+    title: 'HSE Maturity Model White Paper',
+    subtitle: 'CKBHSE framework for assessing and improving HSE maturity.',
     icon: 'BookOpen',
     summary:
-      'White paper presenting the CKBHSE HSEQ maturity model for benchmarking organisational performance.',
+      'White paper presenting the CKBHSE HSE maturity model for benchmarking organisational performance.',
     author: 'Dr. James Parker',
     publishDate: 'April 1, 2024',
     readingTime: '20 min read',
     body: [
       p(
-        'This white paper introduces a five-level maturity model for assessing health, safety, environmental, and quality performance.',
+        'This white paper introduces a five-level maturity model for assessing health, safety, and environmental performance.',
       ),
       h2('Maturity levels'),
       ul(['Reactive', 'Compliant', 'Proactive', 'Managed', 'Leading']),
     ],
-    tags: ['white paper', 'maturity model', 'HSEQ'],
+    tags: ['white paper', 'maturity model', 'HSE'],
     industrySlugs: ['manufacturing', 'oil-gas'],
     downloadableFiles: [
       {
-        name: 'HSEQ Maturity Model White Paper',
+        name: 'HSE Maturity Model White Paper',
         fileType: 'pdf',
-        url: '/downloads/publications/hseq-maturity-white-paper.pdf',
+        url: '/downloads/publications/hse-maturity-white-paper.pdf',
         description: 'PDF white paper',
         size: '2.4 MB',
       },
     ],
     featured: true,
-    keywords: ['HSEQ maturity white paper'],
+    keywords: ['HSE maturity white paper'],
   }),
   defineResource({
     slug: 'construction-safety-technical-brief',

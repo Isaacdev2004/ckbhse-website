@@ -17,7 +17,7 @@ export const accreditationsPageData = {
     badge: 'Accreditations',
     title: 'Recognised standards. Verified credentials.',
     description:
-      'Our accreditations and professional memberships demonstrate our commitment to quality, competence, and industry best practice.',
+      'Our accreditations and professional memberships demonstrate our commitment to competence, and industry best practice.',
   },
   breadcrumbs: [
     ...aboutCrumb,
@@ -35,7 +35,7 @@ export const accreditationsPageData = {
           name: 'ISO 9001:2015',
           category: 'iso',
           description:
-            'Quality Management Systems — certified consultancy operations.',
+            'ISO 9001 — certified consultancy operations.',
           icon: 'Award',
         },
         {

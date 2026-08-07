@@ -198,7 +198,7 @@ export const clientSuccessPages = [
       {
         title: 'Compliance posture',
         before: 'Reactive, fragmented approach',
-        after: 'Proactive, integrated HSEQ programmes',
+        after: 'Proactive, integrated HSE programmes',
       },
     ],
     outcomeMetrics: [

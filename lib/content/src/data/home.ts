@@ -2,16 +2,16 @@ import type { HomePageContent } from '../schemas/pages.js';
 
 export const homePageData = {
   seo: {
-    title: 'CKBHSE Limited — Expert HSEQ Consultancy',
+    title: 'CKBHSE Limited — Expert HSE Consultancy',
     description:
-      'CKBHSE Limited delivers comprehensive Health, Safety, Environment & Quality consultancy services to organisations across the UK.',
+      'CKBHSE Limited delivers comprehensive Health, Safety & Environment consultancy services to organisations across the UK.',
   },
   hero: {
-    badge: 'UK HSEQ Consultancy',
+    badge: 'UK HSE Consultancy',
     title: 'Expert Safety.',
     titleHighlight: 'Real Results.',
     description:
-      "CKBHSE Limited delivers comprehensive Health, Safety, Environment & Quality consultancy services to organisations across the UK. From compliance audits to ISO certification, we're the partner you can trust.",
+      "CKBHSE Limited delivers comprehensive Health, Safety & Environment consultancy services to organisations across the UK. From compliance audits to ISO certification, we're the partner you can trust.",
   },
   stats: [
     { icon: 'Users', value: '500+', label: 'Clients Served' },
@@ -85,7 +85,7 @@ export const homePageData = {
   ],
   sections: {
     services: {
-      title: 'Complete HSEQ Solutions',
+      title: 'Complete HSE Solutions',
       description:
         'From compliance audits to ongoing safety management, we provide end-to-end consultancy services that keep your business safe and compliant.',
     },
@@ -102,7 +102,7 @@ export const homePageData = {
     finalCta: {
       title: 'Ready to improve workplace safety?',
       description:
-        "Book a free consultation with one of our HSEQ experts. We'll assess your needs and recommend tailored solutions.",
+        "Book a free consultation with one of our HSE experts. We'll assess your needs and recommend tailored solutions.",
     },
   },
 } satisfies HomePageContent;

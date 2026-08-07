@@ -120,7 +120,7 @@ export default function Home() {
                   <div className="absolute -inset-4 bg-primary/20 rounded-2xl blur-3xl" />
                   <img
                     src={heroConsulting}
-                    alt="HSEQ consultant meeting"
+                    alt="HSE consultant meeting"
                     className="relative rounded-2xl shadow-2xl w-full"
                     loading="lazy"
                     decoding="async"

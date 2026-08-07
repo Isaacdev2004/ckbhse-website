@@ -1,6 +1,6 @@
 # CKBHSE Enterprise Digital Platform
 
-An HSEQ consultancy platform for CKBHSE Limited (UK): a public marketing site today, growing into a client portal, LMS, staff portal, and administration portal.
+An HSE consultancy platform for CKBHSE Limited (UK): a public marketing site today, growing into a client portal, LMS, staff portal, and administration portal.
 
 ## Run & Operate
 

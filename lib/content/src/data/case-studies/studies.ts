@@ -214,7 +214,7 @@ export const caseStudyPages = [
     ),
     relatedResources: [
       resourceRef('articles', 'iso-45001-implementation'),
-      resourceRef('publications', 'hseq-maturity-white-paper'),
+      resourceRef('publications', 'hse-maturity-white-paper'),
     ],
     relatedCaseStudies: [
       caseStudyRef('construction', 'cdm-london-development'),

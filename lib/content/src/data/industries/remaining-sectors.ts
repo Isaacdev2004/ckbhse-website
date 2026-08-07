@@ -26,7 +26,7 @@ export const healthcareIndustry = defineIndustry({
     'Infection control, clinical risk, patient safety, manual handling, and occupational health for healthcare providers.',
   overview: [
     'Healthcare settings combine clinical risks, infection prevention duties, and regulatory scrutiny from CQC, HSE, and professional bodies.',
-    'CKBHSE supports NHS trusts, private providers, and care organisations with sector-specific HSEQ advisory.',
+    'CKBHSE supports NHS trusts, private providers, and care organisations with sector-specific HSE advisory.',
   ],
   topics: [
     'Infection Control',
@@ -228,12 +228,12 @@ export const publicSectorIndustry = defineIndustry({
   summary:
     'Governance, compliance, procurement, and public accountability for local authorities and public bodies.',
   overview: [
-    'Public sector organisations face heightened accountability, procurement rules, and governance expectations alongside standard HSEQ duties.',
+    'Public sector organisations face heightened accountability, procurement rules, and governance expectations alongside standard HSE duties.',
     'CKBHSE supports councils, arms-length bodies, and public agencies with defensible compliance programmes.',
   ],
   topics: ['Governance', 'Compliance', 'Procurement', 'Public Accountability'],
   challenges: [
-    'Board and member-level governance of HSEQ',
+    'Board and member-level governance of HSE',
     'Managing contractors through public procurement',
     'Transparent reporting and audit scrutiny',
     'Multi-department coordination across services',
@@ -256,7 +256,7 @@ export const publicSectorIndustry = defineIndustry({
   commonRisks: [
     risk(
       'Governance failures',
-      'Insufficient board oversight of HSEQ performance.',
+      'Insufficient board oversight of HSE performance.',
       'medium',
     ),
     risk(
@@ -271,7 +271,7 @@ export const publicSectorIndustry = defineIndustry({
     ),
   ],
   complianceRequirements: [
-    'Corporate HSEQ governance and reporting',
+    'Corporate HSE governance and reporting',
     'Contractor procurement and management standards',
     'Member and officer safety training',
     'Transparent incident reporting and learning',
@@ -282,7 +282,7 @@ export const publicSectorIndustry = defineIndustry({
     'Governance committee reports',
     'Contractor procurement specifications',
     'Departmental risk registers',
-    'Annual HSEQ performance reports',
+    'Annual HSE performance reports',
   ],
   applicableServices: [
     { category: 'business-risk', slug: 'governance-support' },

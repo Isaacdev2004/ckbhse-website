@@ -11,7 +11,7 @@ export const valuesPageData = {
   seo: {
     title: 'Core Values | CKBHSE Limited',
     description:
-      'The core values that guide CKBHSE Limited — integrity, excellence, accountability, and partnership in every HSEQ engagement.',
+      'The core values that guide CKBHSE Limited — integrity, excellence, accountability, and partnership in every HSE engagement.',
   },
   hero: {
     badge: 'Core Values',
@@ -80,7 +80,7 @@ export const valuesPageData = {
   ],
   cta: {
     title: 'Experience our values in practice',
-    description: 'See why organisations choose CKBHSE for HSEQ consultancy.',
+    description: 'See why organisations choose CKBHSE for HSE consultancy.',
     buttonLabel: 'Why Choose CKBHSE',
     buttonHref: '/about/why-choose-us',
   },

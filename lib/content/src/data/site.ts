@@ -4,7 +4,7 @@ export const siteConfigData = {
   brand: {
     name: 'CKBHSE Limited',
     tagline:
-      'The HSEQ consultancy for organisations that take safety seriously.',
+      'The HSE consultancy for organisations that take safety seriously.',
     description:
       'Expert consulting, accredited training, and modern compliance solutions.',
   },
@@ -142,11 +142,6 @@ export const siteConfigData = {
         {
           label: 'Corporate Governance',
           href: '/about/governance',
-          available: true,
-        },
-        {
-          label: 'Quality Assurance',
-          href: '/about/quality',
           available: true,
         },
         {

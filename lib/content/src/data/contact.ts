@@ -4,12 +4,12 @@ export const contactPageData = {
   seo: {
     title: 'Contact Us | CKBHSE Limited',
     description:
-      "Book a free consultation, discuss your HSEQ needs, or enquire about our services. We're here to help.",
+      "Book a free consultation, discuss your HSE needs, or enquire about our services. We're here to help.",
   },
   hero: {
     title: 'Get in Touch',
     description:
-      "Book a free consultation, discuss your HSEQ needs, or enquire about our services. We're here to help.",
+      "Book a free consultation, discuss your HSE needs, or enquire about our services. We're here to help.",
   },
   contactHeading: 'Contact Information',
   form: {

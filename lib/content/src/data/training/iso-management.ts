@@ -31,7 +31,7 @@ export const isoManagementCourses = [
     ],
     targetAudience: [
       'Health and safety managers',
-      'Quality auditors',
+      'Management system auditors',
       'Management system coordinators',
     ],
     prerequisites: ['ISO 45001 awareness or equivalent experience recommended'],
@@ -74,7 +74,7 @@ export const isoManagementCourses = [
     category: 'iso-management',
     title: 'ISO 9001 Awareness',
     subtitle:
-      'Introduction to ISO 9001 quality management systems and certification requirements.',
+      'Introduction to ISO 9001 management systems and certification requirements.',
     icon: 'BadgeCheck',
     accreditation: 'CPD Certified',
     level: 'intermediate',
@@ -84,26 +84,26 @@ export const isoManagementCourses = [
     certification: {
       name: 'ISO 9001 Awareness Certificate',
       description:
-        'Certificate confirming understanding of ISO 9001 quality management requirements.',
+        'Certificate confirming understanding of ISO 9001 management system requirements.',
     },
     assessment: 'Written assessment on QMS principles and clause requirements.',
     overview: [
-      "ISO 9001 is the world's most widely adopted quality management standard.",
+      "ISO 9001 is the world's most widely adopted management system standard for consistent processes.",
       "This course explains the standard's structure and how organisations achieve and maintain certification.",
     ],
     learningObjectives: [
-      'Explain quality management principles',
+      'Explain ISO 9001 management principles',
       'Understand ISO 9001 high-level structure and key clauses',
       'Identify documentation and process requirements',
       'Support internal audit and management review activities',
     ],
     targetAudience: [
-      'Quality managers',
+      'Operations and compliance managers',
       'Operations supervisors',
       'Directors pursuing ISO certification',
     ],
     courseOutline: [
-      outline('Quality Management Principles', [
+      outline('ISO 9001 Principles', [
         'Customer focus',
         'Process approach',
         'Continual improvement',
@@ -131,7 +131,7 @@ export const isoManagementCourses = [
       courseRef('iso-management', 'integrated-management-systems'),
     ],
     pathwayLevel: 'intermediate',
-    keywords: ['ISO 9001', 'quality management', 'QMS'],
+    keywords: ['ISO 9001', 'management systems', 'QMS'],
   }),
   defineCourse({
     slug: 'iso-14001-internal-auditor',
@@ -163,7 +163,7 @@ export const isoManagementCourses = [
     ],
     targetAudience: [
       'Environmental managers',
-      'Quality auditors',
+      'Management system auditors',
       'Compliance officers',
     ],
     prerequisites: ['ISO 14001 Awareness recommended'],
@@ -218,7 +218,7 @@ export const isoManagementCourses = [
     },
     assessment: 'IMS integration plan development and gap analysis exercise.',
     overview: [
-      'Integrated management systems reduce duplication and improve efficiency across quality, environmental, and safety disciplines.',
+      'Integrated management systems reduce duplication and improve efficiency across environmental and safety disciplines.',
       'This course explains how to align processes, documentation, and audits across multiple ISO standards.',
     ],
     learningObjectives: [

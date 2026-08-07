@@ -17,7 +17,7 @@ export const occupationalHealthServices = [
       'Assess occupational health risks across roles and sites',
       'Design health management programmes and referral pathways',
       'Support fitness-for-work and return-to-work processes',
-      'Integrate health with wider HSEQ management',
+      'Integrate health with wider HSE management',
     ],
     keyBenefits: [
       benefit(

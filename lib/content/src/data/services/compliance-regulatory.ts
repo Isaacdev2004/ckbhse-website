@@ -91,7 +91,7 @@ export const complianceRegulatoryServices = [
     category: 'compliance-regulatory',
     title: 'Policy Development',
     subtitle:
-      'Develop and review organisational policies across HSEQ disciplines.',
+      'Develop and review organisational policies across HSE disciplines.',
     icon: 'BookOpen',
     summary:
       'Policy development services creating clear, compliant, and operational policies for your organisation.',
@@ -131,12 +131,12 @@ export const complianceRegulatoryServices = [
     slug: 'contractor-management',
     category: 'compliance-regulatory',
     title: 'Contractor Management',
-    subtitle: 'Contractor HSEQ vetting, induction, and performance monitoring.',
+    subtitle: 'Contractor HSE vetting, induction, and performance monitoring.',
     icon: 'Handshake',
     summary:
       'Contractor management systems ensuring supply chain safety, competence, and compliance.',
     overview: [
-      'Principal contractors and clients retain responsibility for contractor HSEQ performance. We help you manage that risk systematically.',
+      'Principal contractors and clients retain responsibility for contractor HSE performance. We help you manage that risk systematically.',
     ],
     objectives: [
       'Design contractor vetting and pre-qualification processes',
@@ -153,7 +153,7 @@ export const complianceRegulatoryServices = [
       benefit(
         'Shield',
         'Reduced Liability',
-        'Demonstrate control of contractor HSEQ risks.',
+        'Demonstrate control of contractor HSE risks.',
       ),
       benefit(
         'ClipboardList',
@@ -170,7 +170,7 @@ export const complianceRegulatoryServices = [
     category: 'compliance-regulatory',
     title: 'Documentation Reviews',
     subtitle:
-      'Review and improve HSEQ documentation for compliance and usability.',
+      'Review and improve HSE documentation for compliance and usability.',
     icon: 'FileCheck',
     summary:
       'Expert review of RAMS, policies, procedures, and compliance documentation.',
@@ -186,7 +186,7 @@ export const complianceRegulatoryServices = [
     keyBenefits: [
       benefit(
         'FileCheck',
-        'Quality Assurance',
+        'Document Assurance',
         'Documentation suitable for audit and site use.',
       ),
       benefit(
@@ -208,7 +208,7 @@ export const complianceRegulatoryServices = [
       'Retained competent person advisory for health, safety, and fire.',
     icon: 'BadgeCheck',
     summary:
-      'Competent person services providing ongoing HSEQ advisory access without full-time internal resource.',
+      'Competent person services providing ongoing HSE advisory access without full-time internal resource.',
     overview: [
       'Many organisations require competent person support but cannot justify a full-time appointment. Our retained service fills that gap.',
     ],

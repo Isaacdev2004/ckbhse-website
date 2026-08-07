@@ -11,25 +11,25 @@ export const visionPageData = {
   seo: {
     title: 'Our Vision | CKBHSE Limited',
     description:
-      'CKBHSE Limited vision for the future of HSEQ consultancy — innovation, leadership, and sustainable safety excellence across UK industries.',
+      'CKBHSE Limited vision for the future of HSE consultancy — innovation, leadership, and sustainable safety excellence across UK industries.',
   },
   hero: {
     badge: 'Vision',
-    title: 'Leading the future of HSEQ excellence',
+    title: 'Leading the future of HSE excellence',
     description:
-      'We envision a UK business landscape where every organisation treats health, safety, environment, and quality as strategic priorities — supported by expert advisory and modern compliance tools.',
+      'We envision a UK business landscape where every organisation treats health, safety, and environment as strategic priorities — supported by expert advisory and modern compliance tools.',
   },
   breadcrumbs: [...aboutCrumb, { label: 'Vision', href: '/about/vision' }],
   sections: [
     {
       type: 'quote',
-      text: 'To be the UK consultancy of choice for organisations that demand rigorous HSEQ advisory, accredited training, and technology-enabled compliance assurance.',
+      text: 'To be the UK consultancy of choice for organisations that demand rigorous HSE advisory, accredited training, and technology-enabled compliance assurance.',
     },
     {
       type: 'prose',
       title: 'Vision Statement',
       paragraphs: [
-        'CKBHSE Limited aims to set the benchmark for premium HSEQ consultancy in the United Kingdom — combining deep regulatory expertise with innovation, accessibility, and measurable client impact.',
+        'CKBHSE Limited aims to set the benchmark for premium HSE consultancy in the United Kingdom — combining deep regulatory expertise with innovation, accessibility, and measurable client impact.',
       ],
     },
     {
@@ -50,7 +50,7 @@ export const visionPageData = {
           icon: 'Lightbulb',
           title: 'Digital Compliance Tools',
           description:
-            'Integrating audit platforms and dashboards for real-time visibility of HSEQ performance.',
+            'Integrating audit platforms and dashboards for real-time visibility of HSE performance.',
         },
         {
           icon: 'BookOpen',
@@ -70,7 +70,7 @@ export const visionPageData = {
       type: 'list',
       title: 'Industry Leadership Goals',
       items: [
-        'Recognised thought leadership in UK HSEQ regulatory developments',
+        'Recognised thought leadership in UK HSE regulatory developments',
         'Expanded accredited training portfolio aligned to emerging competencies',
         'Partnerships with technology and industry bodies that raise standards sector-wide',
         'Continued investment in consultant qualifications and CPD',

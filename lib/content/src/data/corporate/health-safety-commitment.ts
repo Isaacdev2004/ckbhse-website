@@ -17,7 +17,7 @@ export const healthSafetyCommitmentPageData = {
     badge: 'Health & Safety',
     title: 'Safety is our foundation',
     description:
-      'As HSEQ specialists, we hold ourselves to the same standards we advise our clients to achieve — a proactive safety culture backed by robust systems.',
+      'As HSE specialists, we hold ourselves to the same standards we advise our clients to achieve — a proactive safety culture backed by robust systems.',
   },
   breadcrumbs: [
     ...aboutCrumb,

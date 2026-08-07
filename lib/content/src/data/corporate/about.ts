@@ -4,15 +4,15 @@ export const aboutPageData = {
   slug: 'about',
   path: '/about',
   seo: {
-    title: 'About CKBHSE Limited | UK HSEQ Consultancy',
+    title: 'About CKBHSE Limited | UK HSE Consultancy',
     description:
-      'Learn about CKBHSE Limited — a premium UK Health, Safety, Environmental and Quality consultancy trusted by organisations nationwide.',
+      'Learn about CKBHSE Limited — a premium UK Health, Safety and Environmental consultancy trusted by organisations nationwide.',
   },
   hero: {
     badge: 'About CKBHSE',
     title: 'Building safer, compliant organisations across the UK',
     description:
-      'CKBHSE Limited is an independent HSEQ consultancy delivering expert advisory, training, and assurance services to organisations that take safety, compliance, and operational excellence seriously.',
+      'CKBHSE Limited is an independent HSE consultancy delivering expert advisory, training, and assurance services to organisations that take safety, compliance, and operational excellence seriously.',
   },
   breadcrumbs: [
     { label: 'Home', href: '/' },
@@ -23,7 +23,7 @@ export const aboutPageData = {
       type: 'prose',
       title: 'Company Overview',
       paragraphs: [
-        'CKBHSE Limited provides end-to-end Health, Safety, Environment and Quality consultancy to UK organisations across construction, manufacturing, logistics, energy, and healthcare sectors.',
+        'CKBHSE Limited provides end-to-end Health, Safety and Environment consultancy to UK organisations across construction, manufacturing, logistics, energy, and healthcare sectors.',
         'Our consultants combine regulatory expertise with practical operational experience, helping clients reduce risk, achieve certification, and embed sustainable safety cultures.',
       ],
     },
@@ -31,7 +31,7 @@ export const aboutPageData = {
       type: 'prose',
       title: 'Our Story',
       paragraphs: [
-        'Founded by senior HSEQ practitioners who saw a gap between generic compliance services and the strategic advisory organisations truly need, CKBHSE was established to deliver consultancy at the standard expected by board-level stakeholders.',
+        'Founded by senior HSE practitioners who saw a gap between generic compliance services and the strategic advisory organisations truly need, CKBHSE was established to deliver consultancy at the standard expected by board-level stakeholders.',
         'From our London headquarters, we support clients nationwide with audits, ISO implementation, incident investigation, training, and retained advisory services.',
       ],
     },
@@ -39,7 +39,7 @@ export const aboutPageData = {
       type: 'prose',
       title: 'Our Journey',
       paragraphs: [
-        'What began as a specialist audit practice has evolved into a full-service HSEQ consultancy, supporting over 500 organisations and training more than 2,000 professionals.',
+        'What began as a specialist audit practice has evolved into a full-service HSE consultancy, supporting over 500 organisations and training more than 2,000 professionals.',
         'We continue to invest in methodology, technology partnerships, and consultant development to stay ahead of regulatory change and industry best practice.',
       ],
     },
@@ -52,7 +52,7 @@ export const aboutPageData = {
       type: 'prose',
       title: 'Our Philosophy',
       paragraphs: [
-        'We believe effective HSEQ management is a business enabler, not a checkbox exercise. Our approach balances regulatory compliance with operational pragmatism, ensuring recommendations are implementable and measurable.',
+        'We believe effective HSE management is a business enabler, not a checkbox exercise. Our approach balances regulatory compliance with operational pragmatism, ensuring recommendations are implementable and measurable.',
       ],
     },
     {
@@ -146,7 +146,7 @@ export const aboutPageData = {
     },
     {
       type: 'cta',
-      title: 'Ready to work with a trusted HSEQ partner?',
+      title: 'Ready to work with a trusted HSE partner?',
       description:
         'Speak with our consultants about audits, ISO certification, training, or retained advisory support.',
       buttonLabel: 'Book Consultation',

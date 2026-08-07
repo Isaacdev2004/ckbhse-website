@@ -6,20 +6,20 @@ export const resourcesHubPageData = {
   seo: {
     title: 'Knowledge Centre | CKBHSE Limited',
     description:
-      'Expert insights, regulatory updates, practical guides, downloadable templates, and webinars on UK health, safety, environment, and quality management.',
+      'Expert insights, regulatory updates, practical guides, downloadable templates, and webinars on UK health, safety, and environment management.',
   },
   hero: {
     badge: 'Knowledge Centre',
     title: 'Resources & Thought Leadership',
     description:
-      'Expert insights, regulatory updates, and practical guidance on health, safety, environment, and quality management — from the CKBHSE consultancy team.',
+      'Expert insights, regulatory updates, and practical guidance on health, safety, and environment management — from the CKBHSE consultancy team.',
   },
   resourceTypes: (
     Object.entries(RESOURCE_TYPE_LABELS) as [ResourceTypeId, string][]
   ).map(([id, label]) => ({
     id,
     label,
-    description: `${label} from CKBHSE HSEQ experts.`,
+    description: `${label} from CKBHSE HSE experts.`,
   })),
   topicFilters: [
     { id: 'CDM', label: 'CDM & Construction' },
@@ -54,7 +54,7 @@ export const resourcesHubPageData = {
     { type: 'articles', slug: 'iso-45001-implementation' },
     { type: 'guides', slug: 'risk-assessment-practitioner-guide' },
     { type: 'templates', slug: 'risk-assessment-template' },
-    { type: 'publications', slug: 'hseq-maturity-white-paper' },
+    { type: 'publications', slug: 'hse-maturity-white-paper' },
     { type: 'webinars', slug: 'cdm-2024-update-briefing' },
   ],
   popularDownloads: [
@@ -80,16 +80,16 @@ export const resourcesHubPageData = {
     { type: 'webinars', slug: 'fire-safety-reform-webinar' },
   ],
   overview: {
-    title: 'UK HSEQ authority content',
+    title: 'UK HSE authority content',
     paragraphs: [
-      'The CKBHSE Knowledge Centre provides original guidance, practical downloads, and regulatory updates to help UK organisations navigate health, safety, environmental, and quality compliance.',
+      'The CKBHSE Knowledge Centre provides original guidance, practical downloads, and regulatory updates to help UK organisations navigate health, safety, and environmental compliance.',
       'Every resource connects to our consultancy services, training programmes, and sector expertise — giving you a clear path from understanding to action.',
     ],
   },
   newsletterCta: {
     title: 'Stay Informed',
     description:
-      'Subscribe to receive expert HSEQ insights, regulatory updates, and best practice guidance directly to your inbox.',
+      'Subscribe to receive expert HSE insights, regulatory updates, and best practice guidance directly to your inbox.',
   },
   downloadCentre: {
     title: 'Download Centre',

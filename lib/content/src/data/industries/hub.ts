@@ -4,15 +4,15 @@ import type { IndustrySectorId } from '../../schemas/industries.js';
 
 export const industriesHubPageData = {
   seo: {
-    title: 'Industry-Specific HSEQ Expertise | CKBHSE Limited',
+    title: 'Industry-Specific HSE Expertise | CKBHSE Limited',
     description:
-      'Sector-specific health, safety, environmental, and quality consultancy for construction, manufacturing, healthcare, logistics, and more across the UK.',
+      'Sector-specific health, safety, and environmental consultancy for construction, manufacturing, healthcare, logistics, and more across the UK.',
   },
   hero: {
     badge: 'Industries',
     title: 'Sector expertise that speaks your language',
     description:
-      'Every industry faces unique regulations, risks, and compliance pressures. CKBHSE delivers tailored HSEQ consultancy mapped to your sector — not generic advice.',
+      'Every industry faces unique regulations, risks, and compliance pressures. CKBHSE delivers tailored HSE consultancy mapped to your sector — not generic advice.',
   },
   sectors: (
     Object.entries(INDUSTRY_SECTOR_LABELS) as [IndustrySectorId, string][]
@@ -58,12 +58,12 @@ export const industriesHubPageData = {
       {
         name: 'Care Quality Commission (CQC)',
         description:
-          'Quality and safety regulation for health and social care providers.',
+          'Safety regulation for health and social care providers.',
       },
       {
         name: 'ISO Standards Bodies',
         description:
-          'International management system standards for quality, environment, and OH&S.',
+          'International management system standards for environment and OH&S.',
       },
     ],
   },

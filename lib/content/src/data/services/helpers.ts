@@ -146,7 +146,7 @@ export function defineService(input: DefineServiceInput): ServicePageContent {
     keywords: input.keywords ?? [
       input.title,
       categoryLabel,
-      'HSEQ consultancy',
+      'HSE consultancy',
     ],
     featured: input.featured,
     seo: input.seo ?? {

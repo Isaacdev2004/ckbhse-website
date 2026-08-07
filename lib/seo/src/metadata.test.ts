@@ -56,7 +56,7 @@ describe('metadata', () => {
       path: '/services',
       seo: {
         title: 'Services | CKBHSE',
-        description: 'HSEQ consultancy services.',
+        description: 'HSE consultancy services.',
       },
     });
 

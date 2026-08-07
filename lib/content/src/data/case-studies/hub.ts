@@ -106,7 +106,7 @@ export const caseStudiesHubPageData = {
     {
       year: '2024',
       title: 'Knowledge Centre launch',
-      description: 'Expanded thought leadership and downloadable resources for UK HSEQ professionals.',
+      description: 'Expanded thought leadership and downloadable resources for UK HSE professionals.',
     },
     {
       year: '2023',
@@ -127,7 +127,7 @@ export const caseStudiesHubPageData = {
   relatedResources: [
     { type: 'articles', slug: 'understanding-cdm-2015' },
     { type: 'articles', slug: 'iso-45001-implementation' },
-    { type: 'publications', slug: 'hseq-maturity-white-paper' },
+    { type: 'publications', slug: 'hse-maturity-white-paper' },
   ],
   faqs: [
     {

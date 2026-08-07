@@ -34,7 +34,7 @@ export const governancePageData = {
           icon: 'Users',
           title: 'Board Oversight',
           description:
-            'Executive directors provide strategic direction, financial oversight, and quality assurance governance.',
+            'Executive directors provide strategic direction, financial oversight, and assurance governance.',
         },
         {
           icon: 'Scale',
@@ -44,9 +44,9 @@ export const governancePageData = {
         },
         {
           icon: 'ShieldCheck',
-          title: 'Quality Review Board',
+          title: 'Standards Review Board',
           description:
-            'Independent review of audit methodology, report quality, and consultant competency standards.',
+            'Independent review of audit methodology, report standards, and consultant competency standards.',
         },
       ],
     },

@@ -40,7 +40,7 @@ export const constructionIndustry = defineIndustry({
   challenges: [
     'Coordinating multiple contractors and design teams under CDM 2015',
     'Managing high-risk activities including work at height and temporary works',
-    'Maintaining RAMS quality across changing site conditions',
+    'Maintaining RAMS standards across changing site conditions',
     'Principal Designer and Principal Contractor duty holder compliance',
     'Client CDM responsibilities on development projects',
   ],

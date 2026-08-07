@@ -89,24 +89,24 @@ export const isoManagementServices = [
     slug: 'iso-9001',
     category: 'iso-management',
     title: 'ISO 9001',
-    subtitle: 'Quality management system certification and implementation.',
+    subtitle: 'ISO 9001 management system certification and implementation.',
     icon: 'Award',
     summary:
-      'ISO 9001 quality management system implementation, certification support, and ongoing maintenance.',
+      'ISO 9001 management system implementation, certification support, and ongoing maintenance.',
     overview: [
-      'ISO 9001 demonstrates commitment to quality and customer satisfaction. We support implementation tailored to your operations.',
+      'ISO 9001 demonstrates commitment to consistent processes and customer satisfaction. We support implementation tailored to your operations.',
     ],
     objectives: [
-      'Assess current quality management against ISO 9001:2015',
-      'Define quality policy, objectives, and process approach',
+      'Assess current practices against ISO 9001:2015',
+      'Define policy, objectives, and process approach',
       'Develop documentation and process controls',
       'Support certification audit preparation',
     ],
     keyBenefits: [
       benefit(
         'Award',
-        'Quality Assurance',
-        'Systematic approach to quality and customer satisfaction.',
+        'Process Assurance',
+        'Systematic approach to consistent delivery and customer satisfaction.',
       ),
       benefit(
         'TrendingUp',
@@ -132,9 +132,9 @@ export const isoManagementServices = [
     subtitle: 'Combine ISO 9001, 14001, and 45001 into a unified IMS.',
     icon: 'ClipboardList',
     summary:
-      'Integrate quality, environmental, and health & safety management systems for efficiency and unified certification.',
+      'Integrate ISO 9001, environmental, and health & safety management systems for efficiency and unified certification.',
     overview: [
-      'An integrated management system reduces duplication and creates a coherent approach to QHSE across the organisation.',
+      'An integrated management system reduces duplication and creates a coherent approach to HSE across the organisation.',
     ],
     objectives: [
       'Assess integration opportunities across existing systems',
@@ -156,7 +156,7 @@ export const isoManagementServices = [
       benefit(
         'Users',
         'Organisational Clarity',
-        'One framework for QHSE leadership and teams.',
+        'One framework for HSE leadership and teams.',
       ),
     ],
     industrySlugs: ['manufacturing', 'construction'],

@@ -357,7 +357,7 @@ export default function Contact() {
                             updateField('message')(event.target.value)
                           }
                           className="mt-2"
-                          placeholder="Tell us about your HSEQ requirements..."
+                          placeholder="Tell us about your HSE requirements..."
                           data-testid="textarea-message"
                         />
                       </div>

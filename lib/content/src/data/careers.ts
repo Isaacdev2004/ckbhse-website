@@ -4,12 +4,12 @@ export const careersPageData = {
   seo: {
     title: 'Careers | CKBHSE Limited',
     description:
-      'Build a rewarding career in HSEQ consultancy. Work with industry experts, solve complex challenges, and make workplaces safer.',
+      'Build a rewarding career in HSE consultancy. Work with industry experts, solve complex challenges, and make workplaces safer.',
   },
   hero: {
     title: 'Join Our Team',
     description:
-      'Build a rewarding career in HSEQ consultancy. Work with industry experts, solve complex challenges, and make workplaces safer.',
+      'Build a rewarding career in HSE consultancy. Work with industry experts, solve complex challenges, and make workplaces safer.',
   },
   benefitsHeading: {
     title: 'Why Work at CKBHSE?',
@@ -49,8 +49,8 @@ export const careersPageData = {
   },
   positions: [
     {
-      slug: 'senior-hseq-consultant',
-      title: 'Senior HSEQ Consultant',
+      slug: 'senior-hse-consultant',
+      title: 'Senior HSE Consultant',
       location: 'London / Hybrid',
       type: 'Full-time',
       salary: '£45,000 - £60,000',
@@ -58,14 +58,14 @@ export const careersPageData = {
         'Lead client consultancy projects across multiple sectors, conduct audits, deliver training, and support business development.',
       requirements: [
         'NEBOSH Diploma or equivalent',
-        'Minimum 5 years HSEQ consultancy experience',
+        'Minimum 5 years HSE consultancy experience',
         'ISO 45001 lead auditor qualification preferred',
         'Strong client-facing and communication skills',
       ],
     },
     {
-      slug: 'hseq-consultant',
-      title: 'HSEQ Consultant',
+      slug: 'hse-consultant',
+      title: 'HSE Consultant',
       location: 'Manchester / Hybrid',
       type: 'Full-time',
       salary: '£35,000 - £45,000',
@@ -73,7 +73,7 @@ export const careersPageData = {
         'Deliver consultancy services including risk assessments, audits, compliance advice, and training to clients across construction and manufacturing sectors.',
       requirements: [
         'NEBOSH General Certificate minimum',
-        '2-4 years HSEQ experience',
+        '2-4 years HSE experience',
         'Experience in construction or manufacturing preferred',
         'Full UK driving licence',
       ],
@@ -95,12 +95,12 @@ export const careersPageData = {
     },
     {
       slug: 'graduate-consultant',
-      title: 'Graduate HSEQ Consultant',
+      title: 'Graduate HSE Consultant',
       location: 'London',
       type: 'Full-time',
       salary: '£26,000 - £30,000',
       description:
-        'Join our team as a graduate consultant and develop your HSEQ expertise through structured mentoring, client projects, and professional qualifications.',
+        'Join our team as a graduate consultant and develop your HSE expertise through structured mentoring, client projects, and professional qualifications.',
       requirements: [
         'Degree in relevant field (Health & Safety, Environmental Science, Engineering)',
         'NEBOSH General Certificate desirable',
@@ -112,6 +112,6 @@ export const careersPageData = {
   generalApplicationCta: {
     title: "Don't See the Right Role?",
     description:
-      "We're always interested in hearing from talented HSEQ professionals. Submit a general application and we'll keep you in mind for future opportunities.",
+      "We're always interested in hearing from talented HSE professionals. Submit a general application and we'll keep you in mind for future opportunities.",
   },
 } satisfies CareersPageContent;

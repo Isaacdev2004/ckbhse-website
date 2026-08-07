@@ -37,7 +37,7 @@ export const testimonialPages = [
     slug: 'healthcare-safety-lead',
     clientName: 'Dr. Emma Walsh',
     company: 'NHS Foundation Trust',
-    role: 'Director of Safety & Quality',
+    role: 'Director of Safety',
     industrySlug: 'healthcare',
     service: serviceRef('occupational-health', 'coshh-assessments'),
     projectReference: projectRef('healthcare', 'coshh-multi-site-trust'),

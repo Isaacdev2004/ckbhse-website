@@ -14,14 +14,14 @@ export const termsConditionsData = {
     {
       title: 'About CKBHSE Limited',
       paragraphs: [
-        'CKBHSE Limited (Company No. 17378677) provides health, safety, environment, and quality (HSEQ) consultancy, training, and compliance support to organisations in the United Kingdom. Our registered office is 11 Henley Street, Mataab Business Centre, Birmingham, England, B11 1JB. References to "we", "us", and "our" mean CKBHSE Limited.',
+        'CKBHSE Limited (Company No. 17378677) provides health, safety, and environment (HSE) consultancy, training, and compliance support to organisations in the United Kingdom. Our registered office is 11 Henley Street, Mataab Business Centre, Birmingham, England, B11 1JB. References to "we", "us", and "our" mean CKBHSE Limited.',
       ],
     },
     {
       title: 'Website use',
       paragraphs: [
         'You may use this website for lawful purposes only. You must not attempt to gain unauthorised access to our systems, introduce malware, scrape content in a manner that impairs service, or use the site in any way that could harm CKBHSE Limited or third parties.',
-        'Content on this website is provided for general information. While we take care to ensure accuracy, it does not constitute legal advice or a substitute for professional HSEQ guidance tailored to your organisation.',
+        'Content on this website is provided for general information. While we take care to ensure accuracy, it does not constitute legal advice or a substitute for professional HSE guidance tailored to your organisation.',
       ],
     },
     {

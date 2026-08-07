@@ -123,12 +123,12 @@ export function defineIndustry(
     keywords: input.keywords ?? [
       input.name,
       sectorLabel,
-      'HSEQ',
+      'HSE',
       'UK compliance',
     ],
     featured: input.featured,
     seo: input.seo ?? {
-      title: `${input.name} HSEQ Consultancy | CKBHSE Limited`,
+      title: `${input.name} HSE Consultancy | CKBHSE Limited`,
       description: input.summary,
     },
     breadcrumbs: [

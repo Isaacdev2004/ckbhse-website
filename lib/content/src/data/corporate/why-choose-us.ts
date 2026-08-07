@@ -9,7 +9,7 @@ export const whyChooseUsPageData = {
   slug: 'why-choose-us',
   path: '/about/why-choose-us',
   seo: {
-    title: 'Why Choose CKBHSE | UK HSEQ Consultancy',
+    title: 'Why Choose CKBHSE | UK HSE Consultancy',
     description:
       'Discover why organisations choose CKBHSE Limited — experience, expertise, certifications, methodology, and proven client success.',
   },
@@ -36,7 +36,7 @@ export const whyChooseUsPageData = {
     {
       type: 'features',
       title: 'Expertise',
-      description: 'Deep capability across HSEQ disciplines and sectors.',
+      description: 'Deep capability across HSE disciplines and sectors.',
       items: [
         {
           icon: 'Shield',
@@ -52,7 +52,7 @@ export const whyChooseUsPageData = {
         },
         {
           icon: 'FileCheck',
-          title: 'Quality & ISO',
+          title: 'ISO Standards',
           description:
             'Integrated management systems and certification support.',
         },
@@ -84,7 +84,7 @@ export const whyChooseUsPageData = {
           icon: 'ShieldCheck',
           title: 'ISO 9001 Certified',
           description:
-            'Our own quality management system certified to international standards.',
+            'Our own management system certified to international standards.',
         },
       ],
     },
@@ -156,7 +156,7 @@ export const whyChooseUsPageData = {
   ],
   cta: {
     title: 'Start your partnership today',
-    description: 'Speak with a senior consultant about your HSEQ priorities.',
+    description: 'Speak with a senior consultant about your HSE priorities.',
     buttonLabel: 'Contact Us',
     buttonHref: '/contact',
   },

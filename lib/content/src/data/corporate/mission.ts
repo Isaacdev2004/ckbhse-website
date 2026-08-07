@@ -17,7 +17,7 @@ export const missionPageData = {
     badge: 'Mission',
     title: 'Protecting people. Enabling performance.',
     description:
-      'Our mission is to help organisations manage health, safety, environmental, and quality risks with clarity, confidence, and measurable outcomes.',
+      'Our mission is to help organisations manage health, safety, and environmental risks with clarity, confidence, and measurable outcomes.',
   },
   breadcrumbs: [...aboutCrumb, { label: 'Mission', href: '/about/mission' }],
   sections: [
@@ -29,7 +29,7 @@ export const missionPageData = {
       type: 'prose',
       title: 'Mission Statement',
       paragraphs: [
-        'CKBHSE Limited exists to deliver expert HSEQ consultancy that reduces harm, improves operational resilience, and supports long-term business performance.',
+        'CKBHSE Limited exists to deliver expert HSE consultancy that reduces harm, improves operational resilience, and supports long-term business performance.',
         'We partner with leadership teams to translate regulatory requirements into practical systems that work on the ground — not just on paper.',
       ],
     },
@@ -39,7 +39,7 @@ export const missionPageData = {
       items: [
         'Deliver measurable improvements in workplace safety and environmental performance',
         'Support clients through ISO certification and ongoing management system maintenance',
-        'Provide accredited training that builds internal HSEQ capability',
+        'Provide accredited training that builds internal HSE capability',
         'Respond to incidents and audits with rigorous, evidence-based analysis',
         'Invest in consultant development and industry-leading methodology',
       ],
@@ -56,7 +56,7 @@ export const missionPageData = {
       type: 'prose',
       title: 'Long-term Vision Alignment',
       paragraphs: [
-        'Our mission aligns with a broader vision of industry leadership in HSEQ consultancy — where safety culture, environmental stewardship, and quality management are integrated into strategic decision-making at every level of the organisation.',
+        'Our mission aligns with a broader vision of industry leadership in HSE consultancy — where safety culture and environmental stewardship are integrated into strategic decision-making at every level of the organisation.',
       ],
     },
   ],

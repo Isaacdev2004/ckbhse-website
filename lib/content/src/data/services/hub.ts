@@ -19,13 +19,13 @@ const categoryDescriptions: Record<ServiceCategoryId, string> = {
 
 export const servicesHubPageData = {
   seo: {
-    title: 'HSEQ Consultancy Services | CKBHSE Limited',
+    title: 'HSE Consultancy Services | CKBHSE Limited',
     description:
-      'Comprehensive health, safety, environmental, and quality consultancy services. Expert audits, ISO certification, risk assessments, and retained advisory across the UK.',
+      'Comprehensive health, safety, and environmental consultancy services. Expert audits, ISO certification, risk assessments, and retained advisory across the UK.',
   },
   hero: {
     badge: 'Consultancy Services',
-    title: 'Enterprise HSEQ consultancy that delivers results',
+    title: 'Enterprise HSE consultancy that delivers results',
     description:
       'From health and safety audits to ISO certification and ESG advisory — CKBHSE provides the expert consultancy UK organisations trust to stay compliant, reduce risk, and protect their people.',
   },
@@ -55,7 +55,7 @@ export const servicesHubPageData = {
   overview: {
     title: 'Consultancy built for UK organisations',
     paragraphs: [
-      'CKBHSE Limited delivers end-to-end HSEQ consultancy across six specialist practice areas. Every engagement is led by qualified consultants with sector-specific experience.',
+      'CKBHSE Limited delivers end-to-end HSE consultancy across six specialist practice areas. Every engagement is led by qualified consultants with sector-specific experience.',
       'Whether you need a one-off audit, ISO certification support, or retained competent person services, our team provides clear scoping, rigorous delivery, and measurable outcomes.',
     ],
   },
@@ -92,7 +92,7 @@ export const servicesHubPageData = {
   methodology: {
     title: 'Our delivery methodology',
     description:
-      'Every service follows a structured methodology ensuring consistency, quality, and measurable outcomes.',
+      'Every service follows a structured methodology ensuring consistency and measurable outcomes.',
     steps: [
       {
         step: '01',
@@ -170,7 +170,7 @@ export const servicesHubPageData = {
     },
   ],
   retainerCta: {
-    title: 'Need ongoing HSEQ support?',
+    title: 'Need ongoing HSE support?',
     description:
       'Our retainer packages provide dedicated consultancy support, regular site visits, compliance monitoring, and priority access to our team.',
     buttonLabel: 'Discuss Retainer Options',

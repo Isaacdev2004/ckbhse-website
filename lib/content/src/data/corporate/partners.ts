@@ -11,13 +11,13 @@ export const partnersPageData = {
   seo: {
     title: 'Partnerships | CKBHSE Limited',
     description:
-      'CKBHSE Limited strategic partnerships — technology, industry, training, and strategic alliances supporting HSEQ excellence.',
+      'CKBHSE Limited strategic partnerships — technology, industry, training, and strategic alliances supporting HSE excellence.',
   },
   hero: {
     badge: 'Partnerships',
     title: 'Stronger together',
     description:
-      'We collaborate with technology providers, industry bodies, and training organisations to deliver comprehensive HSEQ solutions for our clients.',
+      'We collaborate with technology providers, industry bodies, and training organisations to deliver comprehensive HSE solutions for our clients.',
   },
   breadcrumbs: [
     ...aboutCrumb,
@@ -42,7 +42,7 @@ export const partnersPageData = {
           name: 'SafetyDigital Analytics',
           category: 'technology',
           description:
-            'Data visualisation and trend analysis for HSEQ performance dashboards.',
+            'Data visualisation and trend analysis for HSE performance dashboards.',
         },
       ],
     },
@@ -60,8 +60,8 @@ export const partnersPageData = {
             'Collaborative safety initiatives and shared learning across Tier 1 contractors.',
         },
         {
-          slug: 'manufacturing-hseq-alliance',
-          name: 'Manufacturing HSEQ Alliance',
+          slug: 'manufacturing-hse-alliance',
+          name: 'Manufacturing HSE Alliance',
           category: 'industry',
           description:
             'Cross-sector forum for machinery safety and ISO integration guidance.',

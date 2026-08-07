@@ -10,7 +10,7 @@ export default function ReportingBenchmarksPage() {
       <div>
         <h2 className="text-xl font-semibold">Organization Benchmarks</h2>
         <p className="text-sm text-muted-foreground">
-          Compare your KPIs against anonymised UK HSEQ mid-market cohorts
+          Compare your KPIs against anonymised UK HSE mid-market cohorts
         </p>
       </div>
 

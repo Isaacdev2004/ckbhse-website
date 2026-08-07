@@ -9,21 +9,21 @@ export const businessRiskServices = [
       'Enterprise-wide risk identification, assessment, and governance.',
     icon: 'Target',
     summary:
-      'Enterprise risk advisory integrating HSEQ, operational, and strategic risks into unified governance frameworks.',
+      'Enterprise risk advisory integrating HSE, operational, and strategic risks into unified governance frameworks.',
     overview: [
-      'Enterprise risk management connects HSEQ with broader business risk. We help boards and leadership teams see the full picture.',
+      'Enterprise risk management connects HSE with broader business risk. We help boards and leadership teams see the full picture.',
     ],
     objectives: [
       'Identify and categorise enterprise-level risks',
       'Assess likelihood, impact, and control effectiveness',
-      'Integrate HSEQ risks into enterprise risk registers',
+      'Integrate HSE risks into enterprise risk registers',
       'Support board reporting and risk appetite alignment',
     ],
     keyBenefits: [
       benefit(
         'Target',
         'Strategic Alignment',
-        'HSEQ risks visible at board level.',
+        'HSE risks visible at board level.',
       ),
       benefit(
         'Scale',
@@ -163,15 +163,15 @@ export const businessRiskServices = [
     slug: 'governance-support',
     category: 'business-risk',
     title: 'Governance Support',
-    subtitle: 'HSEQ governance advisory for boards and senior leadership.',
+    subtitle: 'HSE governance advisory for boards and senior leadership.',
     icon: 'Scale',
     summary:
-      'Governance support helping boards and directors meet HSEQ due diligence and reporting obligations.',
+      'Governance support helping boards and directors meet HSE due diligence and reporting obligations.',
     overview: [
       'Directors have personal duties regarding health and safety. We support governance structures that demonstrate due diligence.',
     ],
     objectives: [
-      'Advise on director HSEQ duties and liabilities',
+      'Advise on director HSE duties and liabilities',
       'Support board reporting and KPI frameworks',
       'Review governance structures and accountability',
       'Prepare for regulatory or coroner scrutiny',
@@ -185,7 +185,7 @@ export const businessRiskServices = [
       benefit(
         'Eye',
         'Board Reporting',
-        'Clear HSEQ KPIs for leadership oversight.',
+        'Clear HSE KPIs for leadership oversight.',
       ),
       benefit(
         'BadgeCheck',
@@ -216,7 +216,7 @@ export const businessRiskServices = [
       'Assess ESG material topics and current performance',
       'Develop ESG strategy and target frameworks',
       'Support TCFD, SECR, and voluntary disclosure',
-      'Integrate ESG with HSEQ management systems',
+      'Integrate ESG with HSE management systems',
     ],
     keyBenefits: [
       benefit(
