@@ -34,7 +34,7 @@ export const aboutPageData = {
       paragraphs: [
         'CKBHSE was founded by experienced HSE professionals with a clear purpose: to provide organisations with practical, commercially aware HSE support that goes beyond generic compliance advice.',
         'Having worked within complex and highly regulated environments, our consultants understand the challenges organisations face in translating legislation, standards and corporate requirements into effective day-to-day practice.',
-        'CKBHSE brings this experience together to provide high-quality consultancy, assurance and training that supports operational teams, managers and senior leaders.',
+        'CKBHSE brings this experience together to provide consultancy, assurance and training that supports operational teams, managers and senior leaders.',
       ],
     },
     {

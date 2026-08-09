@@ -70,70 +70,6 @@ export const isoManagementCourses = [
     keywords: ['ISO 45001', 'internal auditor', 'OHSMS'],
   }),
   defineCourse({
-    slug: 'iso-9001-awareness',
-    category: 'iso-management',
-    title: 'ISO 9001 Awareness',
-    subtitle:
-      'Introduction to ISO 9001 management systems and certification requirements.',
-    icon: 'BadgeCheck',
-    accreditation: 'CPD available on request',
-    level: 'intermediate',
-    price: 'From £195',
-    duration: '1 day',
-    deliveryMethodIds: ['classroom', 'online'],
-    certification: {
-      name: 'ISO 9001 Awareness Certificate',
-      description:
-        'Certificate confirming understanding of ISO 9001 management system requirements.',
-    },
-    assessment: 'Written assessment on QMS principles and clause requirements.',
-    overview: [
-      "ISO 9001 is the world's most widely adopted management system standard for consistent processes.",
-      "This course explains the standard's structure and how organisations achieve and maintain certification.",
-    ],
-    learningObjectives: [
-      'Explain ISO 9001 management principles',
-      'Understand ISO 9001 high-level structure and key clauses',
-      'Identify documentation and process requirements',
-      'Support internal audit and management review activities',
-    ],
-    targetAudience: [
-      'Operations and compliance managers',
-      'Operations supervisors',
-      'Directors pursuing ISO certification',
-    ],
-    courseOutline: [
-      outline('ISO 9001 Principles', [
-        'Customer focus',
-        'Process approach',
-        'Continual improvement',
-      ]),
-      outline('ISO 9001 Structure', [
-        'Context and leadership',
-        'Planning and support',
-        'Operation and evaluation',
-      ]),
-      outline('Implementation Overview', [
-        'Documentation',
-        'Process mapping',
-        'Performance measurement',
-      ]),
-    ],
-    learningOutcomes: [
-      'QMS principles',
-      'ISO 9001 structure',
-      'Documentation requirements',
-      'Audit readiness',
-    ],
-    industrySlugs: ['manufacturing', 'logistics', 'healthcare'],
-    relatedServices: [serviceRef('iso-management', 'iso-9001')],
-    relatedCourses: [
-      courseRef('iso-management', 'integrated-management-systems'),
-    ],
-    pathwayLevel: 'intermediate',
-    keywords: ['ISO 9001', 'management systems', 'QMS'],
-  }),
-  defineCourse({
     slug: 'iso-14001-internal-auditor',
     category: 'iso-management',
     title: 'ISO 14001 Internal Auditor',
@@ -204,7 +140,7 @@ export const isoManagementCourses = [
     category: 'iso-management',
     title: 'Integrated Management Systems',
     subtitle:
-      'Training on integrating ISO 9001, 14001, and 45001 into a unified management system approach.',
+      'Training on integrating ISO 14001 and 45001 into a unified management system approach.',
     icon: 'Target',
     accreditation: 'CPD available on request',
     level: 'advanced',
@@ -223,7 +159,7 @@ export const isoManagementCourses = [
     ],
     learningObjectives: [
       'Understand the high-level structure common to ISO management standards',
-      'Identify integration opportunities across QMS, EMS, and OHSMS',
+      'Identify integration opportunities across EMS and OHSMS',
       'Design unified documentation and audit programmes',
       'Implement integrated management review processes',
     ],

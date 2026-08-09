@@ -31,14 +31,6 @@ export const accreditationsPageData = {
         'International management system certifications held by CKBHSE Limited.',
       items: [
         {
-          slug: 'iso-9001',
-          name: 'ISO 9001:2015',
-          category: 'iso',
-          description:
-            'ISO 9001 — certified consultancy operations.',
-          icon: 'Award',
-        },
-        {
           slug: 'iso-14001',
           name: 'ISO 14001:2015',
           category: 'iso',

@@ -42,7 +42,7 @@ export const manufacturingIndustry = defineIndustry({
     'Machinery guarding and PUWER compliance',
     'COSHH management for production chemicals',
     'Noise and vibration exposure',
-    'ISO 9001, 14001, and 45001 certification pressures',
+    'ISO 14001 and 45001 certification pressures',
     'Contractor access to production areas',
   ],
   regulatoryFramework: [
@@ -107,7 +107,6 @@ export const manufacturingIndustry = defineIndustry({
   standards: [
     'ISO 45001:2018',
     'ISO 14001:2015',
-    'ISO 9001:2015',
     'BS EN ISO 12100 Machinery safety',
   ],
   industryStatistics: [

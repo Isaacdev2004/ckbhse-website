@@ -92,7 +92,7 @@ export const leadershipPageData = {
           name: 'Priya Sharma',
           role: 'Principal Consultant — ISO Systems',
           group: 'consultants',
-          bio: 'Integrated management system specialist for ISO 9001, 14001, and 45001 certification and internal audit programmes.',
+          bio: 'Integrated management system specialist for ISO 14001 and 45001 certification and internal audit programmes.',
         },
         {
           slug: 'thomas-hughes',

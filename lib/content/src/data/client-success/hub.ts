@@ -112,7 +112,7 @@ export const clientSuccessHubPageData = {
     },
   ],
   complianceAchievements: [
-    'ISO 45001, 14001, and 9001 support',
+    'ISO 45001 and 14001 support',
     'CDM 2015 and Building Safety Act advisory',
     'Healthcare safety compliance support',
     'HSE inspection readiness support',

@@ -44,7 +44,7 @@ export const homePageData = {
       icon: 'Award',
       title: 'ISO Compliance',
       description:
-        'Expert guidance for ISO 9001, 14001, and 45001 certification, implementation, and ongoing management.',
+        'Expert guidance for ISO 14001 and 45001 certification, implementation, and ongoing management.',
     },
     {
       icon: 'AlertTriangle',

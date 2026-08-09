@@ -86,53 +86,13 @@ export const isoManagementServices = [
     ],
   }),
   defineService({
-    slug: 'iso-9001',
-    category: 'iso-management',
-    title: 'ISO 9001',
-    subtitle: 'ISO 9001 management system certification and implementation.',
-    icon: 'Award',
-    summary:
-      'ISO 9001 management system implementation, certification support, and ongoing maintenance.',
-    overview: [
-      'ISO 9001 demonstrates commitment to consistent processes and customer satisfaction. We support implementation tailored to your operations.',
-    ],
-    objectives: [
-      'Assess current practices against ISO 9001:2015',
-      'Define policy, objectives, and process approach',
-      'Develop documentation and process controls',
-      'Support certification audit preparation',
-    ],
-    keyBenefits: [
-      benefit(
-        'Award',
-        'Process Assurance',
-        'Systematic approach to consistent delivery and customer satisfaction.',
-      ),
-      benefit(
-        'TrendingUp',
-        'Process Improvement',
-        'Identify inefficiencies and improvement opportunities.',
-      ),
-      benefit(
-        'Briefcase',
-        'Commercial Advantage',
-        'ISO 9001 often required for tenders and contracts.',
-      ),
-    ],
-    industrySlugs: ['manufacturing', 'healthcare', 'logistics'],
-    regulations: ['ISO 9001:2015'],
-    relatedServices: [
-      { category: 'iso-management', slug: 'integrated-management-systems' },
-    ],
-  }),
-  defineService({
     slug: 'integrated-management-systems',
     category: 'iso-management',
     title: 'Integrated Management Systems',
-    subtitle: 'Combine ISO 9001, 14001, and 45001 into a unified IMS.',
+    subtitle: 'Combine ISO 14001 and 45001 into a unified IMS.',
     icon: 'ClipboardList',
     summary:
-      'Integrate ISO 9001, environmental, and health & safety management systems for efficiency and unified certification.',
+      'Integrate environmental and health & safety management systems for efficiency and unified certification.',
     overview: [
       'An integrated management system reduces duplication and creates a coherent approach to HSE across the organisation.',
     ],
@@ -160,9 +120,8 @@ export const isoManagementServices = [
       ),
     ],
     industrySlugs: ['manufacturing', 'construction'],
-    regulations: ['ISO 9001:2015', 'ISO 14001:2015', 'ISO 45001:2018'],
+    regulations: ['ISO 14001:2015', 'ISO 45001:2018'],
     relatedServices: [
-      { category: 'iso-management', slug: 'iso-9001' },
       { category: 'iso-management', slug: 'iso-14001' },
       { category: 'iso-management', slug: 'iso-45001' },
     ],
@@ -241,11 +200,11 @@ export const isoManagementServices = [
       ),
     ],
     industrySlugs: ['manufacturing', 'construction', 'retail'],
-    regulations: ['ISO 9001:2015', 'ISO 14001:2015', 'ISO 45001:2018'],
+    regulations: ['ISO 14001:2015', 'ISO 45001:2018'],
     featured: true,
     relatedServices: [
-      { category: 'iso-management', slug: 'iso-9001' },
       { category: 'iso-management', slug: 'iso-14001' },
+      { category: 'iso-management', slug: 'iso-45001' },
     ],
   }),
 ];

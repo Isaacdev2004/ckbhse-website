@@ -10,7 +10,7 @@ const categoryDescriptions: Record<ServiceCategoryId, string> = {
   'occupational-health':
     'Workplace health, wellbeing, health surveillance, and occupational hygiene.',
   'iso-management':
-    'ISO 9001, 14001, 45001 certification, integrated systems, and internal audits.',
+    'ISO 14001 and 45001 certification, integrated systems, and internal audits.',
   'compliance-regulatory':
     'Legal compliance, policy development, contractor management, and competent person services.',
   'business-risk':
@@ -162,7 +162,7 @@ export const servicesHubPageData = {
     {
       question: 'Can you support ISO certification?',
       answer:
-        'We support ISO 9001, 14001, and 45001 certification including gap analysis, implementation, internal audit, and certification audit preparation.',
+        'We support ISO 14001 and 45001 certification including gap analysis, implementation, internal audit, and certification audit preparation.',
     },
     {
       question: 'How do I request a proposal?',

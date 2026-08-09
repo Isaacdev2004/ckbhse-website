@@ -352,7 +352,7 @@ export const checklistResources = [
     type: 'checklists',
     title: 'ISO Audit Readiness Checklist',
     subtitle:
-      'Pre-audit checklist for ISO 9001, 14001, and 45001 certification audits.',
+      'Pre-audit checklist for ISO 14001 and 45001 certification audits.',
     icon: 'BadgeCheck',
     summary:
       'Prepare for certification audits with this comprehensive readiness checklist.',
