@@ -8,7 +8,7 @@ export const isoManagementCourses = [
     subtitle:
       'Develop competence to plan, conduct, and report internal audits against ISO 45001 occupational health and safety management systems.',
     icon: 'ShieldCheck',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'advanced',
     price: 'From £495',
     duration: '2 days',
@@ -76,7 +76,7 @@ export const isoManagementCourses = [
     subtitle:
       'Introduction to ISO 9001 management systems and certification requirements.',
     icon: 'BadgeCheck',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £195',
     duration: '1 day',
@@ -140,7 +140,7 @@ export const isoManagementCourses = [
     subtitle:
       'Develop competence to audit environmental management systems against ISO 14001 requirements.',
     icon: 'Leaf',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'advanced',
     price: 'From £495',
     duration: '2 days',
@@ -206,7 +206,7 @@ export const isoManagementCourses = [
     subtitle:
       'Training on integrating ISO 9001, 14001, and 45001 into a unified management system approach.',
     icon: 'Target',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'advanced',
     price: 'From £395',
     duration: '2 days',

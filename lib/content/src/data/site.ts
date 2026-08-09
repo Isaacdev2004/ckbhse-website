@@ -266,11 +266,7 @@ export const siteConfigData = {
       { label: 'HTML Sitemap', href: '/sitemap', available: false },
       { label: 'FAQ', href: '/faq', available: false },
     ],
-    accreditations: [
-      { label: 'ISO 9001 Certified', available: false },
-      { label: 'IOSH Accredited', available: false },
-      { label: 'NEBOSH Approved', available: false },
-    ],
+    accreditations: [],
     social: [
       {
         platform: 'linkedin',

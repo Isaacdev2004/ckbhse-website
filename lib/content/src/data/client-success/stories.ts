@@ -86,7 +86,7 @@ export const clientSuccessPages = [
       'End-to-end OH&S management system implementation delivering ISO 45001 certification and significant lost-time injury reduction for manufacturing clients.',
     statistics: [
       { label: 'Certifications achieved', value: '40+' },
-      { label: 'Average LTI reduction', value: '58%' },
+      { label: 'LTI focus', value: 'Prevention' },
       { label: 'Implementation time', value: '6 months avg' },
     ],
     beforeAfter: [
@@ -98,7 +98,7 @@ export const clientSuccessPages = [
       },
     ],
     outcomeMetrics: [
-      metric('lti-reduction', 'Average LTI reduction', '58%'),
+      metric('lti-reduction', 'LTI focus', 'Prevention'),
       metric('certification-achievement', 'ISO 45001 certifications', '40+'),
     ],
     clientJourney: [
@@ -117,7 +117,7 @@ export const clientSuccessPages = [
       metric('employee-engagement', 'Safety culture index', '+34% average'),
     ],
     riskReductionMetrics: [
-      metric('lti-reduction', 'LTI frequency', '58% average reduction'),
+      metric('lti-reduction', 'LTI frequency', 'Improved controls'),
     ],
     complianceAchievements: [
       'ISO 45001:2018 certification',
@@ -139,8 +139,8 @@ export const clientSuccessPages = [
       'Organisation-wide chemical safety and H&S programmes delivering CQC-ready compliance across acute and community healthcare settings.',
     statistics: [
       { label: 'Sites supported', value: '30+' },
-      { label: 'Staff trained', value: '2,500+' },
-      { label: 'CQC Outstanding ratings', value: '5' },
+      { label: 'Staff training', value: 'Multi-site' },
+      { label: 'CQC readiness', value: 'Support' },
     ],
     beforeAfter: [
       {
@@ -150,8 +150,8 @@ export const clientSuccessPages = [
       },
     ],
     outcomeMetrics: [
-      metric('compliance-score', 'COSHH compliance', '100%'),
-      metric('training-completion', 'Staff trained', '2,500+'),
+      metric('compliance-score', 'COSHH compliance', 'Improved'),
+      metric('training-completion', 'Staff training', 'Role-based'),
     ],
     clientJourney: [
       { step: '1', title: 'Baseline', description: 'Multi-site COSHH audit.' },
@@ -166,14 +166,14 @@ export const clientSuccessPages = [
       'CQC evidence preparation',
     ],
     improvementMetrics: [
-      metric('audit-improvement', 'CQC safety ratings', 'Outstanding achieved'),
+      metric('audit-improvement', 'CQC readiness', 'Evidence prepared'),
     ],
     riskReductionMetrics: [
-      metric('compliance-score', 'COSHH gaps closed', '100%'),
+      metric('compliance-score', 'COSHH gaps closed', 'Priority actions'),
     ],
     complianceAchievements: [
-      'Full COSHH compliance',
-      'CQC Outstanding safety ratings',
+      'Improved COSHH controls',
+      'CQC inspection readiness support',
       'Centralised management system',
     ],
     testimonialSlugs: ['healthcare-safety-lead'],
@@ -191,8 +191,8 @@ export const clientSuccessPages = [
       'CKBHSE delivers consistent, measurable outcomes across construction, manufacturing, healthcare, logistics, retail, education, and public sector clients.',
     statistics: [
       { label: 'Sectors served', value: '12+' },
-      { label: 'Client retention', value: '94%' },
-      { label: 'Average outcome improvement', value: '38%' },
+      { label: 'Engagement model', value: 'Partnership' },
+      { label: 'Outcome focus', value: 'Practical' },
     ],
     beforeAfter: [
       {
@@ -202,9 +202,9 @@ export const clientSuccessPages = [
       },
     ],
     outcomeMetrics: [
-      metric('compliance-score', 'Audit pass rate', '96%'),
-      metric('incident-reduction', 'Average incident reduction', '42%'),
-      metric('training-completion', 'Delegates trained', '12,000+'),
+      metric('compliance-score', 'Audit readiness', 'Supported'),
+      metric('incident-reduction', 'Risk reduction', 'Controls'),
+      metric('training-completion', 'Training support', 'Teams'),
     ],
     clientJourney: [
       { step: '1', title: 'Discover', description: 'Initial consultation and scoping.' },
@@ -219,16 +219,16 @@ export const clientSuccessPages = [
       'Long-term partnership model',
     ],
     improvementMetrics: [
-      metric('operational-efficiency', 'Process efficiency', '+25% average'),
-      metric('cost-savings', 'Identified savings', '£1.2M+ cumulative'),
+      metric('operational-efficiency', 'Process clarity', 'Improved'),
+      metric('cost-savings', 'Efficiency focus', 'Waste reduction'),
     ],
     riskReductionMetrics: [
-      metric('incident-reduction', 'Portfolio incident reduction', '42%'),
+      metric('incident-reduction', 'Portfolio risk focus', 'Controls'),
     ],
     complianceAchievements: [
-      '96% audit pass rate',
-      '150+ certifications achieved',
-      '94% client retention',
+      'Audit readiness support',
+      'Certification support programmes',
+      'Long-term partnership approach',
     ],
     testimonialSlugs: [
       'logistics-fleet-director',

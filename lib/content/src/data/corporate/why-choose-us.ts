@@ -26,11 +26,11 @@ export const whyChooseUsPageData = {
   sections: [
     {
       type: 'stats',
-      title: 'Experience',
+      title: 'How we support clients',
       items: [
-        { icon: 'Award', value: '15+', label: 'Years in Practice' },
-        { icon: 'Users', value: '500+', label: 'Clients Nationwide' },
-        { icon: 'Briefcase', value: '50+', label: 'Qualified Consultants' },
+        { icon: 'Award', value: 'HSE', label: 'Specialist Focus' },
+        { icon: 'Users', value: 'UK', label: 'Nationwide Support' },
+        { icon: 'Briefcase', value: 'Practical', label: 'Workplace Advice' },
       ],
     },
     {
@@ -60,31 +60,31 @@ export const whyChooseUsPageData = {
           icon: 'GraduationCap',
           title: 'Training',
           description:
-            'IOSH, NEBOSH, and bespoke corporate training programmes.',
+            'Practical workplace training aligned to client needs and roles.',
         },
       ],
     },
     {
       type: 'features',
-      title: 'Certifications & Credentials',
+      title: 'Our commitments',
       items: [
         {
           icon: 'BadgeCheck',
-          title: 'IOSH Accredited',
+          title: 'Honest Advice',
           description:
-            'Approved training centre for recognised safety qualifications.',
+            'Clear recommendations based on applicable UK legal duties and good practice.',
         },
         {
           icon: 'Award',
-          title: 'NEBOSH Approved',
+          title: 'Transparent Scoping',
           description:
-            'Delivering the gold standard in occupational health and safety training.',
+            'Agreed deliverables and realistic expectations before work begins.',
         },
         {
           icon: 'ShieldCheck',
-          title: 'ISO 9001 Certified',
+          title: 'Evidence-Based Reviews',
           description:
-            'Our own management system certified to international standards.',
+            'Findings supported by observation, documentation review, and practical context.',
         },
       ],
     },
@@ -129,8 +129,8 @@ export const whyChooseUsPageData = {
       type: 'prose',
       title: 'Customer Success',
       paragraphs: [
-        'Our 98.7% compliance success rate reflects clients who achieve certification, pass audits, and maintain improved safety performance long after project close.',
-        'Case studies across construction, manufacturing, and healthcare demonstrate sustained outcomes — not one-off fixes.',
+        'We measure success by practical outcomes: clearer responsibilities, stronger controls, and better preparedness for regulatory scrutiny.',
+        'Illustrative case studies across construction, manufacturing, and healthcare show the types of challenges we help organisations address.',
       ],
     },
     {

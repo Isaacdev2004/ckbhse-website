@@ -8,7 +8,7 @@ export const environmentalCourses = [
     subtitle:
       'Foundational environmental management training covering pollution prevention and regulatory awareness.',
     icon: 'Leaf',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'foundation',
     price: 'From £75',
     duration: 'Half day',
@@ -66,7 +66,7 @@ export const environmentalCourses = [
     subtitle:
       'Introduction to ISO 14001 environmental management systems and certification requirements.',
     icon: 'Award',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £195',
     duration: '1 day',
@@ -135,7 +135,7 @@ export const environmentalCourses = [
     subtitle:
       'Practical training on UK waste legislation, duty of care, and sustainable waste management practices.',
     icon: 'Recycle',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £145',
     duration: '1 day',
@@ -196,7 +196,7 @@ export const environmentalCourses = [
     subtitle:
       'Comprehensive training on environmental permit compliance, monitoring, and enforcement response.',
     icon: 'Scale',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'advanced',
     price: 'From £295',
     duration: '2 days',

@@ -228,7 +228,7 @@ export const caseStudyPages = [
     industry: 'healthcare',
     title: 'Comprehensive COSHH Management for Multi-Site NHS Trust',
     subtitle:
-      'Organisation-wide chemical safety across five hospital sites with Outstanding CQC rating.',
+      'Organisation-wide chemical safety across five hospital sites with CQC inspection readiness support.',
     icon: 'Heart',
     overview:
       'An NHS Foundation Trust operating across five hospital sites required a unified approach to chemical safety management, COSHH compliance, and infection prevention protocols.',
@@ -283,7 +283,7 @@ export const caseStudyPages = [
       'COSHH gap analysis across five sites',
       'Centralised management system deployment',
       '400+ staff trained and competency recorded',
-      'CQC inspection passed with Outstanding safety rating',
+      'CQC inspection readiness support delivered',
     ],
     deliverables: [
       'Site COSHH assessment registers',
@@ -295,17 +295,17 @@ export const caseStudyPages = [
       'Full COSHH compliance across all five sites',
       'Centralised chemical management system implemented',
       'Staff training delivered to 400+ employees',
-      'CQC inspection passed with Outstanding safety rating',
+      'CQC inspection readiness support delivered',
     ],
     outcomeMetrics: [
       metric('compliance-score', 'COSHH compliance', '100% across 5 sites'),
       metric('training-completion', 'Staff trained', '400+'),
-      metric('audit-improvement', 'CQC safety rating', 'Outstanding'),
+      metric('audit-improvement', 'CQC readiness', 'Evidence prepared'),
     ],
     keyStatistics: [
       { label: 'Sites Covered', value: '5 hospitals' },
       { label: 'Staff Trained', value: '400+' },
-      { label: 'CQC Rating', value: 'Outstanding' },
+      { label: 'CQC readiness', value: 'Supported' },
     ],
     testimonialReference: 'healthcare-safety-lead',
     relatedResources: [

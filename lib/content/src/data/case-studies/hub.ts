@@ -51,34 +51,34 @@ export const caseStudiesHubPageData = {
   aggregateMetrics: [
     {
       type: 'incident-reduction',
-      label: 'Average incident reduction',
-      value: '42%',
-      description: 'Across featured client programmes',
+      label: 'Focus area',
+      value: 'Risk',
+      description: 'Practical risk reduction and safer working practices',
     },
     {
       type: 'certification-achievement',
-      label: 'Certifications achieved',
-      value: '150+',
-      description: 'ISO, IOSH, and sector accreditations',
+      label: 'Focus area',
+      value: 'ISO',
+      description: 'Management system and certification support',
     },
     {
       type: 'training-completion',
-      label: 'Professionals trained',
-      value: '12,000+',
-      description: 'Delegates across client programmes',
+      label: 'Focus area',
+      value: 'Training',
+      description: 'Role-relevant workplace training support',
     },
     {
       type: 'compliance-score',
-      label: 'Audit pass rate',
-      value: '96%',
-      description: 'Client regulatory and certification audits',
+      label: 'Focus area',
+      value: 'Assurance',
+      description: 'Audits and reviews to identify gaps and actions',
     },
   ],
   industryStatistics: [
     { label: 'Industries served', value: '12+' },
     { label: 'Case studies published', value: '8' },
-    { label: 'Client retention', value: '94%' },
-    { label: 'Years of experience', value: '15+' },
+    { label: 'Delivery model', value: 'UK-wide' },
+    { label: 'Service focus', value: 'HSE' },
   ],
   clientLogos: [
     { name: 'London Development Consortium', industry: 'construction' },
@@ -88,40 +88,13 @@ export const caseStudiesHubPageData = {
     { name: 'National Logistics Group', industry: 'logistics' },
     { name: 'UK Retail Chain', industry: 'retail' },
   ],
-  awards: [
-    {
-      title: 'Health & Safety Excellence',
-      issuer: 'British Safety Council',
-      year: '2024',
-      description: 'Recognised consultancy partner for construction sector programmes.',
-    },
-    {
-      title: 'ISO Implementation Partner',
-      issuer: 'UKAS-accredited certification body network',
-      year: '2023',
-      description: 'Preferred consultancy for ISO 45001 and integrated management systems.',
-    },
-  ],
+  awards: [],
   successTimeline: [
     {
-      year: '2024',
-      title: 'Knowledge Centre launch',
-      description: 'Expanded thought leadership and downloadable resources for UK HSE professionals.',
-    },
-    {
-      year: '2023',
-      title: 'Multi-sector growth',
-      description: 'Delivered programmes across construction, healthcare, logistics, and public sector.',
-    },
-    {
-      year: '2022',
-      title: 'Training platform expansion',
-      description: '29 accredited courses across six training categories.',
-    },
-    {
-      year: '2020',
-      title: 'Enterprise platform foundation',
-      description: 'Established scalable consultancy delivery model for UK organisations.',
+      year: '2026',
+      title: 'Public website and knowledge hub',
+      description:
+        'Launched the CKBHSE public website to support UK organisations seeking HSE advisory, training and assurance.',
     },
   ],
   relatedResources: [

@@ -8,7 +8,7 @@ export const occupationalHealthCourses = [
     subtitle:
       'Training for managers and HR teams on promoting mental health, wellbeing, and productive workplace culture.',
     icon: 'Heart',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £175',
     duration: '1 day',
@@ -71,7 +71,7 @@ export const occupationalHealthCourses = [
     subtitle:
       'Understanding health surveillance requirements under UK occupational health regulations.',
     icon: 'Eye',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £145',
     duration: 'Half day',
@@ -132,7 +132,7 @@ export const occupationalHealthCourses = [
     subtitle:
       'Training on exposure assessment, monitoring, and control of workplace health hazards.',
     icon: 'FlaskConical',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'advanced',
     price: 'From £295',
     duration: '2 days',

@@ -8,7 +8,7 @@ export const complianceGovernanceCourses = [
     subtitle:
       'Comprehensive training on Construction (Design and Management) Regulations 2015 duties and documentation.',
     icon: 'Building2',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £245',
     duration: '1 day',
@@ -73,7 +73,7 @@ export const complianceGovernanceCourses = [
     subtitle:
       'Training on selecting, managing, and monitoring contractors to ensure compliance and safe working.',
     icon: 'Handshake',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £195',
     duration: '1 day',
@@ -137,7 +137,7 @@ export const complianceGovernanceCourses = [
     subtitle:
       'Training for managers on UK health, safety, and environmental legal duties and enforcement.',
     icon: 'Scale',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £245',
     duration: '1 day',
@@ -200,7 +200,7 @@ export const complianceGovernanceCourses = [
     subtitle:
       'Structured training on investigating workplace incidents, near misses, and root cause analysis.',
     icon: 'AlertCircle',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'advanced',
     price: 'From £295',
     duration: '1 day',

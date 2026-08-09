@@ -8,7 +8,7 @@ export const leadershipCultureCourses = [
     subtitle:
       'Executive and senior manager training on visible safety leadership and organisational accountability.',
     icon: 'Compass',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'leadership',
     price: 'From £395',
     duration: '1 day',
@@ -80,7 +80,7 @@ export const leadershipCultureCourses = [
     subtitle:
       'Training on human factors, behaviour-based safety programmes, and positive safety culture interventions.',
     icon: 'Users',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £245',
     duration: '1 day',
@@ -142,7 +142,7 @@ export const leadershipCultureCourses = [
     subtitle:
       'Front-line leadership training combining safety management, communication, and team performance.',
     icon: 'Briefcase',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £295',
     duration: '2 days',
@@ -212,7 +212,7 @@ export const leadershipCultureCourses = [
     subtitle:
       'Strategic training on assessing, developing, and sustaining positive organisational safety culture.',
     icon: 'Lightbulb',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'leadership',
     price: 'From £395',
     duration: '1 day',

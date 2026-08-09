@@ -47,11 +47,11 @@ export const testimonialsHubPageData = {
     'logistics-fleet-director',
   ],
   trustIndicators: [
-    'Verified client testimonials',
-    'Measurable outcomes referenced',
-    'Cross-linked to published case studies',
-    '94% client retention rate',
-    '15+ years UK HSE consultancy experience',
+    'Client testimonials published with permission',
+    'Outcomes described in practical terms',
+    'Cross-linked to published case studies where available',
+    'Independent UK HSE consultancy',
+    'Transparent scoping of every engagement',
   ],
   faqs: [
     {

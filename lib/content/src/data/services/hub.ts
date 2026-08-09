@@ -66,26 +66,27 @@ export const servicesHubPageData = {
     items: [
       {
         icon: 'Award',
-        title: '15+ Years Experience',
-        description: 'Established UK consultancy with 500+ clients nationwide.',
+        title: 'Specialist HSE Focus',
+        description:
+          'Advisory, training and assurance support for UK organisations.',
       },
       {
         icon: 'BadgeCheck',
-        title: 'Qualified Consultants',
+        title: 'Practical Expertise',
         description:
-          'IOSH, NEBOSH, and IEMA qualified practitioners on every engagement.',
+          'Consultants with health, safety and environmental experience across regulated sectors.',
       },
       {
         icon: 'ShieldCheck',
-        title: '98.7% Compliance Success',
+        title: 'Clear Recommendations',
         description:
-          'Proven track record supporting certification and audit outcomes.',
+          'Evidence-based findings with actions you can implement in real workplaces.',
       },
       {
         icon: 'Clock',
         title: 'Responsive Support',
         description:
-          'Rapid mobilisation for audits, incidents, and urgent compliance needs.',
+          'Support for audits, incidents, and time-sensitive compliance needs.',
       },
     ],
   },

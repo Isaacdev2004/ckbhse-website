@@ -42,7 +42,7 @@ export const testimonialPages = [
     service: serviceRef('occupational-health', 'coshh-assessments'),
     projectReference: projectRef('healthcare', 'coshh-multi-site-trust'),
     testimonial:
-      'CKBHSE transformed our COSHH programme across five hospital sites. The centralised approach and training programme were essential to our Outstanding CQC safety rating.',
+      'CKBHSE transformed our COSHH programme across five hospital sites. The centralised approach and training programme were essential to strengthening our CQC inspection readiness.',
     rating: 5,
     category: 'transformation',
     date: 'February 2024',

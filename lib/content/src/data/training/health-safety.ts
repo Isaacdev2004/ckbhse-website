@@ -8,7 +8,7 @@ export const healthSafetyCourses = [
     subtitle:
       'Entry-level health and safety awareness for all workers, covering core hazards and personal responsibility.',
     icon: 'Shield',
-    accreditation: 'IOSH Accredited',
+    accreditation: 'IOSH syllabus aligned',
     level: 'foundation',
     price: 'From £125',
     duration: '1 day',
@@ -75,7 +75,7 @@ export const healthSafetyCourses = [
     subtitle:
       'Industry-leading health and safety course for managers and supervisors across all sectors.',
     icon: 'Users',
-    accreditation: 'IOSH Accredited',
+    accreditation: 'IOSH syllabus aligned',
     level: 'intermediate',
     price: 'From £395',
     duration: '3–4 days',
@@ -226,7 +226,7 @@ export const healthSafetyCourses = [
     subtitle:
       'Practical skills to conduct effective workplace risk assessments aligned to UK legal requirements.',
     icon: 'FileCheck',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £195',
     duration: '1 day',
@@ -287,7 +287,7 @@ export const healthSafetyCourses = [
     subtitle:
       'Essential fire safety knowledge for all employees, covering prevention, detection, and evacuation.',
     icon: 'Flame',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'foundation',
     price: 'From £65',
     duration: '2 hours',
@@ -349,7 +349,7 @@ export const healthSafetyCourses = [
     subtitle:
       'Equip designated fire wardens with the knowledge and skills to manage fire emergencies effectively.',
     icon: 'Flame',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £95',
     duration: 'Half day',
@@ -417,7 +417,7 @@ export const healthSafetyCourses = [
     subtitle:
       'Practical training to reduce musculoskeletal injuries and improve safe lifting techniques.',
     icon: 'Briefcase',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'foundation',
     price: 'From £45',
     duration: '2 hours',
@@ -478,7 +478,7 @@ export const healthSafetyCourses = [
     subtitle:
       'Essential training for anyone working at height or managing such activities.',
     icon: 'AlertTriangle',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'intermediate',
     price: 'From £85',
     duration: 'Half day',
@@ -546,7 +546,7 @@ export const healthSafetyCourses = [
     subtitle:
       'Control of Substances Hazardous to Health training for safe chemical handling and exposure control.',
     icon: 'FlaskConical',
-    accreditation: 'CPD Certified',
+    accreditation: 'CPD available on request',
     level: 'foundation',
     price: 'From £55',
     duration: '2 hours',

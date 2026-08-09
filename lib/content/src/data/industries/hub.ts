@@ -69,9 +69,9 @@ export const industriesHubPageData = {
   },
   industryStatistics: [
     { icon: 'Building2', value: '12', label: 'Industry Sectors Covered' },
-    { icon: 'Users', value: '500+', label: 'Sector Clients Nationwide' },
-    { icon: 'Award', value: '15+', label: 'Years Sector Experience' },
-    { icon: 'Shield', value: '98.7%', label: 'Compliance Success Rate' },
+    { icon: 'Users', value: 'UK', label: 'Nationwide Support' },
+    { icon: 'Award', value: 'HSE', label: 'Advisory Focus' },
+    { icon: 'Shield', value: 'Practical', label: 'Workplace Solutions' },
   ],
   clientJourney: {
     title: 'Your sector consultation journey',

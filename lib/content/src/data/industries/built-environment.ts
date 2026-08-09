@@ -120,8 +120,8 @@ export const constructionIndustry = defineIndustry({
     'HSE Construction Sector Plan',
   ],
   industryStatistics: [
-    { icon: 'AlertTriangle', value: '30%', label: 'Of UK Worker Fatalities' },
-    { icon: 'Building2', value: '500+', label: 'Construction Clients Served' },
+    { icon: 'AlertTriangle', value: 'High', label: 'Sector Risk Profile' },
+    { icon: 'Building2', value: 'UK', label: 'Construction Support' },
   ],
   featured: true,
   keywords: [
