@@ -2,29 +2,29 @@ import type { HomePageContent } from '../schemas/pages.js';
 
 export const homePageData = {
   seo: {
-    title: 'CKBHSE Limited — Expert HSE Consultancy',
+    title: 'CKBHSE Limited — HSE Consultancy',
     description:
-      'CKBHSE Limited delivers comprehensive Health, Safety & Environment consultancy services to organisations across the UK.',
+      'CKBHSE Limited is an independent HSE consultancy providing specialist advisory, training and assurance services to organisations across the UK.',
   },
   hero: {
     badge: 'UK HSE Consultancy',
-    title: 'Expert Safety.',
-    titleHighlight: 'Real Results.',
+    title: 'Safer workplaces.',
+    titleHighlight: 'Stronger compliance.',
     description:
-      "CKBHSE Limited delivers comprehensive Health, Safety & Environment consultancy services to organisations across the UK. From compliance audits to ISO certification, we're the partner you can trust.",
+      'CKBHSE Limited is an independent HSE consultancy providing specialist advisory, training and assurance services to organisations across the UK. We help businesses strengthen health, safety and environmental performance, meet regulatory obligations and build robust management systems that support operational excellence.',
   },
   stats: [
-    { icon: 'Users', value: '500+', label: 'Clients Served' },
-    { icon: 'Award', value: '15+', label: 'Years Experience' },
+    { icon: 'Shield', value: 'HSE', label: 'Advisory Focus' },
+    { icon: 'FileCheck', value: 'UK', label: 'Regulatory Alignment' },
     {
       icon: 'GraduationCap',
-      value: '2,000+',
-      label: 'Professionals Trained',
+      value: 'Training',
+      label: 'Practical Support',
     },
     {
-      icon: 'Shield',
-      value: '98.7%',
-      label: 'Compliance Success Rate',
+      icon: 'Award',
+      value: 'Assurance',
+      label: 'Evidence-Based Reviews',
     },
   ],
   coreServices: [
@@ -76,33 +76,33 @@ export const homePageData = {
     },
   ],
   trustSignals: [
-    'ISO 9001 Certified Consultancy',
-    'IOSH Accredited Training',
-    'NEBOSH Qualified Consultants',
-    'CDM 2015 Specialists',
-    'HSE Regulatory Expertise',
-    'RIDDOR Compliance',
+    'Independent HSE Consultancy',
+    'UK Regulatory Focus',
+    'Advisory, Training & Assurance',
+    'Practical Workplace Support',
+    'Transparent Scoping',
+    'Registered in England & Wales',
   ],
   sections: {
     services: {
       title: 'Complete HSE Solutions',
       description:
-        'From compliance audits to ongoing safety management, we provide end-to-end consultancy services that keep your business safe and compliant.',
+        'From compliance audits to ongoing safety management, we provide consultancy services that help your business operate more safely and meet regulatory obligations.',
     },
     industries: {
       title: 'Industries We Serve',
       description:
-        'Sector-specific expertise across high-risk and regulated industries.',
+        'Sector-focused support across high-risk and regulated industries.',
     },
     training: {
-      title: 'Accredited Safety Training',
+      title: 'Practical Safety Training',
       description:
-        'IOSH, NEBOSH, and specialist courses delivered by qualified professionals. Classroom and online options available.',
+        'Training support to help teams understand their responsibilities and strengthen workplace safety practice.',
     },
     finalCta: {
       title: 'Ready to improve workplace safety?',
       description:
-        "Book a free consultation with one of our HSE experts. We'll assess your needs and recommend tailored solutions.",
+        "Book a consultation with our HSE team. We'll discuss your needs and outline practical next steps.",
     },
   },
 } satisfies HomePageContent;

@@ -3,10 +3,9 @@ import type { SiteConfig } from '../schemas/pages.js';
 export const siteConfigData = {
   brand: {
     name: 'CKBHSE Limited',
-    tagline:
-      'The HSE consultancy for organisations that take safety seriously.',
+    tagline: 'Safer workplaces. Stronger compliance. Better business.',
     description:
-      'Expert consulting, accredited training, and modern compliance solutions.',
+      'Independent HSE consultancy providing specialist advisory, training and assurance services across the UK.',
   },
   contact: {
     email: 'info@ckbhse.co.uk',
