@@ -42,7 +42,7 @@ export const accessibilityStatementData = {
       ],
       items: [
         'Some marketing imagery may lack descriptive alternative text while assets are being finalised — target remediation: Q3 2026',
-        'HTML sitemap and FAQ pages are not yet published — footer links remain disabled until launch',
+        'HTML sitemap page is not yet published — footer link remains disabled until launch',
         'Third-party embedded content (such as maps) may not fully meet WCAG standards — we provide text alternatives where practicable',
       ],
     },

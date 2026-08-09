@@ -1,6 +1,7 @@
 import type {
   CareersPageContent,
   CaseStudiesPageContent,
+  FaqPageContent,
   HomePageContent,
   KnowledgePageContent,
   SiteConfig,
@@ -29,6 +30,7 @@ import type {
 } from '../schemas/services.js';
 import {
   careersPageSchema,
+  faqPageSchema,
   homePageSchema,
   siteConfigSchema,
   caseStudiesHubPageSchema,
@@ -40,6 +42,7 @@ import { contactPageSchema, legalPageSchema } from '../schemas/legal.js';
 import { corporatePageSchema } from '../schemas/corporate.js';
 import { servicePageSchema } from '../schemas/services.js';
 import { careersPageData } from '../data/careers.js';
+import { faqPageData } from '../data/faq.js';
 import { caseStudiesHubPageData } from '../data/case-studies/hub.js';
 import { caseStudyPageRegistry } from '../data/case-studies/index.js';
 import { caseStudyPageSchema } from '../schemas/case-studies.js';
@@ -139,6 +142,7 @@ export interface ContentSource {
   getKnowledgePage(): KnowledgePageContent;
   getCaseStudiesPage(): CaseStudiesPageContent;
   getCareersPage(): CareersPageContent;
+  getFaqPage(): FaqPageContent;
   getContactPage(): ContactPageContent;
   getPrivacyPolicyPage(): LegalPageContent;
   getTermsConditionsPage(): LegalPageContent;
@@ -209,6 +213,7 @@ export interface AsyncContentSource {
   getKnowledgePage(): Promise<KnowledgePageContent>;
   getCaseStudiesPage(): Promise<CaseStudiesPageContent>;
   getCareersPage(): Promise<CareersPageContent>;
+  getFaqPage(): Promise<FaqPageContent>;
   getContactPage(): Promise<ContactPageContent>;
   getPrivacyPolicyPage(): Promise<LegalPageContent>;
   getTermsConditionsPage(): Promise<LegalPageContent>;
@@ -516,6 +521,12 @@ export class FileContentLoader implements ContentSource {
     );
   }
 
+  getFaqPage(): FaqPageContent {
+    return this.cached('faq', () =>
+      validateContent(faqPageSchema, faqPageData, 'faq'),
+    );
+  }
+
   getContactPage(): ContactPageContent {
     return this.cached('contact', () =>
       validateContent(contactPageSchema, contactPageData, 'contact'),
@@ -767,6 +778,9 @@ class DelegatingContentLoader implements ContentSource {
   getCareersPage() {
     return this.delegate.getCareersPage();
   }
+  getFaqPage() {
+    return this.delegate.getFaqPage();
+  }
   getContactPage() {
     return this.delegate.getContactPage();
   }
@@ -958,6 +972,7 @@ export function toAsyncContentSource(
     getKnowledgePage: () => Promise.resolve(source.getKnowledgePage()),
     getCaseStudiesPage: () => Promise.resolve(source.getCaseStudiesPage()),
     getCareersPage: () => Promise.resolve(source.getCareersPage()),
+    getFaqPage: () => Promise.resolve(source.getFaqPage()),
     getContactPage: () => Promise.resolve(source.getContactPage()),
     getPrivacyPolicyPage: () => Promise.resolve(source.getPrivacyPolicyPage()),
     getTermsConditionsPage: () =>

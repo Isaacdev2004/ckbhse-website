@@ -264,7 +264,7 @@ export const siteConfigData = {
     ],
     utility: [
       { label: 'HTML Sitemap', href: '/sitemap', available: false },
-      { label: 'FAQ', href: '/faq', available: false },
+      { label: 'FAQ', href: '/faq', available: true },
     ],
     accreditations: [],
     social: [

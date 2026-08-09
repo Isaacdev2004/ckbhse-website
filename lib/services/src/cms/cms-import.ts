@@ -79,6 +79,7 @@ export function collectCmsImportRecords(source: ContentSource): CmsImportRecord[
       source.getClientSuccessHubPage() as Record<string, unknown>,
     ),
     hubRecord('careers', '/careers', 'Careers', source.getCareersPage() as Record<string, unknown>),
+    hubRecord('faq', '/faq', 'FAQ', source.getFaqPage() as Record<string, unknown>),
     hubRecord('contact', '/contact', 'Contact', source.getContactPage() as Record<string, unknown>),
   );
 

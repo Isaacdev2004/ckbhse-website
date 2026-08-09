@@ -74,6 +74,12 @@ export function getPublicRoutes(): PublicRouteDefinition[] {
       getSeo: () => contentLoader.getCareersPage().seo,
     },
     {
+      id: 'faq',
+      path: '/faq',
+      indexable: true,
+      getSeo: () => contentLoader.getFaqPage().seo,
+    },
+    {
       id: 'contact',
       path: '/contact',
       indexable: true,

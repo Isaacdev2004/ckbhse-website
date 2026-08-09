@@ -1,5 +1,6 @@
 import type {
   CareersPageContent,
+  FaqPageContent,
   HomePageContent,
   KnowledgePageContent,
   SiteConfig,
@@ -24,6 +25,7 @@ import type {
 } from '../schemas/services.js';
 import {
   careersPageSchema,
+  faqPageSchema,
   homePageSchema,
   siteConfigSchema,
   caseStudiesHubPageSchema,
@@ -333,6 +335,16 @@ export class DatabaseContentLoader implements ContentSource {
         careersPageSchema,
         payloadAt(this.byPath, '/careers', 'careers'),
         'careers',
+      ),
+    );
+  }
+
+  getFaqPage(): FaqPageContent {
+    return this.cached('faq', () =>
+      validateContent(
+        faqPageSchema,
+        payloadAt(this.byPath, '/faq', 'faq'),
+        'faq',
       ),
     );
   }

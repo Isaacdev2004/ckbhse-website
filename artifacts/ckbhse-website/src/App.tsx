@@ -24,6 +24,7 @@ import TestimonialPage from '@/pages/testimonial-page';
 import ClientSuccess from '@/pages/client-success';
 import ClientSuccessStoryPage from '@/pages/client-success-story-page';
 import Careers from '@/pages/careers';
+import Faq from '@/pages/faq';
 import Contact from '@/pages/contact';
 import PrivacyPolicy from '@/pages/privacy-policy';
 import TermsConditions from '@/pages/terms-conditions';
@@ -77,6 +78,7 @@ function Router() {
         <Route path="/client-success/:slug" component={ClientSuccessStoryPage} />
         <Route path="/client-success" component={ClientSuccess} />
         <Route path="/careers" component={Careers} />
+        <Route path="/faq" component={Faq} />
         <Route path="/contact" component={Contact} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/terms-conditions" component={TermsConditions} />

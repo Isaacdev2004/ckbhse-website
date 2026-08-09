@@ -6,6 +6,7 @@ import {
   seoFieldsSchema,
   statItemSchema,
 } from './base.js';
+import { faqItemSchema } from './services.js';
 
 export { pageHeroSchema, statItemSchema };
 export type { PageHero, StatItem } from './base.js';
@@ -219,6 +220,20 @@ export const careersPageSchema = z.object({
 });
 
 export type CareersPageContent = z.infer<typeof careersPageSchema>;
+
+export const faqPageSchema = z.object({
+  seo: seoFieldsSchema,
+  hero: pageHeroSchema,
+  faqs: z.array(faqItemSchema).min(1),
+  cta: z.object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+    buttonLabel: z.string().min(1),
+    buttonHref: z.string().min(1),
+  }),
+});
+
+export type FaqPageContent = z.infer<typeof faqPageSchema>;
 
 export const siteConfigSchema = z.object({
   brand: z.object({

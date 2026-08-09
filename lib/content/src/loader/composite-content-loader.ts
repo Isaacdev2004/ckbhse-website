@@ -106,6 +106,13 @@ export class CompositeContentLoader implements ContentSource {
     );
   }
 
+  getFaqPage() {
+    return this.pick(
+      () => this.primary.getFaqPage(),
+      () => this.fallback.getFaqPage(),
+    );
+  }
+
   getContactPage() {
     return this.pick(
       () => this.primary.getContactPage(),
