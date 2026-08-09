@@ -59,6 +59,7 @@ export const legalSectionSchema = z.object({
   title: z.string().min(1),
   paragraphs: z.array(z.string().min(1)),
   items: z.array(z.string().min(1)).optional(),
+  closingParagraphs: z.array(z.string().min(1)).optional(),
 });
 
 export type LegalSection = z.infer<typeof legalSectionSchema>;

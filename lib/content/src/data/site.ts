@@ -249,7 +249,7 @@ export const siteConfigData = {
       },
     ],
     legal: [
-      { label: 'Privacy Policy', href: '/privacy-policy', available: true },
+      { label: 'Privacy Notice', href: '/privacy-policy', available: true },
       {
         label: 'Terms & Conditions',
         href: '/terms-conditions',
