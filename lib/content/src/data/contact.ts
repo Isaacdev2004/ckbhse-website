@@ -110,7 +110,7 @@ export const contactPageData = {
     successMessage:
       'We have received your enquiry and will contact you within one working day to arrange your free 15-minute initial consultation.',
     disclaimer:
-      'By submitting this form, you confirm that you have read our Privacy Policy and consent to CKBHSE using the information you provide to respond to your enquiry and arrange your initial consultation.',
+      'By submitting this form, you acknowledge that you have read our Privacy Notice. CKBHSE Limited will use the information you provide to respond to your enquiry and arrange your initial consultation. We will handle your personal information in accordance with applicable UK data protection law.',
   },
   office: {
     lines: [

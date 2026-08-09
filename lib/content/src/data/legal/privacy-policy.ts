@@ -2,11 +2,11 @@ import type { LegalPageContent } from '../../schemas/legal.js';
 
 export const privacyPolicyData = {
   seo: {
-    title: 'Privacy Notice | CKBHSE Limited',
+    title: 'Privacy Policy | CKBHSE Limited',
     description:
       'How CKBHSE Limited collects, uses, stores and protects personal information under UK GDPR and the Data Protection Act 2018.',
   },
-  title: 'CKBHSE Privacy Notice',
+  title: 'Privacy Policy',
   lastUpdated: 'August 2026',
   intro:
     'CKBHSE Limited respects your privacy and is committed to protecting your personal information. This Privacy Notice explains how we collect, use, store and protect your personal data when you visit our website, contact us, request a consultation or use our services. CKBHSE Limited processes personal information in accordance with applicable UK data protection legislation, including the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.',

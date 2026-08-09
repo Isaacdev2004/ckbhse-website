@@ -168,121 +168,36 @@ export const siteConfigData = {
     },
   ],
   footer: {
+    blurb: 'Health, Safety & Environment Consultancy',
+    copyright: '© 2026 CKBHSE Limited. All rights reserved.',
     sections: [
       {
-        id: 'services',
-        title: 'Services',
+        id: 'quick-links',
+        title: 'Quick Links',
         links: [
+          { label: 'About Us', href: '/about', available: true },
+          { label: 'Services', href: '/services', available: true },
+          { label: 'Training', href: '/training', available: true },
           {
-            label: 'Health & Safety Audits',
-            href: '/services/health-safety/health-safety-audits',
+            label: 'Insights & Resources',
+            href: '/resources',
             available: true,
           },
-          {
-            label: 'Risk Assessments',
-            href: '/services/health-safety/risk-assessments',
-            available: true,
-          },
-          {
-            label: 'ISO Certification',
-            href: '/services/iso-management/gap-analysis',
-            available: true,
-          },
-          {
-            label: 'Fire Risk Assessments',
-            href: '/services/health-safety/fire-risk-assessments',
-            available: true,
-          },
-          {
-            label: 'Environmental Management',
-            href: '/services/environmental/environmental-compliance',
-            available: true,
-          },
-        ],
-      },
-      {
-        id: 'industries',
-        title: 'Industries',
-        links: [
-          {
-            label: 'Construction',
-            href: '/industries/construction',
-            available: true,
-          },
-          {
-            label: 'Manufacturing',
-            href: '/industries/manufacturing',
-            available: true,
-          },
-          {
-            label: 'Logistics & Transport',
-            href: '/industries/logistics',
-            available: true,
-          },
-          { label: 'Oil & Gas', href: '/industries/oil-gas', available: true },
-          {
-            label: 'Healthcare',
-            href: '/industries/healthcare',
-            available: true,
-          },
-        ],
-      },
-      {
-        id: 'resources',
-        title: 'Resources',
-        links: [
-          { label: 'Knowledge Centre', href: '/resources', available: true },
-          { label: 'Case Studies', href: '/case-studies', available: true },
-          { label: 'Testimonials', href: '/testimonials', available: true },
-          { label: 'Client Success', href: '/client-success', available: true },
-          { label: 'HTML Sitemap', href: '/sitemap', available: false },
-        ],
-      },
-      {
-        id: 'company',
-        title: 'Company',
-        links: [
-          { label: 'About CKBHSE', href: '/about', available: true },
-          { label: 'Careers', href: '/careers', available: true },
-          { label: 'Contact Us', href: '/contact', available: true },
+          { label: 'Contact', href: '/contact', available: true },
         ],
       },
     ],
     legal: [
-      { label: 'Privacy Notice', href: '/privacy-policy', available: true },
+      { label: 'Privacy Policy', href: '/privacy-policy', available: true },
+      { label: 'Cookie Policy', href: '/cookie-policy', available: true },
       {
         label: 'Terms & Conditions',
         href: '/terms-conditions',
         available: true,
       },
-      { label: 'Cookie Policy', href: '/cookie-policy', available: true },
-      {
-        label: 'Accessibility Statement',
-        href: '/legal/accessibility',
-        available: true,
-      },
     ],
-    utility: [
-      { label: 'HTML Sitemap', href: '/sitemap', available: false },
-      { label: 'FAQ', href: '/faq', available: true },
-    ],
+    utility: [{ label: 'FAQ', href: '/faq', available: true }],
     accreditations: [],
-    social: [
-      {
-        platform: 'linkedin',
-        href: 'https://linkedin.com',
-        label: 'LinkedIn',
-      },
-      {
-        platform: 'twitter',
-        href: 'https://twitter.com',
-        label: 'Twitter',
-      },
-      {
-        platform: 'facebook',
-        href: 'https://facebook.com',
-        label: 'Facebook',
-      },
-    ],
+    social: [],
   },
 } satisfies SiteConfig;

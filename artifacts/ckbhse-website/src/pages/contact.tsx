@@ -92,7 +92,7 @@ export default function Contact() {
   };
 
   const [disclaimerBefore, disclaimerAfter] =
-    content.form.disclaimer.split('Privacy Policy');
+    content.form.disclaimer.split('Privacy Notice');
 
   return (
     <PageShell seo={content.seo} path="/contact">
@@ -427,7 +427,7 @@ export default function Contact() {
                           href="/privacy-policy"
                           className="underline underline-offset-2 hover:text-foreground"
                         >
-                          Privacy Policy
+                          Privacy Notice
                         </Link>
                         {disclaimerAfter}
                       </p>

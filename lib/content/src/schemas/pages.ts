@@ -266,6 +266,8 @@ export const siteConfigSchema = z.object({
     }),
   ),
   footer: z.object({
+    blurb: z.string().min(1),
+    copyright: z.string().min(1),
     sections: z.array(
       z.object({
         id: z.string().min(1),
