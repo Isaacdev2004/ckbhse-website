@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Link } from 'wouter';
 import { submitContactEnquiry } from '@workspace/api-client-react';
 import { Button } from '@workspace/ui/components/button';
 import { Input } from '@workspace/ui/components/input';
@@ -38,9 +39,14 @@ const initialFormState: ContactFormState = {
   message: '',
 };
 
+function fieldLabel(label: string, required: boolean) {
+  return required ? `${label} *` : label;
+}
+
 export default function Contact() {
   const content = contentLoader.getContactPage();
   const siteConfig = contentLoader.getSiteConfig();
+  const fields = content.form.fields;
   const [form, setForm] = useState<ContactFormState>(initialFormState);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -57,14 +63,19 @@ export default function Contact() {
     setSubmitting(true);
     setErrorMessage(null);
 
+    const selectedService =
+      content.form.serviceOptions.find(
+        (option) => option.value === form.serviceInterest,
+      )?.label ?? form.serviceInterest;
+
     try {
       await submitContactEnquiry({
         firstName: form.firstName,
         lastName: form.lastName,
         email: form.email,
         ...(form.phone ? { phone: form.phone } : {}),
-        ...(form.company ? { company: form.company } : {}),
-        serviceInterest: form.serviceInterest,
+        company: form.company,
+        serviceInterest: selectedService,
         message: form.message,
       });
 
@@ -79,6 +90,9 @@ export default function Contact() {
       setSubmitting(false);
     }
   };
+
+  const [disclaimerBefore, disclaimerAfter] =
+    content.form.disclaimer.split('Privacy Policy');
 
   return (
     <PageShell seo={content.seo} path="/contact">
@@ -193,12 +207,14 @@ export default function Contact() {
             <div className="lg:col-span-3">
               <SectionReveal delay={0.2}>
                 <div className="bg-card border border-card-border rounded-2xl p-8">
-                  <h2 className="font-display font-bold text-3xl text-foreground mb-2">
+                  <h2 className="font-display font-bold text-3xl text-foreground mb-4">
                     {content.form.title}
                   </h2>
-                  <p className="text-muted-foreground mb-8">
-                    {content.form.description}
-                  </p>
+                  <div className="space-y-4 text-muted-foreground mb-8 leading-relaxed">
+                    {content.form.intro.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
 
                   {submitted ? (
                     <motion.div
@@ -216,6 +232,10 @@ export default function Contact() {
                     </motion.div>
                   ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
+                      <h3 className="font-display font-semibold text-xl text-foreground">
+                        {content.form.detailsHeading}
+                      </h3>
+
                       {errorMessage !== null && (
                         <div
                           className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 flex gap-3 text-sm text-destructive"
@@ -228,29 +248,41 @@ export default function Contact() {
 
                       <div className="grid sm:grid-cols-2 gap-6">
                         <div>
-                          <Label htmlFor="firstName">First Name *</Label>
+                          <Label htmlFor="firstName">
+                            {fieldLabel(
+                              fields.firstName.label,
+                              fields.firstName.required,
+                            )}
+                          </Label>
                           <Input
                             id="firstName"
                             type="text"
-                            required
+                            required={fields.firstName.required}
                             value={form.firstName}
                             onChange={(event) =>
                               updateField('firstName')(event.target.value)
                             }
+                            placeholder={fields.firstName.placeholder}
                             className="mt-2"
                             data-testid="input-first-name"
                           />
                         </div>
                         <div>
-                          <Label htmlFor="lastName">Last Name *</Label>
+                          <Label htmlFor="lastName">
+                            {fieldLabel(
+                              fields.lastName.label,
+                              fields.lastName.required,
+                            )}
+                          </Label>
                           <Input
                             id="lastName"
                             type="text"
-                            required
+                            required={fields.lastName.required}
                             value={form.lastName}
                             onChange={(event) =>
                               updateField('lastName')(event.target.value)
                             }
+                            placeholder={fields.lastName.placeholder}
                             className="mt-2"
                             data-testid="input-last-name"
                           />
@@ -259,28 +291,41 @@ export default function Contact() {
 
                       <div className="grid sm:grid-cols-2 gap-6">
                         <div>
-                          <Label htmlFor="email">Email Address *</Label>
+                          <Label htmlFor="email">
+                            {fieldLabel(
+                              fields.email.label,
+                              fields.email.required,
+                            )}
+                          </Label>
                           <Input
                             id="email"
                             type="email"
-                            required
+                            required={fields.email.required}
                             value={form.email}
                             onChange={(event) =>
                               updateField('email')(event.target.value)
                             }
+                            placeholder={fields.email.placeholder}
                             className="mt-2"
                             data-testid="input-email"
                           />
                         </div>
                         <div>
-                          <Label htmlFor="phone">Phone Number</Label>
+                          <Label htmlFor="phone">
+                            {fieldLabel(
+                              fields.phone.label,
+                              fields.phone.required,
+                            )}
+                          </Label>
                           <Input
                             id="phone"
                             type="tel"
+                            required={fields.phone.required}
                             value={form.phone}
                             onChange={(event) =>
                               updateField('phone')(event.target.value)
                             }
+                            placeholder={fields.phone.placeholder}
                             className="mt-2"
                             data-testid="input-phone"
                           />
@@ -288,76 +333,77 @@ export default function Contact() {
                       </div>
 
                       <div>
-                        <Label htmlFor="company">Company Name</Label>
+                        <Label htmlFor="company">
+                          {fieldLabel(
+                            fields.company.label,
+                            fields.company.required,
+                          )}
+                        </Label>
                         <Input
                           id="company"
                           type="text"
+                          required={fields.company.required}
                           value={form.company}
                           onChange={(event) =>
                             updateField('company')(event.target.value)
                           }
+                          placeholder={fields.company.placeholder}
                           className="mt-2"
                           data-testid="input-company"
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor="service">Service Interest *</Label>
+                        <Label htmlFor="service">
+                          {fieldLabel(
+                            fields.serviceInterest.label,
+                            fields.serviceInterest.required,
+                          )}
+                        </Label>
                         <Select
-                          required
+                          required={fields.serviceInterest.required}
                           value={form.serviceInterest}
                           onValueChange={updateField('serviceInterest')}
                         >
                           <SelectTrigger
+                            id="service"
                             className="mt-2"
                             data-testid="select-service"
                           >
-                            <SelectValue placeholder="Select a service" />
+                            <SelectValue
+                              placeholder={fields.serviceInterest.placeholder}
+                            />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="health-safety-audits">
-                              Health & Safety Audits
-                            </SelectItem>
-                            <SelectItem value="risk-assessments">
-                              Risk Assessments & RAMS
-                            </SelectItem>
-                            <SelectItem value="iso-compliance">
-                              ISO Compliance
-                            </SelectItem>
-                            <SelectItem value="fire-safety">
-                              Fire Safety
-                            </SelectItem>
-                            <SelectItem value="environmental">
-                              Environmental Management
-                            </SelectItem>
-                            <SelectItem value="training">
-                              Training Courses
-                            </SelectItem>
-                            <SelectItem value="incident-investigation">
-                              Incident Investigation
-                            </SelectItem>
-                            <SelectItem value="retainer">
-                              Retainer Services
-                            </SelectItem>
-                            <SelectItem value="other">
-                              Other / General Enquiry
-                            </SelectItem>
+                            {content.form.serviceOptions.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>
 
                       <div>
-                        <Label htmlFor="message">Message *</Label>
+                        <Label htmlFor="message">
+                          {fieldLabel(
+                            fields.message.label,
+                            fields.message.required,
+                          )}
+                        </Label>
                         <Textarea
                           id="message"
-                          required
+                          required={fields.message.required}
                           rows={5}
                           value={form.message}
                           onChange={(event) =>
                             updateField('message')(event.target.value)
                           }
                           className="mt-2"
-                          placeholder="Tell us about your HSE requirements..."
+                          placeholder={fields.message.placeholder}
                           data-testid="textarea-message"
                         />
                       </div>
@@ -369,12 +415,21 @@ export default function Contact() {
                         disabled={submitting}
                         data-testid="button-submit-enquiry"
                       >
-                        {submitting ? 'Sending…' : 'Send Enquiry'}
+                        {submitting
+                          ? content.form.submittingLabel
+                          : content.form.submitLabel}
                         <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                       </Button>
 
                       <p className="text-xs text-muted-foreground text-center">
-                        {content.form.disclaimer}
+                        {disclaimerBefore}
+                        <Link
+                          href="/privacy-policy"
+                          className="underline underline-offset-2 hover:text-foreground"
+                        >
+                          Privacy Policy
+                        </Link>
+                        {disclaimerAfter}
                       </p>
                     </form>
                   )}
