@@ -34,9 +34,10 @@ export const industriesHubPageData = {
     'retail',
   ],
   overview: {
-    title: 'Practical expertise for your sector',
+    title: 'Why Industry Expertise Matters',
     paragraphs: [
-      'From regulatory compliance and risk management to audits, investigations and ongoing HSE support, we bring practical expertise to help organisations operate safely, responsibly and with confidence.',
+      'Generic HSE advice rarely reflects the realities of every workplace. Different sectors face different hazards, regulatory requirements and operational pressures.',
+      'CKBHSE combines HSE expertise with practical industry experience to deliver advice that is relevant, proportionate and applicable to your working environment — helping you move from compliance requirements to practical action.',
     ],
   },
   regulatoryLandscape: {
