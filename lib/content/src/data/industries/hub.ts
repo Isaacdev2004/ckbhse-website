@@ -4,15 +4,15 @@ import type { IndustrySectorId } from '../../schemas/industries.js';
 
 export const industriesHubPageData = {
   seo: {
-    title: 'Industry-Specific HSE Expertise | CKBHSE Limited',
+    title: 'Industries | Sector-Focused HSE Consultancy | CKBHSE Limited',
     description:
-      'Sector-specific health, safety, and environmental consultancy for construction, manufacturing, healthcare, logistics, and more across the UK.',
+      'Practical, sector-focused HSE consultancy tailored to your organisation — regulatory compliance, risk management, audits, investigations and ongoing support across UK industries.',
   },
   hero: {
     badge: 'Industries',
-    title: 'Sector expertise that speaks your language',
+    title: 'Sector expertise that understands your environment',
     description:
-      'Every industry faces unique regulations, risks, and compliance pressures. CKBHSE delivers tailored HSE consultancy mapped to your sector — not generic advice.',
+      'Every industry faces its own regulatory requirements, operational risks and compliance challenges. CKBHSE provides practical, sector-focused HSE consultancy tailored to the realities of your organisation — not generic, one-size-fits-all advice.',
   },
   sectors: (
     Object.entries(INDUSTRY_SECTOR_LABELS) as [IndustrySectorId, string][]
@@ -34,10 +34,9 @@ export const industriesHubPageData = {
     'retail',
   ],
   overview: {
-    title: 'Why industry expertise matters',
+    title: 'Practical expertise for your sector',
     paragraphs: [
-      "Generic compliance advice fails in sector-specific environments. CKBHSE consultants bring deep experience in your industry's legislation, standards, and operational realities.",
-      'Each industry page maps sector risks to CKBHSE services, training programmes, and resources — giving you a clear path from understanding to action.',
+      'From regulatory compliance and risk management to audits, investigations and ongoing HSE support, we bring practical expertise to help organisations operate safely, responsibly and with confidence.',
     ],
   },
   regulatoryLandscape: {
