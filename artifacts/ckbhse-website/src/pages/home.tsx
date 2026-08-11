@@ -1,6 +1,6 @@
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, GraduationCap } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@workspace/ui/components/button';
 import {
   SectionReveal,
@@ -73,7 +73,7 @@ export default function Home() {
                   >
                     <Button
                       size="lg"
-                      className="text-base px-8 py-6 font-semibold group"
+                      className="text-base px-8 py-6 font-semibold group bg-primary text-primary-foreground border-primary hover:bg-primary/90"
                     >
                       Book Free Consultation
                       <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -83,7 +83,7 @@ export default function Home() {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="text-base px-8 py-6 font-semibold bg-secondary-foreground/5 border-secondary-foreground/20 hover:bg-secondary-foreground/10"
+                      className="text-base px-8 py-6 font-semibold bg-transparent text-secondary-foreground border-secondary-foreground/50 hover:bg-secondary-foreground/10 hover:text-secondary-foreground"
                     >
                       Explore Services
                     </Button>
@@ -234,28 +234,6 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-          </PageContainer>
-        </SectionReveal>
-
-        <SectionReveal className="py-24 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
-          <PageContainer variant="narrow" className="text-center">
-            <GraduationCap className="w-16 h-16 mx-auto mb-6 opacity-90" />
-            <h2 className="font-display font-bold text-4xl md:text-5xl mb-6">
-              {content.sections.training.title}
-            </h2>
-            <p className="text-xl opacity-90 max-w-3xl mx-auto mb-8 leading-relaxed">
-              {content.sections.training.description}
-            </p>
-            <Link href="/training" data-testid="link-browse-courses">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="font-semibold group"
-              >
-                Browse Courses
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
           </PageContainer>
         </SectionReveal>
 

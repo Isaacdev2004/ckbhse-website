@@ -92,10 +92,6 @@ export const contactPageData = {
         label: 'ISO 14001 & Environmental Compliance',
       },
       {
-        value: 'hse-training',
-        label: 'HSE Training',
-      },
-      {
         value: 'retained-hse-support',
         label: 'Retained HSE Support',
       },
@@ -120,7 +116,7 @@ export const contactPageData = {
       'Mataab Business Centre',
       'Birmingham, England, B11 1JB',
     ],
-    mapLabel: 'Office Location',
+    mapLabel: 'Registered Address',
     mapAddress:
       '11 Henley Street, Mataab Business Centre, Birmingham, England, B11 1JB',
   },

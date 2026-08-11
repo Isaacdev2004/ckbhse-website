@@ -38,12 +38,6 @@ export function getPublicRoutes(): PublicRouteDefinition[] {
       getSeo: () => contentLoader.getIndustriesPage().seo,
     },
     {
-      id: 'training',
-      path: '/training',
-      indexable: true,
-      getSeo: () => contentLoader.getTrainingPage().seo,
-    },
-    {
       id: 'resources',
       path: '/resources',
       indexable: true,
@@ -123,12 +117,6 @@ export function getPublicRoutes(): PublicRouteDefinition[] {
     })),
     ...contentLoader.getIndustryPages().map((page) => ({
       id: `industry-${page.slug}`,
-      path: page.path,
-      indexable: true as const,
-      getSeo: () => page.seo,
-    })),
-    ...contentLoader.getCoursePages().map((page) => ({
-      id: `course-${page.category}-${page.slug}`,
       path: page.path,
       indexable: true as const,
       getSeo: () => page.seo,

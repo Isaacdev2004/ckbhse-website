@@ -252,6 +252,7 @@ export function Navigation() {
   }
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
+  const overDarkHero = location === '/' && !scrolled && !mobileMenuOpen;
 
   return (
     <motion.nav
@@ -300,7 +301,11 @@ export function Navigation() {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 min-w-11 min-h-11 text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg"
+            className={`lg:hidden p-2 min-w-11 min-h-11 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg ${
+              overDarkHero
+                ? 'text-secondary-foreground hover:text-primary'
+                : 'text-foreground hover:text-primary'
+            }`}
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation-panel"

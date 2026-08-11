@@ -12,8 +12,6 @@ import Home from '@/pages/home';
 import Services from '@/pages/services';
 import Industries from '@/pages/industries';
 import IndustryPage from '@/pages/industry-page';
-import Training from '@/pages/training';
-import CoursePage from '@/pages/course-page';
 import Resources from '@/pages/resources';
 import ResourcePage from '@/pages/resource-page';
 import Knowledge from '@/pages/knowledge';
@@ -66,8 +64,6 @@ function Router() {
         <Route path="/services" component={Services} />
         <Route path="/industries/:slug" component={IndustryPage} />
         <Route path="/industries" component={Industries} />
-        <Route path="/training/:category/:slug" component={CoursePage} />
-        <Route path="/training" component={Training} />
         <Route path="/resources/:type/:slug" component={ResourcePage} />
         <Route path="/resources" component={Resources} />
         <Route path="/knowledge" component={Knowledge} />

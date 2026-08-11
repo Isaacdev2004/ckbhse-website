@@ -15,7 +15,7 @@ export const siteConfigData = {
       '11 Henley Street, Mataab Business Centre, Birmingham, England, B11 1JB',
   },
   cta: {
-    label: 'Book Consultation',
+    label: 'Book Free Consultation',
     href: '/contact',
   },
   navigation: [
@@ -72,29 +72,6 @@ export const siteConfigData = {
         {
           label: 'Healthcare',
           href: '/industries/healthcare',
-          available: true,
-        },
-      ],
-    },
-    {
-      id: 'training',
-      label: 'Training',
-      href: '/training',
-      children: [
-        { label: 'Course Catalogue', href: '/training', available: true },
-        {
-          label: 'IOSH Managing Safely',
-          href: '/training/health-safety/iosh-managing-safely',
-          available: true,
-        },
-        {
-          label: 'NEBOSH General Certificate',
-          href: '/training/health-safety/nebosh-general-certificate',
-          available: true,
-        },
-        {
-          label: 'Fire Warden Training',
-          href: '/training/health-safety/fire-warden',
           available: true,
         },
       ],
@@ -177,7 +154,6 @@ export const siteConfigData = {
         links: [
           { label: 'About Us', href: '/about', available: true },
           { label: 'Services', href: '/services', available: true },
-          { label: 'Training', href: '/training', available: true },
           {
             label: 'Insights & Resources',
             href: '/resources',

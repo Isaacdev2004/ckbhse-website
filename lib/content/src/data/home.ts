@@ -17,9 +17,9 @@ export const homePageData = {
     { icon: 'Shield', value: 'HSE', label: 'Advisory Focus' },
     { icon: 'FileCheck', value: 'UK', label: 'Regulatory Alignment' },
     {
-      icon: 'GraduationCap',
-      value: 'Training',
-      label: 'Practical Support',
+      icon: 'Users',
+      value: 'Support',
+      label: 'Practical Guidance',
     },
     {
       icon: 'Award',
@@ -78,7 +78,7 @@ export const homePageData = {
   trustSignals: [
     'Independent HSE Consultancy',
     'UK Regulatory Focus',
-    'Advisory, Training & Assurance',
+    'Advisory & Assurance',
     'Practical Workplace Support',
     'Transparent Scoping',
     'Registered in England & Wales',
